@@ -1,0 +1,29 @@
+{
+  "use_regex": true,
+  "use_ner": true,
+  "debug_mask": false,
+  "spacy_model": "de_core_news_lg",
+  "theme": "dark",
+  "lang": "de",
+  "ner_labels": [
+    "GPE",
+    "LOC",
+    "ORG",
+    "PER"
+  ],
+  "regex_labels": [
+    "BETRAG",
+    "BIC",
+    "DATUM",
+    "E_MAIL",
+    "IBAN",
+    "PLZ",
+    "RECHNUNGS_NUMMER",
+    "TELEFON",
+    "URL",
+    "USTID"
+  ],
+  "auto_demask_enabled": true,
+  "auto_mask_enabled": true,
+  "reversible_masking": true
+}
