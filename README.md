@@ -1,85 +1,150 @@
+# Anonymizer
 
+Werkzeug zur automatischen Maskierung personenbezogener Daten in Texten
+zur datenschutzkonformen Nutzung externer KI-Systeme.
 
+---
 
-# -------------------------------------------------------------------------------------------------------------------------------------------------
-### BEFEHLE
+## BEFEHLE
 
-# neue venv anlegen
+### Virtuelle Umgebung anlegen
+```bash
 python3 -m venv .venv
+```
 
-# Dependencyd Installieren
-pip install -r requirements.txt
-
-# Venv aktivieren
+### Virtuelle Umgebung aktivieren
+```bash
 source .venv/bin/activate
+```
 
-# UI Starten
-python src/ui_app.py 
+### Abhängigkeiten installieren
+```bash
+pip install -r requirements.txt
+```
 
-# Produktion build
+### UI starten
+```bash
+python src/ui_app.py
+```
+
+### Produktions-Build (Desktop-App)
+```bash
 flet pack src/ui_app.py --name anonymizer --icon src/assets/logo.icns
-# -------------------------------------------------------------------------------------------------------------------------------------------------
+```
 
+---
 
+## BEISPIELE
 
+### Text manuell maskieren (CLI)
+```bash
+python -m cli mask
+```
 
+Beispielausgabe:
+```
+maskiert → output/masked.txt (7 Treffer)
+```
 
-# -------------------------------------------------------------------------------------------------------------------------------------------------
-### BEISPIELE
+### UI starten
+```bash
+python src/ui_app.py
+```
 
-# Text maskieren (manuell)
-(.venv) tompetzold@Mac src % python -m cli mask
-maskiert → /Users/tompetzold/Desktop/RWU/Semester 10/Bachelorarbeit/bachelor_python/anonymizer/output/masked.txt (7 Treffer)
+---
 
-# UI starten
-(.venv) tompetzold@MacBook-Air-M3-von-Tom anonymizer % python src/ui_app.py 
-# -------------------------------------------------------------------------------------------------------------------------------------------------
+## ARCHITEKTUR
 
+### UI
+**src/ui_app.py**  
+Grafische Benutzeroberfläche zur interaktiven Maskierung von Texten.
+Erlaubt die Auswahl von NER- und Regex-Typen sowie die Verwaltung von Maskierungssessions.
 
+### CLI
+**src/cli.py**  
+Stellt die Kommandozeilenschnittstelle bereit.
+Verarbeitet Benutzerbefehle (z. B. `detect`, `mask`) und übergibt Eingabe- und Ausgabepfade
+an die interne Maskierungspipeline.
 
+### Pipeline
+Die Maskierung erfolgt in mehreren Schritten:
 
+1. Erkennung personenbezogener Daten (NER + Regex)
+2. Erzeugung kontextstabiler Maskierungstoken
+3. Ersetzung der Originalwerte im Text
+4. Optional: Rückauflösung über lokale Token-Mappings
 
-# -------------------------------------------------------------------------------------------------------------------------------------------------
-### ARCHITEKTUR
+---
 
-# run.py
-  einfaches Userinterface um die Maskierung so einfach wie möglich zu maskieren
-
-# src/cli.py    ->    „CLI“ = Command Line Interface 
-  src/cli.py stellt die Kommandozeilenschnittstelle des Projekts bereit.
-  Sie verarbeitet Benutzerbefehle (hello, echo, detect, mask), nimmt Argumente wie Eingabe- und Ausgabepfade entgegen und ruft intern die passenden Funktionen der Pipeline auf. Damit bildet sie den Einstiegspunkt zum Starten und Steuern der gesamten Anonymisierungslogik über die Konsole.
-# -------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-# -------------------------------------------------------------------------------------------------------------------------------------------------
-### ERKENNUNG PB DATEN - REGEX
+## ERKENNUNG PERSONENBEZOGENER DATEN (REGEX)
 
 ### src/detectors/regex/contact.py
-  Erkennt E-Mail-Adressen und Telefonnummern in typischen Formaten.
-  Unterstützt internationale Schreibweisen (+49, 0049, 0...) sowie verschiedene Trennzeichen.
-  Filtert falsch-positive Matches wie Rechnungsnummern oder Postleitzahlen.
+Erkennt:
+- E-Mail-Adressen
+- Telefonnummern
+
+Unterstützt:
+- internationale Schreibweisen (+49, 0049, 0…)
+- unterschiedliche Trennzeichen  
+Filtert typische Fehlklassifikationen (z. B. Rechnungsnummern).
+
+---
 
 ### src/detectors/regex/date.py
-  Erkennt Datumsangaben in unterschiedlichen Formaten (z. B. „17.10.2024“, „2024-10-17“, „17. Oktober 2024“).
-  Normalisiert Monatsnamen (deutsch/englisch) und Zahlenformate.
-  Verwendet zur Erkennung flexible Regex-Muster für Alltagstexte.
+Erkennt Datumsangaben in Formaten wie:
+- `17.10.2024`
+- `2024-10-17`
+- `17. Oktober 2024`
+
+Unterstützt:
+- deutsche und englische Monatsnamen
+- flexible Regex-Muster für Alltagstexte
+
+---
 
 ### src/detectors/regex/finance.py
-  Erkennt IBANs und BICs nach offiziellen Strukturen.
-  Prüft gültige Länderpräfixe (z. B. DE, AT, CH).
-  Erkennt auch einfache Kontonummern und Banknamen, falls vorhanden.
+Erkennt:
+- IBAN
+- BIC
+
+Prüft:
+- gültige Länderpräfixe (z. B. DE, AT, CH)
+
+Optional:
+- einfache Kontonummern im Kontext finanzieller Angaben
+
+---
 
 ### src/detectors/regex/location.py
-  Erkennt Postleitzahlen (5-stellig, deutsch) und Ortsnamen im Umfeld typischer Adressangaben.
-  Kombiniert PLZ-Erkennung mit Schlüsselwörtern wie „Adresse“, „Ort“, „Stadt“.
-  Ziel: vollständige Adressbestandteile anonymisieren.
+Erkennt:
+- deutsche Postleitzahlen (5-stellig)
+- Ortsnamen im Adresskontext
+
+Kombiniert:
+- PLZ-Erkennung
+- Schlüsselwörter wie „Adresse“, „Ort“, „Stadt“
+
+Ziel: vollständige Adressbestandteile maskieren.
+
+---
 
 ### src/detectors/regex/invoice.py
-  Erkennt Rechnungsnummern und ähnliche Bezeichner wie „Invoice No. INV-2024-0012“ oder „Rechnungsnr. TS-2024-0915“.
-  Berücksichtigt verschiedene Schreibweisen und Präfixe (TS-, INV-, RG-, RE- usw.).
-  Maskiert ausschließlich tatsächliche IDs, nicht Wörter wie „Verwendungszweck“.
-  Dient zur Erkennung personenbezogener Referenzen auf Buchungsvorgänge.
-# -------------------------------------------------------------------------------------------------------------------------------------------------
+Erkennt Rechnungs- und Belegnummern, z. B.:
+- `INV-2024-0012`
+- `TS-2024-0915`
+- `Rechnungsnr. RG-12345`
+
+Berücksichtigt:
+- unterschiedliche Präfixe (INV, RG, RE, TS, …)
+- verschiedene Schreibweisen
+
+Maskiert ausschließlich tatsächliche Identifikatoren,
+keine allgemeinen Begriffe wie „Verwendungszweck“.
+
+---
+
+## HINWEIS ZUM DATENSCHUTZ
+
+Das System zielt auf die Maskierung personenbezogener Daten ab.
+Eine vollständige Anonymisierung gegen kontextuelle Re-Identifikation
+kann nicht garantiert werden und ist nicht Ziel der Implementierung.
