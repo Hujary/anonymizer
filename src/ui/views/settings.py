@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import flet as ft
 from detectors.ner.ner_core import set_spacy_model, get_current_model
-from ui.style.components import pill_button, pill_switch
+from ui.style.components import pill_button
 from core import config
 from ui.style.translations import t
 
@@ -20,14 +20,55 @@ def view(
         lang = "de"
 
     model_map = {"fast": "de_core_news_md", "large": "de_core_news_lg"}
-    current_model = get_current_model() or model_map["large"]
-    current_key = "large" if str(current_model).endswith("_lg") else "fast"
+
+    def _installed_models() -> list[tuple[str, str]]:
+        try:
+            from spacy.util import is_package
+        except Exception:
+            return []
+        out: list[tuple[str, str]] = []
+        fast = model_map["fast"]
+        large = model_map["large"]
+        try:
+            if is_package(fast):
+                out.append(("fast", fast))
+        except Exception:
+            pass
+        try:
+            if is_package(large):
+                out.append(("large", large))
+        except Exception:
+            pass
+        return out
+
+    installed = _installed_models()
+    installed_keys = [k for k, _ in installed]
+
+    cfg_model = config.get("spacy_model", None)
+    cfg_model = cfg_model.strip() if isinstance(cfg_model, str) else ""
+    runtime_current_model = get_current_model()
+    runtime_current_model = str(runtime_current_model) if runtime_current_model else ""
+
+    current_model_name = runtime_current_model or cfg_model
+    if current_model_name in model_map.values():
+        current_key = "large" if current_model_name.endswith("_lg") else "fast"
+    else:
+        current_key = "large"
+
+    if installed_keys:
+        if current_key not in installed_keys:
+            current_key = installed_keys[0]
+        current_model = model_map[current_key]
+        config.set("spacy_model", current_model)
+    else:
+        config.set("spacy_model", "")
 
     def ner_options(for_lang: str) -> list[ft.dropdown.Option]:
-        return [
-            ft.dropdown.Option(key="fast", text=t(for_lang, "ner_model.fast")),
-            ft.dropdown.Option(key="large", text=t(for_lang, "ner_model.large")),
-        ]
+        opts: list[ft.dropdown.Option] = []
+        for key in installed_keys:
+            label = t(for_lang, "ner_model.fast") if key == "fast" else t(for_lang, "ner_model.large")
+            opts.append(ft.dropdown.Option(key=key, text=label))
+        return opts
 
     title_text = ft.Text(
         t(lang, "settings.title"),
@@ -111,10 +152,6 @@ def view(
     )
     selected_rx: set[str] = set(config.get("regex_labels", REGEX_TYPES))
 
-    reversible_initial = config.get("reversible_masking", True)
-    auto_mask_initial = config.get("auto_mask_enabled", True)
-    auto_demask_initial = config.get("auto_demask_enabled", True)
-
     def handle_lang_change(e: ft.ControlEvent):
         new_lang = e.control.value or "de"
         config.set("lang", new_lang)
@@ -134,20 +171,6 @@ def view(
             on_change=handle_lang_change,
         )
 
-    def make_model_dropdown(cur_lang: str, value_key: str) -> ft.Dropdown:
-        return ft.Dropdown(
-            ref=model_ref,
-            label=t(cur_lang, "ner_model"),
-            options=ner_options(cur_lang),
-            value=value_key,
-            width=420,
-        )
-
-    lang_host = ft.Container(content=make_lang_dropdown(lang), width=260)
-    model_dropdown = make_model_dropdown(lang, current_key)
-    saved_label = ft.Text(f"{t(lang, 'loaded')}: {current_model}", size=12, color=theme["text_secondary"])
-    model_host = ft.Container(content=ft.Column([model_dropdown, saved_label], spacing=6), width=420)
-
     theme_switch = ft.Switch(label=t(lang, "dark_mode"), value=(theme_name == "dark"))
 
     def toggle_theme(_):
@@ -155,47 +178,65 @@ def view(
 
     theme_switch.on_change = toggle_theme
 
-    def on_reversible_changed(value: bool):
-        config.set("reversible_masking", bool(value))
-        if store is not None:
-            setattr(store, "reversible", bool(value))
+    def make_model_dropdown(cur_lang: str, value_key: str) -> ft.Control:
+        if not installed_keys:
+            return ft.Container(
+                content=ft.Text(
+                    "Kein spaCy-NER-Modell installiert (pip install de_core_news_md oder de_core_news_lg)"
+                    if cur_lang == "de"
+                    else "No spaCy NER model installed (pip install de_core_news_md or de_core_news_lg)",
+                    size=12,
+                    color=theme["text_secondary"],
+                ),
+                width=420,
+            )
 
-    def on_auto_mask_changed(value: bool):
-        config.set("auto_mask_enabled", bool(value))
-        if store is not None:
-            setattr(store, "auto_mask_enabled", bool(value))
+        dd = ft.Dropdown(
+            ref=model_ref,
+            label=t(cur_lang, "ner_model"),
+            options=ner_options(cur_lang),
+            value=value_key,
+            width=420,
+        )
 
-    def on_auto_demask_changed(value: bool):
-        config.set("auto_demask_enabled", bool(value))
-        if store is not None:
-            setattr(store, "auto_demask_enabled", bool(value))
+        def on_model_change(e: ft.ControlEvent):
+            key = e.control.value
+            if not key or key not in installed_keys:
+                return
+            target = model_map.get(key, model_map["large"])
+            try:
+                eff = set_spacy_model(target)
+            except Exception as ex:
+                page.snack_bar = ft.SnackBar(
+                    ft.Text(
+                        f"NER-Modell konnte nicht geladen werden: {ex}"
+                        if cur_lang == "de"
+                        else f"Failed to load NER model: {ex}"
+                    ),
+                    bgcolor=theme.get("danger", ft.Colors.RED),
+                )
+                page.snack_bar.open = True
+                page.update()
+                return
+            config.set("spacy_model", eff)
+            saved_label.value = f"{t(cur_lang, 'loaded')}: {eff}"
+            page.update()
 
-    masking_switches_row = ft.Row(
-        [
-            pill_switch(
-                t(lang, "reversible"),
-                reversible_initial,
-                on_reversible_changed,
-                theme,
-                scale=1.05,
-            ),
-            pill_switch(
-                "Automatisch maskieren" if lang == "de" else "Auto mask",
-                auto_mask_initial,
-                on_auto_mask_changed,
-                theme,
-                scale=1.05,
-            ),
-            pill_switch(
-                t(lang, "vault.live_demask"),
-                auto_demask_initial,
-                on_auto_demask_changed,
-                theme,
-                scale=1.05,
-            ),
-        ],
-        spacing=12,
-        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+        dd.on_change = on_model_change
+        return dd
+
+    lang_host = ft.Container(content=make_lang_dropdown(lang), width=260)
+
+    model_control = make_model_dropdown(lang, current_key)
+    saved_label = ft.Text(
+        f"{t(lang, 'loaded')}: {config.get('spacy_model', '') or '-'}",
+        size=12,
+        color=theme["text_secondary"],
+    )
+
+    model_host = ft.Container(
+        content=ft.Column([model_control, saved_label], spacing=6),
+        width=420,
     )
 
     top_bar = ft.Container(
@@ -213,8 +254,6 @@ def view(
                     alignment=ft.MainAxisAlignment.START,
                     vertical_alignment=ft.CrossAxisAlignment.START,
                 ),
-                ft.Container(height=16),
-                masking_switches_row,
             ],
             spacing=12,
         ),
@@ -310,7 +349,8 @@ def view(
 
     def save_flags(_):
         use_regex = bool(selected_rx)
-        use_ner = bool(selected_ner)
+        use_ner = bool(selected_ner) and bool(installed_keys)
+
         current_flags = config.get_flags()
         config.set_flags(
             use_regex=use_regex,
@@ -319,11 +359,39 @@ def view(
         )
         config.set("ner_labels", sorted(selected_ner))
         config.set("regex_labels", sorted(selected_rx))
-        key = model_ref.current.value if model_ref.current else current_key
-        target = model_map.get(key, model_map["large"])
-        eff = set_spacy_model(target)
-        config.set("spacy_model", eff)
-        page.snack_bar = ft.SnackBar(ft.Text(f"Gespeichert – Modell: {eff}"), bgcolor=theme["success"])
+
+        if installed_keys:
+            key = model_ref.current.value if model_ref.current else current_key
+            if key not in installed_keys:
+                key = installed_keys[0]
+            target = model_map.get(key, model_map["large"])
+            try:
+                eff = set_spacy_model(target)
+            except Exception as ex:
+                page.snack_bar = ft.SnackBar(
+                    ft.Text(
+                        f"NER-Modell konnte nicht geladen werden: {ex}"
+                        if lang == "de"
+                        else f"Failed to load NER model: {ex}"
+                    ),
+                    bgcolor=theme.get("danger", ft.Colors.RED),
+                )
+                page.snack_bar.open = True
+                page.update()
+                return
+            config.set("spacy_model", eff)
+            saved_label.value = f"{t(lang, 'loaded')}: {eff}"
+            page.snack_bar = ft.SnackBar(ft.Text(f"Gespeichert – Modell: {eff}"), bgcolor=theme["success"])
+        else:
+            config.set("spacy_model", "")
+            saved_label.value = f"{t(lang, 'loaded')}: -"
+            page.snack_bar = ft.SnackBar(
+                ft.Text(
+                    "Gespeichert – NER deaktiviert (kein Modell installiert)." if lang == "de" else "Saved – NER disabled (no model installed)."
+                ),
+                bgcolor=theme["success"],
+            )
+
         page.snack_bar.open = True
         page.update()
 
@@ -379,9 +447,5 @@ def view(
         padding=24,
         expand=True,
         bgcolor=theme["background"],
-        content=ft.Column(
-            [ft.Container(sections, expand=True)],
-            spacing=12,
-            expand=True,
-        ),
+        content=ft.Column([ft.Container(sections, expand=True)], spacing=12, expand=True),
     )

@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 from core.typen import Treffer
 from core.zusammenführen import zusammenführen
 from detectors.regex import finde_regex
-from detectors.ner import finde_ner
-from detectors.ner.filters import filter_ner_strict
 from detectors.custom.manual_dict import finde_manual_tokens
 from core.einstellungen import MASKIERUNGEN as MASK
 from core import config
@@ -48,6 +46,41 @@ def _apply_dict_priority(base_hits: List[Treffer], dict_hits: List[Treffer]) -> 
     return final_hits
 
 
+def _resolve_spacy_model_name() -> Optional[str]:
+    model = config.get("spacy_model", None)
+    if isinstance(model, str) and model.strip():
+        return model.strip()
+    return None
+
+
+def _is_ner_runtime_available() -> bool:
+    try:
+        import spacy  # noqa: F401
+        from spacy.util import is_package
+    except Exception:
+        return False
+
+    model_name = _resolve_spacy_model_name()
+    if not model_name:
+        return False
+
+    try:
+        return bool(is_package(model_name))
+    except Exception:
+        return False
+
+
+def _run_ner(text: str, allowed_labels: List[str]) -> List[Treffer]:
+    try:
+        from detectors.ner import finde_ner
+        from detectors.ner.filters import filter_ner_strict
+    except Exception:
+        return []
+
+    raw_ner = [Treffer(s, e, l, "ner", from_ner=True) for s, e, l in finde_ner(text)]
+    return filter_ner_strict(text, raw_ner, allowed_labels=allowed_labels)
+
+
 def erkenne(text: str) -> List[Treffer]:
     flags = config.get_flags()
     regex_treffer: List[Treffer] = []
@@ -59,9 +92,8 @@ def erkenne(text: str) -> List[Treffer]:
 
     if flags.get("use_ner", True):
         allowed = config.get("ner_labels", [])
-        if allowed:
-            raw_ner = [Treffer(s, e, l, "ner", from_ner=True) for s, e, l in finde_ner(text)]
-            ner_treffer = filter_ner_strict(text, raw_ner, allowed_labels=allowed)
+        if allowed and _is_ner_runtime_available():
+            ner_treffer = _run_ner(text, allowed_labels=allowed)
         else:
             ner_treffer = []
 
@@ -81,8 +113,6 @@ def erkenne(text: str) -> List[Treffer]:
 
     if dict_treffer:
         merged = _apply_dict_priority(merged, dict_treffer)
-    else:
-        merged = merged
 
     return _flagge_quellen(merged, regex_treffer, ner_treffer)
 
