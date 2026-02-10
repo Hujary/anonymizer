@@ -42,6 +42,8 @@ flet pack src/ui_app.py --name anonymizer --icon src/assets/logo.icns
 
 ## BEISPIELE
 
+<img width="2558" height="1398" alt="image" src="https://github.com/user-attachments/assets/1ea58549-4aa9-44e8-9c81-186c7bc6f515" />
+
 ### Text manuell maskieren (CLI)
 ```bash
 python -m cli mask
