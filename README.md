@@ -96,41 +96,6 @@ Die Maskierung erfolgt in mehreren Schritten:
 
 ---
 
-## ERKENNUNG PERSONENBEZOGENER DATEN (REGEX)
-
-### src/detectors/regex/contact.py
-Erkennt:
-- E-Mail-Adressen
-- Telefonnummern
-
-
-### src/detectors/regex/date.py
-Erkennt Datumsangaben in Formaten wie:
-- `17.10.2024`
-- `2024-10-17`
-- `17. Oktober 2024`
-
-
-### src/detectors/regex/finance.py
-Erkennt:
-- IBAN
-- BIC
-
-
-### src/detectors/regex/location.py
-Erkennt:
-- deutsche Postleitzahlen (5-stellig)
-- Ortsnamen im Adresskontext
-
-
-### src/detectors/regex/invoice.py
-Erkennt Rechnungs- und Belegnummern, z. B.:
-- `INV-2024-0012`
-- `TS-2024-0915`
-- `Rechnungsnr. RG-12345`
-
----
-
 ## HINWEIS ZUM DATENSCHUTZ
 Eine vollständige Anonymisierung gegen kontextuelle Re-Identifikation
 kann nicht garantiert werden und ist nicht Ziel der Implementierung.
