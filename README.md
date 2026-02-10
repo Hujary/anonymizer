@@ -102,30 +102,26 @@ Die Maskierung erfolgt in mehreren Schritten:
 Erkennt:
 - E-Mail-Adressen
 - Telefonnummern
-- 
----
+
 
 ### src/detectors/regex/date.py
 Erkennt Datumsangaben in Formaten wie:
 - `17.10.2024`
 - `2024-10-17`
 - `17. Oktober 2024`
-- 
----
+
 
 ### src/detectors/regex/finance.py
 Erkennt:
 - IBAN
 - BIC
 
----
 
 ### src/detectors/regex/location.py
 Erkennt:
 - deutsche Postleitzahlen (5-stellig)
 - Ortsnamen im Adresskontext
 
----
 
 ### src/detectors/regex/invoice.py
 Erkennt Rechnungs- und Belegnummern, z. B.:
