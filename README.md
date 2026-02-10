@@ -1,6 +1,7 @@
 # Anonymizer
 
 Prototypische Implementierung zur automatischen Maskierung personenbezogener Daten in Texten.
+- Erkennung durch Kombination von REGEX, NER und CUSTOM_TOKEN
 
 ---
 
@@ -27,7 +28,7 @@ source .venv/Scripts/activate
 pip install -r requirements.txt
 ```
 
-### NER Installieren (aktuell MUSS)
+### NER Installieren (aktuell MUSS Abhängigkeit)
 ```bash
 python -m spacy download de_core_news_sm
 python -m spacy download de_core_news_lg
@@ -101,12 +102,7 @@ Die Maskierung erfolgt in mehreren Schritten:
 Erkennt:
 - E-Mail-Adressen
 - Telefonnummern
-
-Unterstützt:
-- internationale Schreibweisen (+49, 0049, 0…)
-- unterschiedliche Trennzeichen  
-Filtert typische Fehlklassifikationen (z. B. Rechnungsnummern).
-
+- 
 ---
 
 ### src/detectors/regex/date.py
@@ -114,11 +110,7 @@ Erkennt Datumsangaben in Formaten wie:
 - `17.10.2024`
 - `2024-10-17`
 - `17. Oktober 2024`
-
-Unterstützt:
-- deutsche und englische Monatsnamen
-- flexible Regex-Muster für Alltagstexte
-
+- 
 ---
 
 ### src/detectors/regex/finance.py
@@ -126,24 +118,12 @@ Erkennt:
 - IBAN
 - BIC
 
-Prüft:
-- gültige Länderpräfixe (z. B. DE, AT, CH)
-
-Optional:
-- einfache Kontonummern im Kontext finanzieller Angaben
-
 ---
 
 ### src/detectors/regex/location.py
 Erkennt:
 - deutsche Postleitzahlen (5-stellig)
 - Ortsnamen im Adresskontext
-
-Kombiniert:
-- PLZ-Erkennung
-- Schlüsselwörter wie „Adresse“, „Ort“, „Stadt“
-
-Ziel: vollständige Adressbestandteile maskieren.
 
 ---
 
@@ -153,17 +133,8 @@ Erkennt Rechnungs- und Belegnummern, z. B.:
 - `TS-2024-0915`
 - `Rechnungsnr. RG-12345`
 
-Berücksichtigt:
-- unterschiedliche Präfixe (INV, RG, RE, TS, …)
-- verschiedene Schreibweisen
-
-Maskiert ausschließlich tatsächliche Identifikatoren,
-keine allgemeinen Begriffe wie „Verwendungszweck“.
-
 ---
 
 ## HINWEIS ZUM DATENSCHUTZ
-
-Das System zielt auf die Maskierung personenbezogener Daten ab.
 Eine vollständige Anonymisierung gegen kontextuelle Re-Identifikation
 kann nicht garantiert werden und ist nicht Ziel der Implementierung.
