@@ -59,6 +59,11 @@ Hier kann die Antwort der KI eingesetzt werden und wird automatisch (wenn Token 
 <img width="2560" height="735" alt="image" src="https://github.com/user-attachments/assets/88b11b46-d0ab-49aa-b92d-432826d1d378" />
 <img width="2320" height="627" alt="image" src="https://github.com/user-attachments/assets/8ba611da-771b-4925-b2cd-aa1d6d23ce4b" />
 
+### Wörterbuch ###
+Hier kann man Custom Token ergänzen welche bei JEDEM Maskierungsprozess priorisiert erkannt werden & sieht alle erkannten (Key/Token) Paare der aktiven Sessions
+
+<img width="2560" height="1084" alt="image" src="https://github.com/user-attachments/assets/c20f319f-f55f-4712-8509-630549bc77b4" />
+
 
 ### Einstellungen ###
 Hier kann man Einstellen was der Maskierungsprozess erkennt (NER, REGEX) und einige zusätzliche Einstellungen (Sprache, Darkmode, ..)
