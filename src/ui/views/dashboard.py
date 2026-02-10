@@ -1,27 +1,26 @@
 from __future__ import annotations
 
+import re
+
 import flet as ft
-from ui.style.components import pill_button, outlined_pill
+from core import config
 from services.manual_categories import get_all_types as get_custom_types
 from services.manual_tokens import add_manual_token as persist_manual_token
-from core import config
-from ui.style.translations import t
-import re
 from ui.helpers.dashboard_helpers import (
-    type_label,
     synced_textfield_height,
+    type_label,
 )
-
 from ui.helpers.dashboard_ui_helpers import (
     DashboardContext,
-    build_token_rows,
     add_manual_token as ui_add_manual_token,
-    run_masking_internal,
+    build_token_rows,
     clear_both as ui_clear_both,
     handle_input_change,
     refresh_tokens_from_store,
+    run_masking_internal,
 )
-
+from ui.style.components import outlined_pill, pill_button
+from ui.style.translations import t
 
 BASE_TYPES = [
     "E_MAIL",
@@ -72,6 +71,7 @@ def update_add_button_state(ctx: DashboardContext) -> None:
         ctx.add_button.color = None
 
     ctx.page.update()
+
 
 def view(page: ft.Page, theme: dict, store) -> ft.Control:
     lang = getattr(store, "lang", None) or config.get("lang", "de")
@@ -361,7 +361,7 @@ def view(page: ft.Page, theme: dict, store) -> ft.Control:
     manual_add_row = ft.Row(
         [
             manual_token_text,
-        manual_token_type_container,
+            manual_token_type_container,
             add_button,
         ],
         spacing=8,
@@ -408,6 +408,38 @@ def view(page: ft.Page, theme: dict, store) -> ft.Control:
     )
 
     setattr(store, "dashboard_ctx", ctx)
+
+    busy_count = [0]
+
+    progress_ring = ft.ProgressRing(
+        width=14,
+        height=14,
+        stroke_width=2.2,
+        visible=False,
+        color=accent,
+    )
+
+    progress_host = ft.Container(
+        content=progress_ring,
+        width=16,
+        height=16,
+        alignment=ft.alignment.center,
+        margin=ft.margin.only(left=8),
+        visible=False,
+    )
+
+    def _set_busy(is_busy: bool) -> None:
+        if is_busy:
+            busy_count[0] += 1
+        else:
+            busy_count[0] = max(0, busy_count[0] - 1)
+
+        v = busy_count[0] > 0
+        progress_ring.visible = v
+        progress_host.visible = v
+        page.update()
+
+    ctx.on_masking_state = _set_busy
 
     def run_masking(_):
         run_masking_internal(ctx, auto=False)
@@ -483,6 +515,7 @@ def view(page: ft.Page, theme: dict, store) -> ft.Control:
                         theme=theme,
                         scale=1.05,
                     ),
+                    progress_host,
                 ],
                 spacing=12,
                 vertical_alignment=ft.CrossAxisAlignment.CENTER,

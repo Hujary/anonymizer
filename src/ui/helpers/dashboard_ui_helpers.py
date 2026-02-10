@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Callable, Optional
 import threading
 import re
 
@@ -54,6 +54,8 @@ class DashboardContext:
     editing_keys: set[str] = field(default_factory=set)
 
     debounce_timer: threading.Timer | None = None
+
+    on_masking_state: Optional[Callable[[bool], None]] = None
 
 
 def show_snack(ctx: DashboardContext, message: str, kind: str) -> None:
@@ -234,11 +236,7 @@ def build_token_rows(ctx: DashboardContext, mapping: Dict[str, str]) -> None:
                 new_val = tf_ref.current.value or ""
 
                 if not new_val:
-                    msg = (
-                        "Der Wert darf nicht leer sein."
-                        if ctx.lang == "de"
-                        else "Value must not be empty."
-                    )
+                    msg = "Der Wert darf nicht leer sein." if ctx.lang == "de" else "Value must not be empty."
                     show_snack(ctx, msg, "danger")
                     return
 
@@ -302,9 +300,7 @@ def build_token_rows(ctx: DashboardContext, mapping: Dict[str, str]) -> None:
                 original_value = ctx.token_vals.get(key, "")
 
                 if original_value:
-                    ctx.output_field.value = (
-                        ctx.output_field.value or ""
-                    ).replace(key, original_value)
+                    ctx.output_field.value = (ctx.output_field.value or "").replace(key, original_value)
 
                 if key in ctx.token_vals:
                     ctx.token_vals.pop(key)
@@ -339,16 +335,12 @@ def build_token_rows(ctx: DashboardContext, mapping: Dict[str, str]) -> None:
                     ft.Container(expand=True),
                     ft.TextButton(
                         "Löschen" if ctx.lang == "de" else "Delete",
-                        style=ft.ButtonStyle(
-                            color=ctx.theme["danger"]
-                        ),
+                        style=ft.ButtonStyle(color=ctx.theme["danger"]),
                         on_click=delete_token_local,
                     ),
                     ft.TextButton(
                         "Abbrechen" if ctx.lang == "de" else "Cancel",
-                        style=ft.ButtonStyle(
-                            color=ctx.theme["text_secondary"]
-                        ),
+                        style=ft.ButtonStyle(color=ctx.theme["text_secondary"]),
                         on_click=cancel_edit,
                     ),
                     ft.FilledButton(
@@ -627,18 +619,14 @@ def apply_current_edits(ctx: DashboardContext) -> None:
     src = ctx.input_field.value or ""
     if not src:
         ctx.output_field.value = ""
-        ctx.store.set_dash(
-            output_text="", status_text=ctx.results_text.value or ""
-        )
+        ctx.store.set_dash(output_text="", status_text=ctx.results_text.value or "")
         ctx.sync_equal_height()
         ctx.page.update()
         return
 
     if not ctx.token_vals:
         ctx.output_field.value = src
-        ctx.store.set_dash(
-            output_text=src, status_text=ctx.results_text.value or ""
-        )
+        ctx.store.set_dash(output_text=src, status_text=ctx.results_text.value or "")
         ctx.sync_equal_height()
         ctx.page.update()
         return
@@ -670,69 +658,80 @@ def apply_current_edits(ctx: DashboardContext) -> None:
 
 
 def run_masking_internal(ctx: DashboardContext, auto: bool = False) -> None:
-    from services.anonymizer import anonymize
-
-    text = ctx.input_field.value or ""
-    if not text.strip():
-        if auto:
-            ctx.output_field.value = ""
-            ctx.store.set_mapping({}, [], "", "")
-            ctx.store.set_dash(output_text="", status_text=ctx.results_text.value or "")
-            ctx.sync_equal_height()
-            ctx.page.update()
-            return
-        msg = t(ctx.lang, "status.no_input")
-        show_snack(ctx, msg, "warning")
-        return
+    if ctx.on_masking_state is not None:
+        try:
+            ctx.on_masking_state(True)
+        except Exception:
+            pass
 
     try:
-        _, base_mapping, hits = anonymize(
-            text, reversible=getattr(ctx.store, "reversible", True)
-        )
-    except Exception as e:
-        show_snack(ctx, f"Masking failed: {e}", "danger")
-        return
+        from services.anonymizer import anonymize
 
-    merged_mapping: Dict[str, str] = dict(base_mapping or {})
+        text = ctx.input_field.value or ""
+        if not text.strip():
+            if auto:
+                ctx.output_field.value = ""
+                ctx.store.set_mapping({}, [], "", "")
+                ctx.store.set_dash(output_text="", status_text=ctx.results_text.value or "")
+                ctx.sync_equal_height()
+                ctx.page.update()
+                return
+            msg = t(ctx.lang, "status.no_input")
+            show_snack(ctx, msg, "warning")
+            return
 
-    session_mapping: Dict[str, str] = {}
-    mgr = getattr(ctx.store, "session_mgr", None)
-    if mgr is not None and getattr(ctx.store, "reversible", True):
         try:
-            session_mapping = mgr.get_active_mapping()
-        except Exception:
-            session_mapping = {}
+            _, base_mapping, hits = anonymize(text, reversible=getattr(ctx.store, "reversible", True))
+        except Exception as e:
+            show_snack(ctx, f"Masking failed: {e}", "danger")
+            return
 
-    if session_mapping:
-        for token, value in session_mapping.items():
-            if not value:
-                continue
-            if not _find_occurrences(text, value):
-                continue
-            if token in merged_mapping and merged_mapping[token] == value:
-                continue
-            merged_mapping[token] = value
+        merged_mapping: Dict[str, str] = dict(base_mapping or {})
 
-    masked_text, used_mapping = _mask_with_mapping(text, merged_mapping)
+        session_mapping: Dict[str, str] = {}
+        mgr = getattr(ctx.store, "session_mgr", None)
+        if mgr is not None and getattr(ctx.store, "reversible", True):
+            try:
+                session_mapping = mgr.get_active_mapping()
+            except Exception:
+                session_mapping = {}
 
-    ctx.output_field.value = masked_text
-    ctx.sync_equal_height()
-    ctx.store.set_mapping(used_mapping, hits, text, masked_text)
+        if session_mapping:
+            for token, value in session_mapping.items():
+                if not value:
+                    continue
+                if not _find_occurrences(text, value):
+                    continue
+                if token in merged_mapping and merged_mapping[token] == value:
+                    continue
+                merged_mapping[token] = value
 
-    if getattr(ctx.store, "reversible", True) and used_mapping:
-        if hasattr(ctx.store, "add_session_mapping"):
-            ctx.store.add_session_mapping(used_mapping)
+        masked_text, used_mapping = _mask_with_mapping(text, merged_mapping)
 
-    ctx.tokens_section.visible = True
-    ctx.editing_keys.clear()
-    if used_mapping:
-        build_token_rows(ctx, used_mapping)
-    else:
-        ctx.token_groups_col.controls.clear()
-        ctx.tokens_host.visible = False
+        ctx.output_field.value = masked_text
+        ctx.sync_equal_height()
+        ctx.store.set_mapping(used_mapping, hits, text, masked_text)
 
-    update_banner(ctx, used_mapping)
-    ctx.page.update()
+        if getattr(ctx.store, "reversible", True) and used_mapping:
+            if hasattr(ctx.store, "add_session_mapping"):
+                ctx.store.add_session_mapping(used_mapping)
+
+        ctx.tokens_section.visible = True
+        ctx.editing_keys.clear()
+        if used_mapping:
+            build_token_rows(ctx, used_mapping)
+        else:
+            ctx.token_groups_col.controls.clear()
+            ctx.tokens_host.visible = False
+
+        update_banner(ctx, used_mapping)
+        ctx.page.update()
+    finally:
+        if ctx.on_masking_state is not None:
+            try:
+                ctx.on_masking_state(False)
+            except Exception:
+                pass
 
 
 def _cancel_debounce(ctx: DashboardContext) -> None:
@@ -757,11 +756,7 @@ def clear_both(ctx: DashboardContext) -> None:
     ctx.editing_keys.clear()
     ctx.search_box.value = ""
     ctx.manual_token_text.value = ""
-    ctx.manual_token_type_value[0] = (
-        "MISC"
-        if "MISC" in ctx.manual_token_type_values
-        else ctx.manual_token_type_values[0]
-    )
+    ctx.manual_token_type_value[0] = "MISC" if "MISC" in ctx.manual_token_type_values else ctx.manual_token_type_values[0]
     ctx.manual_token_type.value = ctx.manual_token_type_value[0]
     ctx.tokens_section.visible = False
     ctx.tokens_host.visible = False
