@@ -1,7 +1,6 @@
 # Anonymizer
 
-Werkzeug zur automatischen Maskierung personenbezogener Daten in Texten
-zur datenschutzkonformen Nutzung externer KI-Systeme.
+Prototypische Implementierung zur automatischen Maskierung personenbezogener Daten in Texten.
 
 ---
 
@@ -13,8 +12,14 @@ python3 -m venv .venv
 ```
 
 ### Virtuelle Umgebung aktivieren
+**macOS / Linux (bash/zsh)**
 ```bash
 source .venv/bin/activate
+```
+
+**Windows**
+```bash
+source .venv/Scripts/activate
 ```
 
 ### Abhängigkeiten installieren
