@@ -22,6 +22,12 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+### NER Manuell Installieren
+```bash
+python -m spacy download de_core_news_sm
+python -m spacy download de_core_news_lg
+```
+
 ### UI starten
 ```bash
 python src/ui_app.py
