@@ -47,18 +47,22 @@ flet pack src/ui_app.py --name anonymizer --icon src/assets/logo.icns
 
 ## SCREENSHOTS - ANLEITUNG
 
-### Hauptmaskierung: Dashboard ###
-
+### Dashboard - Maskierung ###
 Hier wird der Text eingefügt und automatisch (oder manuell) Maskiert, dieser wird dann rechts visuell dargestellt und kann kopiert werden an KI Systeme, etc.
+
 <img width="2541" height="791" alt="image" src="https://github.com/user-attachments/assets/4f2e5a8c-592b-453d-9b95-f44d2dffc875" />
 <img width="2312" height="869" alt="image" src="https://github.com/user-attachments/assets/f54e15a3-021f-4df7-a250-96a288a14ca3" />
 
 ### Demaskierung ###
+Hier kann die Antwort der KI eingesetzt werden und wird automatisch (wenn Token nicht abgelaufen) demaskiert.
+
 <img width="2560" height="735" alt="image" src="https://github.com/user-attachments/assets/88b11b46-d0ab-49aa-b92d-432826d1d378" />
 <img width="2320" height="627" alt="image" src="https://github.com/user-attachments/assets/8ba611da-771b-4925-b2cd-aa1d6d23ce4b" />
 
 
-Einstellungen
+### Einstellungen ###
+Hier kann man Einstellen was der Maskierungsprozess erkennt (NER, REGEX) und einige zusätzliche Einstellungen (Sprache, Darkmode, ..)
+
 <img width="1898" height="904" alt="image" src="https://github.com/user-attachments/assets/2d1eb2e6-a854-4267-a0c3-62f6ebc2ce1e" />
 
 ---
