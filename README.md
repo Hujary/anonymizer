@@ -1,7 +1,7 @@
 # Anonymizer
 
-Werkzeug zur automatischen Maskierung personenbezogener Daten in Texten
-zur datenschutzkonformen Nutzung externer KI-Systeme.
+Prototypische Implementierung zur automatischen Maskierung personenbezogener Daten in Texten.
+- Erkennung durch Kombination von REGEX, NER und CUSTOM_TOKEN
 
 ---
 
@@ -13,8 +13,14 @@ python3 -m venv .venv
 ```
 
 ### Virtuelle Umgebung aktivieren
+**macOS / Linux (bash/zsh)**
 ```bash
 source .venv/bin/activate
+```
+
+**Windows**
+```bash
+source .venv/Scripts/activate
 ```
 
 ### Abhängigkeiten installieren
@@ -22,7 +28,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### NER Manuell Installieren
+### NER Installieren (aktuell MUSS Abhängigkeit)
 ```bash
 python -m spacy download de_core_news_sm
 python -m spacy download de_core_news_lg
@@ -40,22 +46,30 @@ flet pack src/ui_app.py --name anonymizer --icon src/assets/logo.icns
 
 ---
 
-## BEISPIELE
+## SCREENSHOTS - ANLEITUNG
 
-### Text manuell maskieren (CLI)
-```bash
-python -m cli mask
-```
+### Dashboard - Maskierung ###
+Hier wird der Text eingefügt und automatisch (oder manuell) Maskiert, dieser wird dann rechts visuell dargestellt und kann kopiert werden an KI Systeme, etc.
 
-Beispielausgabe:
-```
-maskiert → output/masked.txt (7 Treffer)
-```
+<img width="2541" height="791" alt="image" src="https://github.com/user-attachments/assets/4f2e5a8c-592b-453d-9b95-f44d2dffc875" />
+<img width="2312" height="869" alt="image" src="https://github.com/user-attachments/assets/f54e15a3-021f-4df7-a250-96a288a14ca3" />
 
-### UI starten
-```bash
-python src/ui_app.py
-```
+### Demaskierung ###
+Hier kann die Antwort der KI eingesetzt werden und wird automatisch (wenn Token nicht abgelaufen) demaskiert.
+
+<img width="2560" height="735" alt="image" src="https://github.com/user-attachments/assets/88b11b46-d0ab-49aa-b92d-432826d1d378" />
+<img width="2320" height="627" alt="image" src="https://github.com/user-attachments/assets/8ba611da-771b-4925-b2cd-aa1d6d23ce4b" />
+
+### Wörterbuch ###
+Hier kann man Custom Token ergänzen welche bei JEDEM Maskierungsprozess priorisiert erkannt werden & sieht alle erkannten (Key/Token) Paare der aktiven Sessions
+
+<img width="2560" height="1084" alt="image" src="https://github.com/user-attachments/assets/c20f319f-f55f-4712-8509-630549bc77b4" />
+
+
+### Einstellungen ###
+Hier kann man Einstellen was der Maskierungsprozess erkennt (NER, REGEX) und einige zusätzliche Einstellungen (Sprache, Darkmode, ..)
+
+<img width="1898" height="904" alt="image" src="https://github.com/user-attachments/assets/2d1eb2e6-a854-4267-a0c3-62f6ebc2ce1e" />
 
 ---
 
@@ -82,75 +96,6 @@ Die Maskierung erfolgt in mehreren Schritten:
 
 ---
 
-## ERKENNUNG PERSONENBEZOGENER DATEN (REGEX)
-
-### src/detectors/regex/contact.py
-Erkennt:
-- E-Mail-Adressen
-- Telefonnummern
-
-Unterstützt:
-- internationale Schreibweisen (+49, 0049, 0…)
-- unterschiedliche Trennzeichen  
-Filtert typische Fehlklassifikationen (z. B. Rechnungsnummern).
-
----
-
-### src/detectors/regex/date.py
-Erkennt Datumsangaben in Formaten wie:
-- `17.10.2024`
-- `2024-10-17`
-- `17. Oktober 2024`
-
-Unterstützt:
-- deutsche und englische Monatsnamen
-- flexible Regex-Muster für Alltagstexte
-
----
-
-### src/detectors/regex/finance.py
-Erkennt:
-- IBAN
-- BIC
-
-Prüft:
-- gültige Länderpräfixe (z. B. DE, AT, CH)
-
-Optional:
-- einfache Kontonummern im Kontext finanzieller Angaben
-
----
-
-### src/detectors/regex/location.py
-Erkennt:
-- deutsche Postleitzahlen (5-stellig)
-- Ortsnamen im Adresskontext
-
-Kombiniert:
-- PLZ-Erkennung
-- Schlüsselwörter wie „Adresse“, „Ort“, „Stadt“
-
-Ziel: vollständige Adressbestandteile maskieren.
-
----
-
-### src/detectors/regex/invoice.py
-Erkennt Rechnungs- und Belegnummern, z. B.:
-- `INV-2024-0012`
-- `TS-2024-0915`
-- `Rechnungsnr. RG-12345`
-
-Berücksichtigt:
-- unterschiedliche Präfixe (INV, RG, RE, TS, …)
-- verschiedene Schreibweisen
-
-Maskiert ausschließlich tatsächliche Identifikatoren,
-keine allgemeinen Begriffe wie „Verwendungszweck“.
-
----
-
 ## HINWEIS ZUM DATENSCHUTZ
-
-Das System zielt auf die Maskierung personenbezogener Daten ab.
 Eine vollständige Anonymisierung gegen kontextuelle Re-Identifikation
 kann nicht garantiert werden und ist nicht Ziel der Implementierung.
