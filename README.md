@@ -47,7 +47,8 @@ flet pack src/ui_app.py --name anonymizer --icon src/assets/logo.icns
 
 ## SCREENSHOTS - ANLEITUNG
 
-##Hauptmaskierung: Dashboard##
+### Hauptmaskierung: Dashboard ###
+
 Hier wird der Text eingefügt und automatisch (oder manuell) Maskiert, dieser wird dann rechts visuell dargestellt und kann kopiert werden an KI Systeme, etc.
 <img width="2541" height="791" alt="image" src="https://github.com/user-attachments/assets/4f2e5a8c-592b-453d-9b95-f44d2dffc875" />
 <img width="2312" height="869" alt="image" src="https://github.com/user-attachments/assets/f54e15a3-021f-4df7-a250-96a288a14ca3" />
