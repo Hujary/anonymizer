@@ -27,7 +27,7 @@ source .venv/Scripts/activate
 pip install -r requirements.txt
 ```
 
-### NER Manuell Installieren
+### NER Installieren (aktuell MUSS)
 ```bash
 python -m spacy download de_core_news_sm
 python -m spacy download de_core_news_lg
