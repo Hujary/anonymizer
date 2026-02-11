@@ -169,13 +169,15 @@ repo-root/
 │  │        ├─ __init__.py
 │  │        └─ view.py
 │
-├─ .gitignore
-├─ config.json                          # Zentrale Policy- und Feature-Konfiguration
-├─ manual_tokens.json                   # Persistente manuelle Tokens
-├─ manual_types.json                    # Persistente Custom-Kategorien
-├─ pyproject.toml 
-├─ requirements.txt
-└─ README.md
+├─ Data/
+│  ├─ manual_tokens.json                # Persistente manuelle Tokens.
+│  ├─ manual_types.json                 # Persistente Custom-Kategorien.
+│
+├─ .gitignore                           # Datein die Git nicht berücksichtigt.
+├─ config.json                          # Zentrale Policy- und Feature-Konfiguration.
+├─ pyproject.toml                       # 
+├─ requirements.txt                     # Abhängigkeiten.
+└─ README.md                            # Anleitung & Doku
 ```
 
 ---

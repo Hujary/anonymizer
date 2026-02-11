@@ -97,6 +97,11 @@ STRINGS = {
         ),
         "help.close": "Close",
 
+        "help.dashboard.bullet": "Dashboard",
+        "help.vault.bullet": "Unmask",
+        "help.dictionary.bullet": "Dictionary",
+        "help.settings.bullet": "Settings",
+
         # token source labels
         "token.src.ner": "NER",
         "token.src.regex": "Regex",
@@ -198,6 +203,11 @@ STRINGS = {
             "und mehr."
         ),
         "help.close": "Schließen",
+
+        "help.dashboard.bullet": "Dashboard",
+        "help.vault.bullet": "Demaskieren",
+        "help.dictionary.bullet": "Wörterbuch",
+        "help.settings.bullet": "Einstellungen",
 
         # Token-Quellen
         "token.src.ner": "NER",
