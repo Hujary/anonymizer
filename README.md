@@ -175,7 +175,6 @@ repo-root/
 │
 ├─ .gitignore                           # Datein die Git nicht berücksichtigt.
 ├─ config.json                          # Zentrale Policy- und Feature-Konfiguration.
-├─ pyproject.toml                       # 
 ├─ requirements.txt                     # Abhängigkeiten.
 └─ README.md                            # Anleitung & Doku
 ```
