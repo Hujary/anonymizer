@@ -20,7 +20,7 @@ source .venv/bin/activate
 
 **Windows**
 ```bash
-source .venv/Scripts/activate
+.\.venv\Scripts\Activate.ps1
 ```
 
 ### Abhängigkeiten installieren
