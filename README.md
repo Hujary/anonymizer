@@ -75,6 +75,94 @@ Hier kann man Einstellen was der Maskierungsprozess erkennt (NER, REGEX) und ein
 
 ## ARCHITEKTUR
 
+### Projektstruktur
+```text
+repo-root/
+├─ src/
+│  ├─ ui_app.py
+│  ├─ cli.py
+│  ├─ app_store.py
+│  │
+│  ├─ core/
+│  │  ├─ __init__.py
+│  │  ├─ config.py
+│  │  ├─ io.py
+│  │  ├─ types.py
+│  │  └─ warnpolicy.py
+│  │
+│  ├─ services/
+│  │  ├─ __init__.py
+│  │  ├─ anonymizer.py
+│  │  ├─ session_manager.py
+│  │  ├─ manual_tokens.py
+│  │  └─ manual_categories.py
+│  │
+│  ├─ detectors/
+│  │  ├─ __init__.py
+│  │  ├─ ner/
+│  │  │  ├─ __init__.py
+│  │  │  ├─ ner_core.py
+│  │  │  └─ filters.py
+│  │  ├─ regex/
+│  │  │  ├─ __init__.py
+│  │  │  ├─ contact.py
+│  │  │  ├─ date.py
+│  │  │  ├─ finance.py
+│  │  │  ├─ invoice.py
+│  │  │  ├─ location.py
+│  │  │  └─ url.py
+│  │  └─ custom/
+│  │     ├─ __init__.py
+│  │     └─ manual_dict.py
+│  │
+│  ├─ pipeline/
+│  │  ├─ __init__.py
+│  │  ├─ detect.py
+│  │  ├─ mask.py
+│  │  └─ demask.py
+│  │
+│  ├─ ui/
+│  │  ├─ __init__.py
+│  │  ├─ style/
+│  │  │  ├─ __init__.py
+│  │  │  ├─ theme.py
+│  │  │  ├─ translations.py
+│  │  │  └─ components.py
+│  │  ├─ routing/
+│  │  │  ├─ __init__.py
+│  │  │  └─ router.py
+│  │  ├─ shared/
+│  │  │  ├─ __init__.py
+│  │  │  ├─ flet_helpers.py
+│  │  │  └─ validation.py
+│  │  └─ features/
+│  │     ├─ __init__.py
+│  │     ├─ dashboard/
+│  │     │  ├─ __init__.py
+│  │     │  ├─ view.py
+│  │     │  ├─ state.py
+│  │     │  ├─ actions.py
+│  │     │  ├─ token_renderer.py
+│  │     │  ├─ masking_engine.py
+│  │     │  └─ helpers.py
+│  │     ├─ dictionary/
+│  │     │  ├─ __init__.py
+│  │     │  └─ view.py
+│  │     ├─ demask/
+│  │     │  ├─ __init__.py
+│  │     │  └─ view.py
+│  │     └─ settings/
+│  │        ├─ __init__.py
+│  │        └─ view.py
+│  │
+├─ assets/
+├─ config.json
+└─ README.md
+```
+
+---
+
+
 ### UI
 **src/ui_app.py**  
 Grafische Benutzeroberfläche zur interaktiven Maskierung von Texten.
