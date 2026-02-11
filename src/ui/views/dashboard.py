@@ -10,14 +10,14 @@ from ui.helpers.dashboard_helpers import (
     synced_textfield_height,
     type_label,
 )
-from ui.helpers.dashboard_ui_helpers import (
-    DashboardContext,
+from ui.helpers.dashboard_context import DashboardContext
+from ui.helpers.dashboard_actions import (
     add_manual_token as ui_add_manual_token,
-    build_token_rows,
     clear_both as ui_clear_both,
     handle_input_change,
     refresh_tokens_from_store,
     run_masking_internal,
+    update_add_button_state,
 )
 from ui.style.components import outlined_pill, pill_button
 from ui.style.translations import t
@@ -46,31 +46,6 @@ def _all_types() -> list[str]:
         if c not in all_types:
             all_types.append(c)
     return all_types
-
-
-def update_add_button_state(ctx: DashboardContext) -> None:
-    src = (ctx.input_field.value or "").strip()
-    val = (ctx.manual_token_text.value or "").strip()
-
-    enabled = False
-
-    if src and val:
-        if re.fullmatch(r"\w+", val):
-            pattern = r"\b" + re.escape(val) + r"\b"
-            enabled = bool(re.search(pattern, src))
-        else:
-            enabled = val in src
-
-    ctx.add_button.disabled = not enabled
-
-    if enabled:
-        ctx.add_button.bgcolor = ctx.accent
-        ctx.add_button.color = ft.Colors.WHITE
-    else:
-        ctx.add_button.bgcolor = None
-        ctx.add_button.color = None
-
-    ctx.page.update()
 
 
 def view(page: ft.Page, theme: dict, store) -> ft.Control:
@@ -146,16 +121,16 @@ def view(page: ft.Page, theme: dict, store) -> ft.Control:
         visible=bool((getattr(store, "dash_input_text", "") or "").strip()),
     )
 
-    def update_clear_icon():
+    def update_clear_icon() -> None:
         clear_button.visible = bool((input_field.value or "").strip())
 
-    def update_placeholder():
+    def update_placeholder() -> None:
         if placeholder_ref.current:
             is_empty = not (input_field.value or "").strip()
             placeholder_ref.current.visible = is_empty
         update_clear_icon()
 
-    def focus_input(_):
+    def focus_input(_: ft.ControlEvent) -> None:
         if input_ref.current:
             input_ref.current.focus()
         if placeholder_ref.current:
@@ -238,7 +213,7 @@ def view(page: ft.Page, theme: dict, store) -> ft.Control:
         ),
     )
 
-    def sync_equal_height():
+    def sync_equal_height() -> None:
         left_preview = (input_field.value or "").strip()
         if not left_preview:
             left_preview = f"{input_title}\n{input_sub}"
@@ -441,26 +416,26 @@ def view(page: ft.Page, theme: dict, store) -> ft.Control:
 
     ctx.on_masking_state = _set_busy
 
-    def run_masking(_):
+    def run_masking(_: ft.ControlEvent) -> None:
         run_masking_internal(ctx, auto=False)
         update_clear_icon()
         page.update()
 
-    def clear_both(_):
+    def clear_both(_: ft.ControlEvent) -> None:
         ui_clear_both(ctx)
         update_clear_icon()
         page.update()
 
     clear_button.on_click = clear_both
 
-    def on_input_change(_):
+    def on_input_change(_: ft.ControlEvent) -> None:
         handle_input_change(ctx)
         update_clear_icon()
 
-    def on_manual_text_change(_):
+    def on_manual_text_change(_: ft.ControlEvent) -> None:
         update_add_button_state(ctx)
 
-    def on_manual_type_change(e: ft.ControlEvent):
+    def on_manual_type_change(e: ft.ControlEvent) -> None:
         manual_token_type_value[0] = e.control.value or manual_token_type_value[0]
         update_add_button_state(ctx)
 
@@ -468,7 +443,7 @@ def view(page: ft.Page, theme: dict, store) -> ft.Control:
     manual_token_type.on_change = on_manual_type_change
     input_field.on_change = on_input_change
 
-    def on_add_manual_token(_):
+    def on_add_manual_token(_: ft.ControlEvent) -> None:
         text = (manual_token_text.value or "").strip()
         if not text:
             return
@@ -495,7 +470,10 @@ def view(page: ft.Page, theme: dict, store) -> ft.Control:
 
     page.on_resize = lambda _: (sync_equal_height(), page.update())
 
-    search_box.on_change = lambda _: build_token_rows(ctx, getattr(store, "last_mapping", None) or {})
+    def on_search_change(_: ft.ControlEvent) -> None:
+        refresh_tokens_from_store(ctx)
+
+    search_box.on_change = on_search_change
 
     actions = ft.Row(
         [
@@ -540,6 +518,7 @@ def view(page: ft.Page, theme: dict, store) -> ft.Control:
     sync_equal_height()
     refresh_tokens_from_store(ctx)
     update_clear_icon()
+    update_add_button_state(ctx)
 
     base_margin = ft.margin.only(left=4, right=4)
 
