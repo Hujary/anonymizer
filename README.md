@@ -81,10 +81,13 @@ repo-root/
 ├─ src/
 │  ├─ ui_app.py                         # Flet Entry-Point (initialisiert AppStore + Router)
 │  ├─ cli.py                            # CLI Entry-Point
+│  ├─ config.json                       # Config für runtime Flags
 │  │
-│  ├─ state/
-│  │  ├─ __init__.py
-│  │  └─ store.py                       # AppStore (zentraler In-Memory-Zustand)
+│  ├─ assets/
+│  │  ├─ logo_white.png                 # Weißes Logo (für dunkle Hintergründe / Dark Mode)
+│  │  ├─ logo.icns                      # macOS Icon-Datei (App-Bundle Format)
+│  │  ├─ logo.ico                       # Windows Icon-Datei (Executable / Installer)
+│  │  └─ logo.png                       # Standard-Logo (Allgemeine UI-Verwendung)
 │  │
 │  ├─ core/
 │  │  ├─ __init__.py
@@ -93,33 +96,27 @@ repo-root/
 │  │  ├─ types.py                       # gemeinsame Datentypen/Strukturen
 │  │  └─ warnpolicy.py                  # Warn-Handling / Suppression
 │  │
-│  ├─ services/
-│  │  ├─ __init__.py
-│  │  ├─ anonymizer.py                  # Orchestriert Detect + Mask Pipeline
-│  │  ├─ session_manager.py             # Reversible Masking + TTL
-│  │  ├─ manual_tokens.py               # Persistente manuelle Tokens
-│  │  └─ manual_categories.py           # Persistente Custom-Kategorien
-│  │
 │  ├─ detectors/
 │  │  ├─ __init__.py
-│  │  │
 │  │  ├─ ner/
 │  │  │  ├─ __init__.py
 │  │  │  ├─ ner_core.py                 # spaCy NER Integration
 │  │  │  └─ filters.py                  # Label-Filter / Postprocessing
-│  │  │
 │  │  ├─ regex/
 │  │  │  ├─ __init__.py
 │  │  │  ├─ contact.py                  # E-Mail, Telefon etc.
-│  │  │  ├─ date.py
-│  │  │  ├─ finance.py
-│  │  │  ├─ invoice.py
-│  │  │  ├─ location.py
-│  │  │  └─ url.py
-│  │  │
+│  │  │  ├─ date.py                     # Datum
+│  │  │  ├─ finance.py                  # Geldbeträge
+│  │  │  ├─ invoice.py                  # Rechnungsnummern
+│  │  │  ├─ location.py                 # Adressen, Postleitzahlen
+│  │  │  └─ url.py                      # Links
 │  │  └─ custom/
 │  │     ├─ __init__.py
 │  │     └─ manual_dict.py              # Manuelle Wörterbuch-Detektion
+│  │
+│  ├─ examples/
+│  │  ├─ beispiel_krankschreibung.txt   # Beispieltext - 1
+│  │  └─ beispiel_rechnung.txt          # Beispieltext - 2
 │  │
 │  ├─ pipeline/
 │  │  ├─ __init__.py
@@ -127,56 +124,54 @@ repo-root/
 │  │  ├─ mask.py                        # Masking-Engine (Spans + Overlap-Resolution)
 │  │  └─ demask.py                      # Demask-Logik (Session-Auflösung)
 │  │
-│  ├─ ui/
+│  ├─ services/
 │  │  ├─ __init__.py
+│  │  ├─ anonymizer.py                  # Orchestriert Detect + Mask Pipeline
+│  │  ├─ session_manager.py             # Reversible Masking + TTL
+│  │  ├─ manual_tokens.py               # Persistente manuelle Tokens
+│  │  └─ manual_categories.py           # Persistente Custom-Kategorien
 │  │
-│  │  ├─ style/
-│  │  │  ├─ __init__.py
-│  │  │  ├─ theme.py                    # Farbdefinitionen
-│  │  │  ├─ translations.py             # i18n
-│  │  │  └─ components.py               # UI-Komponenten (NavItem, Pills etc.)
-│  │  │
-│  │  ├─ routing/
-│  │  │  ├─ __init__.py
-│  │  │  └─ router.py                   # Navigation + Layout (Header, Sidebar)
-│  │  │
-│  │  ├─ shared/
-│  │  │  ├─ __init__.py
-│  │  │  ├─ flet_helpers.py             # UI-Hilfen (Snackbars, Spacing etc.)
-│  │  │  └─ validation.py               # UI-nahe Validierung
-│  │  │
-│  │  └─ features/
-│  │     ├─ __init__.py
-│  │     │
-│  │     ├─ dashboard/
-│  │     │  ├─ __init__.py
-│  │     │  ├─ view.py                  # Layout-Komposition
-│  │     │  ├─ state.py                 # DashboardContext
-│  │     │  ├─ actions.py               # Event-Handler + Mutationen
-│  │     │  ├─ token_renderer.py        # Token-UI Rendering
-│  │     │  ├─ masking_engine.py        # UI-nahe Masking-Integration
-│  │     │  └─ helpers.py               # Fachliche Dashboard-Helfer
-│  │     │
-│  │     ├─ dictionary/
-│  │     │  ├─ __init__.py
-│  │     │  └─ view.py
-│  │     │
-│  │     ├─ demask/
-│  │     │  ├─ __init__.py
-│  │     │  └─ view.py
-│  │     │
-│  │     └─ settings/
-│  │        ├─ __init__.py
-│  │        └─ view.py
+│  ├─ state/
+│  │  ├─ __init__.py
+│  │  └─ store.py                       # AppStore (zentraler In-Memory-Zustand)
+│  │
+│  └─ ui/
+│     ├─ __init__.py
+│     ├─ style/
+│     │  ├─ __init__.py
+│     │  ├─ theme.py                    # Farbdefinitionen
+│     │  ├─ translations.py             # Übersetzungsdatei aller Strings
+│     │  └─ components.py               # UI-Komponenten (NavItem, Pills etc.)
+│     ├─ routing/
+│     │  ├─ __init__.py
+│     │  └─ router.py                   # Navigation + Layout (Header, Sidebar)
+│     ├─ shared/
+│     │  ├─ __init__.py
+│     │  ├─ flet_helpers.py             # UI-Hilfen (Snackbars, Spacing etc.)
+│     │  └─ validation.py               # UI-nahe Validierung
+│     └─ features/
+│        ├─ __init__.py
+│        ├─ dashboard/
+│        │  ├─ __init__.py
+│        │  └─ view.py                  # Maskierung (View, Entry Point)
+│        ├─ dictionary/
+│        │  ├─ __init__.py
+│        │  └─ view.py                  # Sessionverwaltung (View)
+│        ├─ demask/
+│        │  ├─ __init__.py
+│        │  └─ view.py                  # Demaskierung (View)
+│        └─ settings/
+│           ├─ __init__.py
+│           └─ view.py                  # Einstellungen (View)
 │
 ├─ Data/
-│  ├─ manual_tokens.json                # Persistente manuelle Tokens.
-│  ├─ manual_types.json                 # Persistente Custom-Kategorien.
+│  ├─ manual_tokens.json                # Persistente manuelle Tokens
+│  └─ manual_types.json                 # Persistente Custom-Kategorien
 │
-├─ .gitignore                           # Datein die Git nicht berücksichtigt.
-├─ config.json                          # Zentrale Policy- und Feature-Konfiguration.
-├─ requirements.txt                     # Abhängigkeiten.
-└─ README.md                            # Anleitung & Doku
+├─ .gitignore                           # Dateien, die Git nicht berücksichtigt
+├─ config.json                          # Zentrale Policy- und Feature-Konfiguration
+├─ requirements.txt                     # Abhängigkeiten
+└─ README.md                            # Anleitung & Dokumentation
 ```
 
 ---
