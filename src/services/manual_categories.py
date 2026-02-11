@@ -2,64 +2,67 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import List
 
-from core import config
-
-
-def _storage_path() -> Path:
-    path_str = config.get("manual_types_file", "")
-    if path_str:
-        return Path(path_str)
-    base_dir = Path(config.get("data_dir", "."))
-    return base_dir / "manual_types.json"
+from core.paths import manual_types_path, repo_root
 
 
-def _load_raw() -> List[str]:
-    path = _storage_path()
+def _read_list(path: Path) -> list[str]:
     if not path.exists():
         return []
-    try:
-        with path.open("r", encoding="utf-8") as f:
-            data = json.load(f)
-    except Exception:
+    raw = path.read_text(encoding="utf-8").strip()
+    if not raw:
         return []
+    data = json.loads(raw)
     if not isinstance(data, list):
         return []
-    types: List[str] = []
-    for item in data:
-        s = str(item or "").strip()
-        if not s:
-            continue
-        types.append(s.upper())
-    # unique, sort
-    return sorted(set(types))
+    out: list[str] = []
+    for x in data:
+        s = str(x).strip().upper()
+        if s:
+            out.append(s)
+    return out
 
 
-def _save_raw(types: List[str]) -> None:
-    path = _storage_path()
+def _write_list(path: Path, items: list[str]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as f:
-        json.dump(sorted(set(types)), f, ensure_ascii=False, indent=2)
+    path.write_text(json.dumps(items, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def get_all_types() -> List[str]:
-    return _load_raw()
+def _migrate_from_repo_root_if_needed() -> None:
+    new_path = manual_types_path()
+    if new_path.exists():
+        return
+    old_path = repo_root() / "manual_types.json"
+    if not old_path.exists():
+        return
+    new_path.parent.mkdir(parents=True, exist_ok=True)
+    new_path.write_text(old_path.read_text(encoding="utf-8"), encoding="utf-8")
 
 
-def add_type(typ: str) -> str:
-    norm = (typ or "").strip().upper()
-    if not norm:
-        raise ValueError("type must not be empty")
-    types = _load_raw()
-    if norm not in types:
-        types.append(norm)
-        _save_raw(types)
-    return norm
+def get_all_types() -> list[str]:
+    _migrate_from_repo_root_if_needed()
+    return _read_list(manual_types_path())
 
 
-def remove_type(typ: str) -> None:
-    norm = (typ or "").strip().upper()
-    types = _load_raw()
-    filtered = [t for t in types if t != norm]
-    _save_raw(filtered)
+def add_type(name: str) -> str:
+    _migrate_from_repo_root_if_needed()
+    typ = (name or "").strip().upper()
+    if not typ:
+        raise ValueError("Kategorie darf nicht leer sein.")
+
+    path = manual_types_path()
+    items = _read_list(path)
+    if typ not in items:
+        items.append(typ)
+        items = sorted(set(items), key=str.upper)
+        _write_list(path, items)
+    return typ
+
+
+def remove_type(name: str) -> None:
+    _migrate_from_repo_root_if_needed()
+    typ = (name or "").strip().upper()
+    path = manual_types_path()
+    items = _read_list(path)
+    items = [x for x in items if x != typ]
+    _write_list(path, items)

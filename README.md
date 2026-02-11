@@ -79,84 +79,102 @@ Hier kann man Einstellen was der Maskierungsprozess erkennt (NER, REGEX) und ein
 ```text
 repo-root/
 ├─ src/
-│  ├─ ui_app.py
-│  ├─ cli.py
-│  ├─ app_store.py
+│  ├─ ui_app.py                         # Flet Entry-Point (initialisiert AppStore + Router)
+│  ├─ cli.py                            # CLI Entry-Point
+│  │
+│  ├─ state/
+│  │  ├─ __init__.py
+│  │  └─ store.py                       # AppStore (zentraler In-Memory-Zustand)
 │  │
 │  ├─ core/
 │  │  ├─ __init__.py
-│  │  ├─ config.py
-│  │  ├─ io.py
-│  │  ├─ types.py
-│  │  └─ warnpolicy.py
+│  │  ├─ config.py                      # Zugriff auf config.json
+│  │  ├─ io.py                          # Datei-IO
+│  │  ├─ types.py                       # gemeinsame Datentypen/Strukturen
+│  │  └─ warnpolicy.py                  # Warn-Handling / Suppression
 │  │
 │  ├─ services/
 │  │  ├─ __init__.py
-│  │  ├─ anonymizer.py
-│  │  ├─ session_manager.py
-│  │  ├─ manual_tokens.py
-│  │  └─ manual_categories.py
+│  │  ├─ anonymizer.py                  # Orchestriert Detect + Mask Pipeline
+│  │  ├─ session_manager.py             # Reversible Masking + TTL
+│  │  ├─ manual_tokens.py               # Persistente manuelle Tokens
+│  │  └─ manual_categories.py           # Persistente Custom-Kategorien
 │  │
 │  ├─ detectors/
 │  │  ├─ __init__.py
+│  │  │
 │  │  ├─ ner/
 │  │  │  ├─ __init__.py
-│  │  │  ├─ ner_core.py
-│  │  │  └─ filters.py
+│  │  │  ├─ ner_core.py                 # spaCy NER Integration
+│  │  │  └─ filters.py                  # Label-Filter / Postprocessing
+│  │  │
 │  │  ├─ regex/
 │  │  │  ├─ __init__.py
-│  │  │  ├─ contact.py
+│  │  │  ├─ contact.py                  # E-Mail, Telefon etc.
 │  │  │  ├─ date.py
 │  │  │  ├─ finance.py
 │  │  │  ├─ invoice.py
 │  │  │  ├─ location.py
 │  │  │  └─ url.py
+│  │  │
 │  │  └─ custom/
 │  │     ├─ __init__.py
-│  │     └─ manual_dict.py
+│  │     └─ manual_dict.py              # Manuelle Wörterbuch-Detektion
 │  │
 │  ├─ pipeline/
 │  │  ├─ __init__.py
-│  │  ├─ detect.py
-│  │  ├─ mask.py
-│  │  └─ demask.py
+│  │  ├─ detect.py                      # Führt NER + Regex + Custom zusammen
+│  │  ├─ mask.py                        # Masking-Engine (Spans + Overlap-Resolution)
+│  │  └─ demask.py                      # Demask-Logik (Session-Auflösung)
 │  │
 │  ├─ ui/
 │  │  ├─ __init__.py
+│  │
 │  │  ├─ style/
 │  │  │  ├─ __init__.py
-│  │  │  ├─ theme.py
-│  │  │  ├─ translations.py
-│  │  │  └─ components.py
+│  │  │  ├─ theme.py                    # Farbdefinitionen
+│  │  │  ├─ translations.py             # i18n
+│  │  │  └─ components.py               # UI-Komponenten (NavItem, Pills etc.)
+│  │  │
 │  │  ├─ routing/
 │  │  │  ├─ __init__.py
-│  │  │  └─ router.py
+│  │  │  └─ router.py                   # Navigation + Layout (Header, Sidebar)
+│  │  │
 │  │  ├─ shared/
 │  │  │  ├─ __init__.py
-│  │  │  ├─ flet_helpers.py
-│  │  │  └─ validation.py
+│  │  │  ├─ flet_helpers.py             # UI-Hilfen (Snackbars, Spacing etc.)
+│  │  │  └─ validation.py               # UI-nahe Validierung
+│  │  │
 │  │  └─ features/
 │  │     ├─ __init__.py
+│  │     │
 │  │     ├─ dashboard/
 │  │     │  ├─ __init__.py
-│  │     │  ├─ view.py
-│  │     │  ├─ state.py
-│  │     │  ├─ actions.py
-│  │     │  ├─ token_renderer.py
-│  │     │  ├─ masking_engine.py
-│  │     │  └─ helpers.py
+│  │     │  ├─ view.py                  # Layout-Komposition
+│  │     │  ├─ state.py                 # DashboardContext
+│  │     │  ├─ actions.py               # Event-Handler + Mutationen
+│  │     │  ├─ token_renderer.py        # Token-UI Rendering
+│  │     │  ├─ masking_engine.py        # UI-nahe Masking-Integration
+│  │     │  └─ helpers.py               # Fachliche Dashboard-Helfer
+│  │     │
 │  │     ├─ dictionary/
 │  │     │  ├─ __init__.py
 │  │     │  └─ view.py
+│  │     │
 │  │     ├─ demask/
 │  │     │  ├─ __init__.py
 │  │     │  └─ view.py
+│  │     │
 │  │     └─ settings/
 │  │        ├─ __init__.py
 │  │        └─ view.py
-│  │
-├─ assets/
-├─ config.json                          # zentrale Policy- und Feature-Konfigurationsdatei für Pipeline und UI
+│
+├─ .gitignore
+├─ config.json                          # Zentrale Policy- und Feature-Konfiguration
+├─ manual_tokens.json                   # Persistente manuelle Tokens
+├─ manual_types.json                    # Persistente Custom-Kategorien
+├─ pyproject.toml 
+├─ requirements.txt
 └─ README.md
 ```
 

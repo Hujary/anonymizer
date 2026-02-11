@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List
 
-from core import config
+from core.paths import manual_tokens_path, repo_root
 
 
 @dataclass(frozen=True)
@@ -14,83 +14,95 @@ class ManualToken:
     value: str
 
 
-def _storage_path() -> Path:
-    path_str = config.get("manual_tokens_file", "")
-    if path_str:
-        return Path(path_str)
-    base_dir = Path(config.get("data_dir", "."))
-    return base_dir / "manual_tokens.json"
-
-
-def _load_raw() -> List[dict]:
-    path = _storage_path()
+def _read_json(path: Path) -> list[dict]:
     if not path.exists():
         return []
-    try:
-        with path.open("r", encoding="utf-8") as f:
-            data = json.load(f)
-    except Exception:
+    raw = path.read_text(encoding="utf-8").strip()
+    if not raw:
         return []
-    if not isinstance(data, list):
-        return []
-    cleaned: List[dict] = []
-    for item in data:
-        if not isinstance(item, dict):
-            continue
-        typ = str(item.get("typ", "")).upper().strip()
-        value = str(item.get("value", "")).strip()
-        if not value:
-            continue
-        if not typ:
-            typ = "MISC"
-        cleaned.append({"typ": typ, "value": value})
-    return cleaned
+    data = json.loads(raw)
+    if isinstance(data, list):
+        return [x for x in data if isinstance(x, dict)]
+    return []
 
 
-def _save_raw(items: List[dict]) -> None:
-    path = _storage_path()
+def _write_json(path: Path, items: list[dict]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as f:
-        json.dump(items, f, ensure_ascii=False, indent=2)
+    path.write_text(json.dumps(items, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _migrate_from_repo_root_if_needed() -> None:
+    new_path = manual_tokens_path()
+    if new_path.exists():
+        return
+    old_path = repo_root() / "manual_tokens.json"
+    if not old_path.exists():
+        return
+    new_path.parent.mkdir(parents=True, exist_ok=True)
+    new_path.write_text(old_path.read_text(encoding="utf-8"), encoding="utf-8")
 
 
 def get_all() -> List[ManualToken]:
-    raw = _load_raw()
-    return [ManualToken(typ=item["typ"], value=item["value"]) for item in raw]
+    _migrate_from_repo_root_if_needed()
+    items = _read_json(manual_tokens_path())
+    out: list[ManualToken] = []
+    for it in items:
+        typ = str(it.get("typ", "")).strip().upper()
+        value = str(it.get("value", "")).strip()
+        if not typ or not value:
+            continue
+        out.append(ManualToken(typ=typ, value=value))
+    return out
 
 
-def add_manual_token(typ: str, value: str) -> ManualToken:
-    norm_typ = (typ or "MISC").upper().strip()
-    norm_val = (value or "").strip()
-    if not norm_val:
-        raise ValueError("manual token value must not be empty")
+def add_manual_token(typ: str, value: str) -> None:
+    _migrate_from_repo_root_if_needed()
+    typ_n = (typ or "").strip().upper()
+    val_n = (value or "").strip()
+    if not typ_n:
+        raise ValueError("typ darf nicht leer sein.")
+    if not val_n:
+        raise ValueError("value darf nicht leer sein.")
 
-    items = _load_raw()
+    path = manual_tokens_path()
+    items = _read_json(path)
 
-    # global eindeutiger Wert: ein Text darf nur in genau einer Kategorie vorkommen
-    for item in items:
-        if item["value"] == norm_val:
-            existing_typ = item["typ"]
-            if existing_typ == norm_typ:
-                return ManualToken(typ=norm_typ, value=norm_val)
-            raise ValueError(f"Wert '{norm_val}' existiert bereits in Kategorie '{existing_typ}'.")
+    for it in items:
+        if str(it.get("typ", "")).strip().upper() == typ_n and str(it.get("value", "")).strip() == val_n:
+            return
 
-    items.append({"typ": norm_typ, "value": norm_val})
-    _save_raw(items)
-    return ManualToken(typ=norm_typ, value=norm_val)
+    items.append({"typ": typ_n, "value": val_n})
+    items.sort(key=lambda x: (str(x.get("typ", "")).upper(), str(x.get("value", "")).lower()))
+    _write_json(path, items)
 
 
 def remove_manual_token(typ: str, value: str) -> None:
-    norm_typ = (typ or "MISC").upper().strip()
-    norm_val = (value or "").strip()
-    items = _load_raw()
-    filtered = [item for item in items if not (item["typ"] == norm_typ and item["value"] == norm_val)]
-    _save_raw(filtered)
+    _migrate_from_repo_root_if_needed()
+    typ_n = (typ or "").strip().upper()
+    val_n = (value or "").strip()
 
+    path = manual_tokens_path()
+    items = _read_json(path)
 
-def clear_all() -> None:
-    _save_raw([])
+    new_items = [
+        it
+        for it in items
+        if not (
+            str(it.get("typ", "")).strip().upper() == typ_n
+            and str(it.get("value", "")).strip() == val_n
+        )
+    ]
+    _write_json(path, new_items)
 
 
 def as_match_list() -> List[ManualToken]:
-    return get_all()
+    """
+    Liefert die persistenten ManualTokens als Liste für den Custom-Detector.
+
+    Wichtig für Matching:
+    - längere Werte zuerst, damit z.B. "Briachstraße 2" vor "Briachstraße" gematcht wird
+    - danach stabil nach Typ und Wert sortiert
+    """
+    tokens = get_all()
+    tokens.sort(key=lambda t: (-len(t.value), t.typ, t.value.lower()))
+    return tokens

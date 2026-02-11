@@ -14,8 +14,6 @@ class AppStore:
     - Maskierungs-Mappings zwischengespeichert werden
     - Dashboard-Draft-Texte persistiert werden
     - Session-Management angebunden ist
-
-    Keine UI-Logik, keine Rendering-Logik – nur Zustand.
     """
 
     def __init__(self):
