@@ -156,7 +156,7 @@ repo-root/
 │  │        └─ view.py
 │  │
 ├─ assets/
-├─ config.json
+├─ config.json                          # zentrale Policy- und Feature-Konfigurationsdatei für Pipeline und UI
 └─ README.md
 ```
 

@@ -23,7 +23,9 @@ def cli():
     pass
 
 
-# ========================  Methode für PD-Erkennung & Maskierung  ==================================
+# ==========================================================
+#  Methode für PD-Erkennung & Maskierung 
+# ==========================================================
 @cli.command("mask")
 @click.option(
     "--in",
@@ -83,8 +85,6 @@ def cmd_mask(in_path: str, out_path: str, ner_model: str | None):
     click.echo("\n[DEBUG INFO]")
     click.echo(f"  USE_REGEX: {USE_REGEX}")
     click.echo(f"  USE_NER:   {USE_NER}")
-# ====================================================================================================
-
 
 def main():
     cli(prog_name="cli")
