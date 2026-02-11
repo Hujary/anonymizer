@@ -1,105 +1,72 @@
+###     Strikter NER-Postfilter (Qualitätssicherung für PER / ORG)
+### __________________________________________________________________________
+#
+#  - Entfernt typische spaCy-Fehlklassifikationen (Grußwörter, Rollen, Metabegriffe)
+#  - Erzwingt harte Regeln für ORG (Rechtsform-Hinweis oder starke Großschreibung)
+#  - Normalisiert PER-Treffer auf echte Namenssegmente
+#  - Unterstützt statische + konfigurierbare Person-Hints
+#  - Verhindert numerische / triviale / zu kurze Entitäten
+#  - Label-Whitelist wird dynamisch aus der App-Config geladen
+
+
 import re
 from typing import List, Iterable, Set
 from core.typen import Treffer
 from core import config
 
+
 # Wörter, die fast immer als Gruß/Floskel vorkommen und NIE als Entität gelten sollen
 COMMON_GREETING_WORDS = {
-    "hallo",
-    "hi",
-    "hey",
-    "danke",
-    "vielen",
-    "gruß",
-    "grüße",
-    "mit",
-    "freundlichen",
-    "beste",
-    "liebe",
-    "servus",
-    "moin",
+    "hallo", "hi", "hey", "danke", "vielen", "gruß", "grüße",
+    "mit", "freundlichen", "beste", "liebe", "servus", "moin",
 }
+
 
 # Kennzeichen (Suffixe), die typischerweise auf Organisationen hinweisen
 ORG_HINTS = {
-    " gmbh",
-    " ag",
-    " kg",
-    " ug",
-    " gbr",
-    " mbh",
-    " kgaa",
-    " e.v",
-    " ev",
-    " verein",
-    " eg",
+    " gmbh", " ag", " kg", " ug", " gbr", " mbh",
+    " kgaa", " e.v", " ev", " verein", " eg",
 }
+
 
 # Wörter, die NICHT zu einer echten Organisation gehören dürfen
-# → verhindern falsche ORG-Treffer (z.B. "Team", "Projekt")
 ORG_STOPWORDS = {
-    "ordner",
-    "team",
-    "teams",
-    "postfach",
-    "inbox",
-    "gruppe",
-    "folder",
-    "verzeichnis",
-    "kanal",
-    "channel",
-    "chat",
-    "projekt",
-    "abteilung",
-    "bereich",
-    "rolle",
-    "rollen",
-    "konto",
-    "account",
-    "sammlung",
-    "collection",
-    "upload",
+    "ordner", "team", "teams", "postfach", "inbox",
+    "gruppe", "folder", "verzeichnis", "kanal",
+    "channel", "chat", "projekt", "abteilung",
+    "bereich", "rolle", "rollen", "konto",
+    "account", "sammlung", "collection", "upload",
 }
 
-# Wörter, die spaCy fälschlich als PER erkennt → sollen NIEMALS als Person gezählt werden
+
+# Tokens, die spaCy häufig fälschlich als PER erkennt → strikt blockieren
 PER_BAD_TOKENS = {
-    "Hallo",
-    "Hi",
-    "Hey",
-    "Danke",
-    "Mit",
-    "Freundlichen",
-    "Beste",
-    "Liebe",
-    "Servus",
-    "Moin",
-    "Team",
-    "Upload",
-    "HR",
-    "Budgetfreigabe",
+    "Hallo", "Hi", "Hey", "Danke", "Mit",
+    "Freundlichen", "Beste", "Liebe",
+    "Servus", "Moin", "Team", "Upload",
+    "HR", "Budgetfreigabe",
 }
 
-# Statische Person-Hinweise → Wörter, die **immer** eine Person sein sollen
-PER_HINTS_STATIC = {
-    "Tom",
-    "Max",
-    "Anna",
-    "Julia",
-}
 
-# Aus config geladene dynamische Person-Hinweise, vom User erweiterbar
+# Statische Person-Hints (immer als PER interpretieren)
+PER_HINTS_STATIC = {"Tom", "Max", "Anna", "Julia"}
+
+
+# Dynamische, vom User konfigurierbare Person-Hints
 PER_HINTS_CONFIG = set(config.get("ner_person_hints", []))
 
-# Zusammengeführte Person-Prioritätsliste (statisch + dynamisch)
+
+# Zusammengeführte Person-Prioritätsliste
 PER_HINTS: Set[str] = {
     h.strip() for h in (PER_HINTS_STATIC | PER_HINTS_CONFIG) if h.strip()
 }
 
-# Regex zur Erkennung "echter" Name-Tokens (Vor-/Nachnamen)
+
+# Regex für echte Namensbestandteile (Großschreibung + optionale Bindestriche)
 NAME_TOKEN_RE = re.compile(r"[A-ZÄÖÜ][a-zäöüß]+(?:-[A-ZÄÖÜ][a-zäöüß]+)?")
 
 
-# Hilfsfunktion: erkennt rein numerische oder extrem kurze Strings (keine echten Entitäten)
+# Prüft, ob ein Span rein numerisch, symbolisch oder zu kurz ist
 def _is_numeric_or_short(span: str) -> bool:
     s = span.strip()
     if not s:
@@ -111,31 +78,34 @@ def _is_numeric_or_short(span: str) -> bool:
     return False
 
 
-# Extrahiert aus einem PER-Treffer den echten Namensanteil (z.B. aus "Hallo Julia" → "Julia")
+# Extrahiert aus einem PER-Treffer den tatsächlichen Namensteil
 def _normalize_person_hit(text: str, hit: Treffer) -> Treffer | None:
+
     span_full = text[hit.start : hit.ende]
 
-    # Zerlegt den Treffer in einzelne sinnvolle Textstücke
+    # Segmentierung grober Teilbereiche
     for chunk in re.split(r"[\n,;|]+", span_full):
         chunk = chunk.strip()
         if not chunk:
             continue
 
-        # Einzelne Wörter im Chunk einsammeln
         tokens = []
+
+        # Tokenisierung + sofortiger Abbruch bei verbotenen Tokens
         for m in re.finditer(r"\b\w[\w\-ÄÖÜäöüß]*\b", chunk):
             tok = m.group(0)
-            # Abbruch, wenn ein verbotenes Wort enthalten ist
             if tok in PER_BAD_TOKENS:
                 break
             tokens.append((tok, m.start(), m.end()))
+
         if not tokens:
             continue
 
-        # Ermittlung echter Name-Tokens per Regex
+        # Suche 1–2 valide Namensbestandteile
         name_st = None
         name_en = None
         count = 0
+
         for tok, a, b in tokens:
             if NAME_TOKEN_RE.fullmatch(tok):
                 if name_st is None:
@@ -147,15 +117,12 @@ def _normalize_person_hit(text: str, hit: Treffer) -> Treffer | None:
             else:
                 break
 
-        # Kein echter Name gefunden
         if name_st is None or name_en is None:
             continue
 
-        # Absolute Positionen im Gesamttext ermitteln
         abs_start = hit.start + span_full.index(chunk) + name_st
         abs_end = hit.start + span_full.index(chunk) + name_en
 
-        # Sicherstellen, dass die Länge sinnvoll ist
         if abs_end - abs_start >= 2:
             return Treffer(
                 abs_start,
@@ -169,7 +136,7 @@ def _normalize_person_hit(text: str, hit: Treffer) -> Treffer | None:
     return None
 
 
-# Hauptfilter: entfernt schlechte Treffer und korrigiert falsche Labels
+# Strenger Hauptfilter für NER-Ergebnisse
 def filter_ner_strict(
     text: str,
     hits: List[Treffer],
@@ -177,17 +144,18 @@ def filter_ner_strict(
     allowed_labels: Iterable[str] = ("PER", "ORG"),
 ) -> List[Treffer]:
 
-    # Erlaubte Entitätsarten
     allowed: Set[str] = {a.upper() for a in allowed_labels}
     out: List[Treffer] = []
 
     for h in hits:
+
         L = h.label.upper()
         span = text[h.start : h.ende].strip()
+
         if not span:
             continue
 
-        # Wenn Wort in PER_HINTS → automatisch als Person labeln
+        # Person-Hints erzwingen PER-Label
         if span in PER_HINTS and "PER" in allowed and L != "PER":
             L = "PER"
             h = Treffer(
@@ -199,42 +167,42 @@ def filter_ner_strict(
                 from_ner=h.from_ner,
             )
 
-        # Falsches Label → ignorieren
         if L not in allowed:
             continue
 
         low = span.lower()
 
-        # Grußwörter/Floskeln ignorieren
+        # Grußformeln entfernen
         if low in COMMON_GREETING_WORDS:
             continue
 
-        # Zahlen/Kürzel/zu kurze Strings ignorieren
+        # Numerische / triviale Treffer entfernen
         if _is_numeric_or_short(span):
             continue
 
-        # Person: echten Namen extrahieren
+        # Personen-Normalisierung
         if L == "PER":
             nh = _normalize_person_hit(text, h)
             if nh is None:
                 continue
             h = nh
 
-        # Organisation: Zusatzregeln zur Vermeidung von Fehlklassifikationen
+        # ORG-Speziallogik
         if L == "ORG":
+
             low_span = " " + span.lower()
 
             # Blacklist prüfen
             if any(sw in low_span for sw in ORG_STOPWORDS):
                 continue
 
-            # Teil hinter Bindestrich prüfen
+            # Bindestrich-Teil prüfen
             if "-" in span:
                 right = span.split("-", 1)[1].strip().lower()
                 if right in ORG_STOPWORDS:
                     continue
 
-            # ORG erfordert Rechtsform-Hinweis ODER starkes Großschreibungsmuster
+            # Rechtsform oder starke Großschreibung erforderlich
             has_legal_hint = any(hint in low_span for hint in ORG_HINTS)
             caps_count = sum(1 for c in span if c.isupper())
             has_caps_style = caps_count >= 3
@@ -248,7 +216,7 @@ def filter_ner_strict(
     return out
 
 
-# Externer Wrapper, der erlaubt Labels aus der App-Config verwendet
+# Wrapper, der erlaubte Labels aus der App-Config zieht
 def clean_ner_hits(text: str, hits: List[Treffer]) -> List[Treffer]:
     allowed = config.get("ner_labels", ["PER", "ORG"])
     return filter_ner_strict(text, hits, allowed_labels=allowed)

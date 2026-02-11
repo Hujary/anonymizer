@@ -1,3 +1,13 @@
+###     AppStore (Zentraler UI-State + Session-Mapping)
+### __________________________________________________________________________
+#
+#  - Single Source of Truth für UI-relevanten In-Memory-State
+#  - Hält Ergebnis des letzten Masking-Laufs (Original, Masked, Hits, Mapping)
+#  - Persistiert View-States (Dashboard, Demask) über Navigation hinweg
+#  - Verwaltet Theme/Sprache inkl. Schreiben in config.json
+#  - Bindet SessionManager an für reversible Maskierung (TTL-basiert)
+
+
 from __future__ import annotations
 
 from ui.style.theme import THEMES
@@ -6,59 +16,48 @@ from services.session_manager import SessionManager, SESSION_TTL_SECONDS
 
 
 class AppStore:
-    """
-    Zentrale In-Memory-Zustandsverwaltung der Anwendung.
 
-    Diese Klasse ist der einzige Ort, an dem:
-    - globale UI-relevante Zustände gehalten werden
-    - Maskierungs-Mappings zwischengespeichert werden
-    - Dashboard-Draft-Texte persistiert werden
-    - Session-Management angebunden ist
-    """
-
+    # Initialisiert Default-State aus Config + setzt SessionManager auf
     def __init__(self):
-        # Aktueller Theme-Name (aus Config geladen oder Fallback)
+
+        # Theme-Name aus Config laden, nur gültige Keys erlauben
         self.theme_name = self._load_theme_name()
 
-        # Aktuelles Theme-Dict (Farben etc.)
+        # Aktives Theme-Dict aus Registry ableiten
         self.theme = THEMES[self.theme_name]
 
-        # Aktuelle Sprache (de/en)
+        # UI-Sprache aus Config laden, nur "de"/"en" zulassen
         self.lang = self._load_lang()
 
-        # Letztes aktives Mapping (token -> original value)
+        # Letztes Masking-Ergebnis (für UI-Anzeige, Remask, Demask)
         self.last_mapping = {}
-
-        # Letzte Treffer (NER/Regex etc.), wie vom Service geliefert
         self.last_hits = []
-
-        # Letzter maskierter Text
         self.last_masked_text = ""
-
-        # Letzter Originaltext (Basis für Remask/Demask)
         self.last_original_text = ""
 
-        # Ob reversible Maskierung aktiv ist
+        # Flag: reversible Maskierung aktiv (steuert Session-Mapping-Nutzung)
         self.reversible = True
 
-        # Persistenter Dashboard-Zustand (Input/Output/Status)
+        # Dashboard-View-State (persistiert in-memory)
         self.dash_input_text: str = ""
         self.dash_output_text: str = ""
         self.dash_status_text: str = ""
 
-        # Feature-Flags für Auto-Verhalten
+        # Auto-Verhalten im UI (z.B. beim Tippen/Einfügen)
         self.auto_mask_enabled: bool = True
         self.auto_demask_enabled: bool = True
 
-        # Zustand für Demask-View
+        # Demask-View-State (separat vom Dashboard)
         self.demask_input_text: str = ""
         self.demask_output_text: str = ""
 
-        # Zentrales Session-Management (TTL-basiert)
+        # Sessionverwaltung für reversible Tokens (token -> original, TTL)
         self.session_mgr = SessionManager(SESSION_TTL_SECONDS)
 
+
+
+    # Lädt Theme-Key aus Config; fällt auf "light" zurück
     def _load_theme_name(self) -> str:
-        # Theme aus Config laden, Fallback auf "light"
         try:
             t = config.get("theme")
             if t in THEMES:
@@ -67,16 +66,20 @@ class AppStore:
             pass
         return "light"
 
+
+
+    # Lädt Sprache aus Config; erlaubt nur "de"/"en"
     def _load_lang(self) -> str:
-        # Sprache aus Config laden, nur "de" oder "en" erlaubt
         try:
             l = config.get("lang", "de")
             return l if l in ("de", "en") else "de"
         except Exception:
             return "de"
 
+
+
+    # Setzt Theme + schreibt nach config; invalides Theme wird ignoriert
     def set_theme(self, name: str):
-        # Theme wechseln und persistent speichern
         if name not in THEMES:
             return
 
@@ -86,11 +89,12 @@ class AppStore:
         try:
             config.set("theme", name)
         except Exception:
-            # Config-Fehler blockieren UI nicht
             pass
 
+
+
+    # Setzt Sprache + schreibt nach config; invalides Lang wird ignoriert
     def set_lang(self, lang: str):
-        # Sprache wechseln und persistent speichern
         if lang not in ("de", "en"):
             return
 
@@ -101,29 +105,25 @@ class AppStore:
         except Exception:
             pass
 
-    def set_mapping(self, mapping, hits, original, masked):
-        """
-        Setzt den aktuellen Maskierungszustand.
 
-        mapping  -> token -> original value
-        hits     -> Trefferliste aus Anonymizer
-        original -> Quelltext
-        masked   -> maskierter Text
-        """
+
+    # Persistiert den letzten Masking-Lauf (Mapping, Treffer, Original, Masked)
+    def set_mapping(self, mapping, hits, original, masked):
         self.last_mapping = mapping or {}
         self.last_hits = hits or []
         self.last_original_text = original or ""
         self.last_masked_text = masked or ""
 
+
+
+    # Aktiviert/Deaktiviert reversible Maskierung (UI-Flag)
     def set_reversible(self, value: bool):
-        # Aktiviert/Deaktiviert reversible Maskierung
         self.reversible = bool(value)
 
+
+
+    # Setzt Dashboard-State selektiv; None bedeutet "nicht ändern"
     def set_dash(self, *, input_text=None, output_text=None, status_text=None) -> None:
-        """
-        Persistiert den Dashboard-Zustand selektiv.
-        Nur übergebene Werte werden aktualisiert.
-        """
         if input_text is not None:
             self.dash_input_text = input_text
 
@@ -133,35 +133,31 @@ class AppStore:
         if status_text is not None:
             self.dash_status_text = status_text
 
+
+
+    # Hard-Reset des Dashboards inkl. letztem Masking-State
     def clear_dash(self) -> None:
-        """
-        Hard-Reset des Dashboard-Zustands inklusive Mapping.
-        """
         self.dash_input_text = ""
         self.dash_output_text = ""
         self.dash_status_text = ""
-
-        # Auch Maskierungszustand zurücksetzen
         self.set_mapping({}, [], "", "")
 
+
+
+    # Fügt Mapping zur aktuellen Session hinzu (nur sinnvoll bei reversibler Maskierung)
     def add_session_mapping(self, mapping: dict):
-        """
-        Fügt Mapping der aktuellen Session hinzu.
-        Wird nur verwendet, wenn reversible Maskierung aktiv ist.
-        """
         if not mapping:
             return
 
         if self.session_mgr is None:
-            # Fallback: SessionManager neu instanziieren
             self.session_mgr = SessionManager(SESSION_TTL_SECONDS)
 
         self.session_mgr.add_mapping(mapping)
 
+
+
+    # Schließt aktive Session (setzt closed_at), damit spätere Auflösungen nicht weiter wachsen
     def close_active_session(self):
-        """
-        Schließt die aktuell aktive Session (setzt closed_at).
-        """
         if self.session_mgr is None:
             return
 
