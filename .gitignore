@@ -5,4 +5,7 @@ venv/
 build/
 dist/
 .DS_Store
-manual_tokens.json
+
+# Runtime-Daten (PII)
+data/manual_tokens.json
+data/manual_types.json
