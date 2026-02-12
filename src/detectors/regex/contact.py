@@ -42,6 +42,9 @@ def finde_contact(text: str) -> Iterable[Tuple[int, int, str]]:
     #   - erlaubt Trennzeichen: Space, (), /, -
     #   - optional "(0)" oder "0" nach +49 (wie oft in Schreibweise +49 (0) 30 ...)
     #
+    # Erweiterung:
+    #   - optionale Durchwahl am Ende: "-44" / "-1234"
+    #
     # Ziel:
     #   - robuste Erkennung realer Schreibvarianten
     #
@@ -49,7 +52,7 @@ def finde_contact(text: str) -> Iterable[Tuple[int, int, str]]:
     #   - kann numerische Sequenzen matchen, wenn Umgebung passt
     # ------------------------------------------------------------------
     intl = re.compile(
-        r"(?<!\w)(?:\+|00)49[\s()/\-]*\(?(?:0)?\)?[\s()/\-]*\d{1,5}(?:[\s()/\-]*\d{2,}){1,4}(?!\w)",
+        r"(?<!\w)(?:\+|00)49[\s()/\-]*\(?(?:0)?\)?[\s()/\-]*\d{1,5}(?:[\s()/\-]*\d{2,}){1,4}(?:-\d{1,4})?(?!\w)",
         re.MULTILINE,
     )
 
@@ -60,16 +63,20 @@ def finde_contact(text: str) -> Iterable[Tuple[int, int, str]]:
     #   - explizit KEIN reines '-' direkt nach der Vorwahl, um Matches wie "2024-00127"
     #     (Rechnungsnummern) weniger wahrscheinlich zu machen
     #
+    # Erweiterung:
+    #   - optionale Durchwahl am Ende: "-44" / "-1234"
+    #
     # Beispiele:
     #   089 1234567
     #   (089) 1234567
     #   0151/2345678
+    #   069 743512-44
     #
     # Risiko:
     #   - bleibt Heuristik, kann immer noch mit IDs kollidieren
     # ------------------------------------------------------------------
     domestic = re.compile(
-        r"(?<!\w)0\d{2,5}(?:\)\s+|[ )/]\s*)\d{2,}(?:[ )/]\d{2,}){0,4}(?!\w)",
+        r"(?<!\w)0\d{2,5}(?:\)\s+|[ )/]\s*)\d{2,}(?:[ )/]\d{2,}){0,4}(?:-\d{1,4})?(?!\w)",
         re.MULTILINE,
     )
 

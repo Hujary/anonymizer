@@ -3,7 +3,7 @@
   "use_ner": true,
   "debug_mask": false,
   "spacy_model": "de_core_news_lg",
-  "theme": "dark",
+  "theme": "light",
   "lang": "de",
   "ner_labels": [
     "GPE",
@@ -17,8 +17,10 @@
     "DATUM",
     "E_MAIL",
     "IBAN",
+    "ORT",
     "PLZ",
     "RECHNUNGS_NUMMER",
+    "STRASSE",
     "TELEFON",
     "URL",
     "USTID"

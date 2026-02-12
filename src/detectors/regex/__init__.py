@@ -9,6 +9,7 @@ from .date import finde_date            # Datumsformate
 from .invoice import finde_invoice      # Rechnungsnummern
 from .url import finde_url              # URLs
 
+
 # Mapping: Finder-Name → produzierte Labels
 _PRODUCES: Dict[str, List[str]] = {
     "finde_contact": ["E_MAIL", "TELEFON"],
@@ -18,6 +19,7 @@ _PRODUCES: Dict[str, List[str]] = {
     "finde_invoice": ["RECHNUNGS_NUMMER"],
     "finde_url": ["URL"],
 }
+
 
 # Mapping: Finder-Name → konkrete Funktion
 _FINDERS: Dict[str, Callable[[str], Iterable[Tuple[int, int, str]]]] = {
@@ -29,6 +31,7 @@ _FINDERS: Dict[str, Callable[[str], Iterable[Tuple[int, int, str]]]] = {
     "finde_url": finde_url,
 }
 
+
 def _should_run(finder_name: str, allowed: set[str]) -> bool:
     # Prüft, ob mindestens ein vom Finder erzeugtes Label aktiviert ist
     for t in _PRODUCES.get(finder_name, []):
@@ -36,15 +39,33 @@ def _should_run(finder_name: str, allowed: set[str]) -> bool:
             return True
     return False
 
+
 def finde_regex(text: str):
     # Aktivierte Labels aus Config (Fallback auf Default-Liste)
     allowed = set(config.get("regex_labels", [
-        "E_MAIL", "TELEFON", "IBAN", "BIC", "URL", "USTID",
-        "RECHNUNGS_NUMMER", "PLZ", "DATUM", "BETRAG"
+        "E_MAIL",
+        "TELEFON",
+        "IBAN",
+        "BIC",
+        "URL",
+        "USTID",
+        "RECHNUNGS_NUMMER",
+        "PLZ",
+        "ORT",
+        "STRASSE",
+        "DATUM",
+        "BETRAG",
     ]))
 
     # Feste Ausführungsreihenfolge (Priorisierung grober Klassen zuerst)
-    order = ["finde_finance", "finde_invoice", "finde_contact", "finde_url", "finde_location", "finde_date"]
+    order = [
+        "finde_finance",
+        "finde_invoice",
+        "finde_contact",
+        "finde_url",
+        "finde_location",
+        "finde_date",
+    ]
 
     for name in order:
         if not _should_run(name, allowed):  # Finder überspringen, wenn keine relevanten Labels aktiv

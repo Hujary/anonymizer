@@ -1,6 +1,46 @@
 {
   "version": 1,
   "ttl_seconds": 86400,
-  "active_session_id": null,
-  "sessions": []
+  "active_session_id": "f5e1b7b606234903bace7c51b7cf31ee",
+  "sessions": [
+    {
+      "session_id": "f5e1b7b606234903bace7c51b7cf31ee",
+      "created_at": 1770928737.319475,
+      "closed_at": null,
+      "mapping": {
+        "[E_MAIL_30898bb7]": "max.mustermann@example.de",
+        "[E_MAIL_7e083f5b]": "buchhaltung@firma-ag.de",
+        "[DATUM_8617d2d1]": "12.02.2026",
+        "[PER_ce7092c2]": "Frau Müller",
+        "[BETRAG_0eec5e69]": "1.240,50 €",
+        "[DATUM_ac973e85]": "28.02.2026",
+        "[IBAN_8efdcdab]": "DE89370400440532013000",
+        "[BIC_11c9426f]": "COBADEFFXXX",
+        "[ORG_a0318442]": "GmbH",
+        "[STRASSE_3a52653f]": "Musterstraße 12",
+        "[PLZ_fe285c96]": "80331",
+        "[ORT_c2c04943]": "München",
+        "[PER_b154bd63]": "Max Mustermann",
+        "[E_MAIL_8bc136c9]": "rechnung@techsolutions-gmbh.de",
+        "[E_MAIL_3483f805]": "max.mustermann@example.org",
+        "[DATUM_22a12446]": "17. Oktober 2024",
+        "[RECHNUNGS_NUMMER_2844678e]": "TS-2024-0915",
+        "[PER_e2aef8e7]": "Herr Mustermann",
+        "[DATUM_7c1feaa8]": "25.09.2024",
+        "[BETRAG_6044f7c2]": "289,75 €",
+        "[DATUM_5437dcec]": "10.10.2024",
+        "[IBAN_132bbcb9]": "DE67500105172648391234",
+        "[BIC_82b2c7ed]": "INGDDEFFXXX",
+        "[BETRAG_82d359d7]": "5,00 €",
+        "[TELEFON_761440a9]": "+49 (0)89 99887766",
+        "[E_MAIL_a6502e28]": "support@techsolutions-gmbh.de",
+        "[LOC_4bdee823]": "Innovationspark",
+        "[LOC_f3afad3a]": "München",
+        "[USTID_3174a1f8]": "DE123456789",
+        "[PER_66a64cb7]": "Anna Schmidt",
+        "[URL_36b48827]": "www.techsolutions-gmbh.de",
+        "[E_MAIL_da2897a3]": "buchhaltung@beispiel-gmbh.de"
+      }
+    }
+  ]
 }

@@ -1,0 +1,18 @@
+Von: max.mustermann@example.de
+An: buchhaltung@firma-ag.de
+Datum: 12.02.2026
+
+Sehr geehrte Frau Müller,
+
+bitte überweisen Sie den Betrag von 1.240,50 € bis spätestens 28.02.2026 auf folgendes Konto:
+
+IBAN: DE89370400440532013000
+BIC: COBADEFFXXX
+Kontoinhaber: AlphaTech GmbH
+
+Adresse:
+Musterstraße 12
+80331 München
+
+Mit freundlichen Grüßen
+Max Mustermann
