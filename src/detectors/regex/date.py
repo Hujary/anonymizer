@@ -9,7 +9,9 @@ def finde_date(text: str) -> Iterable[Tuple[int, int, str]]:
     Erkannt werden:
       - ISO: 2024-12-01
       - Deutsch numerisch: 17.10.2024
+      - Deutsch numerisch ohne Jahr: 17.10 / 17-10 / 17/10
       - Deutsch lang: 17. Oktober 2024
+      - Deutsch lang ohne Jahr: 17. Oktober / 17. Nov.
       - Englisch: March 12, 2025 / Dec 5, 2023
       - Englisch invertiert: 12 March 2025
 
@@ -56,11 +58,28 @@ def finde_date(text: str) -> Iterable[Tuple[int, int, str]]:
         re.compile(r"\b\d{1,2}[./-]\d{1,2}[./-]\d{2,4}\b"),
 
         # ------------------------------------------------------------------
+        # Deutsch numerisch ohne Jahr: 17.10 / 17-10 / 17/10
+        #
+        # Risiko:
+        #   - Kann auch Teil von längeren Zahlenfolgen sein
+        #   - Wird bewusst NACH dem Pattern mit Jahr geprüft
+        # ------------------------------------------------------------------
+        re.compile(r"\b\d{1,2}[./-]\d{1,2}\b"),
+
+        # ------------------------------------------------------------------
         # Deutsch ausgeschrieben: 17. Oktober 2024
         #
         # Case-insensitive wegen Monatsnamen
         # ------------------------------------------------------------------
         re.compile(rf"\b\d{{1,2}}\.\s*{monate}\s*\d{{4}}\b", re.IGNORECASE),
+
+        # ------------------------------------------------------------------
+        # Deutsch ausgeschrieben ohne Jahr: 17. Oktober / 17. Nov.
+        #
+        # Risiko:
+        #   - Keine Kontextprüfung (kann theoretisch falsch-positive Matches erzeugen)
+        # ------------------------------------------------------------------
+        re.compile(rf"\b\d{{1,2}}\.\s*{monate}\b", re.IGNORECASE),
 
         # ------------------------------------------------------------------
         # Englisch: March 12, 2025 / Dec 5, 2023

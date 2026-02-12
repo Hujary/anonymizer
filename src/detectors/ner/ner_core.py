@@ -1,3 +1,5 @@
+# detectors/ner/ner_core.py
+
 ###     NER-Detektor (spaCy) mit umschaltbarem Modell, Cache + ORG/PER-Boost
 ### __________________________________________________________________________
 #
@@ -13,10 +15,13 @@
 #  - PER-Boost für Mentions via:
 #      (3) Char-level Mention-Boost: "@Tobias" => PER("Tobias")
 #
-#  Hinweis:
+#  HINWEIS:
 #    - Diese Datei liefert nur (start, end, label).
 #    - Quellenflags (from_regex/from_ner) setzt die Pipeline beim Wrappen in Treffer.
-
+#
+#  DEBUG (stumpf):
+#    - Gibt raw spaCy Entities + Entities nach Boosts in die Konsole aus.
+#
 
 from __future__ import annotations
 
@@ -205,7 +210,6 @@ class SpacyNerDetector:
 
             if "\n" in text[start:end] or "\r" in text[start:end]:
                 continue
-
             if end - start < 4:
                 continue
 
@@ -256,15 +260,36 @@ class SpacyNerDetector:
             self._cache[model] = nlp
             return nlp
 
+    @staticmethod
+    def _print_doc_ents(tag: str, doc: Doc) -> None:
+        print("==============================")
+        print(f"=== NER {tag} doc.ents ===")
+        print(f"count={len(doc.ents)}")
+        for e in doc.ents:
+            span = doc.text[e.start_char:e.end_char]
+            print(f"label={e.label_} start={e.start_char} end={e.end_char} span='{span}'")
+        print("==============================")
+
     def find(self, text: str) -> Iterable[Tuple[int, int, str]]:
         nlp = self._load()
         doc = nlp(text)
 
-        doc = self._boost_org_legalforms(doc)
-        doc = self._boost_mentions(doc)
+        self._print_doc_ents("RAW", doc)
 
+        doc = self._boost_org_legalforms(doc)
+        self._print_doc_ents("AFTER_ORG_BOOST", doc)
+
+        doc = self._boost_mentions(doc)
+        self._print_doc_ents("AFTER_MENTION_BOOST", doc)
+
+        print("==============================")
+        print("=== NER OUTPUT tuples ===")
+        print("==============================")
         for ent in doc.ents:
-            yield (ent.start_char, ent.end_char, ent.label_)
+            s, e, L = ent.start_char, ent.end_char, ent.label_
+            span = doc.text[s:e]
+            print(f"tuple=({s},{e},{L}) span='{span}'")
+            yield (s, e, L)
 
 
 _DETECTOR = SpacyNerDetector(_cache={}, _lock=threading.Lock(), _current_model=SPACY_MODELL)

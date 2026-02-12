@@ -1,23 +1,10 @@
-###     Strikter NER-Postfilter (Qualitätssicherung + Normalisierung + Post-Boost)
-### __________________________________________________________________________
-#
-#  - Entfernt typische spaCy-Fehlklassifikationen (Grußwörter, Rollen, Metabegriffe)
-#  - Erzwingt harte Regeln für ORG (Rechtsform-Hinweis oder starke Großschreibung)
-#  - Normalisiert PER-Treffer auf echte Namenssegmente
-#  - Normalisiert ORG-Treffer auf minimales "Name + Rechtsform" Segment (verhindert Satz-ORGs)
-#  - Post-Boost: ORG-Erweiterung wenn NER nur Rechtsform liefert ("GmbH" -> "AlphaTech GmbH")
-#  - Ergänzt @Mentions ("@Tobias") als PER via Postprocessing (Offsets bleiben korrekt)
-#  - Verhindert numerische / triviale / zu kurze Entitäten
-#  - Label-Whitelist wird dynamisch aus der App-Config geladen
-
-
 from __future__ import annotations
 
 import re
-from typing import List, Iterable, Set, Optional
+from typing import Iterable, List, Optional, Set
 
-from core.typen import Treffer
 from core import config
+from core.typen import Treffer
 
 
 COMMON_GREETING_WORDS = {
@@ -25,12 +12,10 @@ COMMON_GREETING_WORDS = {
     "mit", "freundlichen", "beste", "liebe", "servus", "moin",
 }
 
-
 ORG_HINTS = {
     " gmbh", " ag", " kg", " ug", " gbr", " mbh",
     " kgaa", " e.v", " ev", " verein", " eg",
 }
-
 
 ORG_STOPWORDS = {
     "ordner", "team", "teams", "postfach", "inbox",
@@ -40,7 +25,6 @@ ORG_STOPWORDS = {
     "account", "sammlung", "collection", "upload",
 }
 
-
 PER_BAD_TOKENS = {
     "Hallo", "Hi", "Hey", "Danke", "Mit",
     "Freundlichen", "Beste", "Liebe",
@@ -48,19 +32,15 @@ PER_BAD_TOKENS = {
     "HR", "Budgetfreigabe",
 }
 
-
 PER_HINTS_STATIC = {"Tom", "Max", "Anna", "Julia"}
 PER_HINTS_CONFIG = set(config.get("ner_person_hints", []))
 PER_HINTS: Set[str] = {h.strip() for h in (PER_HINTS_STATIC | PER_HINTS_CONFIG) if h.strip()}
 
-
 NAME_TOKEN_RE = re.compile(r"[A-ZÄÖÜ][a-zäöüß]+(?:-[A-ZÄÖÜ][a-zäöüß]+)?")
-
 
 _AT_MENTION_RE = re.compile(
     r"(?<!\w)@(?P<name>[A-Za-zÄÖÜäöüß][A-Za-zÄÖÜäöüß\-]{1,})(?=[\s:,.!?]|$)"
 )
-
 
 _ORG_LEGALFORM_RE = re.compile(
     r"\b(?:gmbh|ag|kg|ug|gbr|mbh|kgaa|eg|verein|e\.?\s*v\.?)\b",
@@ -76,6 +56,19 @@ _ORG_CONTEXT_BREAKS = {
     "arbeitet", "arbeite", "arbeitest", "arbeiten", "habe", "haben", "hat",
     "damit", "dass", "ob", "bitte", "schau", "ruf", "kurz",
 }
+
+_HOUSE_NO_AFTER_RE = re.compile(
+    r"""^(?P<ws>\s*)
+        (?P<num>\d{1,4})
+        (?P<suffix>[a-zA-Z]?)
+        (?P<range>(?:\s*-\s*\d{1,4}[a-zA-Z]?)?)
+        (?P<rest>(?:\s*/\s*\d{1,4}[a-zA-Z]?)?)
+        (?=\b)
+    """,
+    re.VERBOSE,
+)
+
+_ADDRESS_PREFIX_RE = re.compile(r"(?:^|\n)\s*(adresse|anschrift)\s*:\s*$", re.IGNORECASE)
 
 
 def _is_numeric_or_short(span: str) -> bool:
@@ -151,6 +144,53 @@ def _line_bounds(text: str, pos: int) -> tuple[int, int]:
     start = 0 if ls < 0 else ls + 1
     end = len(text) if le < 0 else le
     return start, end
+
+
+def _is_address_context(text: str, hit_start: int) -> bool:
+    line_start, _ = _line_bounds(text, hit_start)
+    prev_block = text[max(0, line_start - 240):line_start]
+    if _ADDRESS_PREFIX_RE.search(prev_block.strip()):
+        return True
+    return False
+
+
+def _extend_loc_with_house_number(text: str, hit: Treffer) -> Treffer:
+    span = text[hit.start:hit.ende]
+    if not span.strip():
+        return hit
+
+    line_start, line_end = _line_bounds(text, hit.start)
+    after = text[hit.ende:line_end]
+
+    m = _HOUSE_NO_AFTER_RE.match(after)
+    if not m:
+        return hit
+
+    before_char = text[hit.ende - 1] if hit.ende - 1 >= 0 else ""
+    if before_char in ",;":
+        return hit
+
+    is_ctx = _is_address_context(text, hit.start)
+    tail_after_num = after[m.end():]
+    looks_like_address_tail = bool(re.match(r"^\s*(?:,|\d{5}\b|[A-ZÄÖÜ])", tail_after_num))
+
+    if not is_ctx and not looks_like_address_tail:
+        ws = m.group("ws") or ""
+        if len(ws) > 3:
+            return hit
+
+    new_end = hit.ende + m.end()
+    while new_end > hit.start and text[new_end - 1] in " \t":
+        new_end -= 1
+
+    return Treffer(
+        hit.start,
+        new_end,
+        hit.label,
+        hit.source,
+        from_regex=hit.from_regex,
+        from_ner=hit.from_ner,
+    )
 
 
 def _expand_org_if_only_legalform(text: str, hit: Treffer) -> Treffer:
@@ -266,6 +306,7 @@ def _normalize_org_hit(text: str, hit: Treffer) -> Treffer | None:
         for m in _ORG_LEGALFORM_RE.finditer(chunk):
             m_form_last = m
         if m_form_last is None:
+            print(f"=== FILTER ORG normalize: no legalform in chunk='{chunk}' ===")
             continue
 
         form_start = m_form_last.start()
@@ -287,6 +328,12 @@ def _normalize_org_hit(text: str, hit: Treffer) -> Treffer | None:
         if form_tok_idx is None:
             continue
 
+        print("=== FILTER ORG normalize DEBUG ===")
+        print(f"chunk='{chunk}'")
+        print(f"legalform='{chunk[form_start:form_end]}' form_start={form_start} form_end={form_end}")
+        print(f"toks={toks}")
+        print(f"form_tok_idx={form_tok_idx}")
+
         left = form_tok_idx - 1
         start_idx = form_tok_idx
         name_tokens_seen = 0
@@ -296,6 +343,7 @@ def _normalize_org_hit(text: str, hit: Treffer) -> Treffer | None:
             low = tok.lower()
 
             if low in _ORG_CONTEXT_BREAKS:
+                print(f"=== FILTER ORG normalize: break context token='{tok}' ===")
                 break
 
             if _ORG_CONNECTOR_RE.fullmatch(tok):
@@ -308,6 +356,7 @@ def _normalize_org_hit(text: str, hit: Treffer) -> Treffer | None:
 
             prev_char = chunk[a - 1] if a - 1 >= 0 else ""
             if prev_char in ":;()\"„“":
+                print(f"=== FILTER ORG normalize: break boundary prev_char='{prev_char}' tok='{tok}' ===")
                 break
 
             start_idx = left
@@ -347,8 +396,23 @@ def _normalize_org_hit(text: str, hit: Treffer) -> Treffer | None:
         )
 
         cand_span = text[cand.start:cand.ende].strip()
+
+        print("=== FILTER ORG normalize: CAND ===")
+        print(f"cand_span='{cand_span}' start={cand.start} end={cand.ende}")
+
         if not _ORG_LEGALFORM_RE.search(cand_span):
             continue
+
+        if _ORG_LEGALFORM_RE.fullmatch(cand_span):
+            orig_span = text[hit.start:hit.ende].strip()
+            if not _ORG_LEGALFORM_RE.fullmatch(orig_span):
+                print("=== FILTER ORG normalize: REFUSE shrink-to-legalform ===")
+                print(f"orig='{orig_span}'")
+                print(f"cand='{cand_span}'")
+                cand = hit
+                cand_span = orig_span
+                print("=== FILTER ORG normalize: CAND ===")
+                print(f"cand_span='{cand_span}' start={cand.start} end={cand.ende}")
 
         if best is None:
             best = cand
@@ -377,63 +441,93 @@ def filter_ner_strict(
     allowed_labels: Iterable[str] = ("PER", "ORG"),
 ) -> List[Treffer]:
     allowed: Set[str] = {a.upper() for a in allowed_labels}
+
+    print("==============================")
+    print("=== FILTER filter_ner_strict ===")
+    print(f"allowed={sorted(list(allowed))}")
+    print(f"hits_in={len(hits)}")
+    print("==============================")
+
     out: List[Treffer] = []
 
     for h in hits:
+        print("\n=== FILTER input hit ===")
+        print(f"label={h.label} source={h.source} start={h.start} end={h.ende} span='{text[h.start:h.ende]}'")
+
         L = h.label.upper()
         span = text[h.start:h.ende].strip()
 
         if not span:
+            print("=== FILTER drop: empty span ===")
             continue
 
         if span in PER_HINTS and "PER" in allowed and L != "PER":
             L = "PER"
-            h = Treffer(
-                h.start,
-                h.ende,
-                "PER",
-                h.source,
-                from_regex=h.from_regex,
-                from_ner=h.from_ner,
-            )
+            h = Treffer(h.start, h.ende, "PER", h.source, from_regex=h.from_regex, from_ner=h.from_ner)
+            print("=== FILTER promote: PER_HINTS forced PER ===")
+            print(f"span='{span}'")
 
         if L not in allowed:
+            print(f"=== FILTER drop: label not allowed ({L}) ===")
             continue
 
         low = span.lower()
 
         if low in COMMON_GREETING_WORDS:
+            print("=== FILTER drop: greeting word ===")
             continue
 
         if _is_numeric_or_short(span):
+            print("=== FILTER drop: numeric_or_short ===")
             continue
 
         if L == "PER":
             nh = _normalize_person_hit(text, h)
             if nh is None:
+                print("=== FILTER drop: normalize_person_hit returned None ===")
                 continue
+            if text[nh.start:nh.ende] != text[h.start:h.ende]:
+                print("=== FILTER normalize_person_hit CHANGED ===")
+                print(f"before='{text[h.start:h.ende]}'")
+                print(f"after ='{text[nh.start:nh.ende]}'")
             h = nh
             L = h.label.upper()
+            span = text[h.start:h.ende].strip()
 
         if L == "ORG":
-            h = _expand_org_if_only_legalform(text, h)
+            before = text[h.start:h.ende]
+            h2 = _expand_org_if_only_legalform(text, h)
+            after = text[h2.start:h2.ende]
+            if before != after:
+                print("=== FILTER expand_org_if_only_legalform CHANGED ===")
+                print(f"before='{before}'")
+                print(f"after ='{after}'")
+            h = h2
 
             nh = _normalize_org_hit(text, h)
             if nh is None:
+                print("=== FILTER drop: normalize_org_hit returned None ===")
                 continue
+            if text[nh.start:nh.ende] != text[h.start:h.ende]:
+                print("=== FILTER normalize_org_hit CHANGED ===")
+                print(f"before='{text[h.start:h.ende]}'")
+                print(f"after ='{text[nh.start:nh.ende]}'")
             h = nh
             span = text[h.start:h.ende].strip()
             low = span.lower()
 
-        if L == "ORG":
             low_span = " " + span.lower()
 
             if any(sw in low_span for sw in ORG_STOPWORDS):
+                print("=== FILTER drop: ORG stopword blacklist ===")
+                print(f"span='{span}'")
                 continue
 
             if "-" in span:
                 right = span.split("-", 1)[1].strip().lower()
                 if right in ORG_STOPWORDS:
+                    print("=== FILTER drop: ORG stopword after dash ===")
+                    print(f"span='{span}'")
                     continue
 
             has_legal_hint = any(hint in low_span for hint in ORG_HINTS)
@@ -442,9 +536,27 @@ def filter_ner_strict(
             is_short_acronym = bool(re.fullmatch(r"[A-ZÄÖÜ]{2,3}", span.strip()))
 
             if not has_legal_hint and (is_short_acronym or not has_caps_style):
+                print("=== FILTER drop: ORG fails hard rules (no legal hint AND weak caps/acronym) ===")
+                print(f"span='{span}' caps_count={caps_count} has_legal_hint={has_legal_hint} is_short_acronym={is_short_acronym}")
+                continue
+
+        if L in ("LOC", "GPE", "STRASSE"):
+            before = text[h.start:h.ende]
+            h2 = _extend_loc_with_house_number(text, h)
+            after = text[h2.start:h2.ende]
+            if before != after:
+                print("=== FILTER extend_loc_with_house_number CHANGED ===")
+                print(f"before='{before}'")
+                print(f"after ='{after}'")
+            h = h2
+            span = text[h.start:h.ende].strip()
+            if not span:
+                print("=== FILTER drop: empty span after LOC extend ===")
                 continue
 
         out.append(h)
+        print("=== FILTER output keep ===")
+        print(f"label={h.label} source={h.source} start={h.start} end={h.ende} span='{text[h.start:h.ende]}'")
 
     if "PER" in allowed:
         extra = _add_at_mentions(text)
@@ -455,8 +567,19 @@ def filter_ner_strict(
                     continue
                 filtered.append(x)
             if filtered:
+                print("=== FILTER @mentions extra ===")
+                for x in filtered:
+                    print(f"extra PER start={x.start} end={x.ende} span='{text[x.start:x.ende]}'")
                 out.extend(filtered)
                 out.sort(key=lambda t: t.start)
+            else:
+                print("=== FILTER @mentions extra: all overlapped ===")
+        else:
+            print("=== FILTER @mentions extra: none ===")
+
+    print("\n==============================")
+    print(f"=== FILTER output total: {len(out)} ===")
+    print("==============================")
 
     return out
 
