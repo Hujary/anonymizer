@@ -9,3 +9,4 @@ dist/
 # Runtime-Daten (PII)
 data/manual_tokens.json
 data/manual_types.json
+data/sessions.json
