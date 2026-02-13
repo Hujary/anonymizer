@@ -1,20 +1,22 @@
 from __future__ import annotations
 
+import argparse
+import json
 import sys
+from dataclasses import dataclass
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Set, Tuple
+
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SRC_DIR = REPO_ROOT / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-import argparse
-import json
-from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Set, Tuple
 
 from core import config
 from pipeline.anonymisieren import erkenne
+
 
 @dataclass(frozen=True)
 class Span:
@@ -109,7 +111,7 @@ def _extract_spans(text: str, *, allowed_sources: Set[str]) -> List[Span]:
         if start < 0 or end <= start or end > len(text):
             continue
 
-        out.append(Span(start=start, end=end, label=L, source=S))
+        out.append(Span(start=int(start), end=int(end), label=L, source=S))
 
     return out
 
@@ -135,16 +137,16 @@ def _parse_gold(gold: Dict[str, Any]) -> List[GoldEntity]:
         expected_sources = {_norm_source(x) for x in expected_sources_raw if str(x).strip()}
 
         alts = e.get("alternatives", None)
-
         candidates: List[GoldCandidate] = []
 
         if isinstance(alts, list) and alts:
             for a in alts:
                 if not isinstance(a, dict):
                     continue
+
                 start = a.get("start")
                 end = a.get("end")
-                text = a.get("text", "")
+                txt = a.get("text", "")
 
                 if not isinstance(start, int) or not isinstance(end, int):
                     continue
@@ -159,14 +161,14 @@ def _parse_gold(gold: Dict[str, Any]) -> List[GoldEntity]:
                     GoldCandidate(
                         start=int(start),
                         end=int(end),
-                        text=str(text or ""),
+                        text=str(txt or ""),
                         expected_sources=alt_sources,
                     )
                 )
         else:
             start = e.get("start")
             end = e.get("end")
-            text = e.get("text", "")
+            txt = e.get("text", "")
 
             if not isinstance(start, int) or not isinstance(end, int):
                 continue
@@ -175,7 +177,7 @@ def _parse_gold(gold: Dict[str, Any]) -> List[GoldEntity]:
                 GoldCandidate(
                     start=int(start),
                     end=int(end),
-                    text=str(text or ""),
+                    text=str(txt or ""),
                     expected_sources=set(expected_sources),
                 )
             )
@@ -201,8 +203,6 @@ def _candidate_allowed_for_mode(c: GoldCandidate, mode_sources: Set[str]) -> boo
 
 
 def _set_config_for_mode(mode: str) -> None:
-    # Erwartet core.config API: set_flags(...) + set(...)
-    # Wenn deine API abweicht: dann bricht es hier, dann musst du es anpassen.
     flags = dict(config.get_flags() or {})
     debug_mask = bool(flags.get("debug_mask", False))
 
@@ -244,13 +244,40 @@ def _restore_config(snap: Dict[str, Any]) -> None:
     config.set("debug_mask", bool(snap.get("debug_mask", False)))
 
 
+def _has_bom(text: str) -> bool:
+    return bool(text) and text[0] == "\ufeff"
+
+
+def _detect_newlines(text: str) -> str:
+    if "\r\n" in text:
+        return "CRLF"
+    if "\r" in text:
+        return "CR"
+    return "LF"
+
+
+def _dump_predictions(text: str, spans: List[Span], *, title: str) -> str:
+    lines: List[str] = []
+    lines.append(title)
+    lines.append(f"len(text)={len(text)} bom={_has_bom(text)} newlines={_detect_newlines(text)}")
+    for s in sorted(spans, key=lambda x: (x.start, x.end, x.label, x.source)):
+        snippet = text[s.start:s.end]
+        left = text[max(0, s.start - 24):s.start].replace("\n", "\\n").replace("\r", "\\r")
+        right = text[s.end:min(len(text), s.end + 24)].replace("\n", "\\n").replace("\r", "\\r")
+        snippet_dbg = snippet.replace("\n", "\\n").replace("\r", "\\r")
+        lines.append(
+            f"- {s.source:5s} {s.label:10s} {s.start:5d}:{s.end:<5d} '{snippet_dbg}'  ctx:'{left}▮{right}'"
+        )
+    return "\n".join(lines)
+
+
 def _evaluate(
     text: str,
     gold_entities: List[GoldEntity],
     *,
     mode: str,
     mode_sources: Set[str],
-) -> Tuple[EvalCounts, Dict[str, EvalCounts], List[str]]:
+) -> Tuple[EvalCounts, Dict[str, EvalCounts], List[str], List[Span]]:
     _set_config_for_mode(mode)
 
     preds = _extract_spans(text, allowed_sources=mode_sources)
@@ -298,7 +325,7 @@ def _evaluate(
         lbl_counts.fp += 1
         debug_lines.append(f"FP {p.label} ({p.source}) {p.start}:{p.end} '{text[p.start:p.end]}'")
 
-    return counts_total, counts_by_label, debug_lines
+    return counts_total, counts_by_label, debug_lines, preds
 
 
 def _format_report(mode: str, total: EvalCounts, by_label: Dict[str, EvalCounts]) -> str:
@@ -321,7 +348,7 @@ def _format_report(mode: str, total: EvalCounts, by_label: Dict[str, EvalCounts]
     return "\n".join(lines)
 
 
-def _resolve_paths(dataset_root: Path, basename: str) -> Tuple[Path, Path, Path]:
+def _resolve_paths(dataset_root: Path, basename: str) -> Tuple[Path, Path, Path, Path]:
     data_dir = dataset_root / "data"
     gold_dir = dataset_root / "gold"
     result_dir = dataset_root / "result"
@@ -339,7 +366,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dataset-root", default="evaluation/datasets", help="Root folder containing data/gold/result")
     ap.add_argument("--name", required=True, help="Basename like Dataset_01 (without extension)")
-    ap.add_argument("--debug", action="store_true", help="Write FP/FN details into result debug file")
+    ap.add_argument("--debug", action="store_true", help="Write FP/FN + predictions into result debug file")
     args = ap.parse_args()
 
     dataset_root = Path(args.dataset_root)
@@ -358,7 +385,7 @@ def main() -> int:
 
     snap = _snapshot_config()
     try:
-        modes = [
+        modes: List[Tuple[str, Set[str]]] = [
             ("regex", {"regex"}),
             ("ner", {"ner"}),
             ("combined", {"regex", "ner"}),
@@ -375,11 +402,13 @@ def main() -> int:
         all_reports.append("")
 
         for mode, sources in modes:
-            total, by_label, debug_lines = _evaluate(text, gold_entities, mode=mode, mode_sources=set(sources))
+            total, by_label, debug_lines, preds = _evaluate(text, gold_entities, mode=mode, mode_sources=set(sources))
             all_reports.append(_format_report(mode, total, by_label))
             all_reports.append("\n" + ("=" * 70) + "\n")
 
             if args.debug:
+                all_debug.append(_dump_predictions(text, preds, title=f"PREDS MODE={mode}"))
+                all_debug.append("")
                 all_debug.append(f"DATASET: {basename}")
                 all_debug.append(f"MODE: {mode}")
                 all_debug.extend(debug_lines)

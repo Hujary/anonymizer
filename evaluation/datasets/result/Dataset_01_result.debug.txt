@@ -1,0 +1,55 @@
+PREDS MODE=regex
+len(text)=354 bom=False newlines=LF
+- regex E_MAIL         5:30    'max.mustermann@example.de'  ctx:'Von: ▮\nAn: buchhaltung@firma-a'
+- regex E_MAIL        35:58    'buchhaltung@firma-ag.de'  ctx:'stermann@example.de\nAn: ▮\nDatum: 12.02.2026\n\nSehr'
+- regex DATUM         66:76    '12.02.2026'  ctx:'tung@firma-ag.de\nDatum: ▮\n\nSehr geehrte Frau Müll'
+- regex BETRAG       141:151   '1.240,50 €'  ctx:'isen Sie den Betrag von ▮ bis spätestens 28.02.20'
+- regex DATUM        167:177   '28.02.2026'  ctx:'240,50 € bis spätestens ▮ auf folgendes Konto:\n\nI'
+- regex IBAN         206:228   'DE89370400440532013000'  ctx:'folgendes Konto:\n\nIBAN: ▮\nBIC: COBADEFFXXX\nKontoi'
+- regex BIC          234:245   'COBADEFFXXX'  ctx:'370400440532013000\nBIC: ▮\nKontoinhaber: AlphaTech'
+- regex STRASSE      285:300   'Musterstraße 12'  ctx:'lphaTech GmbH\n\nAdresse:\n▮\n80331 München\n\nMit freu'
+- regex PLZ          301:306   '80331'  ctx:'dresse:\nMusterstraße 12\n▮ München\n\nMit freundlich'
+- regex ORT          307:314   'München'  ctx:':\nMusterstraße 12\n80331 ▮\n\nMit freundlichen Grüße'
+
+DATASET: Dataset_01
+MODE: regex
+
+----------------------------------------------------------------------
+
+PREDS MODE=ner
+len(text)=354 bom=False newlines=LF
+- ner   PER           91:102   'Frau Müller'  ctx:'2.02.2026\n\nSehr geehrte ▮,\n\nbitte überweisen Sie '
+- ner   MISC         206:228   'DE89370400440532013000'  ctx:'folgendes Konto:\n\nIBAN: ▮\nBIC: COBADEFFXXX\nKontoi'
+- ner   ORG          260:274   'AlphaTech GmbH'  ctx:'BADEFFXXX\nKontoinhaber: ▮\n\nAdresse:\nMusterstraße '
+- ner   LOC          285:300   'Musterstraße 12'  ctx:'lphaTech GmbH\n\nAdresse:\n▮\n80331 München\n\nMit freu'
+- ner   LOC          307:314   'München'  ctx:':\nMusterstraße 12\n80331 ▮\n\nMit freundlichen Grüße'
+- ner   PER          340:354   'Max Mustermann'  ctx:'Mit freundlichen Grüßen\n▮'
+
+DATASET: Dataset_01
+MODE: ner
+FP MISC (ner) 206:228 'DE89370400440532013000'
+FP LOC (ner) 285:300 'Musterstraße 12'
+FP LOC (ner) 307:314 'München'
+
+----------------------------------------------------------------------
+
+PREDS MODE=combined
+len(text)=354 bom=False newlines=LF
+- regex E_MAIL         5:30    'max.mustermann@example.de'  ctx:'Von: ▮\nAn: buchhaltung@firma-a'
+- regex E_MAIL        35:58    'buchhaltung@firma-ag.de'  ctx:'stermann@example.de\nAn: ▮\nDatum: 12.02.2026\n\nSehr'
+- regex DATUM         66:76    '12.02.2026'  ctx:'tung@firma-ag.de\nDatum: ▮\n\nSehr geehrte Frau Müll'
+- ner   PER           91:102   'Frau Müller'  ctx:'2.02.2026\n\nSehr geehrte ▮,\n\nbitte überweisen Sie '
+- regex BETRAG       141:151   '1.240,50 €'  ctx:'isen Sie den Betrag von ▮ bis spätestens 28.02.20'
+- regex DATUM        167:177   '28.02.2026'  ctx:'240,50 € bis spätestens ▮ auf folgendes Konto:\n\nI'
+- regex IBAN         206:228   'DE89370400440532013000'  ctx:'folgendes Konto:\n\nIBAN: ▮\nBIC: COBADEFFXXX\nKontoi'
+- regex BIC          234:245   'COBADEFFXXX'  ctx:'370400440532013000\nBIC: ▮\nKontoinhaber: AlphaTech'
+- ner   ORG          260:274   'AlphaTech GmbH'  ctx:'BADEFFXXX\nKontoinhaber: ▮\n\nAdresse:\nMusterstraße '
+- regex STRASSE      285:300   'Musterstraße 12'  ctx:'lphaTech GmbH\n\nAdresse:\n▮\n80331 München\n\nMit freu'
+- regex PLZ          301:306   '80331'  ctx:'dresse:\nMusterstraße 12\n▮ München\n\nMit freundlich'
+- regex ORT          307:314   'München'  ctx:':\nMusterstraße 12\n80331 ▮\n\nMit freundlichen Grüße'
+- ner   PER          340:354   'Max Mustermann'  ctx:'Mit freundlichen Grüßen\n▮'
+
+DATASET: Dataset_01
+MODE: combined
+
+----------------------------------------------------------------------
