@@ -1,15 +1,73 @@
-[
-  "max.mustermann@example.de",
-  "buchhaltung@firma-ag.de",
-  "12.02.2026",
-  "Frau Müller",
-  "1.240,50 €",
-  "28.02.2026",
-  "DE89370400440532013000",
-  "COBADEFFXXX",
-  "AlphaTech GmbH",
-  "Musterstraße 12",
-  "80331",
-  "München",
-  "Max Mustermann"
-]
+{
+  "document_id": "Dataset_01",
+  "items": [
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "max.mustermann@example.de"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "buchhaltung@firma-ag.de"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "12.02.2026"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "alternatives": [
+        { "text": "Frau Müller", "expected_sources": ["ner"] },
+        { "text": "Müller", "expected_sources": ["ner"] }
+      ]
+    },
+    {
+      "label": "BETRAG",
+      "expected_sources": ["regex"],
+      "text": "1.240,50 €"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "28.02.2026"
+    },
+    {
+      "label": "IBAN",
+      "expected_sources": ["regex"],
+      "text": "DE89370400440532013000"
+    },
+    {
+      "label": "BIC",
+      "expected_sources": ["regex"],
+      "text": "COBADEFFXXX"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "AlphaTech GmbH"
+    },
+    {
+      "label": "STRASSE",
+      "expected_sources": ["regex"],
+      "text": "Musterstraße 12"
+    },
+    {
+      "label": "PLZ",
+      "expected_sources": ["regex"],
+      "text": "80331"
+    },
+    {
+      "label": "ORT",
+      "expected_sources": ["regex"],
+      "text": "München"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Max Mustermann"
+    }
+  ]
+}

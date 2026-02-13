@@ -1,0 +1,72 @@
+DATASET: Dataset_02
+TEXT: evaluation/datasets/data/Dataset_02.txt
+GOLD: evaluation/datasets/gold/Dataset_02.json
+
+======================================================================
+
+MODE: regex
+TP: 16
+FP: 2
+FN: 2
+Precision: 0.8889
+Recall:    0.8889
+F1:        0.8889
+
+PER-LABEL:
+- BETRAG       TP=  2 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+- BIC          TP=  1 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+- DATUM        TP=  3 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+- E_MAIL       TP=  4 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+- IBAN         TP=  1 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+- ORT          TP=  0 FP=  0 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+- PLZ          TP=  1 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+- RECHNUNGS_NUMMER TP=  1 FP=  2 FN=  0 P=0.3333 R=1.0000 F1=0.5000
+- STRASSE      TP=  0 FP=  0 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+- TELEFON      TP=  1 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+- URL          TP=  1 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+- USTID        TP=  1 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+
+======================================================================
+
+MODE: ner
+TP: 3
+FP: 8
+FN: 1
+Precision: 0.2727
+Recall:    0.7500
+F1:        0.4000
+
+PER-LABEL:
+- LOC          TP=  0 FP=  2 FN=  0 P=0.0000 R=0.0000 F1=0.0000
+- MISC         TP=  0 FP=  5 FN=  0 P=0.0000 R=0.0000 F1=0.0000
+- ORG          TP=  1 FP=  1 FN=  1 P=0.5000 R=0.5000 F1=0.5000
+- PER          TP=  2 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+
+======================================================================
+
+MODE: combined
+TP: 19
+FP: 5
+FN: 3
+Precision: 0.7917
+Recall:    0.8636
+F1:        0.8261
+
+PER-LABEL:
+- BETRAG       TP=  2 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+- BIC          TP=  1 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+- DATUM        TP=  3 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+- E_MAIL       TP=  4 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+- IBAN         TP=  1 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+- LOC          TP=  0 FP=  2 FN=  0 P=0.0000 R=0.0000 F1=0.0000
+- ORG          TP=  1 FP=  1 FN=  1 P=0.5000 R=0.5000 F1=0.5000
+- ORT          TP=  0 FP=  0 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+- PER          TP=  2 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+- PLZ          TP=  1 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+- RECHNUNGS_NUMMER TP=  1 FP=  2 FN=  0 P=0.3333 R=1.0000 F1=0.5000
+- STRASSE      TP=  0 FP=  0 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+- TELEFON      TP=  1 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+- URL          TP=  1 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+- USTID        TP=  1 FP=  0 FN=  0 P=1.0000 R=1.0000 F1=1.0000
+
+======================================================================

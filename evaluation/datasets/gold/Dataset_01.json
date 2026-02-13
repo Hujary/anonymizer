@@ -3,102 +3,132 @@
   "entities": [
     {
       "label": "E_MAIL",
-      "expected_sources": ["regex"],
+      "expected_sources": [
+        "regex"
+      ],
       "start": 5,
       "end": 30,
       "text": "max.mustermann@example.de"
     },
     {
       "label": "E_MAIL",
-      "expected_sources": ["regex"],
+      "expected_sources": [
+        "regex"
+      ],
       "start": 35,
       "end": 58,
       "text": "buchhaltung@firma-ag.de"
     },
     {
       "label": "DATUM",
-      "expected_sources": ["regex"],
+      "expected_sources": [
+        "regex"
+      ],
       "start": 66,
       "end": 76,
       "text": "12.02.2026"
     },
     {
       "label": "PER",
-      "expected_sources": ["ner"],
+      "expected_sources": [
+        "ner"
+      ],
       "alternatives": [
         {
           "start": 91,
           "end": 102,
           "text": "Frau Müller",
-          "expected_sources": ["ner"]
+          "expected_sources": [
+            "ner"
+          ]
         },
         {
           "start": 96,
           "end": 102,
           "text": "Müller",
-          "expected_sources": ["ner"]
+          "expected_sources": [
+            "ner"
+          ]
         }
       ]
     },
     {
       "label": "BETRAG",
-      "expected_sources": ["regex"],
+      "expected_sources": [
+        "regex"
+      ],
       "start": 141,
       "end": 151,
       "text": "1.240,50 €"
     },
     {
       "label": "DATUM",
-      "expected_sources": ["regex"],
+      "expected_sources": [
+        "regex"
+      ],
       "start": 167,
       "end": 177,
       "text": "28.02.2026"
     },
     {
       "label": "IBAN",
-      "expected_sources": ["regex"],
+      "expected_sources": [
+        "regex"
+      ],
       "start": 206,
       "end": 228,
       "text": "DE89370400440532013000"
     },
     {
       "label": "BIC",
-      "expected_sources": ["regex"],
+      "expected_sources": [
+        "regex"
+      ],
       "start": 234,
       "end": 245,
       "text": "COBADEFFXXX"
     },
     {
       "label": "ORG",
-      "expected_sources": ["ner"],
+      "expected_sources": [
+        "ner"
+      ],
       "start": 260,
       "end": 274,
       "text": "AlphaTech GmbH"
     },
     {
       "label": "STRASSE",
-      "expected_sources": ["regex"],
+      "expected_sources": [
+        "regex"
+      ],
       "start": 285,
       "end": 300,
       "text": "Musterstraße 12"
     },
     {
       "label": "PLZ",
-      "expected_sources": ["regex"],
+      "expected_sources": [
+        "regex"
+      ],
       "start": 301,
       "end": 306,
       "text": "80331"
     },
     {
       "label": "ORT",
-      "expected_sources": ["regex"],
+      "expected_sources": [
+        "regex"
+      ],
       "start": 307,
       "end": 314,
       "text": "München"
     },
     {
       "label": "PER",
-      "expected_sources": ["ner"],
+      "expected_sources": [
+        "ner"
+      ],
       "start": 340,
       "end": 354,
       "text": "Max Mustermann"

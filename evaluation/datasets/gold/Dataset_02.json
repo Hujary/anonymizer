@@ -1,0 +1,218 @@
+{
+  "document_id": "Dataset_02",
+  "entities": [
+    {
+      "label": "E_MAIL",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 5,
+      "end": 35,
+      "text": "rechnung@techsolutions-gmbh.de"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 40,
+      "end": 66,
+      "text": "max.mustermann@example.org"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 74,
+      "end": 90,
+      "text": "17. Oktober 2024"
+    },
+    {
+      "label": "RECHNUNGS_NUMMER",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 133,
+      "end": 145,
+      "text": "TS-2024-0915"
+    },
+    {
+      "label": "PER",
+      "expected_sources": [
+        "ner"
+      ],
+      "alternatives": [
+        {
+          "start": 161,
+          "end": 176,
+          "text": "Herr Mustermann",
+          "expected_sources": [
+            "ner"
+          ]
+        },
+        {
+          "start": 166,
+          "end": 176,
+          "text": "Mustermann",
+          "expected_sources": [
+            "ner"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 250,
+      "end": 260,
+      "text": "25.09.2024"
+    },
+    {
+      "label": "BETRAG",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 283,
+      "end": 291,
+      "text": "289,75 €"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 374,
+      "end": 384,
+      "text": "10.10.2024"
+    },
+    {
+      "label": "IBAN",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 466,
+      "end": 488,
+      "text": "DE67500105172648391234"
+    },
+    {
+      "label": "BIC",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 496,
+      "end": 507,
+      "text": "INGDDEFFXXX"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": [
+        "ner"
+      ],
+      "start": 516,
+      "end": 527,
+      "text": "ING-DiBa AG"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": [
+        "ner"
+      ],
+      "start": 544,
+      "end": 562,
+      "text": "TechSolutions GmbH"
+    },
+    {
+      "label": "BETRAG",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 795,
+      "end": 801,
+      "text": "5,00 €"
+    },
+    {
+      "label": "TELEFON",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 917,
+      "end": 935,
+      "text": "+49 (0)89 99887766"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 946,
+      "end": 975,
+      "text": "support@techsolutions-gmbh.de"
+    },
+    {
+      "label": "STRASSE",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 987,
+      "end": 1005,
+      "text": "Innovationspark 12"
+    },
+    {
+      "label": "PLZ",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 1007,
+      "end": 1012,
+      "text": "80331"
+    },
+    {
+      "label": "ORT",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 1013,
+      "end": 1020,
+      "text": "München"
+    },
+    {
+      "label": "USTID",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 1034,
+      "end": 1045,
+      "text": "DE123456789"
+    },
+    {
+      "label": "PER",
+      "expected_sources": [
+        "ner"
+      ],
+      "start": 1073,
+      "end": 1085,
+      "text": "Anna Schmidt"
+    },
+    {
+      "label": "URL",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 1129,
+      "end": 1154,
+      "text": "www.techsolutions-gmbh.de"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 1173,
+      "end": 1201,
+      "text": "buchhaltung@beispiel-gmbh.de"
+    }
+  ]
+}
