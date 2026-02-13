@@ -1,26 +1,28 @@
+# src/pipeline/anonymisieren.py
+
 ###     Detect + Mask Pipeline (Regex/NER/Dict Merge + Mask Output)
 ### __________________________________________________________________________
 #
 #  Datei: src/pipeline/anonymisieren.py
 #
 #  - Orchestriert Erkennung aus drei Quellen: Regex, spaCy-NER, manuelles Dictionary
-#  - Aktivierung/Deaktivierung über Config-Flags (use_regex/use_ner/use_manual_dict)
+#  - Aktivierung/Deaktivierung:
+#      - Regex: über config flags + regex_labels
+#      - NER:   NUR über ner_labels (wenn leer -> NER wird NICHT ausgeführt)
 #  - Merged Regex+NER über core.zusammenführen (Overlap-/Prioritätslogik zentral)
 #  - Erzwingt Regex-Priorität für strukturierte Datentypen (IBAN, BIC, etc.)
 #  - Erzwingt Dict-Priorität (manuelle Tokens überschreiben andere Treffer bei Overlap)
-#  - Annotiert finale Treffer mit Quellenflags (from_regex/from_ner + source="dict")
-#  - anwenden(): erzeugt Mask-Strings je nach Modus (reversible/debug/default policy)
+#  - Quellenflags: robustes Markieren per Overlap (nicht per "gleiches Label"!)
 #
-#  API:
-#    - erkenne(text) -> List[Treffer]
-#    - anwenden(text, treffer, reversible=...) -> str
-#    - maskiere(text, reversible=...) -> (masked_text, treffer)
+#  Fix:
+#    - Dein UI setzt ner_labels=[] wenn alles abgewählt ist.
+#    - Pipeline muss NER dann hart abschalten, unabhängig von use_ner.
+#    - Dadurch verschwinden "Nie"/"APPLIED"/etc. sofort, weil spaCy gar nicht mehr läuft.
 #
-
 
 from __future__ import annotations
 
-from typing import Iterable, List, Optional, Tuple, Set
+from typing import List, Optional, Tuple
 
 from core import config
 from core.einstellungen import MASKIERUNGEN as MASK
@@ -42,41 +44,27 @@ STRUCT_TYPES = {
     "PLZ",
     "DATUM",
     "BETRAG",
+    "STRASSE",
+    "ORT",
 }
 
 
-def _flagge_quellen(merged: List[Treffer], regex_hits: List[Treffer], ner_hits: List[Treffer]) -> List[Treffer]:
-    out: List[Treffer] = []
-    for m in merged:
-        fr = any(m.überschneidet(r) and m.label == r.label for r in regex_hits)
-        fn = any(m.überschneidet(n) and m.label == n.label for n in ner_hits)
-        out.append(m.with_flags(regex=fr, ner=fn))
-    return out
-
-
-def _prefer_regex_for_struct_types(merged: List[Treffer], regex_hits: List[Treffer]) -> List[Treffer]:
-    keep: List[Treffer] = []
-    for m in merged:
-        overlaps_struct = any(m.überschneidet(r) and r.label.upper() in STRUCT_TYPES for r in regex_hits)
-        if overlaps_struct and m.source != "regex":
+def _norm_labels(xs: object) -> List[str]:
+    if not isinstance(xs, (list, tuple)):
+        return []
+    out: List[str] = []
+    for x in xs:
+        s = str(x).strip().upper()
+        if s:
+            out.append(s)
+    seen = set()
+    uniq: List[str] = []
+    for s in out:
+        if s in seen:
             continue
-        keep.append(m)
-    return keep
-
-
-def _apply_dict_priority(base_hits: List[Treffer], dict_hits: List[Treffer]) -> List[Treffer]:
-    if not dict_hits:
-        return base_hits
-
-    filtered_base: List[Treffer] = []
-    for h in base_hits:
-        if any(h.überschneidet(d) for d in dict_hits):
-            continue
-        filtered_base.append(h)
-
-    final_hits = filtered_base + list(dict_hits)
-    final_hits.sort(key=lambda t: t.start)
-    return final_hits
+        seen.add(s)
+        uniq.append(s)
+    return uniq
 
 
 def _resolve_spacy_model_name() -> Optional[str]:
@@ -88,7 +76,6 @@ def _resolve_spacy_model_name() -> Optional[str]:
 
 def _is_ner_runtime_available() -> bool:
     try:
-        import spacy  # noqa: F401
         from spacy.util import is_package
     except Exception:
         return False
@@ -110,8 +97,60 @@ def _run_ner(text: str, allowed_labels: List[str]) -> List[Treffer]:
     except Exception:
         return []
 
-    raw_ner = [Treffer(s, e, l, "ner", from_ner=True) for s, e, l in finde_ner(text)]
+    allowed_set = set(allowed_labels)
+    raw_ner: List[Treffer] = []
+    for s, e, l in finde_ner(text):
+        L = str(l).strip().upper()
+        if not L or L not in allowed_set:
+            continue
+        raw_ner.append(Treffer(s, e, L, "ner", from_ner=True))
+
+    if not raw_ner:
+        return []
+
     return filter_ner_strict(text, raw_ner, allowed_labels=allowed_labels)
+
+
+def _overlaps_any(a: Treffer, hits: List[Treffer]) -> bool:
+    return any(a.überschneidet(h) for h in hits)
+
+
+def _flagge_quellen(merged: List[Treffer], regex_hits: List[Treffer], ner_hits: List[Treffer]) -> List[Treffer]:
+    out: List[Treffer] = []
+    for m in merged:
+        fr0 = bool(getattr(m, "from_regex", False)) or getattr(m, "source", "") == "regex"
+        fn0 = bool(getattr(m, "from_ner", False)) or getattr(m, "source", "") == "ner"
+
+        fr = fr0 or _overlaps_any(m, regex_hits)
+        fn = fn0 or _overlaps_any(m, ner_hits)
+
+        out.append(m.with_flags(regex=fr, ner=fn))
+    return out
+
+
+def _prefer_regex_for_struct_types(merged: List[Treffer], regex_hits: List[Treffer]) -> List[Treffer]:
+    keep: List[Treffer] = []
+    for m in merged:
+        overlaps_struct = any(m.überschneidet(r) and r.label.upper() in STRUCT_TYPES for r in regex_hits)
+        if overlaps_struct and getattr(m, "source", "") != "regex":
+            continue
+        keep.append(m)
+    return keep
+
+
+def _apply_dict_priority(base_hits: List[Treffer], dict_hits: List[Treffer]) -> List[Treffer]:
+    if not dict_hits:
+        return base_hits
+
+    filtered_base: List[Treffer] = []
+    for h in base_hits:
+        if any(h.überschneidet(d) for d in dict_hits):
+            continue
+        filtered_base.append(h)
+
+    final_hits = filtered_base + list(dict_hits)
+    final_hits.sort(key=lambda t: t.start)
+    return final_hits
 
 
 def erkenne(text: str) -> List[Treffer]:
@@ -124,12 +163,11 @@ def erkenne(text: str) -> List[Treffer]:
     if flags.get("use_regex", True):
         regex_treffer = [Treffer(s, e, l, "regex", from_regex=True) for s, e, l in finde_regex(text)]
 
-    if flags.get("use_ner", True):
-        allowed = config.get("ner_labels", [])
-        if allowed and _is_ner_runtime_available():
-            ner_treffer = _run_ner(text, allowed_labels=list(allowed))
-        else:
-            ner_treffer = []
+    allowed = _norm_labels(config.get("ner_labels", []))
+    if allowed and _is_ner_runtime_available():
+        ner_treffer = _run_ner(text, allowed_labels=allowed)
+    else:
+        ner_treffer = []
 
     if flags.get("use_manual_dict", True):
         dict_treffer = finde_manual_tokens(text)
@@ -137,7 +175,6 @@ def erkenne(text: str) -> List[Treffer]:
     if not regex_treffer and not ner_treffer and not dict_treffer:
         return []
 
-    merged: List[Treffer]
     if regex_treffer or ner_treffer:
         merged = zusammenführen(regex_treffer, ner_treffer)
     else:
@@ -166,9 +203,9 @@ def anwenden(text: str, treffer: List[Treffer], *, reversible: bool) -> str:
         else:
             if debug_mask:
                 suffix_parts: List[str] = []
-                if t.from_regex:
+                if getattr(t, "from_regex", False):
                     suffix_parts.append("REGEX")
-                if t.from_ner:
+                if getattr(t, "from_ner", False):
                     suffix_parts.append("NER")
                 if getattr(t, "source", "") == "dict":
                     suffix_parts.append("DICT")

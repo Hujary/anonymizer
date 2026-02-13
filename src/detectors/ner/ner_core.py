@@ -8,19 +8,17 @@
 #  - Unterstützt Modellumschaltung zur Laufzeit (Preset oder direkter Modellname)
 #  - Thread-sicherer Zugriff auf Modellwechsel und Cache
 #  - spaCy-Modelle werden einmalig geladen und im Speicher gehalten
-#  - Liefert Character-Offsets + Label für Downstream-Pipeline
+#  - Liefert Character-Offsets + Label für Downstream-Pipeline (Masking)
 #  - ORG-Boost für Rechtsformen via:
 #      (1) EntityRuler (token-basiert, after="ner", overwrite_ents=True)
-#      (2) Char-level ORG-Boost (regex) auf doc.ents (Offsets bleiben korrekt)
+#      (2) Char-level Post-Boost (regex) auf doc.ents (Offsets bleiben korrekt)
 #  - PER-Boost für Mentions via:
-#      (3) Char-level Mention-Boost: "@Tobias" => PER("Tobias")
+#      (3) Char-level Mention-Boost: "@Tobias" => PER("Tobias") (Offsets bleiben korrekt)
 #
-#  HINWEIS:
-#    - Diese Datei liefert nur (start, end, label).
-#    - Quellenflags (from_regex/from_ner) setzt die Pipeline beim Wrappen in Treffer.
-#
-#  DEBUG (stumpf):
-#    - Gibt raw spaCy Entities + Entities nach Boosts in die Konsole aus.
+#  WICHTIGER FIX (Gating):
+#    - Wenn config["ner_labels"] leer ist, liefert finde_ner() IMMER keine Treffer.
+#    - Damit kann NER im UI effektiv "deaktiviert" werden, ohne dass irgendwo noch
+#      spaCy durchläuft und Treffer (fälschlich) in der UI auftauchen.
 #
 
 from __future__ import annotations
@@ -112,7 +110,12 @@ class SpacyNerDetector:
                 "label": "ORG",
                 "pattern": [
                     {"TEXT": {"REGEX": r"^[A-Za-zÄÖÜäöüß0-9][A-Za-zÄÖÜäöüß0-9&\-.]{1,}$"}},
-                    {"OP": "*", "TEXT": {"REGEX": r"^(?:[A-Za-zÄÖÜäöüß0-9][A-Za-zÄÖÜäöüß0-9&\-.]{1,}|&|und|\+|-)$"}},
+                    {
+                        "OP": "*",
+                        "TEXT": {
+                            "REGEX": r"^(?:[A-Za-zÄÖÜäöüß0-9][A-Za-zÄÖÜäöüß0-9&\-.]{1,}|&|und|\+|-)$"
+                        },
+                    },
                     {"LOWER": {"IN": form_set}},
                 ],
             }
@@ -169,7 +172,9 @@ class SpacyNerDetector:
 
     @staticmethod
     def _compile_mention_regex() -> re.Pattern:
-        return re.compile(r"(?<![\w.+-])@(?P<name>[A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)?)\b")
+        return re.compile(
+            r"(?<![\w.+-])@(?P<name>[A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)?)\b"
+        )
 
     @staticmethod
     def _merge_spans_prefer_longer(spans: List[Span]) -> List[Span]:
@@ -260,36 +265,15 @@ class SpacyNerDetector:
             self._cache[model] = nlp
             return nlp
 
-    @staticmethod
-    def _print_doc_ents(tag: str, doc: Doc) -> None:
-        print("==============================")
-        print(f"=== NER {tag} doc.ents ===")
-        print(f"count={len(doc.ents)}")
-        for e in doc.ents:
-            span = doc.text[e.start_char:e.end_char]
-            print(f"label={e.label_} start={e.start_char} end={e.end_char} span='{span}'")
-        print("==============================")
-
     def find(self, text: str) -> Iterable[Tuple[int, int, str]]:
         nlp = self._load()
         doc = nlp(text)
 
-        self._print_doc_ents("RAW", doc)
-
         doc = self._boost_org_legalforms(doc)
-        self._print_doc_ents("AFTER_ORG_BOOST", doc)
-
         doc = self._boost_mentions(doc)
-        self._print_doc_ents("AFTER_MENTION_BOOST", doc)
 
-        print("==============================")
-        print("=== NER OUTPUT tuples ===")
-        print("==============================")
         for ent in doc.ents:
-            s, e, L = ent.start_char, ent.end_char, ent.label_
-            span = doc.text[s:e]
-            print(f"tuple=({s},{e},{L}) span='{span}'")
-            yield (s, e, L)
+            yield (ent.start_char, ent.end_char, ent.label_)
 
 
 _DETECTOR = SpacyNerDetector(_cache={}, _lock=threading.Lock(), _current_model=SPACY_MODELL)
@@ -304,4 +288,7 @@ def set_spacy_model(name_or_preset: str) -> str:
 
 
 def finde_ner(text: str) -> Iterable[Tuple[int, int, str]]:
+    labels = config.get("ner_labels", [])
+    if not isinstance(labels, list) or not any(str(x).strip() for x in labels):
+        return iter(())
     return _DETECTOR.find(text)

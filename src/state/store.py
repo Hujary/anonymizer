@@ -6,50 +6,46 @@
 #  - Persistiert View-States (Dashboard, Demask) über Navigation hinweg
 #  - Verwaltet Theme/Sprache inkl. Schreiben in config.json
 #  - Bindet SessionManager an für reversible Maskierung (persistente Sessions + TTL)
+#
+#  WICHTIG:
+#    - Session-Mapping ist NICHT "Source of Truth" für Treffer-Erkennung.
+#    - Session-Mapping dient zum:
+#        (1) Demaskieren (Token -> Original)
+#        (2) Token-Reuse: gleiches (Label, Original) soll möglichst denselben Token behalten
+#
 
 
 from __future__ import annotations
 
-from ui.style.theme import THEMES
 from core import config
 from services.session_manager import SessionManager, SESSION_TTL_SECONDS
+from ui.style.theme import THEMES
 
 
 class AppStore:
     def __init__(self):
-
-        # Theme-Name aus Config laden, nur gültige Keys erlauben
         self.theme_name = self._load_theme_name()
-
-        # Aktives Theme-Dict aus Registry ableiten
         self.theme = THEMES[self.theme_name]
 
-        # UI-Sprache aus Config laden, nur "de"/"en" zulassen
         self.lang = self._load_lang()
 
-        # Letztes Masking-Ergebnis (für UI-Anzeige, Remask, Demask)
         self.last_mapping = {}
         self.last_hits = []
         self.last_masked_text = ""
         self.last_original_text = ""
 
-        # Flag: reversible Maskierung aktiv (steuert Session-Mapping-Nutzung)
         self.reversible = True
 
-        # Dashboard-View-State (persistiert in-memory)
         self.dash_input_text: str = ""
         self.dash_output_text: str = ""
         self.dash_status_text: str = ""
 
-        # Auto-Verhalten im UI (z.B. beim Tippen/Einfügen)
         self.auto_mask_enabled: bool = True
         self.auto_demask_enabled: bool = True
 
-        # Demask-View-State (separat vom Dashboard)
         self.demask_input_text: str = ""
         self.demask_output_text: str = ""
 
-        # Sessionverwaltung für reversible Tokens (token -> original, TTL, persistent)
         self.session_mgr = SessionManager(SESSION_TTL_SECONDS)
 
     def _load_theme_name(self) -> str:

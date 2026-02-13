@@ -162,6 +162,11 @@ def view(
         config.set("ner_labels", sorted(selected_ner))
         config.set("regex_labels", sorted(selected_rx))
 
+    allowed = {x.upper() for x in (list(selected_rx) + list(selected_ner)) if isinstance(x, str) and x.strip()}
+
+    if store is not None and hasattr(store, "session_mgr") and store.session_mgr is not None:
+        store.session_mgr.prune_active_mapping_by_allowed_labels(allowed)
+
     def _notify_saved(msg: str):
         page.snack_bar = ft.SnackBar(ft.Text(msg), bgcolor=theme["success"])
         page.snack_bar.open = True

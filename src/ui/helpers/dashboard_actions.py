@@ -1,21 +1,11 @@
-###     Dashboard Masking Controller (Flet UI Actions + Token Editing + Debounce)
-### __________________________________________________________________________
-#
-#  - Steuert Masking-Ablauf im Dashboard (Manual Tokens, Edit, Delete, Apply)
-#  - Baut/aktualisiert Token-UI (Gruppierung, Search, Edit-States)
-#  - Synchronisiert UI-State ↔ AppStore (last_mapping, last_hits, dash_* Felder)
-#  - Schreibt reversible Mappings in SessionManager (falls aktiv)
-#  - Implementiert Auto-Mask Debounce via threading.Timer
-#  - Nutzt mask_with_mapping() für deterministisches Remasking nach Edits
-
-
 from __future__ import annotations
 
-from typing import Dict
+from typing import Dict, List, Set, Tuple
 import threading
 
 import flet as ft
 
+from core import config
 from ui.helpers.dashboard_context import DashboardContext, AUTO_MASK_DEBOUNCE_SECONDS
 from ui.helpers.dashboard_helpers import typ_of, gen_token
 from ui.helpers.dashboard_masking_engine import find_occurrences, mask_with_mapping
@@ -23,7 +13,51 @@ from ui.helpers.dashboard_token_renderer import build_token_rows
 from ui.style.translations import t
 
 
-# Zeigt Snackbar im aktuellen Theme (danger/warning/default)
+# ------------------------------------------------------------
+# Settings-Helper: welche Token-Typen sind aktuell erlaubt?
+# ------------------------------------------------------------
+def _allowed_token_types_from_config() -> Set[str]:
+    flags = config.get_flags() or {}
+
+    allowed: Set[str] = set()
+
+    if flags.get("use_regex", True):
+        rx = config.get("regex_labels", []) or []
+        for x in rx:
+            s = str(x).strip().upper()
+            if s:
+                allowed.add(s)
+
+    if flags.get("use_ner", True):
+        ner = config.get("ner_labels", []) or []
+        for x in ner:
+            s = str(x).strip().upper()
+            if s:
+                allowed.add(s)
+
+    return allowed
+
+
+def _filter_session_mapping_to_allowed_types(session_mapping: Dict[str, str], allowed_types: Set[str]) -> Dict[str, str]:
+    if not session_mapping:
+        return {}
+    if not allowed_types:
+        return {}
+
+    out: Dict[str, str] = {}
+    for token, value in session_mapping.items():
+        if not token or not value:
+            continue
+        tcode = typ_of(token).upper()
+        if tcode not in allowed_types:
+            continue
+        out[token] = value
+    return out
+
+
+# ------------------------------------------------------------
+# Snackbar / Banner
+# ------------------------------------------------------------
 def show_snack(ctx: DashboardContext, message: str, kind: str) -> None:
     if kind == "danger":
         bg = ctx.theme["danger"]
@@ -37,8 +71,6 @@ def show_snack(ctx: DashboardContext, message: str, kind: str) -> None:
     ctx.page.update()
 
 
-
-# Aktualisiert Banner-Text basierend auf Anzahl Tokens und persistiert Dashboard-State
 def update_banner(ctx: DashboardContext, mapping: Dict[str, str]) -> None:
     total_tokens = len(mapping or {})
 
@@ -56,8 +88,9 @@ def update_banner(ctx: DashboardContext, mapping: Dict[str, str]) -> None:
     )
 
 
-
-# Schreibt Mapping in SessionManager, aber nur bei reversibler Maskierung
+# ------------------------------------------------------------
+# Session push (nur reversible)
+# ------------------------------------------------------------
 def _push_mapping_into_session(ctx: DashboardContext, mapping: Dict[str, str]) -> None:
     if not mapping:
         return
@@ -70,8 +103,9 @@ def _push_mapping_into_session(ctx: DashboardContext, mapping: Dict[str, str]) -
             pass
 
 
-
-# Ermittelt Quellenlabel pro Token anhand last_hits (NER/Regex/Manual)
+# ------------------------------------------------------------
+# Quellenlabel pro Token (NER/Regex/Manual) anhand last_hits
+# ------------------------------------------------------------
 def token_source_label(ctx: DashboardContext, key: str, value: str) -> str:
     hits = getattr(ctx.store, "last_hits", []) or []
     src = ctx.input_field.value or ""
@@ -120,8 +154,9 @@ def token_source_label(ctx: DashboardContext, key: str, value: str) -> str:
     return "Manual"
 
 
-
-# Synchronisiert ctx.token_vals + ctx.token_keys_order aus einem Mapping (deterministische Sortierung)
+# ------------------------------------------------------------
+# UI Sync + Render
+# ------------------------------------------------------------
 def _sync_ctx_token_state(ctx: DashboardContext, mapping: Dict[str, str]) -> None:
     ctx.token_vals.clear()
     ctx.token_keys_order.clear()
@@ -131,8 +166,6 @@ def _sync_ctx_token_state(ctx: DashboardContext, mapping: Dict[str, str]) -> Non
         ctx.token_keys_order.append(key)
 
 
-
-# Baut Token-UI neu (Renderer bekommt Callbacks und Source-Resolver)
 def _rebuild_token_ui(ctx: DashboardContext, mapping: Dict[str, str]) -> None:
     build_token_rows(
         page=ctx.page,
@@ -152,8 +185,6 @@ def _rebuild_token_ui(ctx: DashboardContext, mapping: Dict[str, str]) -> None:
     )
 
 
-
-# Lädt Tokens aus Store-Mapping und aktualisiert UI (Banner, Sichtbarkeit, Add-Button)
 def refresh_tokens_from_store(ctx: DashboardContext) -> None:
     mapping = getattr(ctx.store, "last_mapping", None) or {}
     _sync_ctx_token_state(ctx, mapping)
@@ -169,8 +200,6 @@ def refresh_tokens_from_store(ctx: DashboardContext) -> None:
     update_add_button_state(ctx)
 
 
-
-# Aktiviert/Deaktiviert "Add Token" abhängig von Input + Token-Text
 def update_add_button_state(ctx: DashboardContext) -> None:
     src = (ctx.input_field.value or "").strip()
     val = (ctx.manual_token_text.value or "").strip()
@@ -188,24 +217,21 @@ def update_add_button_state(ctx: DashboardContext) -> None:
     ctx.page.update()
 
 
-
-# Startet Edit-Mode für ein Token und rebuildet UI
+# ------------------------------------------------------------
+# Edit lifecycle
+# ------------------------------------------------------------
 def _on_start_edit(ctx: DashboardContext, key: str) -> None:
     ctx.editing_keys.add(key)
     mapping = {k: ctx.token_vals[k] for k in ctx.token_keys_order if k in ctx.token_vals}
     _rebuild_token_ui(ctx, mapping)
 
 
-
-# Bricht Edit-Mode ab und rebuildet UI
 def _on_cancel_edit(ctx: DashboardContext, key: str) -> None:
     ctx.editing_keys.discard(key)
     mapping = {k: ctx.token_vals[k] for k in ctx.token_keys_order if k in ctx.token_vals}
     _rebuild_token_ui(ctx, mapping)
 
 
-
-# Validiert und speichert Token-Edit (nur Erweiterung erlaubt), danach Remasking
 def _on_save_edit(ctx: DashboardContext, key: str, new_val: str) -> None:
     src_text = ctx.input_field.value or ""
     old_val = ctx.token_vals.get(key, "")
@@ -256,8 +282,6 @@ def _on_save_edit(ctx: DashboardContext, key: str, new_val: str) -> None:
     apply_current_edits(ctx)
 
 
-
-# Löscht Token aus UI-State + Store-Mapping + aktiver Session; ersetzt Token im Output zurück
 def _on_delete_token(ctx: DashboardContext, key: str) -> None:
     current_map = dict(getattr(ctx.store, "last_mapping", {}) or {})
     hits = list(getattr(ctx.store, "last_hits", []) or [])
@@ -296,8 +320,9 @@ def _on_delete_token(ctx: DashboardContext, key: str) -> None:
     ctx.page.update()
 
 
-
-# Fügt manuell einen Token hinzu (validiert Standalone-Match, baut Mapping, remaskt deterministisch)
+# ------------------------------------------------------------
+# Manual add + deterministic remask
+# ------------------------------------------------------------
 def add_manual_token(ctx: DashboardContext) -> None:
     src = ctx.input_field.value or ""
     if not src.strip():
@@ -366,8 +391,6 @@ def add_manual_token(ctx: DashboardContext) -> None:
     ctx.page.update()
 
 
-
-# Wendet aktuell editierte Tokens auf den Input an und setzt Output + Store-State konsistent
 def apply_current_edits(ctx: DashboardContext) -> None:
     src = ctx.input_field.value or ""
     if not src:
@@ -418,8 +441,9 @@ def apply_current_edits(ctx: DashboardContext) -> None:
     ctx.page.update()
 
 
-
-# Führt Masking über Service aus, merged Session-Mapping, setzt UI/Store-State (auto/manual)
+# ------------------------------------------------------------
+# Masking run (Service + Session merge, aber gefiltert nach Settings)
+# ------------------------------------------------------------
 def run_masking_internal(ctx: DashboardContext, auto: bool = False) -> None:
     if ctx.on_masking_state is not None:
         try:
@@ -458,6 +482,9 @@ def run_masking_internal(ctx: DashboardContext, auto: bool = False) -> None:
                 session_mapping = mgr.get_active_mapping()
             except Exception:
                 session_mapping = {}
+
+        allowed_types = _allowed_token_types_from_config()
+        session_mapping = _filter_session_mapping_to_allowed_types(session_mapping, allowed_types)
 
         if session_mapping:
             for token, value in session_mapping.items():
@@ -499,8 +526,9 @@ def run_masking_internal(ctx: DashboardContext, auto: bool = False) -> None:
                 pass
 
 
-
-# Bricht einen laufenden Debounce-Timer ab (wenn vorhanden)
+# ------------------------------------------------------------
+# Debounce + clear/reset
+# ------------------------------------------------------------
 def _cancel_debounce(ctx: DashboardContext) -> None:
     if ctx.debounce_timer is not None:
         try:
@@ -510,8 +538,6 @@ def _cancel_debounce(ctx: DashboardContext) -> None:
         ctx.debounce_timer = None
 
 
-
-# Hard-Reset: Input/Output/Token-UI/Store-State + schließt aktive Session
 def clear_both(ctx: DashboardContext) -> None:
     _cancel_debounce(ctx)
 
@@ -541,8 +567,6 @@ def clear_both(ctx: DashboardContext) -> None:
     ctx.page.update()
 
 
-
-# Reagiert auf Input-Änderungen: persistiert Draft, optional Auto-Mask mit Debounce
 def handle_input_change(ctx: DashboardContext) -> None:
     text = ctx.input_field.value or ""
     ctx.store.set_dash(input_text=text)
