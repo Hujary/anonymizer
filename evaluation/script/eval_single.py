@@ -13,7 +13,6 @@ SRC_DIR = REPO_ROOT / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-
 from core import config
 from pipeline.anonymisieren import erkenne
 
@@ -348,31 +347,34 @@ def _format_report(mode: str, total: EvalCounts, by_label: Dict[str, EvalCounts]
     return "\n".join(lines)
 
 
-def _resolve_paths(dataset_root: Path, basename: str) -> Tuple[Path, Path, Path, Path]:
-    data_dir = dataset_root / "data"
-    gold_dir = dataset_root / "gold"
-    result_dir = dataset_root / "result"
+def _resolve_paths(eval_root: Path, basename: str) -> Tuple[Path, Path, Path, Path]:
+    datasets_dir = eval_root / "datasets"
+    data_dir = datasets_dir / "data"
+    gold_dir = datasets_dir / "gold"
+
+    result_dir = eval_root / "result"
+    result_dir.mkdir(parents=True, exist_ok=True)
 
     text_path = data_dir / f"{basename}.txt"
     gold_path = gold_dir / f"{basename}.json"
-    result_dir.mkdir(parents=True, exist_ok=True)
 
     out_path = result_dir / f"{basename}_result.txt"
     dbg_path = result_dir / f"{basename}_result.debug.txt"
+
     return text_path, gold_path, out_path, dbg_path
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset-root", default="evaluation/datasets", help="Root folder containing data/gold/result")
     ap.add_argument("--name", required=True, help="Basename like Dataset_01 (without extension)")
     ap.add_argument("--debug", action="store_true", help="Write FP/FN + predictions into result debug file")
+    ap.add_argument("--eval-root", default="evaluation", help="Root folder containing datasets/, result/, token/, script/")
     args = ap.parse_args()
 
-    dataset_root = Path(args.dataset_root)
+    eval_root = Path(args.eval_root)
     basename = args.name
 
-    text_path, gold_path, out_path, dbg_path = _resolve_paths(dataset_root, basename)
+    text_path, gold_path, out_path, dbg_path = _resolve_paths(eval_root, basename)
 
     if not text_path.exists():
         raise FileNotFoundError(f"Missing text file: {text_path}")

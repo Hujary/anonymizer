@@ -44,6 +44,19 @@ python src/ui_app.py
 flet pack src/ui_app.py --name anonymizer --icon src/assets/logo.icns
 ```
 
+
+### Goldset Token/Zeilen Script ausführen
+```bash
+flet pack src/ui_app.py --name anonymizer --icon src/assets/logo.icns
+```
+
+### Validierung Test Script ausführen
+```bash
+python evaluation/script/eval_single.py --name Dataset_01
+python evaluation/script/eval_single.py --name Dataset_01 --debug
+```
+
+
 ---
 
 ## SCREENSHOTS - ANLEITUNG
