@@ -1,0 +1,7 @@
+Patientin: Maria Hoffmann
+Geburtsdatum: 14.07.1989
+Adresse: Bahnhofstraße 3, 70173 Stuttgart
+
+Die Patientin stellte sich am 01.03.2024 mit akuten Beschwerden vor.
+Hausarzt: Dr. Peter Lang, Praxis für Allgemeinmedizin, Stuttgart.
+Versichertennummer: AOK-78234923.

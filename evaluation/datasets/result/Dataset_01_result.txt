@@ -1,0 +1,63 @@
+DATASET: Dataset_01
+TEXT: evaluation/datasets/data/Dataset_01.txt
+GOLD: evaluation/datasets/gold/Dataset_01.json
+
+======================================================================
+
+MODE: regex
+TP: 0
+FP: 10
+FN: 10
+Precision: 0.0000
+Recall:    0.0000
+F1:        0.0000
+
+PER-LABEL:
+- BETRAG       TP=  0 FP=  1 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+- BIC          TP=  0 FP=  1 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+- DATUM        TP=  0 FP=  2 FN=  2 P=0.0000 R=0.0000 F1=0.0000
+- E_MAIL       TP=  0 FP=  2 FN=  2 P=0.0000 R=0.0000 F1=0.0000
+- IBAN         TP=  0 FP=  1 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+- ORT          TP=  0 FP=  1 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+- PLZ          TP=  0 FP=  1 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+- STRASSE      TP=  0 FP=  1 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+
+======================================================================
+
+MODE: ner
+TP: 0
+FP: 6
+FN: 3
+Precision: 0.0000
+Recall:    0.0000
+F1:        0.0000
+
+PER-LABEL:
+- LOC          TP=  0 FP=  2 FN=  0 P=0.0000 R=0.0000 F1=0.0000
+- MISC         TP=  0 FP=  1 FN=  0 P=0.0000 R=0.0000 F1=0.0000
+- ORG          TP=  0 FP=  1 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+- PER          TP=  0 FP=  2 FN=  2 P=0.0000 R=0.0000 F1=0.0000
+
+======================================================================
+
+MODE: combined
+TP: 0
+FP: 13
+FN: 13
+Precision: 0.0000
+Recall:    0.0000
+F1:        0.0000
+
+PER-LABEL:
+- BETRAG       TP=  0 FP=  1 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+- BIC          TP=  0 FP=  1 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+- DATUM        TP=  0 FP=  2 FN=  2 P=0.0000 R=0.0000 F1=0.0000
+- E_MAIL       TP=  0 FP=  2 FN=  2 P=0.0000 R=0.0000 F1=0.0000
+- IBAN         TP=  0 FP=  1 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+- ORG          TP=  0 FP=  1 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+- ORT          TP=  0 FP=  1 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+- PER          TP=  0 FP=  2 FN=  2 P=0.0000 R=0.0000 F1=0.0000
+- PLZ          TP=  0 FP=  1 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+- STRASSE      TP=  0 FP=  1 FN=  1 P=0.0000 R=0.0000 F1=0.0000
+
+======================================================================

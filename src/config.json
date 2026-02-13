@@ -6,6 +6,9 @@
   "theme": "dark",
   "lang": "de",
   "ner_labels": [
+    "GPE",
+    "LOC",
+    "ORG",
     "PER"
   ],
   "regex_labels": [
