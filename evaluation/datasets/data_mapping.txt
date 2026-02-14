@@ -17,8 +17,8 @@ Dataset_01 = Supporttickets (structured, 01)        //   geprüft ✓
 Dataset_02 = Supporttickets (structured, 02)        //   geprüft ✓
 Dataset_03 = Supporttickets (regular, 01)           //   geprüft ✓
 Dataset_04 = Supporttickets (regular, 02)           //   geprüft ✓
-Dataset_05 = Supporttickets (unstructured, 01)
-Dataset_06 = Supporttickets (unstructured, 02)
+Dataset_05 = Supporttickets (unstructured, 01)      //   geprüft ✓
+Dataset_06 = Supporttickets (unstructured, 02)      //   geprüft ✓
 
 Dataset_07 = E-Mail (structured, 01)
 Dataset_08 = E-Mail (structured, 02)

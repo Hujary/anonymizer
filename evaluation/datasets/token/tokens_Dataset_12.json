@@ -1,0 +1,70 @@
+{
+  "document_id": "Dataset_12",
+  "items": [
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "julia.krause@interlog.de"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "it-support@interlog.de"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "09.03.2024"
+    },
+    {
+      "label": "RECHNUNGS_NUMMER",
+      "expected_sources": ["regex"],
+      "text": "NL-2024-119"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Martin Schulz"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "NordLogistik GmbH"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "martin.schulz@nordlogistik.de"
+    },
+    {
+      "label": "TELEFON",
+      "expected_sources": ["regex"],
+      "text": "040 99887766"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "02.03.2024"
+    },
+    {
+      "label": "URL",
+      "expected_sources": ["regex"],
+      "text": "https://portal.nordlogistik.de"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "08.03.2024"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Julia"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "InterLog GmbH"
+    }
+  ]
+}

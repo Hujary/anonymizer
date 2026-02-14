@@ -1,0 +1,65 @@
+{
+  "document_id": "Dataset_11",
+  "items": [
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "lisa.schneider@creativehub.de"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "markus.weber@creativehub.de"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "08.03.2024"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "06.03.2024"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "11.03.2024"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "BlueWave Media GmbH"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Oliver Braun"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "oliver.braun@bluewave-media.de"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Markus Weber"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Markus"
+    },
+    {
+      "label": "TELEFON",
+      "expected_sources": ["regex"],
+      "text": "040 77889900"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "CreativeHub GmbH"
+    }
+  ]
+}

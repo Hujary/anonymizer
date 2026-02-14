@@ -1,0 +1,50 @@
+{
+  "document_id": "Dataset_08",
+  "items": [
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "projektleitung@innoventis-gmbh.de"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "service@urbanenergy.de"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "05.03.2024"
+    },
+    {
+      "label": "RECHNUNGS_NUMMER",
+      "expected_sources": ["regex"],
+      "text": "WE-2024-19"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Michael Roth"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "michael.roth@innoventis-gmbh.de"
+    },
+    {
+      "label": "TELEFON",
+      "expected_sources": ["regex"],
+      "text": "+49 151 66778899"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "12.03.2024"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "Innoventis GmbH"
+    }
+  ]
+}

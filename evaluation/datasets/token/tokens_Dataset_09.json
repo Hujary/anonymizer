@@ -1,0 +1,30 @@
+{
+  "document_id": "Dataset_09",
+  "items": [
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "sabine.lang@mediconnect.de"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "06.03.2024"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Sabine"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "MediConnect GmbH"
+    },
+    {
+      "label": "TELEFON",
+      "expected_sources": ["regex"],
+      "text": "089 33445566"
+    }
+  ]
+}

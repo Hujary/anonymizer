@@ -1,73 +1,83 @@
 {
-  "document_id": "Dataset_01",
+  "document_id": "Dataset_07",
   "items": [
     {
       "label": "E_MAIL",
       "expected_sources": ["regex"],
-      "text": "max.mustermann@example.de"
+      "text": "finance@alphacore-ag.de"
     },
     {
       "label": "E_MAIL",
       "expected_sources": ["regex"],
-      "text": "buchhaltung@firma-ag.de"
+      "text": "buchhaltung@delta-logistics.de"
     },
     {
       "label": "DATUM",
       "expected_sources": ["regex"],
-      "text": "12.02.2026"
+      "text": "04.03.2024"
+    },
+    {
+      "label": "RECHNUNGS_NUMMER",
+      "expected_sources": ["regex"],
+      "text": "AC-2024-0311"
     },
     {
       "label": "PER",
       "expected_sources": ["ner"],
       "alternatives": [
-        { "text": "Frau Müller", "expected_sources": ["ner"] },
-        { "text": "Müller", "expected_sources": ["ner"] }
+        { "text": "Frau Berger", "expected_sources": ["ner"] },
+        { "text": "Berger", "expected_sources": ["ner"] }
       ]
-    },
-    {
-      "label": "BETRAG",
-      "expected_sources": ["regex"],
-      "text": "1.240,50 €"
     },
     {
       "label": "DATUM",
       "expected_sources": ["regex"],
-      "text": "28.02.2026"
+      "text": "20.02.2024"
+    },
+    {
+      "label": "BETRAG",
+      "expected_sources": ["regex"],
+      "text": "4.820,00 €"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "10.03.2024"
     },
     {
       "label": "IBAN",
       "expected_sources": ["regex"],
-      "text": "DE89370400440532013000"
+      "text": "DE44500105175407324931"
     },
     {
       "label": "BIC",
       "expected_sources": ["regex"],
-      "text": "COBADEFFXXX"
+      "text": "INGDDEFFXXX"
     },
     {
       "label": "ORG",
       "expected_sources": ["ner"],
-      "text": "AlphaTech GmbH"
-    },
-    {
-      "label": "STRASSE",
-      "expected_sources": ["regex"],
-      "text": "Musterstraße 12"
-    },
-    {
-      "label": "PLZ",
-      "expected_sources": ["regex"],
-      "text": "80331"
-    },
-    {
-      "label": "ORT",
-      "expected_sources": ["regex"],
-      "text": "München"
+      "text": "AlphaCore AG"
     },
     {
       "label": "PER",
       "expected_sources": ["ner"],
-      "text": "Max Mustermann"
+      "text": "Daniel Vogt"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "daniel.vogt@alphacore-ag.de"
+    },
+    {
+      "label": "TELEFON",
+      "expected_sources": ["regex"],
+      "text": "+49 89 44556677"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Anna Keller"
     }
   ]
 }
