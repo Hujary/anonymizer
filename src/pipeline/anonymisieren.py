@@ -1,25 +1,3 @@
-# src/pipeline/anonymisieren.py
-
-###     Detect + Mask Pipeline (Regex/NER/Dict Merge + Mask Output)
-### __________________________________________________________________________
-#
-#  Datei: src/pipeline/anonymisieren.py
-#
-#  - Orchestriert Erkennung aus drei Quellen: Regex, spaCy-NER, manuelles Dictionary
-#  - Aktivierung/Deaktivierung:
-#      - Regex: über config flags + regex_labels
-#      - NER:   NUR über ner_labels (wenn leer -> NER wird NICHT ausgeführt)
-#  - Merged Regex+NER über core.zusammenführen (Overlap-/Prioritätslogik zentral)
-#  - Erzwingt Regex-Priorität für strukturierte Datentypen (IBAN, BIC, etc.)
-#  - Erzwingt Dict-Priorität (manuelle Tokens überschreiben andere Treffer bei Overlap)
-#  - Quellenflags: robustes Markieren per Overlap (nicht per "gleiches Label"!)
-#
-#  Fix:
-#    - Dein UI setzt ner_labels=[] wenn alles abgewählt ist.
-#    - Pipeline muss NER dann hart abschalten, unabhängig von use_ner.
-#    - Dadurch verschwinden "Nie"/"APPLIED"/etc. sofort, weil spaCy gar nicht mehr läuft.
-#
-
 from __future__ import annotations
 
 from typing import List, Optional, Tuple

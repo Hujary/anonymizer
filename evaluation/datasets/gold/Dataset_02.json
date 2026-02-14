@@ -62,6 +62,15 @@
       ]
     },
     {
+      "label": "RECHNUNGS_NUMMER",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 233,
+      "end": 245,
+      "text": "TS-2024-0915"
+    },
+    {
       "label": "DATUM",
       "expected_sources": [
         "regex"
@@ -125,6 +134,15 @@
       "text": "TechSolutions GmbH"
     },
     {
+      "label": "RECHNUNGS_NUMMER",
+      "expected_sources": [
+        "regex"
+      ],
+      "start": 583,
+      "end": 595,
+      "text": "TS-2024-0915"
+    },
+    {
       "label": "BETRAG",
       "expected_sources": [
         "regex"
@@ -152,9 +170,9 @@
       "text": "support@techsolutions-gmbh.de"
     },
     {
-      "label": "STRASSE",
+      "label": "LOC",
       "expected_sources": [
-        "regex"
+        "ner"
       ],
       "start": 987,
       "end": 1005,
@@ -170,9 +188,9 @@
       "text": "80331"
     },
     {
-      "label": "ORT",
+      "label": "LOC",
       "expected_sources": [
-        "regex"
+        "ner"
       ],
       "start": 1013,
       "end": 1020,
@@ -195,6 +213,15 @@
       "start": 1073,
       "end": 1085,
       "text": "Anna Schmidt"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": [
+        "ner"
+      ],
+      "start": 1108,
+      "end": 1126,
+      "text": "TechSolutions GmbH"
     },
     {
       "label": "URL",

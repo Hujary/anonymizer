@@ -5,8 +5,7 @@ import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
-
+from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SRC_DIR = REPO_ROOT / "src"
@@ -110,8 +109,24 @@ def _extract_spans(text: str, *, allowed_sources: Set[str]) -> List[Span]:
         if start < 0 or end <= start or end > len(text):
             continue
 
-        out.append(Span(start=int(start), end=int(end), label=L, source=S))
+        out.append(span := Span(start=int(start), end=int(end), label=L, source=S))
 
+    return out
+
+
+def _extract_regex_spans_raw(text: str) -> List[Span]:
+    try:
+        from detectors.regex import finde_regex
+    except Exception:
+        return []
+
+    out: List[Span] = []
+    for s, e, label in finde_regex(text) or []:
+        if not isinstance(s, int) or not isinstance(e, int):
+            continue
+        if s < 0 or e <= s or e > len(text):
+            continue
+        out.append(Span(start=s, end=e, label=_norm_label(label), source="regex"))
     return out
 
 
@@ -211,11 +226,11 @@ def _set_config_for_mode(mode: str) -> None:
     elif mode == "ner":
         config.set_flags(use_regex=False, use_ner=True, debug_mask=debug_mask)
         if not (config.get("ner_labels", None) or []):
-            config.set("ner_labels", ["PER", "ORG", "LOC", "GPE", "MISC"])
+            config.set("ner_labels", ["PER", "ORG", "LOC", "GPE"])
     elif mode == "combined":
         config.set_flags(use_regex=True, use_ner=True, debug_mask=debug_mask)
         if not (config.get("ner_labels", None) or []):
-            config.set("ner_labels", ["PER", "ORG", "LOC", "GPE", "MISC"])
+            config.set("ner_labels", ["PER", "ORG", "LOC", "GPE"])
     else:
         raise ValueError(f"Unknown mode: {mode}")
 
@@ -243,31 +258,128 @@ def _restore_config(snap: Dict[str, Any]) -> None:
     config.set("debug_mask", bool(snap.get("debug_mask", False)))
 
 
-def _has_bom(text: str) -> bool:
-    return bool(text) and text[0] == "\ufeff"
+def _ctx(text: str, start: int, end: int, radius: int) -> str:
+    left = text[max(0, start - radius) : start].replace("\n", "\\n").replace("\r", "\\r")
+    mid = text[start:end].replace("\n", "\\n").replace("\r", "\\r")
+    right = text[end : min(len(text), end + radius)].replace("\n", "\\n").replace("\r", "\\r")
+    return f"{left}▮{mid}▮{right}"
 
 
-def _detect_newlines(text: str) -> str:
-    if "\r\n" in text:
-        return "CRLF"
-    if "\r" in text:
-        return "CR"
-    return "LF"
+@dataclass(frozen=True)
+class Miss:
+    kind: str
+    label: str
+    start: int
+    end: int
+    source: str
+    text: str
 
 
-def _dump_predictions(text: str, spans: List[Span], *, title: str) -> str:
-    lines: List[str] = []
-    lines.append(title)
-    lines.append(f"len(text)={len(text)} bom={_has_bom(text)} newlines={_detect_newlines(text)}")
-    for s in sorted(spans, key=lambda x: (x.start, x.end, x.label, x.source)):
-        snippet = text[s.start:s.end]
-        left = text[max(0, s.start - 24):s.start].replace("\n", "\\n").replace("\r", "\\r")
-        right = text[s.end:min(len(text), s.end + 24)].replace("\n", "\\n").replace("\r", "\\r")
-        snippet_dbg = snippet.replace("\n", "\\n").replace("\r", "\\r")
-        lines.append(
-            f"- {s.source:5s} {s.label:10s} {s.start:5d}:{s.end:<5d} '{snippet_dbg}'  ctx:'{left}▮{right}'"
-        )
-    return "\n".join(lines)
+def _load_eval_config(eval_root: Path) -> Dict[str, Any]:
+    cfg_path = eval_root / "eval_config.json"
+    if not cfg_path.exists():
+        return {}
+    try:
+        raw = json.loads(cfg_path.read_text(encoding="utf-8"))
+        return raw if isinstance(raw, dict) else {}
+    except Exception:
+        return {}
+
+
+def _allowed_labels_for_source(cfg: Dict[str, Any], source: str) -> Set[str]:
+    allowed_sources = cfg.get("allowed_sources", {})
+    if not isinstance(allowed_sources, dict):
+        return set()
+
+    xs = allowed_sources.get(source, [])
+    if not isinstance(xs, list):
+        return set()
+
+    out: Set[str] = set()
+    for x in xs:
+        s = str(x or "").strip().upper()
+        if s:
+            out.add(s)
+    return out
+
+
+def _apply_label_rules(
+    text: str,
+    spans: List[Span],
+    regex_spans: List[Span],
+    cfg: Dict[str, Any],
+) -> List[Span]:
+    ignore = set(str(x).strip().upper() for x in (cfg.get("ignore_labels", []) or []))
+
+    ner_norm_raw = cfg.get("ner_normalize_labels", {}) or {}
+    ner_norm: Dict[str, str] = {}
+    if isinstance(ner_norm_raw, dict):
+        for k, v in ner_norm_raw.items():
+            kk = str(k).strip().upper()
+            vv = str(v).strip().upper()
+            if kk and vv:
+                ner_norm[kk] = vv
+
+    ner_to_domain_raw = cfg.get("ner_to_domain", {}) or {}
+    ner_to_domain: Dict[str, str] = {}
+    if isinstance(ner_to_domain_raw, dict):
+        for k, v in ner_to_domain_raw.items():
+            kk = str(k).strip().upper()
+            vv = str(v).strip().upper()
+            if kk and vv:
+                ner_to_domain[kk] = vv
+
+    loc_rules = cfg.get("loc_domain_rules", []) or []
+    rules: List[Tuple[str, Set[str]]] = []
+    if isinstance(loc_rules, list):
+        for r in loc_rules:
+            if not isinstance(r, dict):
+                continue
+            domain_label = str(r.get("domain_label", "")).strip().upper()
+            overlaps = r.get("when_regex_label_overlaps", [])
+            if not domain_label:
+                continue
+            ov: Set[str] = set()
+            if isinstance(overlaps, list):
+                for x in overlaps:
+                    s = str(x).strip().upper()
+                    if s:
+                        ov.add(s)
+            if ov:
+                rules.append((domain_label, ov))
+
+    out: List[Span] = []
+
+    for s in spans:
+        L = s.label.upper()
+
+        if L in ignore:
+            continue
+
+        if s.source == "ner" and L in ner_norm:
+            L = ner_norm[L]
+
+        if s.source == "ner" and L in ner_to_domain:
+            L = ner_to_domain[L]
+
+        new_label = L
+
+        if s.source == "ner" and L == "LOC" and rules:
+            for domain_label, overlap_labels in rules:
+                matched = False
+                for r in regex_spans:
+                    if r.label.upper() not in overlap_labels:
+                        continue
+                    if not (s.end <= r.start or r.end <= s.start):
+                        new_label = domain_label
+                        matched = True
+                        break
+                if matched:
+                    break
+
+        out.append(Span(start=s.start, end=s.end, label=new_label, source=s.source))
+
+    return out
 
 
 def _evaluate(
@@ -276,15 +388,40 @@ def _evaluate(
     *,
     mode: str,
     mode_sources: Set[str],
-) -> Tuple[EvalCounts, Dict[str, EvalCounts], List[str], List[Span]]:
+    eval_root: Optional[Path] = None,
+) -> Tuple[EvalCounts, Dict[str, EvalCounts], List[Miss]]:
     _set_config_for_mode(mode)
 
+    cfg = _load_eval_config(eval_root or Path("evaluation"))
+
     preds = _extract_spans(text, allowed_sources=mode_sources)
+
+    allowed_regex = _allowed_labels_for_source(cfg, "regex")
+    allowed_ner = _allowed_labels_for_source(cfg, "ner")
+
+    if allowed_regex or allowed_ner:
+        filtered: List[Span] = []
+        for p in preds:
+            if p.source == "regex":
+                if allowed_regex and p.label.upper() not in allowed_regex:
+                    continue
+            if p.source == "ner":
+                if allowed_ner and p.label.upper() not in allowed_ner:
+                    continue
+            filtered.append(p)
+        preds = filtered
+
+    regex_ref = _extract_regex_spans_raw(text)
+    if allowed_regex:
+        regex_ref = [r for r in regex_ref if r.label.upper() in allowed_regex]
+
+    preds = _apply_label_rules(text, preds, regex_ref, cfg)
+
     pred_by_key: Dict[Tuple[int, int, str], Span] = {p.key(): p for p in preds}
 
     counts_total = EvalCounts()
     counts_by_label: Dict[str, EvalCounts] = {}
-    debug_lines: List[str] = []
+    misses: List[Miss] = []
 
     matched_pred_keys: Set[Tuple[int, int, str]] = set()
 
@@ -309,11 +446,33 @@ def _evaluate(
             counts_total.tp += 1
             lbl_counts.tp += 1
             matched_pred_keys.add(found_key)
+
+            p = pred_by_key[found_key]
+            misses.append(
+                Miss(
+                    kind="TP",
+                    label=p.label,
+                    start=p.start,
+                    end=p.end,
+                    source=p.source,
+                    text=text[p.start : p.end],
+                )
+            )
         else:
             counts_total.fn += 1
             lbl_counts.fn += 1
-            cand_str = " OR ".join([f"{c.start}:{c.end} '{c.text}'" for c in candidates])
-            debug_lines.append(f"FN {g.label}: {cand_str}")
+
+            c0 = candidates[0]
+            misses.append(
+                Miss(
+                    kind="FN",
+                    label=g.label,
+                    start=c0.start,
+                    end=c0.end,
+                    source="gold",
+                    text=c0.text,
+                )
+            )
 
     for p in preds:
         k = p.key()
@@ -322,29 +481,77 @@ def _evaluate(
         counts_total.fp += 1
         lbl_counts = counts_by_label.setdefault(p.label, EvalCounts())
         lbl_counts.fp += 1
-        debug_lines.append(f"FP {p.label} ({p.source}) {p.start}:{p.end} '{text[p.start:p.end]}'")
 
-    return counts_total, counts_by_label, debug_lines, preds
+        misses.append(
+            Miss(
+                kind="FP",
+                label=p.label,
+                start=p.start,
+                end=p.end,
+                source=p.source,
+                text=text[p.start : p.end],
+            )
+        )
+
+    misses.sort(key=lambda m: (m.start, m.end, m.kind, m.label))
+    return counts_total, counts_by_label, misses
 
 
-def _format_report(mode: str, total: EvalCounts, by_label: Dict[str, EvalCounts]) -> str:
+def _format_summary(mode: str, total: EvalCounts) -> str:
+    return (
+        f"MODE {mode:8s} | "
+        f"TP={total.tp:3d} FP={total.fp:3d} FN={total.fn:3d} | "
+        f"P={total.precision():.3f} R={total.recall():.3f} F1={total.f1():.3f}"
+    )
+
+
+def _format_per_label(by_label: Dict[str, EvalCounts]) -> List[str]:
     lines: List[str] = []
-    lines.append(f"MODE: {mode}")
-    lines.append(f"TP: {total.tp}")
-    lines.append(f"FP: {total.fp}")
-    lines.append(f"FN: {total.fn}")
-    lines.append(f"Precision: {total.precision():.4f}")
-    lines.append(f"Recall:    {total.recall():.4f}")
-    lines.append(f"F1:        {total.f1():.4f}")
-    lines.append("")
-    lines.append("PER-LABEL:")
     for lbl in sorted(by_label.keys()):
         c = by_label[lbl]
+        if (c.tp + c.fp + c.fn) == 0:
+            continue
         lines.append(
-            f"- {lbl:12s} TP={c.tp:3d} FP={c.fp:3d} FN={c.fn:3d} "
-            f"P={c.precision():.4f} R={c.recall():.4f} F1={c.f1():.4f}"
+            f"  {lbl:14s} TP={c.tp:3d} FP={c.fp:3d} FN={c.fn:3d} "
+            f"P={c.precision():.3f} R={c.recall():.3f} F1={c.f1():.3f}"
         )
-    return "\n".join(lines)
+    return lines
+
+
+def _format_misses(
+    text: str,
+    misses: List[Miss],
+    *,
+    show_tp: bool,
+    ctx_radius: int,
+    max_lines: int,
+) -> List[str]:
+    lines: List[str] = []
+
+    def dump(kind: str, title: str, want: bool) -> None:
+        if not want:
+            return
+        items = [m for m in misses if m.kind == kind]
+        lines.append(f"{title}: {len(items)}")
+        if not items:
+            return
+        shown = 0
+        for m in items:
+            if shown >= max_lines:
+                lines.append(f"  ... truncated ({len(items) - max_lines} more)")
+                break
+            ctx = _ctx(text, m.start, m.end, ctx_radius) if ctx_radius > 0 else ""
+            if ctx:
+                lines.append(f"  - {m.label:14s} {m.start}:{m.end} [{m.source}] '{m.text}' ctx='{ctx}'")
+            else:
+                lines.append(f"  - {m.label:14s} {m.start}:{m.end} [{m.source}] '{m.text}'")
+            shown += 1
+
+    dump("FN", "NOT DETECTED (FN)", True)
+    dump("FP", "UNEXPECTED (FP)", True)
+    dump("TP", "DETECTED (TP)", show_tp)
+
+    return lines
 
 
 def _resolve_paths(eval_root: Path, basename: str) -> Tuple[Path, Path, Path, Path]:
@@ -367,8 +574,12 @@ def _resolve_paths(eval_root: Path, basename: str) -> Tuple[Path, Path, Path, Pa
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--name", required=True, help="Basename like Dataset_01 (without extension)")
-    ap.add_argument("--debug", action="store_true", help="Write FP/FN + predictions into result debug file")
     ap.add_argument("--eval-root", default="evaluation", help="Root folder containing datasets/, result/, token/, script/")
+    ap.add_argument("--debug", action="store_true", help="Write FN/FP (and optional TP) into debug file")
+    ap.add_argument("--show-tp", action="store_true", help="Include TP list in debug file")
+    ap.add_argument("--per-label", action="store_true", help="Include per-label stats in result file")
+    ap.add_argument("--ctx", type=int, default=20, help="Context radius for debug lines (0 disables)")
+    ap.add_argument("--max-lines", type=int, default=200, help="Max lines per section (FN/FP/TP) before truncation")
     args = ap.parse_args()
 
     eval_root = Path(args.eval_root)
@@ -393,33 +604,53 @@ def main() -> int:
             ("combined", {"regex", "ner"}),
         ]
 
-        all_reports: List[str] = []
-        all_debug: List[str] = []
+        report_lines: List[str] = []
+        debug_lines: List[str] = []
 
-        all_reports.append(f"DATASET: {basename}")
-        all_reports.append(f"TEXT: {text_path}")
-        all_reports.append(f"GOLD: {gold_path}")
-        all_reports.append("")
-        all_reports.append("=" * 70)
-        all_reports.append("")
+        report_lines.append(f"DATASET: {basename}")
+        report_lines.append(f"TEXT: {text_path}")
+        report_lines.append(f"GOLD: {gold_path}")
+        report_lines.append("")
+        report_lines.append("SUMMARY")
+        report_lines.append("-" * 70)
 
         for mode, sources in modes:
-            total, by_label, debug_lines, preds = _evaluate(text, gold_entities, mode=mode, mode_sources=set(sources))
-            all_reports.append(_format_report(mode, total, by_label))
-            all_reports.append("\n" + ("=" * 70) + "\n")
+            total, by_label, misses = _evaluate(
+                text,
+                gold_entities,
+                mode=mode,
+                mode_sources=set(sources),
+                eval_root=eval_root,
+            )
+            report_lines.append(_format_summary(mode, total))
+
+            if args.per_label:
+                report_lines.append("")
+                report_lines.append(f"PER-LABEL ({mode})")
+                report_lines.extend(_format_per_label(by_label))
+                report_lines.append("")
 
             if args.debug:
-                all_debug.append(_dump_predictions(text, preds, title=f"PREDS MODE={mode}"))
-                all_debug.append("")
-                all_debug.append(f"DATASET: {basename}")
-                all_debug.append(f"MODE: {mode}")
-                all_debug.extend(debug_lines)
-                all_debug.append("\n" + ("-" * 70) + "\n")
+                debug_lines.append(f"DATASET: {basename} | MODE: {mode}")
+                debug_lines.append(_format_summary(mode, total))
+                debug_lines.append("-" * 70)
+                debug_lines.extend(
+                    _format_misses(
+                        text,
+                        misses,
+                        show_tp=bool(args.show_tp),
+                        ctx_radius=max(0, int(args.ctx)),
+                        max_lines=max(1, int(args.max_lines)),
+                    )
+                )
+                debug_lines.append("")
+                debug_lines.append("=" * 70)
+                debug_lines.append("")
 
-        out_path.write_text("\n".join(all_reports).rstrip() + "\n", encoding="utf-8")
+        out_path.write_text("\n".join(report_lines).rstrip() + "\n", encoding="utf-8")
 
         if args.debug:
-            dbg_path.write_text("\n".join(all_debug).rstrip() + "\n", encoding="utf-8")
+            dbg_path.write_text("\n".join(debug_lines).rstrip() + "\n", encoding="utf-8")
 
     finally:
         _restore_config(snap)

@@ -1,0 +1,32 @@
+EVAL ROOT: evaluation
+DATASETS: 2
+
+DATASET: Dataset_01
+TEXT: evaluation/datasets/data/Dataset_01.txt
+GOLD: evaluation/datasets/gold/Dataset_01.json
+
+SUMMARY
+----------------------------------------------------------------------
+MODE regex    | TP=  8 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
+MODE ner      | TP=  5 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
+MODE combined | TP= 13 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_02
+TEXT: evaluation/datasets/data/Dataset_02.txt
+GOLD: evaluation/datasets/gold/Dataset_02.json
+
+SUMMARY
+----------------------------------------------------------------------
+MODE regex    | TP= 18 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
+MODE ner      | TP=  6 FP=  0 FN=  1 | P=1.000 R=0.857 F1=0.923
+MODE combined | TP= 24 FP=  0 FN=  1 | P=1.000 R=0.960 F1=0.980
+
+======================================================================
+
+GLOBAL SUMMARY (micro-averaged over all datasets)
+----------------------------------------------------------------------
+MODE regex    | TP=  26 FP=   0 FN=   0 | P=1.000 R=1.000 F1=1.000
+MODE ner      | TP=  11 FP=   0 FN=   1 | P=1.000 R=0.917 F1=0.957
+MODE combined | TP=  37 FP=   0 FN=   1 | P=1.000 R=0.974 F1=0.987

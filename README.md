@@ -39,26 +39,23 @@ python -m spacy download de_core_news_lg
 python src/ui_app.py
 ```
 
-### Produktions-Build (Desktop-App)
-```bash
-flet pack src/ui_app.py --name anonymizer --icon src/assets/logo.icns
-```
-
-
 ### Goldset Token/Zeilen Script ausführen
 ```bash
 python evaluation/script/gold_validator.py \
-  --name Dataset_01 \
+ --name Dataset_01 \
   --tokens evaluation/datasets/token/tokens_Dataset_01.json \
   --write-gold
 ```
 
-### Validierung Test Script ausführen
+### Validierung Test Script ausführen (Single)
 ```bash
-python evaluation/script/eval_single.py --name Dataset_01
-python evaluation/script/eval_single.py --name Dataset_01 --debug
+python evaluation/script/eval_single.py --name Dataset_02 --debug --ctx 20
 ```
 
+### Validierung Test Script ausführen (Combined)
+```bash
+python evaluation/script/eval_all.py --debug
+```
 
 ---
 

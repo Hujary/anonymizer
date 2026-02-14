@@ -37,11 +37,14 @@ def context_snippet(text: str, start: int, end: int, radius: int = 30) -> str:
 def find_all(text: str, needle: str) -> List[Tuple[int, int]]:
     results: List[Tuple[int, int]] = []
     i = 0
+    n = len(needle)
+    if n == 0:
+        return results
     while True:
         pos = text.find(needle, i)
         if pos == -1:
             break
-        results.append((pos, pos + len(needle)))
+        results.append((pos, pos + n))
         i = pos + 1
     return results
 
@@ -101,18 +104,22 @@ def _parse_tokens_spec(tokens_obj: Any, fallback_document_id: str) -> Tuple[str,
     raise ValueError("tokens json: invalid format")
 
 
-def _build_gold_entity_from_item(text: str, item: Dict[str, Any], lines: List[str]) -> Optional[Dict[str, Any]]:
+def _build_gold_entities_from_item(text: str, item: Dict[str, Any], lines: List[str]) -> List[Dict[str, Any]]:
     label = _norm_label(item.get("label"))
     expected_sources = _norm_sources(item.get("expected_sources"))
 
     if not label:
         lines.append("  !! SKIP item: missing label")
-        return None
+        return []
 
     alternatives = item.get("alternatives", None)
 
+    # Alternatives: keep semantics as "one entity, multiple acceptable spans"
+    # -> by default we pick the FIRST occurrence for each alternative text (as before).
+    # If you want all occurrences for alternatives too, that explodes quickly and loses meaning.
     if isinstance(alternatives, list) and alternatives:
         alt_entries: List[Dict[str, Any]] = []
+
         for alt in alternatives:
             if not isinstance(alt, dict):
                 continue
@@ -130,6 +137,7 @@ def _build_gold_entity_from_item(text: str, item: Dict[str, Any], lines: List[st
 
             if len(occ) > 1:
                 lines.append("    !! MULTIPLE FOUND -> taking first. If wrong, make text more specific.")
+
             start, end = occ[0]
             ctx = context_snippet(text, start, end)
             lines.append(f"    - {start}:{end} ctx='{ctx}'")
@@ -145,39 +153,58 @@ def _build_gold_entity_from_item(text: str, item: Dict[str, Any], lines: List[st
 
         if not alt_entries:
             lines.append("  !! SKIP entity: all alternatives not found")
-            return None
+            return []
 
-        return {
-            "label": label,
-            "expected_sources": expected_sources,
-            "alternatives": alt_entries,
-        }
+        return [
+            {
+                "label": label,
+                "expected_sources": expected_sources,
+                "alternatives": alt_entries,
+            }
+        ]
 
     entity_text = str(item.get("text") or "").strip()
     if not entity_text:
         lines.append("  !! SKIP item: missing text (or alternatives)")
-        return None
+        return []
 
     occ = find_all(text, entity_text)
     lines.append(f"occurrences: {len(occ)}")
 
     if len(occ) == 0:
         lines.append("  !! NOT FOUND !!")
-        return None
+        return []
 
-    if len(occ) > 1:
-        lines.append("  !! MULTIPLE FOUND -> taking first. If wrong, make text more specific.")
-    start, end = occ[0]
-    ctx = context_snippet(text, start, end)
-    lines.append(f"  - {start}:{end} ctx='{ctx}'")
+    out: List[Dict[str, Any]] = []
+    for k, (start, end) in enumerate(occ):
+        ctx = context_snippet(text, start, end)
+        lines.append(f"  - #{k} {start}:{end} ctx='{ctx}'")
+        out.append(
+            {
+                "label": label,
+                "expected_sources": expected_sources,
+                "start": start,
+                "end": end,
+                "text": entity_text,
+            }
+        )
 
-    return {
-        "label": label,
-        "expected_sources": expected_sources,
-        "start": start,
-        "end": end,
-        "text": entity_text,
-    }
+    return out
+
+
+def _sort_gold_entities(entities: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def key(e: Dict[str, Any]) -> Tuple[int, int, str]:
+        if "alternatives" in e and isinstance(e["alternatives"], list) and e["alternatives"]:
+            a0 = e["alternatives"][0]
+            s = int(a0.get("start", 10**18))
+            en = int(a0.get("end", 10**18))
+        else:
+            s = int(e.get("start", 10**18))
+            en = int(e.get("end", 10**18))
+        lbl = _norm_label(e.get("label"))
+        return (s, en, lbl)
+
+    return sorted(entities, key=key)
 
 
 def main() -> int:
@@ -223,11 +250,12 @@ def main() -> int:
 
         lines.append(f"ITEM #{idx}: label={label} expected_sources={show_srcs}")
 
-        ent = _build_gold_entity_from_item(text, item, lines)
-        if ent is not None:
-            gold_entities.append(ent)
+        ents = _build_gold_entities_from_item(text, item, lines)
+        gold_entities.extend(ents)
 
         lines.append("")
+
+    gold_entities = _sort_gold_entities(gold_entities)
 
     report_path.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
     print(f"Wrote: {report_path}")

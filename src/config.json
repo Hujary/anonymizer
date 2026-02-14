@@ -17,10 +17,8 @@
     "DATUM",
     "E_MAIL",
     "IBAN",
-    "ORT",
     "PLZ",
     "RECHNUNGS_NUMMER",
-    "STRASSE",
     "TELEFON",
     "URL",
     "USTID"

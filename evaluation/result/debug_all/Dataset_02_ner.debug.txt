@@ -1,0 +1,6 @@
+DATASET: Dataset_02 | MODE: ner
+MODE ner      | TP=  6 FP=  0 FN=  1 | P=1.000 R=0.857 F1=0.923
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - ORG            516:527 [gold] 'ING-DiBa AG' ctx='INGDDEFFXXX  \nBank: ▮ING-DiBa AG▮  \nKontoinhaber: Tec'
+UNEXPECTED (FP): 0
