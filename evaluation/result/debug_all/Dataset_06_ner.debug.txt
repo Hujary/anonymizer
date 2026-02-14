@@ -1,0 +1,8 @@
+DATASET: Dataset_06 | MODE: ner
+MODE ner      | TP=  2 FP=  1 FN=  2 | P=0.667 R=0.500 F1=0.571
+----------------------------------------------------------------------
+NOT DETECTED (FN): 2
+  - ORG            294:318 [gold] 'CloudWare Solutions GmbH' ctx='.\n\nWir sind von der ▮CloudWare Solutions GmbH▮. Mein Name ist Dani'
+  - PER            334:340 [gold] 'Daniel' ctx='GmbH. Mein Name ist ▮Daniel▮ Krüger. Falls ihr r'
+UNEXPECTED (FP): 1
+  - ORG            304:318 [ner] 'Solutions GmbH' ctx='d von der CloudWare ▮Solutions GmbH▮. Mein Name ist Dani'

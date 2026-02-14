@@ -1,0 +1,9 @@
+DATASET: Dataset_02 | MODE: combined
+MODE combined | TP=  9 FP=  2 FN=  2 | P=0.818 R=0.818 F1=0.818
+----------------------------------------------------------------------
+NOT DETECTED (FN): 2
+  - ORG            104:122 [gold] 'Kramer & Sohn GmbH' ctx='Laura Schmid\nFirma: ▮Kramer & Sohn GmbH▮\nE-Mail: laura.schmi'
+  - ORG            222:233 [gold] 'Kramer-Sued' ctx='tal v2.8.1\nMandant: ▮Kramer-Sued▮\nBetroffene Funktion'
+UNEXPECTED (FP): 2
+  - ORG            113:122 [ner] 'Sohn GmbH' ctx='mid\nFirma: Kramer & ▮Sohn GmbH▮\nE-Mail: laura.schmi'
+  - LOC            693:715 [ner] 'Beispiel-Bestellnummer' ctx='.02.2024, 16:42 Uhr\n▮Beispiel-Bestellnummer▮: BS-2024-1187\n\nZusä'

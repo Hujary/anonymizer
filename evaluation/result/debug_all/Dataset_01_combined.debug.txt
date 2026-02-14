@@ -1,0 +1,8 @@
+DATASET: Dataset_01 | MODE: combined
+MODE combined | TP=  6 FP=  2 FN=  1 | P=0.750 R=0.857 F1=0.800
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - ORG            89:109 [gold] 'Berger Logistik GmbH' ctx=': Max Berger\nFirma: ▮Berger Logistik GmbH▮\nE-Mail: max.berger@'
+UNEXPECTED (FP): 2
+  - PER            9:21 [ner] 'Login-Fehler' ctx='Betreff: ▮Login-Fehler▮ im Kundenportal\n\nTi'
+  - ORG            96:109 [ner] 'Logistik GmbH' ctx='erger\nFirma: Berger ▮Logistik GmbH▮\nE-Mail: max.berger@'

@@ -1,45 +1,45 @@
 {
-  "document_id": "Dataset_05",
+  "document_id": "Dataset_06",
   "items": [
     {
       "label": "ORG",
       "expected_sources": ["ner"],
-      "text": "PixelForge Media GmbH"
+      "text": "CloudWare Solutions GmbH"
     },
     {
       "label": "PER",
       "expected_sources": ["ner"],
-      "text": "Markus Weber"
+      "text": "Daniel Krüger"
     },
     {
       "label": "PER",
       "expected_sources": ["ner"],
-      "text": "Markus"
+      "text": "Daniel"
     },
     {
       "label": "E_MAIL",
       "expected_sources": ["regex"],
-      "text": "markus.weber@pixelforge-media.de"
+      "text": "daniel.krueger@cloudware-solutions.de"
     },
     {
       "label": "TELEFON",
       "expected_sources": ["regex"],
-      "text": "0176 33445588"
+      "text": "0151 77889900"
     },
     {
       "label": "DATUM",
       "expected_sources": ["regex"],
-      "text": "24.02.2024"
+      "text": "26.02.2024"
     },
     {
       "label": "DATUM",
       "expected_sources": ["regex"],
-      "text": "23.02.2024"
+      "text": "25.02.2024"
     },
     {
       "label": "URL",
       "expected_sources": ["regex"],
-      "text": "https://portal.pixelforge-media.de"
+      "text": "https://app.cloudware-solutions.de"
     }
   ]
 }

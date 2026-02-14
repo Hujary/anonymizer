@@ -1,0 +1,7 @@
+DATASET: Dataset_04 | MODE: combined
+MODE combined | TP=  5 FP=  1 FN=  1 | P=0.833 R=0.833 F1=0.833
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - ORG            346:361 [gold] 'Franke Bau GmbH' ctx='Simon Franke\nFirma: ▮Franke Bau GmbH▮\nTelefon: +49 160 44'
+UNEXPECTED (FP): 1
+  - ORG            353:361 [ner] 'Bau GmbH' ctx='ranke\nFirma: Franke ▮Bau GmbH▮\nTelefon: +49 160 44'

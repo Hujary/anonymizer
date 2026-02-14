@@ -1,5 +1,3 @@
-# detectors/ner/filters.py
-
 from __future__ import annotations
 
 import re
@@ -100,6 +98,19 @@ PER_BAD_TOKENS = {
     "Upload",
     "HR",
     "Budgetfreigabe",
+}
+
+TECH_FALSE_LOC = {
+    "admin-portal",
+    "dashboard",
+    "reporting",
+    "export-service",
+    "sms-gateway",
+    "pdf-export",
+    "csv-export",
+    "api-gateway",
+    "frontend",
+    "backend",
 }
 
 
@@ -407,6 +418,8 @@ def _expand_org_if_only_legalform(text: str, hit: Treffer) -> Treffer:
 
 # ------------------------------------------------------------------
 # ORG-Normalisierung: "kleinstes brauchbares Segment" mit Rechtsform
+#   FIX: wenn vor der Rechtsform direkt ein Name-Token steht, MUSS er drin bleiben.
+#        Dadurch wird "CloudWare Solutions GmbH" nicht zu "Solutions GmbH" abgeschnitten.
 # ------------------------------------------------------------------
 def _normalize_org_hit(text: str, hit: Treffer) -> Treffer | None:
     span_full = text[hit.start : hit.ende]
@@ -483,6 +496,17 @@ def _normalize_org_hit(text: str, hit: Treffer) -> Treffer | None:
                 break
 
             left -= 1
+
+        if form_tok_idx is not None and form_tok_idx - 1 >= 0:
+            tokL, _aL, _bL = toks[form_tok_idx - 1]
+            lowL = tokL.lower()
+            if (
+                len(tokL) >= 2
+                and not _ORG_CONNECTOR_RE.fullmatch(tokL)
+                and lowL not in _ORG_CONTEXT_BREAKS
+            ):
+                if start_idx > (form_tok_idx - 1):
+                    start_idx = form_tok_idx - 1
 
         tail = chunk[form_end:]
         m_tail = re.match(r"^\s*(?:&|und)\s*Co\.?\s*(?:\s*\.?\s*)?(?:KG|kg)\b", tail)
@@ -582,6 +606,14 @@ def filter_ner_strict(
 
         if _is_numeric_or_short(span):
             continue
+
+        if L in ("LOC", "GPE"):
+            if low in TECH_FALSE_LOC:
+                continue
+            if "-" in low and low in TECH_FALSE_LOC:
+                continue
+            if low.endswith("-service") or low.endswith("-gateway"):
+                continue
 
         if L == "PER":
             nh = _normalize_person_hit(text, h)
