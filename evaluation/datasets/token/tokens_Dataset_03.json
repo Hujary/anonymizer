@@ -1,40 +1,40 @@
 {
-  "document_id": "Dataset_01",
+  "document_id": "Dataset_03",
   "items": [
     {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": ["regex"],
-      "text": "ST-2024-00123"
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Tobias Klein"
     },
     {
       "label": "PER",
       "expected_sources": ["ner"],
-      "text": "Max Berger"
+      "text": "Tobias"
     },
     {
       "label": "ORG",
       "expected_sources": ["ner"],
-      "text": "Berger Logistik GmbH"
+      "text": "Klein Handel GmbH"
     },
     {
       "label": "E_MAIL",
       "expected_sources": ["regex"],
-      "text": "max.berger@berger-logistik.de"
+      "text": "tobias.klein@klein-handel.de"
     },
     {
       "label": "TELEFON",
       "expected_sources": ["regex"],
-      "text": "+49 711 99887766"
-    },
-    {
-      "label": "URL",
-      "expected_sources": ["regex"],
-      "text": "https://portal.berger-logistik.de"
+      "text": "0751 987654"
     },
     {
       "label": "DATUM",
       "expected_sources": ["regex"],
-      "text": "03.02.2024"
+      "text": "18.02.2024"
+    },
+    {
+      "label": "URL",
+      "expected_sources": ["regex"],
+      "text": "https://portal.klein-handel.de/reset?token=abc123"
     }
   ]
 }

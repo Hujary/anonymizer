@@ -1,0 +1,118 @@
+{
+  "document_id": "Dataset_02",
+  "items": [
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "rechnung@techsolutions-gmbh.de"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "max.mustermann@example.org"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "17. Oktober 2024"
+    },
+    {
+      "label": "RECHNUNGS_NUMMER",
+      "expected_sources": ["regex"],
+      "text": "TS-2024-0915"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "alternatives": [
+        { "text": "Herr Mustermann", "expected_sources": ["ner"] },
+        { "text": "Mustermann", "expected_sources": ["ner"] }
+      ]
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "25.09.2024"
+    },
+    {
+      "label": "BETRAG",
+      "expected_sources": ["regex"],
+      "text": "289,75 €"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "10.10.2024"
+    },
+    {
+      "label": "IBAN",
+      "expected_sources": ["regex"],
+      "text": "DE67500105172648391234"
+    },
+    {
+      "label": "BIC",
+      "expected_sources": ["regex"],
+      "text": "INGDDEFFXXX"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "ING-DiBa AG"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "TechSolutions GmbH"
+    },
+    {
+      "label": "BETRAG",
+      "expected_sources": ["regex"],
+      "text": "5,00 €"
+    },
+    {
+      "label": "TELEFON",
+      "expected_sources": ["regex"],
+      "text": "+49 (0)89 99887766"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "support@techsolutions-gmbh.de"
+    },
+    {
+      "label": "STRASSE",
+      "expected_sources": ["regex"],
+      "text": "Innovationspark 12"
+    },
+    {
+      "label": "PLZ",
+      "expected_sources": ["regex"],
+      "text": "80331"
+    },
+    {
+      "label": "ORT",
+      "expected_sources": ["regex"],
+      "text": "München"
+    },
+    {
+      "label": "USTID",
+      "expected_sources": ["regex"],
+      "text": "DE123456789"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Anna Schmidt"
+    },
+    {
+      "label": "URL",
+      "expected_sources": ["regex"],
+      "text": "www.techsolutions-gmbh.de"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "buchhaltung@beispiel-gmbh.de"
+    }
+  ]
+}

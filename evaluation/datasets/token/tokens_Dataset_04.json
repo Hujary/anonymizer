@@ -1,0 +1,35 @@
+{
+  "document_id": "Dataset_04",
+  "items": [
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Simon Franke"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Simon"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "Franke Bau GmbH"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "simon.franke@franke-bau.de"
+    },
+    {
+      "label": "TELEFON",
+      "expected_sources": ["regex"],
+      "text": "+49 160 4455667"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "19.02.2024"
+    }
+  ]
+}

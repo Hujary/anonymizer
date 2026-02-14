@@ -1,15 +1,21 @@
-Betreff: Vertretung während Krankheit von Julia
+Hallo,
 
-Hallo zusammen,
+ich komme seit heute nicht mehr in unser Kundenportal rein. Wenn ich auf „Passwort vergessen“ gehe, bekomme ich zwar die Mail, aber der Link funktioniert nicht. Es kommt nur eine 404-Seite.
 
-Julia Neumann (julia.neumann@finmatech.de) ist seit gestern krankgeschrieben und fällt laut ihrer Nachricht voraussichtlich bis zum 12. November aus.
-Da sie aktuell an der Budgetfreigabe für unseren Kunden Weber Maschinenbau GmbH arbeitet, habe ich die letzten Dokumente und E-Mails aus ihrem Ordner exportiert und im Teams-Ordner „Projekte/Weber_Maschinenbau“ abgelegt.
+Wir nutzen das Portal für unsere Bestellungen, daher ist das gerade ziemlich dringend.
 
-@Tobias: Schau bitte, ob du die Rückmeldung von Herrn Meier (meier@weber-maschinenbau.de, Tel. 069 743512-44) schon bekommen hast – falls nicht, ruf bitte kurz bei ihm durch, damit wir den Termin nächste Woche halten können.
+Meine Daten:
+Tobias Klein
+Klein Handel GmbH
+tobias.klein@klein-handel.de
+Tel. 0751 987654
 
-Die Krankmeldung von Julia habe ich zur Sicherheit auch eingescannt, damit HR sie digital hat. Sie liegt aktuell noch im Projektordner, bitte löscht sie dort nach dem Upload.
+Ich habe es heute gegen 8 Uhr mehrfach versucht (18.02.2024), auch über Firefox und einmal über Chrome – gleiches Problem.
 
-Viele Grüße
-Sophie Keller
-Teamleitung FinMatech Controlling
-Tel. 01837 4324342
+Hier der Link, der in der Mail stand:
+https://portal.klein-handel.de/reset?token=abc123
+
+Könnt ihr bitte prüfen, ob es ein generelles Problem gibt?
+
+Danke
+Tobias

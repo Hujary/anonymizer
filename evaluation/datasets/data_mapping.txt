@@ -1,0 +1,49 @@
+LABEL MAPPING (Evaluation Datasets)
+
+Kategorien (Domänen):
+1) Supporttickets
+2) E-Mail (intern/extern)
+3) HR-Dokumente (Bewerbungsunterlagen / HR-Freitext)
+4) Verträge
+5) Chats
+
+Strukturgrade:
+- structured      = gut formatiert / klar gegliedert
+- regular         = typische Alltagsqualität
+- unstructured    = messy (Forward/Reply, Copy/Paste, Listen, Signaturen, Brüche)
+
+Mapping:
+Dataset_01 = Supporttickets (structured, 01)        //   geprüft ✓
+Dataset_02 = Supporttickets (structured, 02)        //   geprüft ✓
+Dataset_03 = Supporttickets (regular, 01)           //   geprüft ✓
+Dataset_04 = Supporttickets (regular, 02)           //   geprüft ✓
+Dataset_05 = Supporttickets (unstructured, 01)
+Dataset_06 = Supporttickets (unstructured, 02)
+
+Dataset_07 = E-Mail (structured, 01)
+Dataset_08 = E-Mail (structured, 02)
+Dataset_09 = E-Mail (regular, 01)
+Dataset_10 = E-Mail (regular, 02)
+Dataset_11 = E-Mail (unstructured, 01)
+Dataset_12 = E-Mail (unstructured, 02)
+
+Dataset_13 = HR-Dokumente (structured, 01)
+Dataset_14 = HR-Dokumente (structured, 02)
+Dataset_15 = HR-Dokumente (regular, 01)
+Dataset_16 = HR-Dokumente (regular, 02)
+Dataset_17 = HR-Dokumente (unstructured, 01)
+Dataset_18 = HR-Dokumente (unstructured, 02)
+
+Dataset_19 = Verträge (structured, 01)
+Dataset_20 = Verträge (structured, 02)
+Dataset_21 = Verträge (regular, 01)
+Dataset_22 = Verträge (regular, 02)
+Dataset_23 = Verträge (unstructured, 01)
+Dataset_24 = Verträge (unstructured, 02)
+
+Dataset_25 = Chats (structured, 01)
+Dataset_26 = Chats (structured, 02)
+Dataset_27 = Chats (regular, 01)
+Dataset_28 = Chats (regular, 02)
+Dataset_29 = Chats (unstructured, 01)
+Dataset_30 = Chats (unstructured, 02)

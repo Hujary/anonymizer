@@ -1,18 +1,10 @@
 
-- Anwendungsbereiche genau definieren für Evaluation
-
 - Datasets erstellen
-
-- Script zur automatischen Evaluation mit Meta Daten für jedes Dataset erstellen.
-    -> Evaluation anhand metriken wie Recall, F1, ..
 
 - Theoretischen Schreibteil mit Informationen aus der Evaluation schreiben.
     -> Grundlagen, Implementierung, Evaluation, Auswertung, Fazit, ..
 
 
-
-
-
 ----------------------------------- (Optional) -----------------------------------
 
-- NER und REGEX weiter Tweeken auf neuen Datasets um "generalisierung" zu vermeiden
+- NER und REGEX weiter Tweeken auf neuen Datasets um overfitting zu reduzieren

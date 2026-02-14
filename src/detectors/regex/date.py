@@ -9,7 +9,7 @@ def finde_date(text: str) -> Iterable[Tuple[int, int, str]]:
     Erkannt werden:
       - ISO: 2024-12-01
       - Deutsch numerisch: 17.10.2024
-      - Deutsch numerisch ohne Jahr: 17.10 / 17-10 / 17/10
+      - Deutsch numerisch ohne Jahr: 17.10
       - Deutsch lang: 17. Oktober 2024
       - Deutsch lang ohne Jahr: 17. Oktober / 17. Nov.
       - Englisch: March 12, 2025 / Dec 5, 2023
@@ -19,8 +19,8 @@ def finde_date(text: str) -> Iterable[Tuple[int, int, str]]:
       (start_index, end_index, "DATUM")
 
     Hinweis:
-      - Keine Validierung realer Kalendertage (z.B. 31.02.2024 wird gematcht)
-      - Keine Kontextprüfung (z.B. Versionsnummern)
+      - Keine vollständige Validierung realer Kalendertage (z.B. 31.02.2024 wird gematcht)
+      - FIX: Versions-/Kettenformate wie "v2.8.1" erzeugen KEIN False Positive mehr
     """
 
     # ------------------------------------------------------------------
@@ -54,17 +54,45 @@ def finde_date(text: str) -> Iterable[Tuple[int, int, str]]:
         #
         # Risiko:
         #   - Kann auch Versionsnummern matchen (z.B. 1.2.2024)
+        #
+        # FIX:
+        #   - Tag/Monat grob range-validiert (1–31 / 1–12)
         # ------------------------------------------------------------------
-        re.compile(r"\b\d{1,2}[./-]\d{1,2}[./-]\d{2,4}\b"),
+        re.compile(
+            r"""
+            \b
+            (?:0?[1-9]|[12]\d|3[01])      # Tag 1-31
+            [./-]
+            (?:0?[1-9]|1[0-2])            # Monat 1-12
+            [./-]
+            \d{2,4}                       # Jahr (2-4 stellig)
+            \b
+            """,
+            re.VERBOSE,
+        ),
 
         # ------------------------------------------------------------------
-        # Deutsch numerisch ohne Jahr: 17.10 / 17-10 / 17/10
+        # Deutsch numerisch ohne Jahr: 17.10
         #
-        # Risiko:
-        #   - Kann auch Teil von längeren Zahlenfolgen sein
-        #   - Wird bewusst NACH dem Pattern mit Jahr geprüft
+        # FIX:
+        #   - Tag/Monat range-validiert (1–31 / 1–12)
+        #   - Kein Match, wenn direkt davor "Ziffer." steht
+        #     → verhindert "v2.8.1" => kein Treffer für "8.1"
+        #   - Kein Match, wenn direkt danach ".Ziffer" folgt
+        #     → verhindert "8.1.3" (Versionskette)
         # ------------------------------------------------------------------
-        re.compile(r"\b\d{1,2}[./-]\d{1,2}\b"),
+        re.compile(
+            r"""
+            (?<!\d\.)                      # nicht Teil von x.<hier>  (blockt v2.8.1 am "8.1")
+            \b
+            (?:0?[1-9]|[12]\d|3[01])       # Tag 1-31
+            \.
+            (?:0?[1-9]|1[0-2])             # Monat 1-12
+            \b
+            (?!\.\d)                       # nicht Teil von <hier>.x (blockt 8.1.3)
+            """,
+            re.VERBOSE,
+        ),
 
         # ------------------------------------------------------------------
         # Deutsch ausgeschrieben: 17. Oktober 2024
