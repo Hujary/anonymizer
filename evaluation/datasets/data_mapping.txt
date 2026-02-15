@@ -7,9 +7,9 @@ Kategorien (Domänen):
 4) Verträge
 5) Chats
 
-Strukturgrade:
+Strukturgrade (Kategorieabhängig!!!):
 - structured      = gut formatiert / klar gegliedert
-- regular         = typische Alltagsqualität
+- regular         = typische Alltagsqualität / Realistisch
 - unstructured    = messy (überlappenden Kontext, falsche Formatierung, komplexer Inhalt)
 
 Mapping:
@@ -21,11 +21,11 @@ Dataset_05 = Supporttickets (unstructured, 01)      //   geprüft ✓
 Dataset_06 = Supporttickets (unstructured, 02)      //   geprüft ✓
 
 Dataset_07 = E-Mail (structured, 01)                //   geprüft ✓
-Dataset_08 = E-Mail (structured, 02)
-Dataset_09 = E-Mail (regular, 01)
-Dataset_10 = E-Mail (regular, 02)
-Dataset_11 = E-Mail (unstructured, 01)
-Dataset_12 = E-Mail (unstructured, 02)
+Dataset_08 = E-Mail (structured, 02)                //   geprüft ✓
+Dataset_09 = E-Mail (regular, 01)                   //   geprüft ✓
+Dataset_10 = E-Mail (regular, 02)                   //   geprüft ✓
+Dataset_11 = E-Mail (unstructured, 01)              //   geprüft ✓
+Dataset_12 = E-Mail (unstructured, 02)              //   geprüft ✓
 
 Dataset_13 = HR-Dokumente (structured, 01)
 Dataset_14 = HR-Dokumente (structured, 02)

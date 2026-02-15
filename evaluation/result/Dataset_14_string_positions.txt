@@ -1,0 +1,71 @@
+DATASET: Dataset_14
+TEXT: evaluation/datasets/data/Dataset_14.txt
+len(text)=553
+============================================================
+
+ITEM #0: label=PER expected_sources=ner
+occurrences: 1
+  - #0 8:22 ctx='Kontakt\n▮Maria Hoffmann▮\nBahnhofstraße 17\n48143 Münste'
+
+ITEM #1: label=STRASSE expected_sources=ner
+occurrences: 1
+  - #0 23:39 ctx='Kontakt\nMaria Hoffmann\n▮Bahnhofstraße 17▮\n48143 Münster\nmaria.hoffmann@'
+
+ITEM #2: label=PLZ expected_sources=regex
+occurrences: 1
+  - #0 40:45 ctx='ria Hoffmann\nBahnhofstraße 17\n▮48143▮ Münster\nmaria.hoffmann@email.'
+
+ITEM #3: label=LOC expected_sources=ner
+occurrences: 3
+  - #0 46:53 ctx='ffmann\nBahnhofstraße 17\n48143 ▮Münster▮\nmaria.hoffmann@email.de\nMobil'
+  - #1 287:294 ctx='heute)\nTechFlow Solutions AG, ▮Münster▮\n\nVerantwortlich für:\n- Anford'
+  - #2 546:553 ctx='informatik (2019)\nUniversität ▮Münster▮'
+
+ITEM #4: label=E_MAIL expected_sources=regex
+occurrences: 1
+  - #0 54:77 ctx='ahnhofstraße 17\n48143 Münster\n▮maria.hoffmann@email.de▮\nMobil: +49 152 33445566\nGebor'
+
+ITEM #5: label=TELEFON expected_sources=regex
+occurrences: 1
+  - #0 85:101 ctx='aria.hoffmann@email.de\nMobil: ▮+49 152 33445566▮\nGeboren am 27.04.1996\n\nProfil'
+
+ITEM #6: label=DATUM expected_sources=regex
+occurrences: 1
+  - #0 113:123 ctx=': +49 152 33445566\nGeboren am ▮27.04.1996▮\n\nProfil\nWirtschaftsinformatik'
+
+ITEM #7: label=DATUM expected_sources=regex
+occurrences: 1
+  - #0 247:254 ctx='erufserfahrung\nProduct Owner (▮02/2022▮ – heute)\nTechFlow Solutions A'
+
+ITEM #8: label=ORG expected_sources=ner
+occurrences: 1
+  - #0 264:285 ctx='oduct Owner (02/2022 – heute)\n▮TechFlow Solutions AG▮, Münster\n\nVerantwortlich für:'
+
+ITEM #9: label=BETRAG expected_sources=regex
+occurrences: 1
+  - #0 402:411 ctx='er Teams\n- Budgetplanung (ca. ▮500.000 €▮)\n\nBusiness Analyst (09/2019 –'
+
+ITEM #10: label=DATUM expected_sources=regex
+occurrences: 1
+  - #0 432:439 ctx='500.000 €)\n\nBusiness Analyst (▮09/2019▮ – 01/2022)\nCoreIT GmbH, Dortm'
+
+ITEM #11: label=DATUM expected_sources=regex
+occurrences: 1
+  - #0 442:449 ctx='\n\nBusiness Analyst (09/2019 – ▮01/2022▮)\nCoreIT GmbH, Dortmund\n\nAkade'
+
+ITEM #12: label=ORG expected_sources=ner
+occurrences: 1
+  - #0 451:462 ctx='s Analyst (09/2019 – 01/2022)\n▮CoreIT GmbH▮, Dortmund\n\nAkademischer Hinte'
+
+ITEM #13: label=LOC expected_sources=ner
+occurrences: 1
+  - #0 464:472 ctx='/2019 – 01/2022)\nCoreIT GmbH, ▮Dortmund▮\n\nAkademischer Hintergrund\nM.S'
+
+ITEM #14: label=DATUM expected_sources=regex
+occurrences: 2
+  - #0 435:439 ctx='.000 €)\n\nBusiness Analyst (09/▮2019▮ – 01/2022)\nCoreIT GmbH, Dortm'
+  - #1 528:532 ctx='\nM.Sc. Wirtschaftsinformatik (▮2019▮)\nUniversität Münster'
+
+ITEM #15: label=ORG expected_sources=ner
+occurrences: 1
+  - #0 534:553 ctx=' Wirtschaftsinformatik (2019)\n▮Universität Münster▮'

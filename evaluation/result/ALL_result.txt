@@ -1,5 +1,5 @@
 EVAL ROOT: evaluation
-DATASETS: 12
+DATASETS: 14
 
 DATASET: Dataset_01
 TEXT: evaluation/datasets/data/Dataset_01.txt
@@ -145,8 +145,32 @@ MODE combined | TP= 13 FP=  0 FN=  1 | P=1.000 R=0.929 F1=0.963
 
 ======================================================================
 
+DATASET: Dataset_13
+TEXT: evaluation/datasets/data/Dataset_13.txt
+GOLD: evaluation/datasets/gold/Dataset_13.json
+
+SUMMARY
+----------------------------------------------------------------------
+MODE regex    | TP=  9 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
+MODE ner      | TP=  5 FP=  1 FN=  3 | P=0.833 R=0.625 F1=0.714
+MODE combined | TP= 14 FP=  1 FN=  3 | P=0.933 R=0.824 F1=0.875
+
+======================================================================
+
+DATASET: Dataset_14
+TEXT: evaluation/datasets/data/Dataset_14.txt
+GOLD: evaluation/datasets/gold/Dataset_14.json
+
+SUMMARY
+----------------------------------------------------------------------
+MODE regex    | TP=  8 FP=  0 FN=  1 | P=1.000 R=0.889 F1=0.941
+MODE ner      | TP=  2 FP=  1 FN=  6 | P=0.667 R=0.250 F1=0.364
+MODE combined | TP= 10 FP=  1 FN=  7 | P=0.909 R=0.588 F1=0.714
+
+======================================================================
+
 GLOBAL SUMMARY (micro-averaged over all datasets)
 ----------------------------------------------------------------------
-MODE regex    | TP=  79 FP=   0 FN=   5 | P=1.000 R=0.940 F1=0.969
-MODE ner      | TP=  24 FP=  13 FN=  18 | P=0.649 R=0.571 F1=0.608
-MODE combined | TP= 103 FP=  11 FN=  23 | P=0.904 R=0.817 F1=0.858
+MODE regex    | TP=  96 FP=   0 FN=   6 | P=1.000 R=0.941 F1=0.970
+MODE ner      | TP=  31 FP=  15 FN=  27 | P=0.674 R=0.534 F1=0.596
+MODE combined | TP= 127 FP=  13 FN=  33 | P=0.907 R=0.794 F1=0.847

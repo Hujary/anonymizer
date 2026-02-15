@@ -95,6 +95,27 @@ def finde_date(text: str) -> Iterable[Tuple[int, int, str]]:
         ),
 
         # ------------------------------------------------------------------
+        # Monat/Jahr: 07/2021 / 3-2017
+        #
+        # Typisch in Lebensläufen für Beschäftigungszeiträume.
+        #
+        # FIX:
+        #   - Monat range-validiert (1–12)
+        #   - Jahr 4-stellig
+        #   - Kein Match, wenn davor oder danach weitere Ziffern folgen
+        # ------------------------------------------------------------------
+        re.compile(
+            r"""
+            \b
+            (?:0?[1-9]|1[0-2])        # Monat 1-12
+            [./-]
+            (?:19|20)\d{2}            # Jahr 1900–2099
+            \b
+            """,
+            re.VERBOSE,
+        ),
+
+        # ------------------------------------------------------------------
         # Deutsch ausgeschrieben: 17. Oktober 2024
         #
         # Case-insensitive wegen Monatsnamen

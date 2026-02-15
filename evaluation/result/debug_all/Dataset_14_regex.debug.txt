@@ -1,0 +1,6 @@
+DATASET: Dataset_14 | MODE: regex
+MODE regex    | TP=  8 FP=  0 FN=  1 | P=1.000 R=0.889 F1=0.941
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - DATUM          528:532 [gold] '2019' ctx='tschaftsinformatik (▮2019▮)\nUniversität Münste'
+UNEXPECTED (FP): 0

@@ -1,0 +1,86 @@
+
+{
+  "document_id": "Dataset_14",
+  "items": [
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Maria Hoffmann"
+    },
+    {
+      "label": "STRASSE",
+      "expected_sources": ["ner"],
+      "text": "Bahnhofstraße 17"
+    },
+    {
+      "label": "PLZ",
+      "expected_sources": ["regex"],
+      "text": "48143"
+    },
+    {
+      "label": "LOC",
+      "expected_sources": ["ner"],
+      "text": "Münster"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "maria.hoffmann@email.de"
+    },
+    {
+      "label": "TELEFON",
+      "expected_sources": ["regex"],
+      "text": "+49 152 33445566"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "27.04.1996"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "02/2022"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "TechFlow Solutions AG"
+    },
+    {
+      "label": "BETRAG",
+      "expected_sources": ["regex"],
+      "text": "500.000 €"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "09/2019"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "01/2022"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "CoreIT GmbH"
+    },
+    {
+      "label": "LOC",
+      "expected_sources": ["ner"],
+      "text": "Dortmund"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "2019"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "Universität Münster"
+    }
+  ]
+}

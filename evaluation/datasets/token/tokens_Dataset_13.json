@@ -1,0 +1,86 @@
+
+{
+  "document_id": "Dataset_13",
+  "items": [
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Daniel Weber"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "09.01.1991"
+    },
+    {
+      "label": "PLZ",
+      "expected_sources": ["regex"],
+      "text": "60313"
+    },
+    {
+      "label": "LOC",
+      "expected_sources": ["ner"],
+      "text": "Frankfurt am Main"
+    },
+    {
+      "label": "TELEFON",
+      "expected_sources": ["regex"],
+      "text": "+49 176 77889900"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "daniel.weber@webmail.de"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "07/2021"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "DataSystems GmbH"
+    },
+    {
+      "label": "LOC",
+      "expected_sources": ["ner"],
+      "text": "Frankfurt"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "03/2017"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "06/2021"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "NetSolutions AG"
+    },
+    {
+      "label": "LOC",
+      "expected_sources": ["ner"],
+      "text": "Wiesbaden"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "10/2012"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "02/2017"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "Technische Universität Darmstadt"
+    }
+  ]
+}
