@@ -1,0 +1,9 @@
+DATASET: Dataset_10 | MODE: combined
+MODE combined | TP=  8 FP=  0 FN=  4 | P=1.000 R=0.667 F1=0.800
+----------------------------------------------------------------------
+NOT DETECTED (FN): 4
+  - RECHNUNGS_NUMMER 238:245 [gold] 'LT-8841' ctx='betrifft es die IDs ▮LT-8841▮ und LT-9912.\n\nIch b'
+  - RECHNUNGS_NUMMER 250:257 [gold] 'LT-9912' ctx='die IDs LT-8841 und ▮LT-9912▮.\n\nIch bin Thomas Re'
+  - PER            268:281 [gold] 'Thomas Reuter' ctx='d LT-9912.\n\nIch bin ▮Thomas Reuter▮ von der LogiTrans G'
+  - PER            561:567 [gold] 'Thomas' ctx='ist.\n\nViele Grüße  \n▮Thomas▮'
+UNEXPECTED (FP): 0

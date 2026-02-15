@@ -1,0 +1,8 @@
+DATASET: Dataset_08 | MODE: regex
+MODE regex    | TP=  6 FP=  0 FN=  3 | P=1.000 R=0.667 F1=0.800
+----------------------------------------------------------------------
+NOT DETECTED (FN): 3
+  - RECHNUNGS_NUMMER 120:130 [gold] 'WE-2024-19' ctx='ung Wartungsvertrag ▮WE-2024-19▮\n\nSehr geehrte Damen'
+  - RECHNUNGS_NUMMER 195:205 [gold] 'WE-2024-19' ctx='es Wartungsvertrags ▮WE-2024-19▮ benötigen wir eine '
+  - RECHNUNGS_NUMMER 338:348 [gold] 'WE-2024-19' ctx='t  \nVertragsnummer: ▮WE-2024-19▮  \nAnsprechpartner: '
+UNEXPECTED (FP): 0

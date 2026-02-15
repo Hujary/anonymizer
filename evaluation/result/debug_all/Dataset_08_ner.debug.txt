@@ -1,0 +1,6 @@
+DATASET: Dataset_08 | MODE: ner
+MODE ner      | TP=  3 FP=  1 FN=  0 | P=0.750 R=1.000 F1=0.857
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+UNEXPECTED (FP): 1
+  - LOC            297:319 [ner] 'Solarpark München-West' ctx='tervalle.\n\nProjekt: ▮Solarpark München-West▮  \nVertragsnummer: W'

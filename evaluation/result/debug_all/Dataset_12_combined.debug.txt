@@ -1,0 +1,6 @@
+DATASET: Dataset_12 | MODE: combined
+MODE combined | TP= 13 FP=  0 FN=  1 | P=1.000 R=0.929 F1=0.963
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - PER            698:703 [gold] 'Julia' ctx='emlich ungeduldig.\n\n▮Julia▮, InterLog GmbH'
+UNEXPECTED (FP): 0
