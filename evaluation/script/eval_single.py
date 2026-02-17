@@ -5,7 +5,7 @@ import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SRC_DIR = REPO_ROOT / "src"
@@ -37,7 +37,8 @@ class GoldCandidate:
 
 @dataclass(frozen=True)
 class GoldEntity:
-    label: str
+    primary_label: str
+    acceptable_labels: Set[str]
     candidates: List[GoldCandidate]
     expected_sources: Set[str]
 
@@ -109,7 +110,7 @@ def _extract_spans(text: str, *, allowed_sources: Set[str]) -> List[Span]:
         if start < 0 or end <= start or end > len(text):
             continue
 
-        out.append(span := Span(start=int(start), end=int(end), label=L, source=S))
+        out.append(Span(start=int(start), end=int(end), label=L, source=S))
 
     return out
 
@@ -141,9 +142,24 @@ def _parse_gold(gold: Dict[str, Any]) -> List[GoldEntity]:
         if not isinstance(e, dict):
             continue
 
-        label = _norm_label(e.get("label"))
-        if not label:
+        raw_label = e.get("label")
+
+        labels_ordered: List[str] = []
+        if isinstance(raw_label, list):
+            for x in raw_label:
+                L = _norm_label(x)
+                if L and L not in labels_ordered:
+                    labels_ordered.append(L)
+        else:
+            L = _norm_label(raw_label)
+            if L:
+                labels_ordered.append(L)
+
+        if not labels_ordered:
             continue
+
+        primary_label = labels_ordered[0]
+        acceptable_labels = set(labels_ordered)
 
         expected_sources_raw = e.get("expected_sources", [])
         if not isinstance(expected_sources_raw, list):
@@ -199,7 +215,14 @@ def _parse_gold(gold: Dict[str, Any]) -> List[GoldEntity]:
         if not candidates:
             continue
 
-        out.append(GoldEntity(label=label, candidates=candidates, expected_sources=expected_sources))
+        out.append(
+            GoldEntity(
+                primary_label=primary_label,
+                acceptable_labels=acceptable_labels,
+                candidates=candidates,
+                expected_sources=expected_sources,
+            )
+        )
 
     return out
 
@@ -242,6 +265,7 @@ def _snapshot_config() -> Dict[str, Any]:
         "regex_labels": list(config.get("regex_labels", []) or []),
         "spacy_model": config.get("spacy_model", ""),
         "debug_mask": bool(config.get("debug_mask", False)),
+        "use_ner_postprocessing": config.get("use_ner_postprocessing", True),
     }
 
 
@@ -256,6 +280,7 @@ def _restore_config(snap: Dict[str, Any]) -> None:
     config.set("regex_labels", snap.get("regex_labels", []) or [])
     config.set("spacy_model", snap.get("spacy_model", "") or "")
     config.set("debug_mask", bool(snap.get("debug_mask", False)))
+    config.set("use_ner_postprocessing", snap.get("use_ner_postprocessing", True))
 
 
 def _ctx(text: str, start: int, end: int, radius: int) -> str:
@@ -435,12 +460,15 @@ def _evaluate(
 
         found_key: Optional[Tuple[int, int, str]] = None
         for c in candidates:
-            k = (c.start, c.end, g.label)
-            if k in pred_by_key:
-                found_key = k
+            for L in g.acceptable_labels:
+                k = (c.start, c.end, L)
+                if k in pred_by_key:
+                    found_key = k
+                    break
+            if found_key is not None:
                 break
 
-        lbl_counts = counts_by_label.setdefault(g.label, EvalCounts())
+        lbl_counts = counts_by_label.setdefault(g.primary_label, EvalCounts())
 
         if found_key is not None:
             counts_total.tp += 1
@@ -466,7 +494,7 @@ def _evaluate(
             misses.append(
                 Miss(
                     kind="FN",
-                    label=g.label,
+                    label=g.primary_label,
                     start=c0.start,
                     end=c0.end,
                     source="gold",
@@ -580,6 +608,7 @@ def main() -> int:
     ap.add_argument("--per-label", action="store_true", help="Include per-label stats in result file")
     ap.add_argument("--ctx", type=int, default=20, help="Context radius for debug lines (0 disables)")
     ap.add_argument("--max-lines", type=int, default=200, help="Max lines per section (FN/FP/TP) before truncation")
+    ap.add_argument("--no-ner-post", action="store_true", help="Disable NER postprocessing (raw spaCy output)")
     args = ap.parse_args()
 
     eval_root = Path(args.eval_root)
@@ -597,6 +626,13 @@ def main() -> int:
     gold_entities = _parse_gold(gold)
 
     snap = _snapshot_config()
+
+    # NER Post Processing aktivieren/deaktivieren (default: aktiviert)
+    if args.no_ner_post:
+        config.set("use_ner_postprocessing", False)
+    else:
+        config.set("use_ner_postprocessing", True)
+
     try:
         modes: List[Tuple[str, Set[str]]] = [
             ("regex", {"regex"}),

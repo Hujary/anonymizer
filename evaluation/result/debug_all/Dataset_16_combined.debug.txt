@@ -1,0 +1,10 @@
+DATASET: Dataset_16 | MODE: combined
+MODE combined | TP= 10 FP=  0 FN=  5 | P=1.000 R=0.667 F1=0.800
+----------------------------------------------------------------------
+NOT DETECTED (FN): 5
+  - PLZ            85:90 [gold] '50667' ctx='2334455\nWohnhaft in ▮50667▮ Köln\nGeburtsdatum 0'
+  - LOC            91:95 [gold] 'Köln' ctx='5\nWohnhaft in 50667 ▮Köln▮\nGeburtsdatum 03.11.'
+  - DATUM          137:141 [gold] '2020' ctx='92\n\nErfahrung:\nSeit ▮2020▮ Projektmanagerin be'
+  - ORG            423:439 [gold] 'Universität Köln' ctx='ationswissenschaft, ▮Universität Köln▮ (2017)\n\nWeitere Ken'
+  - DATUM          441:445 [gold] '2017' ctx=', Universität Köln (▮2017▮)\n\nWeitere Kenntniss'
+UNEXPECTED (FP): 0

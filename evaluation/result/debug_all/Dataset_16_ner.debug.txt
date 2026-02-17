@@ -1,0 +1,8 @@
+DATASET: Dataset_16 | MODE: ner
+MODE ner      | TP=  4 FP=  1 FN=  2 | P=0.800 R=0.667 F1=0.727
+----------------------------------------------------------------------
+NOT DETECTED (FN): 2
+  - LOC            91:95 [gold] 'Köln' ctx='5\nWohnhaft in 50667 ▮Köln▮\nGeburtsdatum 03.11.'
+  - ORG            423:439 [gold] 'Universität Köln' ctx='ationswissenschaft, ▮Universität Köln▮ (2017)\n\nWeitere Ken'
+UNEXPECTED (FP): 1
+  - LOC            85:95 [ner] '50667 Köln' ctx='2334455\nWohnhaft in ▮50667 Köln▮\nGeburtsdatum 03.11.'

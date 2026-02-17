@@ -1,6 +1,7 @@
 {
   "use_regex": true,
   "use_ner": true,
+  "use_ner_postprocessing": true,
   "debug_mask": false,
   "spacy_model": "de_core_news_lg",
   "theme": "dark",

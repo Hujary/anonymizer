@@ -1,0 +1,8 @@
+DATASET: Dataset_15 | MODE: combined
+MODE combined | TP= 16 FP=  1 FN=  2 | P=0.941 R=0.889 F1=0.914
+----------------------------------------------------------------------
+NOT DETECTED (FN): 2
+  - DATUM          519:523 [gold] '2013' ctx=':\nB.Sc. Informatik (▮2013▮–2018)\nFriedrich-Ale'
+  - DATUM          524:528 [gold] '2018' ctx='c. Informatik (2013–▮2018▮)\nFriedrich-Alexande'
+UNEXPECTED (FP): 1
+  - LOC            593:597 [ner] 'Java' ctx='rnberg\n\nKenntnisse:\n▮Java▮, Spring Boot, REST,'

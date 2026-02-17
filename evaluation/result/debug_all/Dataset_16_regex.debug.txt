@@ -1,0 +1,7 @@
+DATASET: Dataset_16 | MODE: regex
+MODE regex    | TP=  7 FP=  0 FN=  2 | P=1.000 R=0.778 F1=0.875
+----------------------------------------------------------------------
+NOT DETECTED (FN): 2
+  - DATUM          137:141 [gold] '2020' ctx='92\n\nErfahrung:\nSeit ▮2020▮ Projektmanagerin be'
+  - DATUM          441:445 [gold] '2017' ctx=', Universität Köln (▮2017▮)\n\nWeitere Kenntniss'
+UNEXPECTED (FP): 0

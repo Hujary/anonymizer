@@ -1,0 +1,9 @@
+DATASET: Dataset_17 | MODE: combined
+MODE combined | TP= 10 FP=  0 FN=  4 | P=1.000 R=0.714 F1=0.833
+----------------------------------------------------------------------
+NOT DETECTED (FN): 4
+  - DATUM          196:200 [gold] '2022' ctx='H beschäftigt (seit ▮2022▮) als System Enginee'
+  - DATUM          259:263 [gold] '2019' ctx='rt bei NetPoint AG (▮2019▮–2022)\n\nGeboren am 2'
+  - DATUM          264:268 [gold] '2022' ctx='i NetPoint AG (2019–▮2022▮)\n\nGeboren am 21.08.'
+  - DATUM          470:474 [gold] '2018' ctx=' Leipzig (Abschluss ▮2018▮)\n\nBitte prüfen, ob '
+UNEXPECTED (FP): 0

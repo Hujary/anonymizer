@@ -86,6 +86,11 @@ def _run_ner(text: str, allowed_labels: List[str]) -> List[Treffer]:
     if not raw_ner:
         return []
 
+    # Post Processing ist optional
+    use_post = bool(config.get("use_ner_postprocessing", True))
+    if not use_post:
+        return raw_ner
+
     return filter_ner_strict(text, raw_ner, allowed_labels=allowed_labels)
 
 

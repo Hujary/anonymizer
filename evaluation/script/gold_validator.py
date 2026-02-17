@@ -4,7 +4,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Tuple, Optional
+from typing import Any, Dict, List, Tuple
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -51,6 +51,34 @@ def find_all(text: str, needle: str) -> List[Tuple[int, int]]:
 
 def _norm_label(x: Any) -> str:
     return str(x or "").strip().upper()
+
+
+def _norm_labels(x: Any) -> List[str]:
+    labels: List[str] = []
+    if isinstance(x, list):
+        for v in x:
+            s = _norm_label(v)
+            if s and s not in labels:
+                labels.append(s)
+    else:
+        s = _norm_label(x)
+        if s:
+            labels.append(s)
+    return labels
+
+
+def _label_for_json(labels: List[str]) -> Any:
+    if not labels:
+        return ""
+    if len(labels) == 1:
+        return labels[0]
+    return labels
+
+
+def _primary_label(labels: Any) -> str:
+    if isinstance(labels, list) and labels:
+        return _norm_label(labels[0])
+    return _norm_label(labels)
 
 
 def _norm_sources(x: Any) -> List[str]:
@@ -105,18 +133,15 @@ def _parse_tokens_spec(tokens_obj: Any, fallback_document_id: str) -> Tuple[str,
 
 
 def _build_gold_entities_from_item(text: str, item: Dict[str, Any], lines: List[str]) -> List[Dict[str, Any]]:
-    label = _norm_label(item.get("label"))
+    labels = _norm_labels(item.get("label"))
     expected_sources = _norm_sources(item.get("expected_sources"))
 
-    if not label:
+    if not labels:
         lines.append("  !! SKIP item: missing label")
         return []
 
     alternatives = item.get("alternatives", None)
 
-    # Alternatives: keep semantics as "one entity, multiple acceptable spans"
-    # -> by default we pick the FIRST occurrence for each alternative text (as before).
-    # If you want all occurrences for alternatives too, that explodes quickly and loses meaning.
     if isinstance(alternatives, list) and alternatives:
         alt_entries: List[Dict[str, Any]] = []
 
@@ -157,7 +182,7 @@ def _build_gold_entities_from_item(text: str, item: Dict[str, Any], lines: List[
 
         return [
             {
-                "label": label,
+                "label": _label_for_json(labels),
                 "expected_sources": expected_sources,
                 "alternatives": alt_entries,
             }
@@ -181,7 +206,7 @@ def _build_gold_entities_from_item(text: str, item: Dict[str, Any], lines: List[
         lines.append(f"  - #{k} {start}:{end} ctx='{ctx}'")
         out.append(
             {
-                "label": label,
+                "label": _label_for_json(labels),
                 "expected_sources": expected_sources,
                 "start": start,
                 "end": end,
@@ -201,7 +226,7 @@ def _sort_gold_entities(entities: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         else:
             s = int(e.get("start", 10**18))
             en = int(e.get("end", 10**18))
-        lbl = _norm_label(e.get("label"))
+        lbl = _primary_label(e.get("label"))
         return (s, en, lbl)
 
     return sorted(entities, key=key)
@@ -244,11 +269,12 @@ def main() -> int:
             lines.append("")
             continue
 
-        label = _norm_label(item.get("label"))
+        labels = _norm_labels(item.get("label"))
         srcs = _norm_sources(item.get("expected_sources"))
         show_srcs = ",".join(srcs) if srcs else "(none)"
+        show_labels = ",".join(labels) if labels else "(missing)"
 
-        lines.append(f"ITEM #{idx}: label={label} expected_sources={show_srcs}")
+        lines.append(f"ITEM #{idx}: label={show_labels} expected_sources={show_srcs}")
 
         ents = _build_gold_entities_from_item(text, item, lines)
         gold_entities.extend(ents)

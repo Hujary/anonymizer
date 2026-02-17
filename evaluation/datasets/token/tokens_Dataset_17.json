@@ -1,1 +1,80 @@
 
+{
+  "document_id": "Dataset_XX",
+  "items": [
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Thomas Berger"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "thomas.berger@bewerbung.net"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "04.02.2024"
+    },
+    {
+      "label": "TELEFON",
+      "expected_sources": ["regex"],
+      "text": "0160 44556677"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "DeltaLogix GmbH"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "NetPoint AG"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "2019"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "2022"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "21.08.1990"
+    },
+    {
+      "label": "LOC",
+      "expected_sources": ["ner"],
+      "text": "Leipzig"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "TechCore Solutions GmbH"
+    },
+    {
+      "label": ["ORG", "LOC"],
+      "expected_sources": ["ner"],
+      "alternatives": [
+        {
+          "text": "Hochschule Leipzig",
+          "expected_sources": ["ner"]
+        },
+        {
+          "text": "Leipzig",
+          "expected_sources": ["ner"]
+        }
+      ]
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "2018"
+    }
+  ]
+}

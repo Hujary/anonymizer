@@ -1,0 +1,7 @@
+DATASET: Dataset_15 | MODE: regex
+MODE regex    | TP=  7 FP=  0 FN=  2 | P=1.000 R=0.778 F1=0.875
+----------------------------------------------------------------------
+NOT DETECTED (FN): 2
+  - DATUM          519:523 [gold] '2013' ctx=':\nB.Sc. Informatik (▮2013▮–2018)\nFriedrich-Ale'
+  - DATUM          524:528 [gold] '2018' ctx='c. Informatik (2013–▮2018▮)\nFriedrich-Alexande'
+UNEXPECTED (FP): 0

@@ -139,13 +139,29 @@ _ORG_LEGALFORM_RE = re.compile(
 _ORG_NAME_TOKEN_RE = re.compile(r"[A-Za-zÄÖÜäöüß0-9][A-Za-zÄÖÜäöüß0-9&\.\-+]{0,}")
 _ORG_CONNECTOR_RE = re.compile(r"^(?:&|und|\+|-)$", re.IGNORECASE)
 
+# ------------------------------------------------------------------
+# FIX: Kontextwörter, die oft fälschlich in ORG-Spans nach links "mitgezogen" werden.
+#      Diese Liste muss Wörter enthalten, die in Sätzen vor ORGs stehen:
+#      "bei DeltaLogix GmbH", "von TechCore Solutions GmbH", "im/ in Unternehmen ..."
+# ------------------------------------------------------------------
 _ORG_CONTEXT_BREAKS = {
     "da",
     "sie",
     "aktuell",
     "an",
-    "der",
+    "am",
+    "im",
+    "in",
+    "bei",
+    "von",
+    "aus",
+    "mit",
+    "per",
+    "als",
+    "zum",
+    "zur",
     "die",
+    "der",
     "das",
     "den",
     "des",
@@ -417,6 +433,50 @@ def _expand_org_if_only_legalform(text: str, hit: Treffer) -> Treffer:
 
 
 # ------------------------------------------------------------------
+# ORG-Final-Trim: führende Kontextwörter entfernen
+#
+# Problemfall:
+#   - "bei DeltaLogix GmbH" statt "DeltaLogix GmbH"
+#   - "Support bei NetPoint AG" statt "NetPoint AG"
+#   - "er ein Angebot von TechCore Solutions GmbH" statt "TechCore Solutions GmbH"
+#
+# Ziel:
+#   - minimaler ORG-Span (Name + Rechtsform / ORG-Kern), damit Evaluation nicht FP+FN erzeugt
+# ------------------------------------------------------------------
+def _trim_leading_context_for_org(text: str, hit: Treffer) -> Treffer:
+    span = text[hit.start : hit.ende]
+    if not span.strip():
+        return hit
+
+    m = re.match(
+        r"^\s*(?:bei|von|im|in|am|an|als|zum|zur|aus|mit|per)\b\s*",
+        span,
+        re.IGNORECASE,
+    )
+    if not m:
+        return hit
+
+    new_start = hit.start + m.end()
+    if new_start >= hit.ende:
+        return hit
+
+    while new_start < hit.ende and text[new_start] in " \t":
+        new_start += 1
+
+    if hit.ende - new_start < 3:
+        return hit
+
+    return Treffer(
+        new_start,
+        hit.ende,
+        hit.label,
+        hit.source,
+        from_regex=hit.from_regex,
+        from_ner=hit.from_ner,
+    )
+
+
+# ------------------------------------------------------------------
 # ORG-Normalisierung: "kleinstes brauchbares Segment" mit Rechtsform
 #   FIX: wenn vor der Rechtsform direkt ein Name-Token steht, MUSS er drin bleiben.
 #        Dadurch wird "CloudWare Solutions GmbH" nicht zu "Solutions GmbH" abgeschnitten.
@@ -550,6 +610,9 @@ def _normalize_org_hit(text: str, hit: Treffer) -> Treffer | None:
             len_cand = cand.ende - cand.start
             if 4 <= len_cand < len_best:
                 best = cand
+
+    if best is not None:
+        best = _trim_leading_context_for_org(text, best)
 
     return best
 

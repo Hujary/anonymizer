@@ -1,0 +1,6 @@
+DATASET: Dataset_15 | MODE: ner
+MODE ner      | TP=  9 FP=  1 FN=  0 | P=0.900 R=1.000 F1=0.947
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+UNEXPECTED (FP): 1
+  - LOC            593:597 [ner] 'Java' ctx='rnberg\n\nKenntnisse:\n▮Java▮, Spring Boot, REST,'

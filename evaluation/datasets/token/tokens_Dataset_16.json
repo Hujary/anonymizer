@@ -1,1 +1,89 @@
-
+{
+    "document_id": "Dataset_XX",
+    "items": [
+        {
+            "label": "PER",
+            "expected_sources": ["ner"],
+            "text": "Sarah Klein"
+        },
+        {
+            "label": "E_MAIL",
+            "expected_sources": ["regex"],
+            "text": "sarah.klein@mailbox.de"
+        },
+        {
+            "label": "TELEFON",
+            "expected_sources": ["regex"],
+            "text": "+49 157 22334455"
+        },
+        {
+            "label": "PLZ",
+            "expected_sources": ["regex"],
+            "text": "50667"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": ["ner"],
+            "text": "Köln"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": ["regex"],
+            "text": "03.11.1992"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": ["regex"],
+            "text": "2020"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": ["regex"],
+            "text": "03/2017"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": ["regex"],
+            "text": "02/2019"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": ["regex"],
+            "text": "2017"
+        },
+        {
+            "label": "ORG",
+            "expected_sources": ["ner"],
+            "text": "DoubleSlash Net-Business GmbH"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": ["ner"],
+            "text": "Friedrichshafen"
+        },
+        {
+            "label": "ORG",
+            "expected_sources": ["ner"],
+            "text": "MarketView AG"
+        },
+        {
+            "label": ["ORG", "LOC"],
+            "expected_sources": ["ner"],
+            "alternatives": [
+                {
+                    "text": "Universität Köln",
+                    "expected_sources": ["ner"]
+                },
+                {
+                    "text": "Köln",
+                    "expected_sources": ["ner"]
+                }
+            ]
+        },
+        {
+            "label": "BETRAG",
+            "expected_sources": ["regex"],
+            "text": "250.000 €"
+        }
+    ]
+}

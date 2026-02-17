@@ -1,1 +1,132 @@
-
+{
+    "document_id": "Dataset_14",
+    "items": [
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Lukas Meier"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "18.02.1994"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Nürnberg"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Lindenweg 8"
+        },
+        {
+            "label": "PLZ",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "90402"
+        },
+        {
+            "label": "TELEFON",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "0171 99887766"
+        },
+        {
+            "label": "E_MAIL",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "lukas.meier@postmail.de"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "04/2021"
+        },
+        {
+            "label": "ORG",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "SoftTech GmbH"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "01/2019"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "03/2021"
+        },
+        {
+            "label": "ORG",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "ByteFactory AG"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "2013"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "2018"
+        },
+        {
+            "label": [
+                "ORG",
+                "LOC"
+            ],
+            "expected_sources": [
+                "ner"
+            ],
+            "alternatives": [
+                {
+                    "text": "Friedrich-Alexander-Universität Erlangen-Nürnberg",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                },
+                {
+                    "text": "Friedrich-Alexander-Universität",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                },
+                {
+                    "text": "Universität Erlangen-Nürnberg",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                }
+            ]
+        }
+    ]
+}
