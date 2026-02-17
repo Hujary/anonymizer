@@ -5,6 +5,7 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Set, Tuple
+from collections import defaultdict
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -13,7 +14,6 @@ if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 EVAL_DIR = REPO_ROOT / "evaluation"
-SCRIPT_DIR = EVAL_DIR / "script"
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 if str(EVAL_DIR) not in sys.path:
@@ -67,10 +67,7 @@ def _discover_datasets(eval_root: Path) -> List[str]:
     gold_dir = eval_root / "datasets" / "gold"
     if not gold_dir.exists():
         return []
-    names: List[str] = []
-    for p in sorted(gold_dir.glob("*.json")):
-        names.append(p.stem)
-    return names
+    return [p.stem for p in sorted(gold_dir.glob("*.json"))]
 
 
 def _load_gold_entities(eval_root: Path, name: str) -> Tuple[str, List[Any], str, str]:
@@ -91,6 +88,45 @@ def _write_text(path: Path, s: str) -> None:
     path.write_text(s.rstrip() + "\n", encoding="utf-8")
 
 
+def _miss_line(dataset: str, m: Miss) -> str:
+    t = (m.text or "").replace("\n", "\\n").replace("\r", "\\r")
+    return f"{dataset} {m.start}:{m.end} [{m.source}] '{t}'"
+
+
+def _format_label_report(
+    label_hits: Dict[str, Dict[str, List[str]]],
+    *,
+    mode: str,
+    max_items_per_section: int,
+) -> str:
+    lines: List[str] = []
+    lines.append(f"LABEL REPORT | MODE: {mode}")
+    lines.append("-" * 80)
+    lines.append("")
+
+    for lbl in sorted(label_hits.keys()):
+        sections = label_hits[lbl]
+        lines.append(lbl)
+        lines.append("-" * 80)
+
+        for kind, title in (("TP", "ERKANNT (TP)"), ("FN", "NICHT ERKANNT (FN)"), ("FP", "UNERWARTET (FP)")):
+            items = sections.get(kind, [])
+            lines.append(f"{title}: {len(items)}")
+            if items:
+                shown = 0
+                for it in items:
+                    if shown >= max_items_per_section:
+                        lines.append(f"  ... truncated ({len(items) - max_items_per_section} more)")
+                        break
+                    lines.append(f"  - {it}")
+                    shown += 1
+            lines.append("")
+
+        lines.append("")
+
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--eval-root", default="evaluation")
@@ -101,11 +137,18 @@ def main() -> int:
     ap.add_argument("--max-lines", type=int, default=200)
     ap.add_argument("--only", nargs="*", default=None, help="Run only these dataset basenames (e.g. Dataset_01 Dataset_02)")
     ap.add_argument("--out", default=None, help="Output file for combined report (default: evaluation/result/ALL_result.txt)")
+    ap.add_argument("--no-ner-post", action="store_true", help="Disable NER postprocessing (raw spaCy output)")
 
     ap.add_argument(
-        "--no-ner-post",
+        "--label-report",
         action="store_true",
-        help="Disable NER postprocessing (raw spaCy output)",
+        help="Write aggregated per-label TP/FN/FP report across all datasets (evaluation/result/ALL_labels_<mode>.txt)",
+    )
+    ap.add_argument(
+        "--label-report-max",
+        type=int,
+        default=500,
+        help="Max items per label section (TP/FN/FP) in label report",
     )
 
     args = ap.parse_args()
@@ -131,18 +174,20 @@ def main() -> int:
 
     snap = _snapshot_config()
     try:
-        if args.no_ner_post:
-            config.set("use_ner_postprocessing", False)
-        else:
-            config.set("use_ner_postprocessing", True)
+        config.set("use_ner_postprocessing", False if args.no_ner_post else True)
 
         report_lines: List[str] = []
         report_lines.append(f"EVAL ROOT: {eval_root}")
         report_lines.append(f"DATASETS: {len(dataset_names)}")
-        report_lines.append(f"NER_POSTPROCESSING: {not bool(args.no_ner_post)}")
+        report_lines.append(f"NER_POSTPROCESSING: {bool(config.get('use_ner_postprocessing', True))}")
         report_lines.append("")
 
         agg: Dict[str, ModeAgg] = {m[0]: ModeAgg() for m in modes}
+
+        label_hits_by_mode: Dict[str, Dict[str, Dict[str, List[str]]]] = {}
+        if args.label_report:
+            for mode, _ in modes:
+                label_hits_by_mode[mode] = defaultdict(lambda: {"TP": [], "FN": [], "FP": []})
 
         for name in dataset_names:
             text, gold_entities, text_path_s, gold_path_s = _load_gold_entities(eval_root, name)
@@ -151,12 +196,17 @@ def main() -> int:
             report_lines.append(f"TEXT: {text_path_s}")
             report_lines.append(f"GOLD: {gold_path_s}")
             report_lines.append("")
-
             report_lines.append("SUMMARY")
             report_lines.append("-" * 70)
 
             for mode, sources in modes:
-                total, by_label, misses = _evaluate(text, gold_entities, mode=mode, mode_sources=set(sources))
+                total, by_label, misses = _evaluate(
+                    text,
+                    gold_entities,
+                    mode=mode,
+                    mode_sources=set(sources),
+                    eval_root=eval_root,
+                )
                 agg[mode].add(total)
                 report_lines.append(_format_summary(mode, total))
 
@@ -165,6 +215,15 @@ def main() -> int:
                     report_lines.append(f"PER-LABEL ({mode})")
                     report_lines.extend(_format_per_label(by_label))
                     report_lines.append("")
+
+                if args.label_report:
+                    bucket = label_hits_by_mode[mode]
+                    for m in misses:
+                        L = str(m.label or "").strip().upper() or "?"
+                        K = str(m.kind or "").strip().upper()
+                        if K not in ("TP", "FN", "FP"):
+                            continue
+                        bucket[L][K].append(_miss_line(name, m))
 
                 if args.debug:
                     dbg_lines: List[str] = []
@@ -199,8 +258,21 @@ def main() -> int:
 
         _write_text(out_path, "\n".join(report_lines))
         print(f"Wrote: {out_path}")
+
         if args.debug:
             print(f"Wrote debug files: {dbg_dir}")
+
+        if args.label_report:
+            result_dir = eval_root / "result"
+            for mode, _ in modes:
+                out_lbl = result_dir / f"ALL_labels_{mode}.txt"
+                txt = _format_label_report(
+                    label_hits_by_mode[mode],
+                    mode=mode,
+                    max_items_per_section=max(1, int(args.label_report_max)),
+                )
+                _write_text(out_lbl, txt)
+                print(f"Wrote: {out_lbl}")
 
     finally:
         _restore_config(snap)

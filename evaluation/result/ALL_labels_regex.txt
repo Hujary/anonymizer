@@ -1,0 +1,218 @@
+LABEL REPORT | MODE: regex
+--------------------------------------------------------------------------------
+
+BETRAG
+--------------------------------------------------------------------------------
+ERKANNT (TP): 5
+  - Dataset_07 218:228 [regex] '4.820,00 €'
+  - Dataset_11 221:229 [regex] '18.500 €'
+  - Dataset_14 402:411 [regex] '500.000 €'
+  - Dataset_16 353:362 [regex] '250.000 €'
+  - Dataset_18 550:558 [regex] '72.000 €'
+
+NICHT ERKANNT (FN): 0
+
+UNERWARTET (FP): 0
+
+
+BIC
+--------------------------------------------------------------------------------
+ERKANNT (TP): 1
+  - Dataset_07 394:405 [regex] 'INGDDEFFXXX'
+
+NICHT ERKANNT (FN): 0
+
+UNERWARTET (FP): 0
+
+
+DATUM
+--------------------------------------------------------------------------------
+ERKANNT (TP): 46
+  - Dataset_01 435:445 [regex] '03.02.2024'
+  - Dataset_02 671:681 [regex] '14.02.2024'
+  - Dataset_02 868:878 [regex] '13.02.2024'
+  - Dataset_03 427:437 [regex] '18.02.2024'
+  - Dataset_04 615:625 [regex] '19.02.2024'
+  - Dataset_05 459:469 [regex] '24.02.2024'
+  - Dataset_05 549:559 [regex] '23.02.2024'
+  - Dataset_06 460:470 [regex] '26.02.2024'
+  - Dataset_06 548:558 [regex] '25.02.2024'
+  - Dataset_07 71:81 [regex] '04.03.2024'
+  - Dataset_07 202:212 [regex] '20.02.2024'
+  - Dataset_07 282:292 [regex] '10.03.2024'
+  - Dataset_08 73:83 [regex] '05.03.2024'
+  - Dataset_08 521:531 [regex] '12.03.2024'
+  - Dataset_09 61:71 [regex] '06.03.2024'
+  - Dataset_09 446:456 [regex] '06.03.2024'
+  - Dataset_10 65:75 [regex] '07.03.2024'
+  - Dataset_10 367:377 [regex] '05.03.2024'
+  - Dataset_11 74:84 [regex] '08.03.2024'
+  - Dataset_11 409:419 [regex] '06.03.2024'
+  - Dataset_11 433:443 [regex] '11.03.2024'
+  - Dataset_12 64:74 [regex] '09.03.2024'
+  - Dataset_12 402:412 [regex] '02.03.2024'
+  - Dataset_12 604:614 [regex] '08.03.2024'
+  - Dataset_13 65:75 [regex] '09.01.1991'
+  - Dataset_13 189:196 [regex] '07/2021'
+  - Dataset_13 377:384 [regex] '03/2017'
+  - Dataset_13 387:394 [regex] '06/2021'
+  - Dataset_13 451:458 [regex] '10/2012'
+  - Dataset_13 461:468 [regex] '02/2017'
+  - Dataset_14 113:123 [regex] '27.04.1996'
+  - Dataset_14 247:254 [regex] '02/2022'
+  - Dataset_14 432:439 [regex] '09/2019'
+  - Dataset_14 442:449 [regex] '01/2022'
+  - Dataset_15 181:191 [regex] '18.02.1994'
+  - Dataset_15 324:331 [regex] '04/2021'
+  - Dataset_15 419:426 [regex] '01/2019'
+  - Dataset_15 431:438 [regex] '03/2021'
+  - Dataset_16 109:119 [regex] '03.11.1992'
+  - Dataset_16 254:261 [regex] '03/2017'
+  - Dataset_16 262:269 [regex] '02/2019'
+  - Dataset_17 81:91 [regex] '04.02.2024'
+  - Dataset_17 282:292 [regex] '21.08.1990'
+  - Dataset_18 74:84 [regex] '12.01.2024'
+  - Dataset_18 246:253 [regex] '04/2018'
+  - Dataset_18 258:265 [regex] '06/2023'
+
+NICHT ERKANNT (FN): 9
+  - Dataset_14 528:532 [gold] '2019'
+  - Dataset_15 519:523 [gold] '2013'
+  - Dataset_15 524:528 [gold] '2018'
+  - Dataset_16 137:141 [gold] '2020'
+  - Dataset_16 441:445 [gold] '2017'
+  - Dataset_17 196:200 [gold] '2022'
+  - Dataset_17 259:263 [gold] '2019'
+  - Dataset_17 264:268 [gold] '2022'
+  - Dataset_17 470:474 [gold] '2018'
+
+UNERWARTET (FP): 0
+
+
+E_MAIL
+--------------------------------------------------------------------------------
+ERKANNT (TP): 31
+  - Dataset_01 118:147 [regex] 'max.berger@berger-logistik.de'
+  - Dataset_02 131:158 [regex] 'laura.schmid@kramer-sohn.de'
+  - Dataset_03 331:359 [regex] 'tobias.klein@klein-handel.de'
+  - Dataset_04 293:319 [regex] 'simon.franke@franke-bau.de'
+  - Dataset_05 365:397 [regex] 'markus.weber@pixelforge-media.de'
+  - Dataset_06 378:415 [regex] 'daniel.krueger@cloudware-solutions.de'
+  - Dataset_07 5:28 [regex] 'finance@alphacore-ag.de'
+  - Dataset_07 33:63 [regex] 'buchhaltung@delta-logistics.de'
+  - Dataset_07 483:510 [regex] 'daniel.vogt@alphacore-ag.de'
+  - Dataset_08 5:38 [regex] 'projektleitung@innoventis-gmbh.de'
+  - Dataset_08 43:65 [regex] 'service@urbanenergy.de'
+  - Dataset_08 391:422 [regex] 'michael.roth@innoventis-gmbh.de'
+  - Dataset_09 5:31 [regex] 'sabine.lang@mediconnect.de'
+  - Dataset_09 36:53 [regex] 'it@mediconnect.de'
+  - Dataset_09 259:285 [regex] 'sabine.lang@mediconnect.de'
+  - Dataset_10 5:31 [regex] 'thomas.reuter@logitrans.de'
+  - Dataset_10 36:57 [regex] 'support@fleetcloud.io'
+  - Dataset_10 306:332 [regex] 'thomas.reuter@logitrans.de'
+  - Dataset_11 5:34 [regex] 'lisa.schneider@creativehub.de'
+  - Dataset_11 39:66 [regex] 'markus.weber@creativehub.de'
+  - Dataset_11 336:366 [regex] 'oliver.braun@bluewave-media.de'
+  - Dataset_12 5:29 [regex] 'julia.krause@interlog.de'
+  - Dataset_12 34:56 [regex] 'it-support@interlog.de'
+  - Dataset_12 292:321 [regex] 'martin.schulz@nordlogistik.de'
+  - Dataset_13 143:166 [regex] 'daniel.weber@webmail.de'
+  - Dataset_14 54:77 [regex] 'maria.hoffmann@email.de'
+  - Dataset_15 271:294 [regex] 'lukas.meier@postmail.de'
+  - Dataset_16 31:53 [regex] 'sarah.klein@mailbox.de'
+  - Dataset_17 50:77 [regex] 'thomas.berger@bewerbung.net'
+  - Dataset_18 44:66 [regex] 'hr@company-internal.de'
+  - Dataset_18 154:178 [regex] 'k.sommer@private-mail.de'
+
+NICHT ERKANNT (FN): 0
+
+UNERWARTET (FP): 0
+
+
+IBAN
+--------------------------------------------------------------------------------
+ERKANNT (TP): 1
+  - Dataset_07 364:386 [regex] 'DE44500105175407324931'
+
+NICHT ERKANNT (FN): 0
+
+UNERWARTET (FP): 0
+
+
+PLZ
+--------------------------------------------------------------------------------
+ERKANNT (TP): 5
+  - Dataset_13 85:90 [regex] '60313'
+  - Dataset_14 40:45 [regex] '48143'
+  - Dataset_15 226:231 [regex] '90402'
+  - Dataset_16 85:90 [regex] '50667'
+  - Dataset_18 194:199 [regex] '70563'
+
+NICHT ERKANNT (FN): 0
+
+UNERWARTET (FP): 0
+
+
+RECHNUNGS_NUMMER
+--------------------------------------------------------------------------------
+ERKANNT (TP): 8
+  - Dataset_01 50:63 [regex] 'ST-2024-00123'
+  - Dataset_02 63:76 [regex] 'ST-2024-00478'
+  - Dataset_02 587:599 [regex] 'BS-2024-1187'
+  - Dataset_02 717:729 [regex] 'BS-2024-1187'
+  - Dataset_07 114:126 [regex] 'AC-2024-0311'
+  - Dataset_07 185:197 [regex] 'AC-2024-0311'
+  - Dataset_12 88:99 [regex] 'NL-2024-119'
+  - Dataset_12 556:567 [regex] 'NL-2024-119'
+
+NICHT ERKANNT (FN): 5
+  - Dataset_08 120:130 [gold] 'WE-2024-19'
+  - Dataset_08 195:205 [gold] 'WE-2024-19'
+  - Dataset_08 338:348 [gold] 'WE-2024-19'
+  - Dataset_10 238:245 [gold] 'LT-8841'
+  - Dataset_10 250:257 [gold] 'LT-9912'
+
+UNERWARTET (FP): 0
+
+
+TELEFON
+--------------------------------------------------------------------------------
+ERKANNT (TP): 18
+  - Dataset_01 157:173 [regex] '+49 711 99887766'
+  - Dataset_02 168:183 [regex] '+49 711 4567890'
+  - Dataset_03 365:376 [regex] '0751 987654'
+  - Dataset_04 371:386 [regex] '+49 160 4455667'
+  - Dataset_05 424:437 [regex] '0176 33445588'
+  - Dataset_06 423:436 [regex] '0151 77889900'
+  - Dataset_07 517:532 [regex] '+49 89 44556677'
+  - Dataset_08 434:450 [regex] '+49 151 66778899'
+  - Dataset_09 391:403 [regex] '089 33445566'
+  - Dataset_10 339:354 [regex] '+49 171 5566778'
+  - Dataset_11 547:559 [regex] '040 77889900'
+  - Dataset_12 327:339 [regex] '040 99887766'
+  - Dataset_13 118:134 [regex] '+49 176 77889900'
+  - Dataset_14 85:101 [regex] '+49 152 33445566'
+  - Dataset_15 249:262 [regex] '0171 99887766'
+  - Dataset_16 56:72 [regex] '+49 157 22334455'
+  - Dataset_17 115:128 [regex] '0160 44556677'
+  - Dataset_18 471:484 [regex] '0151 66778899'
+
+NICHT ERKANNT (FN): 0
+
+UNERWARTET (FP): 0
+
+
+URL
+--------------------------------------------------------------------------------
+ERKANNT (TP): 7
+  - Dataset_01 324:357 [regex] 'https://portal.berger-logistik.de'
+  - Dataset_02 511:539 [regex] 'https://admin.kramer-sohn.de'
+  - Dataset_03 540:589 [regex] 'https://portal.klein-handel.de/reset?token=abc123'
+  - Dataset_05 623:657 [regex] 'https://portal.pixelforge-media.de'
+  - Dataset_06 600:634 [regex] 'https://app.cloudware-solutions.de'
+  - Dataset_10 450:481 [regex] 'https://dashboard.fleetcloud.io'
+  - Dataset_12 506:536 [regex] 'https://portal.nordlogistik.de'
+
+NICHT ERKANNT (FN): 0
+
+UNERWARTET (FP): 0

@@ -1,1 +1,84 @@
-
+{
+    "document_id": "Dataset_18",
+    "items": [
+        {
+            "label": "E_MAIL",
+            "expected_sources": ["regex"],
+            "text": "hr@company-internal.de"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": ["regex"],
+            "text": "12.01.2024"
+        },
+        {
+            "label": "PER",
+            "expected_sources": ["ner"],
+            "text": "Katharina Sommer"
+        },
+        {
+            "label": "E_MAIL",
+            "expected_sources": ["regex"],
+            "text": "k.sommer@private-mail.de"
+        },
+        {
+            "label": "PLZ",
+            "expected_sources": ["regex"],
+            "text": "70563"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": ["ner"],
+            "text": "Stuttgart"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": ["regex"],
+            "text": "04/2018"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": ["regex"],
+            "text": "06/2023"
+        },
+        {
+            "label": "ORG",
+            "expected_sources": ["ner"],
+            "text": "AnalyticsPro GmbH"
+        },
+        {
+            "label": ["ORG", "LOC"],
+            "expected_sources": ["ner"],
+            "alternatives": [
+                {
+                    "text": "Universität Ulm",
+                    "expected_sources": ["ner"]
+                },
+                {
+                    "text": "Ulm",
+                    "expected_sources": ["ner"]
+                }
+            ]
+        },
+        {
+            "label": "TELEFON",
+            "expected_sources": ["regex"],
+            "text": "0151 66778899"
+        },
+        {
+            "label": "BETRAG",
+            "expected_sources": ["regex"],
+            "text": "72.000 €"
+        },
+        {
+            "label": "PER",
+            "expected_sources": ["ner"],
+            "text": "Markus Klein"
+        },
+        {
+            "label": "ORG",
+            "expected_sources": ["ner"],
+            "text": "DataConsult AG"
+        }
+    ]
+}

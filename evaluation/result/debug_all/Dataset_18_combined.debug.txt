@@ -1,0 +1,7 @@
+DATASET: Dataset_18 | MODE: combined
+MODE combined | TP= 12 FP=  0 FN=  2 | P=1.000 R=0.857 F1=0.923
+----------------------------------------------------------------------
+NOT DETECTED (FN): 2
+  - ORG            424:439 [gold] 'Universität Ulm' ctx='er in Data Science, ▮Universität Ulm▮.\n\nTelefonisch errei'
+  - PER            589:601 [gold] 'Markus Klein' ctx='\nEvtl. Referenz von ▮Markus Klein▮ bei DataConsult AG '
+UNEXPECTED (FP): 0

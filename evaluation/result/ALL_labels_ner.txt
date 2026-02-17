@@ -1,0 +1,129 @@
+LABEL REPORT | MODE: ner
+--------------------------------------------------------------------------------
+
+LOC
+--------------------------------------------------------------------------------
+ERKANNT (TP): 11
+  - Dataset_13 91:108 [ner] 'Frankfurt am Main'
+  - Dataset_13 429:438 [ner] 'Wiesbaden'
+  - Dataset_15 195:203 [ner] 'Nürnberg'
+  - Dataset_15 213:224 [ner] 'Lindenweg 8'
+  - Dataset_15 232:240 [ner] 'Nürnberg'
+  - Dataset_15 391:399 [ner] 'Nürnberg'
+  - Dataset_15 530:579 [ner] 'Friedrich-Alexander-Universität Erlangen-Nürnberg'
+  - Dataset_16 194:209 [ner] 'Friedrichshafen'
+  - Dataset_17 306:313 [ner] 'Leipzig'
+  - Dataset_17 306:313 [ner] 'Leipzig'
+  - Dataset_18 200:209 [ner] 'Stuttgart'
+
+NICHT ERKANNT (FN): 7
+  - Dataset_13 91:100 [gold] 'Frankfurt'
+  - Dataset_13 244:253 [gold] 'Frankfurt'
+  - Dataset_14 23:39 [gold] 'Bahnhofstraße 17'
+  - Dataset_14 46:53 [gold] 'Münster'
+  - Dataset_14 287:294 [gold] 'Münster'
+  - Dataset_14 464:472 [gold] 'Dortmund'
+  - Dataset_16 91:95 [gold] 'Köln'
+
+UNERWARTET (FP): 8
+  - Dataset_02 693:715 [ner] 'Beispiel-Bestellnummer'
+  - Dataset_08 297:319 [ner] 'Solarpark München-West'
+  - Dataset_09 93:108 [ner] 'Patientenportal'
+  - Dataset_10 36:57 [ner] 'support@fleetcloud.io'
+  - Dataset_12 323:330 [ner] 'Tel 040'
+  - Dataset_13 277:292 [ner] 'Cloud-Migration'
+  - Dataset_15 593:597 [ner] 'Java'
+  - Dataset_16 85:95 [ner] '50667 Köln'
+
+
+ORG
+--------------------------------------------------------------------------------
+ERKANNT (TP): 21
+  - Dataset_07 422:434 [ner] 'AlphaCore AG'
+  - Dataset_07 614:626 [ner] 'AlphaCore AG'
+  - Dataset_08 595:610 [ner] 'Innoventis GmbH'
+  - Dataset_09 303:319 [ner] 'MediConnect GmbH'
+  - Dataset_10 290:304 [ner] 'LogiTrans GmbH'
+  - Dataset_11 257:276 [ner] 'BlueWave Media GmbH'
+  - Dataset_11 602:618 [ner] 'CreativeHub GmbH'
+  - Dataset_12 273:290 [ner] 'NordLogistik GmbH'
+  - Dataset_12 705:718 [ner] 'InterLog GmbH'
+  - Dataset_13 226:242 [ner] 'DataSystems GmbH'
+  - Dataset_13 412:427 [ner] 'NetSolutions AG'
+  - Dataset_14 451:462 [ner] 'CoreIT GmbH'
+  - Dataset_15 374:387 [ner] 'SoftTech GmbH'
+  - Dataset_15 447:461 [ner] 'ByteFactory AG'
+  - Dataset_16 163:192 [ner] 'DoubleSlash Net-Business GmbH'
+  - Dataset_16 239:252 [ner] 'MarketView AG'
+  - Dataset_17 162:177 [ner] 'DeltaLogix GmbH'
+  - Dataset_17 246:257 [ner] 'NetPoint AG'
+  - Dataset_17 369:392 [ner] 'TechCore Solutions GmbH'
+  - Dataset_18 270:287 [ner] 'AnalyticsPro GmbH'
+  - Dataset_18 606:620 [ner] 'DataConsult AG'
+
+NICHT ERKANNT (FN): 13
+  - Dataset_01 89:109 [gold] 'Berger Logistik GmbH'
+  - Dataset_02 104:122 [gold] 'Kramer & Sohn GmbH'
+  - Dataset_02 222:233 [gold] 'Kramer-Sued'
+  - Dataset_03 313:330 [gold] 'Klein Handel GmbH'
+  - Dataset_04 346:361 [gold] 'Franke Bau GmbH'
+  - Dataset_05 264:285 [gold] 'PixelForge Media GmbH'
+  - Dataset_06 294:318 [gold] 'CloudWare Solutions GmbH'
+  - Dataset_11 107:115 [gold] 'BlueWave'
+  - Dataset_13 486:518 [gold] 'Technische Universität Darmstadt'
+  - Dataset_14 264:285 [gold] 'TechFlow Solutions AG'
+  - Dataset_14 534:553 [gold] 'Universität Münster'
+  - Dataset_16 423:439 [gold] 'Universität Köln'
+  - Dataset_18 424:439 [gold] 'Universität Ulm'
+
+UNERWARTET (FP): 6
+  - Dataset_01 96:109 [ner] 'Logistik GmbH'
+  - Dataset_02 113:122 [ner] 'Sohn GmbH'
+  - Dataset_03 319:330 [ner] 'Handel GmbH'
+  - Dataset_04 353:361 [ner] 'Bau GmbH'
+  - Dataset_06 304:318 [ner] 'Solutions GmbH'
+  - Dataset_14 273:285 [ner] 'Solutions AG'
+
+
+PER
+--------------------------------------------------------------------------------
+ERKANNT (TP): 23
+  - Dataset_01 71:81 [ner] 'Max Berger'
+  - Dataset_02 84:96 [ner] 'Laura Schmid'
+  - Dataset_03 657:663 [ner] 'Tobias'
+  - Dataset_04 326:338 [ner] 'Simon Franke'
+  - Dataset_04 654:659 [ner] 'Simon'
+  - Dataset_05 297:309 [ner] 'Markus Weber'
+  - Dataset_05 812:818 [ner] 'Markus'
+  - Dataset_06 334:347 [ner] 'Daniel Krüger'
+  - Dataset_06 831:837 [ner] 'Daniel'
+  - Dataset_07 470:481 [ner] 'Daniel Vogt'
+  - Dataset_07 582:593 [ner] 'Anna Keller'
+  - Dataset_08 368:380 [ner] 'Michael Roth'
+  - Dataset_08 563:575 [ner] 'Michael Roth'
+  - Dataset_11 322:334 [ner] 'Oliver Braun'
+  - Dataset_11 511:517 [ner] 'Oliver'
+  - Dataset_12 258:271 [ner] 'Martin Schulz'
+  - Dataset_13 38:50 [ner] 'Daniel Weber'
+  - Dataset_14 8:22 [ner] 'Maria Hoffmann'
+  - Dataset_15 12:23 [ner] 'Lukas Meier'
+  - Dataset_15 157:168 [ner] 'Lukas Meier'
+  - Dataset_16 9:20 [ner] 'Sarah Klein'
+  - Dataset_17 21:34 [ner] 'Thomas Berger'
+  - Dataset_18 136:152 [ner] 'Katharina Sommer'
+
+NICHT ERKANNT (FN): 10
+  - Dataset_03 300:312 [gold] 'Tobias Klein'
+  - Dataset_06 334:340 [gold] 'Daniel'
+  - Dataset_07 141:152 [gold] 'Frau Berger'
+  - Dataset_09 562:568 [gold] 'Sabine'
+  - Dataset_10 268:281 [gold] 'Thomas Reuter'
+  - Dataset_10 561:567 [gold] 'Thomas'
+  - Dataset_11 469:481 [gold] 'Markus Weber'
+  - Dataset_11 596:600 [gold] 'Lisa'
+  - Dataset_12 698:703 [gold] 'Julia'
+  - Dataset_18 589:601 [gold] 'Markus Klein'
+
+UNERWARTET (FP): 2
+  - Dataset_01 9:21 [ner] 'Login-Fehler'
+  - Dataset_11 528:531 [ner] 'Tel'
