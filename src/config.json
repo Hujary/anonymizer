@@ -1,7 +1,6 @@
 {
   "use_regex": true,
   "use_ner": true,
-  "use_ner_postprocessing": true,
   "debug_mask": false,
   "spacy_model": "de_core_news_lg",
   "theme": "dark",
@@ -26,5 +25,6 @@
   ],
   "auto_demask_enabled": true,
   "auto_mask_enabled": true,
-  "reversible_masking": true
+  "reversible_masking": true,
+  "use_ner_postprocessing": true
 }

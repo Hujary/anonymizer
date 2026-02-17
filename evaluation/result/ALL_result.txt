@@ -1,5 +1,6 @@
 EVAL ROOT: evaluation
 DATASETS: 17
+NER_POSTPROCESSING: True
 
 DATASET: Dataset_01
 TEXT: evaluation/datasets/data/Dataset_01.txt

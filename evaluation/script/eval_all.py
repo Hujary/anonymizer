@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 import argparse
-import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Set, Tuple
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -20,6 +19,7 @@ if str(REPO_ROOT) not in sys.path:
 if str(EVAL_DIR) not in sys.path:
     sys.path.insert(0, str(EVAL_DIR))
 
+from core import config
 
 from evaluation.script.eval_single import (  # type: ignore
     EvalCounts,
@@ -101,6 +101,13 @@ def main() -> int:
     ap.add_argument("--max-lines", type=int, default=200)
     ap.add_argument("--only", nargs="*", default=None, help="Run only these dataset basenames (e.g. Dataset_01 Dataset_02)")
     ap.add_argument("--out", default=None, help="Output file for combined report (default: evaluation/result/ALL_result.txt)")
+
+    ap.add_argument(
+        "--no-ner-post",
+        action="store_true",
+        help="Disable NER postprocessing (raw spaCy output)",
+    )
+
     args = ap.parse_args()
 
     eval_root = Path(args.eval_root)
@@ -124,9 +131,15 @@ def main() -> int:
 
     snap = _snapshot_config()
     try:
+        if args.no_ner_post:
+            config.set("use_ner_postprocessing", False)
+        else:
+            config.set("use_ner_postprocessing", True)
+
         report_lines: List[str] = []
         report_lines.append(f"EVAL ROOT: {eval_root}")
         report_lines.append(f"DATASETS: {len(dataset_names)}")
+        report_lines.append(f"NER_POSTPROCESSING: {not bool(args.no_ner_post)}")
         report_lines.append("")
 
         agg: Dict[str, ModeAgg] = {m[0]: ModeAgg() for m in modes}
