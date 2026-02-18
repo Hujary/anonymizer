@@ -26,7 +26,7 @@ def finde_finance(text: str) -> Iterable[Tuple[int, int, str]]:
     # Format: DE + 20 Ziffern (insgesamt 22 Zeichen)
     # Beispiel: DE89370400440532013000
     # ------------------------------------------------------------------
-    for m in re.finditer(r"\bDE\d{20}\b", text):
+    for m in re.finditer(r"(?<!\w)DE(?:[ \t]*\d){20}(?!\w)", text):
         yield (m.start(), m.end(), "IBAN")
 
     # ------------------------------------------------------------------

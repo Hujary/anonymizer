@@ -1,5 +1,5 @@
 EVAL ROOT: evaluation
-DATASETS: 18
+DATASETS: 19
 NER_POSTPROCESSING: True
 
 DATASET: Dataset_01
@@ -218,8 +218,20 @@ MODE combined | TP= 12 FP=  0 FN=  2 | P=1.000 R=0.857 F1=0.923
 
 ======================================================================
 
+DATASET: Dataset_19
+TEXT: evaluation/datasets/data/Dataset_19.txt
+GOLD: evaluation/datasets/gold/Dataset_19.json
+
+SUMMARY
+----------------------------------------------------------------------
+MODE regex    | TP= 11 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
+MODE ner      | TP=  9 FP=  5 FN=  2 | P=0.643 R=0.818 F1=0.720
+MODE combined | TP= 20 FP=  4 FN=  2 | P=0.833 R=0.909 F1=0.870
+
+======================================================================
+
 GLOBAL SUMMARY (micro-averaged over all datasets)
 ----------------------------------------------------------------------
-MODE regex    | TP= 122 FP=   0 FN=  14 | P=1.000 R=0.897 F1=0.946
-MODE ner      | TP=  55 FP=  16 FN=  30 | P=0.775 R=0.647 F1=0.705
-MODE combined | TP= 176 FP=  13 FN=  45 | P=0.931 R=0.796 F1=0.859
+MODE regex    | TP= 133 FP=   0 FN=  14 | P=1.000 R=0.905 F1=0.950
+MODE ner      | TP=  64 FP=  21 FN=  32 | P=0.753 R=0.667 F1=0.707
+MODE combined | TP= 196 FP=  17 FN=  47 | P=0.920 R=0.807 F1=0.860

@@ -1,0 +1,150 @@
+    {
+        "document_id": "Dataset_19",
+        "items": [
+            {
+                "label": "PER",
+                "expected_sources": [
+                    "ner"
+                ],
+                "alternatives": [
+                    {
+                        "text": "Frau Sabine Lehmann",
+                        "expected_sources": [
+                            "ner"
+                        ]
+                    },
+                    {
+                        "text": "Sabine Lehmann",
+                        "expected_sources": [
+                            "ner"
+                        ]
+                    }
+                ]
+            },
+            {
+                "label": "LOC",
+                "expected_sources": [
+                    "ner"
+                ],
+                "text": "UhlandstraBe 19"
+            },
+            {
+                "label": "PLZ",
+                "expected_sources": [
+                    "regex"
+                ],
+                "text": "70182"
+            },
+            {
+                "label": "LOC",
+                "expected_sources": [
+                    "ner"
+                ],
+                "text": "Stuttgart"
+            },
+            {
+                "label": "PER",
+                "expected_sources": [
+                    "ner"
+                ],
+                "alternatives": [
+                    {
+                        "text": "Herrn Tobias Kruger",
+                        "expected_sources": [
+                            "ner"
+                        ]
+                    },
+                    {
+                        "text": "Tobias Kruger",
+                        "expected_sources": [
+                            "ner"
+                        ]
+                    }
+                ]
+            },
+            {
+                "label": "LOC",
+                "expected_sources": [
+                    "ner"
+                ],
+                "text": "HegelstraBe 7"
+            },
+            {
+                "label": "PLZ",
+                "expected_sources": [
+                    "regex"
+                ],
+                "text": "70174"
+            },
+            {
+                "label": "DATUM",
+                "expected_sources": [
+                    "regex"
+                ],
+                "text": "01.04.2025"
+            },
+            {
+                "label": "BETRAG",
+                "expected_sources": [
+                    "regex"
+                ],
+                "text": "890,00 EUR"
+            },
+            {
+                "label": "BETRAG",
+                "expected_sources": [
+                    "regex"
+                ],
+                "text": "210,00 EUR"
+            },
+            {
+                "label": "BETRAG",
+                "expected_sources": [
+                    "regex"
+                ],
+                "text": "1.100,00 EUR"
+            },
+            {
+                "label": "IBAN",
+                "expected_sources": [
+                    "regex"
+                ],
+                "text": "DE91 6005 0101 2345 6789 01"
+            },
+            {
+                "label": "BIC",
+                "expected_sources": [
+                    "regex"
+                ],
+                "text": "SOLADEST600"
+            },
+            {
+                "label": "BETRAG",
+                "expected_sources": [
+                    "regex"
+                ],
+                "text": "2.670,00 EUR"
+            },
+            {
+                "label": "DATUM",
+                "expected_sources": [
+                    "regex"
+                ],
+                "text": "12.03.2025"
+            },
+            {
+                "label": "PER",
+                "expected_sources": [
+                    "ner"
+                ],
+                "text": "Sabine Lehmann"
+            },
+            {
+                "label": "PER",
+                "expected_sources": [
+                    "ner"
+                ],
+                "text": "Tobias Kruger"
+            }
+        ]
+    }

@@ -3,7 +3,7 @@ LABEL REPORT | MODE: ner
 
 LOC
 --------------------------------------------------------------------------------
-ERKANNT (TP): 11
+ERKANNT (TP): 16
   - Dataset_13 91:108 [ner] 'Frankfurt am Main'
   - Dataset_13 429:438 [ner] 'Wiesbaden'
   - Dataset_15 195:203 [ner] 'Nürnberg'
@@ -15,8 +15,13 @@ ERKANNT (TP): 11
   - Dataset_17 306:313 [ner] 'Leipzig'
   - Dataset_17 306:313 [ner] 'Leipzig'
   - Dataset_18 200:209 [ner] 'Stuttgart'
+  - Dataset_19 51:66 [ner] 'Uhlandstraße 19'
+  - Dataset_19 73:82 [ner] 'Stuttgart'
+  - Dataset_19 138:151 [ner] 'Hegelstraße 7'
+  - Dataset_19 158:167 [ner] 'Stuttgart'
+  - Dataset_19 295:304 [ner] 'Stuttgart'
 
-NICHT ERKANNT (FN): 7
+NICHT ERKANNT (FN): 9
   - Dataset_13 91:100 [gold] 'Frankfurt'
   - Dataset_13 244:253 [gold] 'Frankfurt'
   - Dataset_14 23:39 [gold] 'Bahnhofstraße 17'
@@ -24,8 +29,10 @@ NICHT ERKANNT (FN): 7
   - Dataset_14 287:294 [gold] 'Münster'
   - Dataset_14 464:472 [gold] 'Dortmund'
   - Dataset_16 91:95 [gold] 'Köln'
+  - Dataset_19 274:287 [gold] 'Hegelstraße 7'
+  - Dataset_19 1505:1514 [gold] 'Stuttgart'
 
-UNERWARTET (FP): 8
+UNERWARTET (FP): 13
   - Dataset_02 693:715 [ner] 'Beispiel-Bestellnummer'
   - Dataset_08 297:319 [ner] 'Solarpark München-West'
   - Dataset_09 93:108 [ner] 'Patientenportal'
@@ -34,6 +41,11 @@ UNERWARTET (FP): 8
   - Dataset_13 277:292 [ner] 'Cloud-Migration'
   - Dataset_15 593:597 [ner] 'Java'
   - Dataset_16 85:95 [ner] '50667 Köln'
+  - Dataset_19 268:287 [ner] 'Hause Hegelstraße 7'
+  - Dataset_19 354:358 [ner] 'Flur'
+  - Dataset_19 454:464 [ner] 'Waschraums'
+  - Dataset_19 1010:1034 [ner] 'DE91 6005 0101 2345 6789'
+  - Dataset_19 1105:1121 [ner] 'Monatskaltmieten'
 
 
 ORG
@@ -87,7 +99,7 @@ UNERWARTET (FP): 6
 
 PER
 --------------------------------------------------------------------------------
-ERKANNT (TP): 23
+ERKANNT (TP): 27
   - Dataset_01 71:81 [ner] 'Max Berger'
   - Dataset_02 84:96 [ner] 'Laura Schmid'
   - Dataset_03 657:663 [ner] 'Tobias'
@@ -111,6 +123,10 @@ ERKANNT (TP): 23
   - Dataset_16 9:20 [ner] 'Sarah Klein'
   - Dataset_17 21:34 [ner] 'Thomas Berger'
   - Dataset_18 136:152 [ner] 'Katharina Sommer'
+  - Dataset_19 36:50 [ner] 'Sabine Lehmann'
+  - Dataset_19 124:137 [ner] 'Tobias Kruger'
+  - Dataset_19 1560:1574 [ner] 'Sabine Lehmann'
+  - Dataset_19 1603:1616 [ner] 'Tobias Kruger'
 
 NICHT ERKANNT (FN): 10
   - Dataset_03 300:312 [gold] 'Tobias Klein'

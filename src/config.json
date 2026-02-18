@@ -8,7 +8,6 @@
   "ner_labels": [
     "GPE",
     "LOC",
-    "MISC",
     "ORG",
     "PER"
   ],

@@ -1,0 +1,12 @@
+DATASET: Dataset_19 | MODE: ner
+MODE ner      | TP=  9 FP=  5 FN=  2 | P=0.643 R=0.818 F1=0.720
+----------------------------------------------------------------------
+NOT DETECTED (FN): 2
+  - LOC            274:287 [gold] 'Hegelstraße 7' ctx='hoss links\nim Hause ▮Hegelstraße 7▮, 70174 Stuttgart.\n\n'
+  - LOC            1505:1514 [gold] 'Stuttgart' ctx='eter ausgehändigt.\n\n▮Stuttgart▮, den 12.03.2025\n\n\n_'
+UNEXPECTED (FP): 5
+  - LOC            268:287 [ner] 'Hause Hegelstraße 7' ctx='ergeschoss links\nim ▮Hause Hegelstraße 7▮, 70174 Stuttgart.\n\n'
+  - LOC            354:358 [ner] 'Flur' ctx='immern, Küche, Bad, ▮Flur▮,\nmit einer Wohnflac'
+  - LOC            454:464 [ner] 'Waschraums' ctx=' 4\nMitbenutzung des ▮Waschraums▮ im Untergeschoss.\n\n'
+  - LOC            1010:1034 [ner] 'DE91 6005 0101 2345 6789' ctx=' uberweisen:\n\nIBAN: ▮DE91 6005 0101 2345 6789▮ 01\nBIC: SOLADEST600'
+  - LOC            1105:1121 [ner] 'Monatskaltmieten' ctx='agt 2.670,00 EUR (3 ▮Monatskaltmieten▮).\nSie ist vor überg'
