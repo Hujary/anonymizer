@@ -1,3 +1,4 @@
+# evaluation/script/eval_all.py
 from __future__ import annotations
 
 import argparse
@@ -6,7 +7,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Set, Tuple
 from collections import defaultdict
-
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SRC_DIR = REPO_ROOT / "src"
@@ -89,6 +89,17 @@ def _write_text(path: Path, s: str) -> None:
 
 
 def _miss_line(dataset: str, m: Miss) -> str:
+    if m.kind == "PARTIAL":
+        g = (m.text or "").replace("\n", "\\n").replace("\r", "\\r")
+        p = (m.pred_text or "").replace("\n", "\\n").replace("\r", "\\r")
+        ps = m.pred_source or "?"
+        p_start = m.pred_start if m.pred_start is not None else -1
+        p_end = m.pred_end if m.pred_end is not None else -1
+        return (
+            f"{dataset} gold:{m.start}:{m.end} [{m.source}] '{g}' "
+            f"<- pred:{ps}:{p_start}:{p_end} '{p}'"
+        )
+
     t = (m.text or "").replace("\n", "\\n").replace("\r", "\\r")
     return f"{dataset} {m.start}:{m.end} [{m.source}] '{t}'"
 
@@ -109,7 +120,12 @@ def _format_label_report(
         lines.append(lbl)
         lines.append("-" * 80)
 
-        for kind, title in (("TP", "ERKANNT (TP)"), ("FN", "NICHT ERKANNT (FN)"), ("FP", "UNERWARTET (FP)")):
+        for kind, title in (
+            ("TP", "ERKANNT (TP)"),
+            ("PARTIAL", "NICHT VOLLSTÄNDIG ERKANNT (PARTIAL)"),
+            ("FN", "NICHT ERKANNT (FN)"),
+            ("FP", "UNERWARTET (FP)"),
+        ):
             items = sections.get(kind, [])
             lines.append(f"{title}: {len(items)}")
             if items:
@@ -135,20 +151,20 @@ def main() -> int:
     ap.add_argument("--per-label", action="store_true", help="Include per-label stats per dataset")
     ap.add_argument("--ctx", type=int, default=20)
     ap.add_argument("--max-lines", type=int, default=200)
-    ap.add_argument("--only", nargs="*", default=None, help="Run only these dataset basenames (e.g. Dataset_01 Dataset_02)")
-    ap.add_argument("--out", default=None, help="Output file for combined report (default: evaluation/result/ALL_result.txt)")
+    ap.add_argument("--only", nargs="*", default=None, help="Run only these dataset basenames")
+    ap.add_argument("--out", default=None, help="Output file for combined report")
     ap.add_argument("--no-ner-post", action="store_true", help="Disable NER postprocessing (raw spaCy output)")
 
     ap.add_argument(
         "--label-report",
         action="store_true",
-        help="Write aggregated per-label TP/FN/FP report across all datasets (evaluation/result/ALL_labels_<mode>.txt)",
+        help="Write aggregated per-label TP/PARTIAL/FN/FP report across all datasets",
     )
     ap.add_argument(
         "--label-report-max",
         type=int,
         default=500,
-        help="Max items per label section (TP/FN/FP) in label report",
+        help="Max items per label section in label report",
     )
 
     args = ap.parse_args()
@@ -187,7 +203,7 @@ def main() -> int:
         label_hits_by_mode: Dict[str, Dict[str, Dict[str, List[str]]]] = {}
         if args.label_report:
             for mode, _ in modes:
-                label_hits_by_mode[mode] = defaultdict(lambda: {"TP": [], "FN": [], "FP": []})
+                label_hits_by_mode[mode] = defaultdict(lambda: {"TP": [], "PARTIAL": [], "FN": [], "FP": []})
 
         for name in dataset_names:
             text, gold_entities, text_path_s, gold_path_s = _load_gold_entities(eval_root, name)
@@ -221,7 +237,7 @@ def main() -> int:
                     for m in misses:
                         L = str(m.label or "").strip().upper() or "?"
                         K = str(m.kind or "").strip().upper()
-                        if K not in ("TP", "FN", "FP"):
+                        if K not in ("TP", "FN", "FP", "PARTIAL"):
                             continue
                         bucket[L][K].append(_miss_line(name, m))
 

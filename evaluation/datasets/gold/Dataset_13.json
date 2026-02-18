@@ -34,15 +34,6 @@
         "ner"
       ],
       "start": 91,
-      "end": 100,
-      "text": "Frankfurt"
-    },
-    {
-      "label": "LOC",
-      "expected_sources": [
-        "ner"
-      ],
-      "start": 91,
       "end": 108,
       "text": "Frankfurt am Main"
     },

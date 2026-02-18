@@ -3,7 +3,7 @@ LABEL REPORT | MODE: ner
 
 LOC
 --------------------------------------------------------------------------------
-ERKANNT (TP): 16
+ERKANNT (TP): 20
   - Dataset_13 91:108 [ner] 'Frankfurt am Main'
   - Dataset_13 429:438 [ner] 'Wiesbaden'
   - Dataset_15 195:203 [ner] 'Nürnberg'
@@ -20,19 +20,28 @@ ERKANNT (TP): 16
   - Dataset_19 138:151 [ner] 'Hegelstraße 7'
   - Dataset_19 158:167 [ner] 'Stuttgart'
   - Dataset_19 295:304 [ner] 'Stuttgart'
+  - Dataset_20 53:67 [ner] 'Konigstraße 11'
+  - Dataset_20 164:182 [ner] 'Tubinger Straße 42'
+  - Dataset_20 405:414 [ner] 'Stuttgart'
+  - Dataset_20 1438:1447 [ner] 'Stuttgart'
+
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 3
+  - Dataset_16 gold:91:95 [gold] 'Köln' <- pred:ner:85:95 '50667 Köln'
+  - Dataset_19 gold:274:287 [gold] 'Hegelstraße 7' <- pred:ner:268:287 'Hause Hegelstraße 7'
+  - Dataset_20 gold:383:397 [gold] 'Konigstraße 11' <- pred:ner:375:397 'Gebaude Konigstraße 11'
 
 NICHT ERKANNT (FN): 9
-  - Dataset_13 91:100 [gold] 'Frankfurt'
   - Dataset_13 244:253 [gold] 'Frankfurt'
   - Dataset_14 23:39 [gold] 'Bahnhofstraße 17'
   - Dataset_14 46:53 [gold] 'Münster'
   - Dataset_14 287:294 [gold] 'Münster'
   - Dataset_14 464:472 [gold] 'Dortmund'
-  - Dataset_16 91:95 [gold] 'Köln'
-  - Dataset_19 274:287 [gold] 'Hegelstraße 7'
   - Dataset_19 1505:1514 [gold] 'Stuttgart'
+  - Dataset_20 74:83 [gold] 'Stuttgart'
+  - Dataset_20 189:198 [gold] 'Stuttgart'
+  - Dataset_20 1450:1459 [gold] 'Stuttgart'
 
-UNERWARTET (FP): 13
+UNERWARTET (FP): 12
   - Dataset_02 693:715 [ner] 'Beispiel-Bestellnummer'
   - Dataset_08 297:319 [ner] 'Solarpark München-West'
   - Dataset_09 93:108 [ner] 'Patientenportal'
@@ -40,12 +49,11 @@ UNERWARTET (FP): 13
   - Dataset_12 323:330 [ner] 'Tel 040'
   - Dataset_13 277:292 [ner] 'Cloud-Migration'
   - Dataset_15 593:597 [ner] 'Java'
-  - Dataset_16 85:95 [ner] '50667 Köln'
-  - Dataset_19 268:287 [ner] 'Hause Hegelstraße 7'
   - Dataset_19 354:358 [ner] 'Flur'
   - Dataset_19 454:464 [ner] 'Waschraums'
   - Dataset_19 1010:1034 [ner] 'DE91 6005 0101 2345 6789'
   - Dataset_19 1105:1121 [ner] 'Monatskaltmieten'
+  - Dataset_20 360:371 [ner] 'Ladenflache'
 
 
 ORG
@@ -73,33 +81,33 @@ ERKANNT (TP): 21
   - Dataset_18 270:287 [ner] 'AnalyticsPro GmbH'
   - Dataset_18 606:620 [ner] 'DataConsult AG'
 
-NICHT ERKANNT (FN): 13
-  - Dataset_01 89:109 [gold] 'Berger Logistik GmbH'
-  - Dataset_02 104:122 [gold] 'Kramer & Sohn GmbH'
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 10
+  - Dataset_01 gold:89:109 [gold] 'Berger Logistik GmbH' <- pred:ner:96:109 'Logistik GmbH'
+  - Dataset_02 gold:104:122 [gold] 'Kramer & Sohn GmbH' <- pred:ner:113:122 'Sohn GmbH'
+  - Dataset_03 gold:313:330 [gold] 'Klein Handel GmbH' <- pred:ner:319:330 'Handel GmbH'
+  - Dataset_04 gold:346:361 [gold] 'Franke Bau GmbH' <- pred:ner:353:361 'Bau GmbH'
+  - Dataset_06 gold:294:318 [gold] 'CloudWare Solutions GmbH' <- pred:ner:304:318 'Solutions GmbH'
+  - Dataset_14 gold:264:285 [gold] 'TechFlow Solutions AG' <- pred:ner:273:285 'Solutions AG'
+  - Dataset_20 gold:30:52 [gold] 'Linden Immobilien GmbH' <- pred:ner:37:52 'Immobilien GmbH'
+  - Dataset_20 gold:146:163 [gold] 'Urban Coffee GmbH' <- pred:ner:152:163 'Coffee GmbH'
+  - Dataset_20 gold:1507:1529 [gold] 'Linden Immobilien GmbH' <- pred:ner:1514:1529 'Immobilien GmbH'
+  - Dataset_20 gold:1560:1577 [gold] 'Urban Coffee GmbH' <- pred:ner:1566:1577 'Coffee GmbH'
+
+NICHT ERKANNT (FN): 7
   - Dataset_02 222:233 [gold] 'Kramer-Sued'
-  - Dataset_03 313:330 [gold] 'Klein Handel GmbH'
-  - Dataset_04 346:361 [gold] 'Franke Bau GmbH'
   - Dataset_05 264:285 [gold] 'PixelForge Media GmbH'
-  - Dataset_06 294:318 [gold] 'CloudWare Solutions GmbH'
   - Dataset_11 107:115 [gold] 'BlueWave'
   - Dataset_13 486:518 [gold] 'Technische Universität Darmstadt'
-  - Dataset_14 264:285 [gold] 'TechFlow Solutions AG'
   - Dataset_14 534:553 [gold] 'Universität Münster'
   - Dataset_16 423:439 [gold] 'Universität Köln'
   - Dataset_18 424:439 [gold] 'Universität Ulm'
 
-UNERWARTET (FP): 6
-  - Dataset_01 96:109 [ner] 'Logistik GmbH'
-  - Dataset_02 113:122 [ner] 'Sohn GmbH'
-  - Dataset_03 319:330 [ner] 'Handel GmbH'
-  - Dataset_04 353:361 [ner] 'Bau GmbH'
-  - Dataset_06 304:318 [ner] 'Solutions GmbH'
-  - Dataset_14 273:285 [ner] 'Solutions AG'
+UNERWARTET (FP): 0
 
 
 PER
 --------------------------------------------------------------------------------
-ERKANNT (TP): 27
+ERKANNT (TP): 29
   - Dataset_01 71:81 [ner] 'Max Berger'
   - Dataset_02 84:96 [ner] 'Laura Schmid'
   - Dataset_03 657:663 [ner] 'Tobias'
@@ -127,10 +135,14 @@ ERKANNT (TP): 27
   - Dataset_19 124:137 [ner] 'Tobias Kruger'
   - Dataset_19 1560:1574 [ner] 'Sabine Lehmann'
   - Dataset_19 1603:1616 [ner] 'Tobias Kruger'
+  - Dataset_20 127:139 [ner] 'Markus Dietz'
+  - Dataset_20 243:254 [ner] 'Julia Maier'
 
-NICHT ERKANNT (FN): 10
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 1
+  - Dataset_06 gold:334:340 [gold] 'Daniel' <- pred:ner:334:347 'Daniel Krüger'
+
+NICHT ERKANNT (FN): 9
   - Dataset_03 300:312 [gold] 'Tobias Klein'
-  - Dataset_06 334:340 [gold] 'Daniel'
   - Dataset_07 141:152 [gold] 'Frau Berger'
   - Dataset_09 562:568 [gold] 'Sabine'
   - Dataset_10 268:281 [gold] 'Thomas Reuter'

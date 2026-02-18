@@ -3,5 +3,6 @@ MODE combined | TP=  7 FP=  1 FN=  1 | P=0.875 R=0.875 F1=0.875
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
   - PER            562:568 [gold] 'Sabine' ctx='blem gibt?\n\nDanke  \n▮Sabine▮'
+NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 1
   - LOC            93:108 [ner] 'Patientenportal' ctx='etreff: Zugriff auf ▮Patientenportal▮\n\nHallo,\n\nseit heute'

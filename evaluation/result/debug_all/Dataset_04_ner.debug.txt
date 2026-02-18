@@ -1,7 +1,7 @@
 DATASET: Dataset_04 | MODE: ner
-MODE ner      | TP=  2 FP=  1 FN=  1 | P=0.667 R=0.667 F1=0.667
+MODE ner      | TP=  2 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - ORG            346:361 [gold] 'Franke Bau GmbH' ctx='Simon Franke\nFirma: ▮Franke Bau GmbH▮\nTelefon: +49 160 44'
-UNEXPECTED (FP): 1
-  - ORG            353:361 [ner] 'Bau GmbH' ctx='ranke\nFirma: Franke ▮Bau GmbH▮\nTelefon: +49 160 44'
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 1
+  - ORG            gold 346:361 [gold] 'Franke Bau GmbH' [pred:ner:353:361] 'Bau GmbH' gold_ctx='Simon Franke\nFirma: ▮Franke Bau GmbH▮\nTelefon: +49 160 44' pred_ctx='ranke\nFirma: Franke ▮Bau GmbH▮\nTelefon: +49 160 44'
+UNEXPECTED (FP): 0

@@ -4,4 +4,5 @@ MODE ner      | TP=  4 FP=  0 FN=  2 | P=1.000 R=0.667 F1=0.800
 NOT DETECTED (FN): 2
   - ORG            424:439 [gold] 'Universität Ulm' ctx='er in Data Science, ▮Universität Ulm▮.\n\nTelefonisch errei'
   - PER            589:601 [gold] 'Markus Klein' ctx='\nEvtl. Referenz von ▮Markus Klein▮ bei DataConsult AG '
+NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

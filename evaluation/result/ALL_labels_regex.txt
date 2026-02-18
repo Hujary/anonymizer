@@ -3,7 +3,7 @@ LABEL REPORT | MODE: regex
 
 BETRAG
 --------------------------------------------------------------------------------
-ERKANNT (TP): 9
+ERKANNT (TP): 11
   - Dataset_07 218:228 [regex] '4.820,00 €'
   - Dataset_11 221:229 [regex] '18.500 €'
   - Dataset_14 402:411 [regex] '500.000 €'
@@ -13,6 +13,10 @@ ERKANNT (TP): 9
   - Dataset_19 802:812 [regex] '210,00 EUR'
   - Dataset_19 891:903 [regex] '1.100,00 EUR'
   - Dataset_19 1089:1101 [regex] '2.670,00 EUR'
+  - Dataset_20 712:724 [regex] '2.400,00 EUR'
+  - Dataset_20 763:773 [regex] '350,00 EUR'
+
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
 NICHT ERKANNT (FN): 0
 
@@ -25,6 +29,8 @@ ERKANNT (TP): 2
   - Dataset_07 394:405 [regex] 'INGDDEFFXXX'
   - Dataset_19 1043:1054 [regex] 'SOLADEST600'
 
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
+
 NICHT ERKANNT (FN): 0
 
 UNERWARTET (FP): 0
@@ -32,7 +38,7 @@ UNERWARTET (FP): 0
 
 DATUM
 --------------------------------------------------------------------------------
-ERKANNT (TP): 48
+ERKANNT (TP): 50
   - Dataset_01 435:445 [regex] '03.02.2024'
   - Dataset_02 671:681 [regex] '14.02.2024'
   - Dataset_02 868:878 [regex] '13.02.2024'
@@ -81,6 +87,10 @@ ERKANNT (TP): 48
   - Dataset_18 258:265 [regex] '06/2023'
   - Dataset_19 528:538 [regex] '01.04.2025'
   - Dataset_19 1520:1530 [regex] '12.03.2025'
+  - Dataset_20 531:541 [regex] '01.07.2025'
+  - Dataset_20 1465:1475 [regex] '15.04.2025'
+
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
 NICHT ERKANNT (FN): 9
   - Dataset_14 528:532 [gold] '2019'
@@ -131,6 +141,8 @@ ERKANNT (TP): 31
   - Dataset_18 44:66 [regex] 'hr@company-internal.de'
   - Dataset_18 154:178 [regex] 'k.sommer@private-mail.de'
 
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
+
 NICHT ERKANNT (FN): 0
 
 UNERWARTET (FP): 0
@@ -142,6 +154,8 @@ ERKANNT (TP): 2
   - Dataset_07 364:386 [regex] 'DE44500105175407324931'
   - Dataset_19 1010:1037 [regex] 'DE91 6005 0101 2345 6789 01'
 
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
+
 NICHT ERKANNT (FN): 0
 
 UNERWARTET (FP): 0
@@ -149,7 +163,7 @@ UNERWARTET (FP): 0
 
 PLZ
 --------------------------------------------------------------------------------
-ERKANNT (TP): 8
+ERKANNT (TP): 11
   - Dataset_13 85:90 [regex] '60313'
   - Dataset_14 40:45 [regex] '48143'
   - Dataset_15 226:231 [regex] '90402'
@@ -158,6 +172,11 @@ ERKANNT (TP): 8
   - Dataset_19 67:72 [regex] '70182'
   - Dataset_19 152:157 [regex] '70174'
   - Dataset_19 289:294 [regex] '70174'
+  - Dataset_20 68:73 [regex] '70173'
+  - Dataset_20 183:188 [regex] '70178'
+  - Dataset_20 399:404 [regex] '70173'
+
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
 NICHT ERKANNT (FN): 0
 
@@ -175,6 +194,8 @@ ERKANNT (TP): 8
   - Dataset_07 185:197 [regex] 'AC-2024-0311'
   - Dataset_12 88:99 [regex] 'NL-2024-119'
   - Dataset_12 556:567 [regex] 'NL-2024-119'
+
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
 NICHT ERKANNT (FN): 5
   - Dataset_08 120:130 [gold] 'WE-2024-19'
@@ -208,6 +229,8 @@ ERKANNT (TP): 18
   - Dataset_17 115:128 [regex] '0160 44556677'
   - Dataset_18 471:484 [regex] '0151 66778899'
 
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
+
 NICHT ERKANNT (FN): 0
 
 UNERWARTET (FP): 0
@@ -223,6 +246,8 @@ ERKANNT (TP): 7
   - Dataset_06 600:634 [regex] 'https://app.cloudware-solutions.de'
   - Dataset_10 450:481 [regex] 'https://dashboard.fleetcloud.io'
   - Dataset_12 506:536 [regex] 'https://portal.nordlogistik.de'
+
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
 NICHT ERKANNT (FN): 0
 

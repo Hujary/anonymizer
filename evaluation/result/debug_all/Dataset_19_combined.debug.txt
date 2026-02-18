@@ -1,11 +1,11 @@
 DATASET: Dataset_19 | MODE: combined
-MODE combined | TP= 20 FP=  4 FN=  2 | P=0.833 R=0.909 F1=0.870
+MODE combined | TP= 20 FP=  3 FN=  1 | P=0.870 R=0.952 F1=0.909
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 2
-  - LOC            274:287 [gold] 'Hegelstraße 7' ctx='hoss links\nim Hause ▮Hegelstraße 7▮, 70174 Stuttgart.\n\n'
+NOT DETECTED (FN): 1
   - LOC            1505:1514 [gold] 'Stuttgart' ctx='eter ausgehändigt.\n\n▮Stuttgart▮, den 12.03.2025\n\n\n_'
-UNEXPECTED (FP): 4
-  - LOC            268:287 [ner] 'Hause Hegelstraße 7' ctx='ergeschoss links\nim ▮Hause Hegelstraße 7▮, 70174 Stuttgart.\n\n'
+NOT FULLY DETECTED (PARTIAL): 1
+  - LOC            gold 274:287 [gold] 'Hegelstraße 7' [pred:ner:268:287] 'Hause Hegelstraße 7' gold_ctx='hoss links\nim Hause ▮Hegelstraße 7▮, 70174 Stuttgart.\n\n' pred_ctx='ergeschoss links\nim ▮Hause Hegelstraße 7▮, 70174 Stuttgart.\n\n'
+UNEXPECTED (FP): 3
   - LOC            354:358 [ner] 'Flur' ctx='immern, Küche, Bad, ▮Flur▮,\nmit einer Wohnflac'
   - LOC            454:464 [ner] 'Waschraums' ctx=' 4\nMitbenutzung des ▮Waschraums▮ im Untergeschoss.\n\n'
   - LOC            1105:1121 [ner] 'Monatskaltmieten' ctx='agt 2.670,00 EUR (3 ▮Monatskaltmieten▮).\nSie ist vor überg'

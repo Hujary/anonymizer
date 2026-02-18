@@ -1,8 +1,8 @@
 DATASET: Dataset_03 | MODE: combined
-MODE combined | TP=  5 FP=  1 FN=  2 | P=0.833 R=0.714 F1=0.769
+MODE combined | TP=  5 FP=  0 FN=  1 | P=1.000 R=0.833 F1=0.909
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 2
+NOT DETECTED (FN): 1
   - PER            300:312 [gold] 'Tobias Klein' ctx='gend.\n\nMeine Daten:\n▮Tobias Klein▮\nKlein Handel GmbH\nt'
-  - ORG            313:330 [gold] 'Klein Handel GmbH' ctx='Daten:\nTobias Klein\n▮Klein Handel GmbH▮\ntobias.klein@klein-'
-UNEXPECTED (FP): 1
-  - ORG            319:330 [ner] 'Handel GmbH' ctx='\nTobias Klein\nKlein ▮Handel GmbH▮\ntobias.klein@klein-'
+NOT FULLY DETECTED (PARTIAL): 1
+  - ORG            gold 313:330 [gold] 'Klein Handel GmbH' [pred:ner:319:330] 'Handel GmbH' gold_ctx='Daten:\nTobias Klein\n▮Klein Handel GmbH▮\ntobias.klein@klein-' pred_ctx='\nTobias Klein\nKlein ▮Handel GmbH▮\ntobias.klein@klein-'
+UNEXPECTED (FP): 0

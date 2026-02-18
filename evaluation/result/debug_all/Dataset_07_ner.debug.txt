@@ -3,4 +3,5 @@ MODE ner      | TP=  4 FP=  0 FN=  1 | P=1.000 R=0.800 F1=0.889
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
   - PER            141:152 [gold] 'Frau Berger' ctx='-0311\n\nSehr geehrte ▮Frau Berger▮,\n\nbezugnehmend auf '
+NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

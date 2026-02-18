@@ -3,5 +3,6 @@ MODE ner      | TP=  3 FP=  1 FN=  1 | P=0.750 R=0.750 F1=0.750
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
   - PER            698:703 [gold] 'Julia' ctx='emlich ungeduldig.\n\n▮Julia▮, InterLog GmbH'
+NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 1
   - LOC            323:330 [ner] 'Tel 040' ctx='lz@nordlogistik.de, ▮Tel 040▮ 99887766) meldet we'

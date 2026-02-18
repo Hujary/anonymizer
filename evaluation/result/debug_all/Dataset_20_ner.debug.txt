@@ -1,0 +1,15 @@
+DATASET: Dataset_20 | MODE: ner
+MODE ner      | TP=  6 FP=  1 FN=  3 | P=0.857 R=0.667 F1=0.750
+----------------------------------------------------------------------
+NOT DETECTED (FN): 3
+  - LOC            74:83 [gold] 'Stuttgart' ctx='onigstraße 11\n70173 ▮Stuttgart▮\n\nvertreten durch de'
+  - LOC            189:198 [gold] 'Stuttgart' ctx='ger Straße 42\n70178 ▮Stuttgart▮\n\nvertreten durch di'
+  - LOC            1450:1459 [gold] 'Stuttgart' ctx='and ist Stuttgart.\n\n▮Stuttgart▮, den 15.04.2025\n\n\n_'
+NOT FULLY DETECTED (PARTIAL): 5
+  - ORG            gold 30:52 [gold] 'Linden Immobilien GmbH' [pred:ner:37:52] 'Immobilien GmbH' gold_ctx='TVERTRAG\n\nZwischen\n\n▮Linden Immobilien GmbH▮\nKonigstraße 11\n7017' pred_ctx='G\n\nZwischen\n\nLinden ▮Immobilien GmbH▮\nKonigstraße 11\n7017'
+  - ORG            gold 146:163 [gold] 'Urban Coffee GmbH' [pred:ner:152:163] 'Coffee GmbH' gold_ctx=' Markus Dietz\n\nund\n\n▮Urban Coffee GmbH▮\nTubinger Straße 42\n' pred_ctx='s Dietz\n\nund\n\nUrban ▮Coffee GmbH▮\nTubinger Straße 42\n'
+  - LOC            gold 383:397 [gold] 'Konigstraße 11' [pred:ner:375:397] 'Gebaude Konigstraße 11' gold_ctx='enflache\nim Gebaude ▮Konigstraße 11▮, 70173 Stuttgart,\nm' pred_ctx='gene Ladenflache\nim ▮Gebaude Konigstraße 11▮, 70173 Stuttgart,\nm'
+  - ORG            gold 1507:1529 [gold] 'Linden Immobilien GmbH' [pred:ner:1514:1529] 'Immobilien GmbH' gold_ctx='___________________\n▮Linden Immobilien GmbH▮\n\n__________________' pred_ctx='____________\nLinden ▮Immobilien GmbH▮\n\n__________________'
+  - ORG            gold 1560:1577 [gold] 'Urban Coffee GmbH' [pred:ner:1566:1577] 'Coffee GmbH' gold_ctx='___________________\n▮Urban Coffee GmbH▮' pred_ctx='_____________\nUrban ▮Coffee GmbH▮'
+UNEXPECTED (FP): 1
+  - LOC            360:371 [ner] 'Ladenflache' ctx='rdgeschoss gelegene ▮Ladenflache▮\nim Gebaude Konigstr'

@@ -1,0 +1,122 @@
+{
+    "document_id": "Dataset_20",
+    "items": [
+        {
+            "label": "ORG",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Linden Immobilien GmbH"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Konigstraße 11"
+        },
+        {
+            "label": "PLZ",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "70173"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Stuttgart"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "alternatives": [
+                {
+                    "text": "Herrn Markus Dietz",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                },
+                {
+                    "text": "Markus Dietz",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                }
+            ]
+        },
+        {
+            "label": "ORG",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Urban Coffee GmbH"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Tubinger Straße 42"
+        },
+        {
+            "label": "PLZ",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "70178"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "alternatives": [
+                {
+                    "text": "Frau Julia Maier",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                },
+                {
+                    "text": "Julia Maier",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                }
+            ]
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "01.07.2025"
+        },
+        {
+            "label": "BETRAG",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "2.400,00 EUR"
+        },
+        {
+            "label": "BETRAG",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "350,00 EUR"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "15.04.2025"
+        }
+    ]
+}

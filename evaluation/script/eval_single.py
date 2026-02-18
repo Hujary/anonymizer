@@ -1,3 +1,4 @@
+# evaluation/script/eval_single.py
 from __future__ import annotations
 
 import argparse
@@ -292,12 +293,18 @@ def _ctx(text: str, start: int, end: int, radius: int) -> str:
 
 @dataclass(frozen=True)
 class Miss:
-    kind: str
+    kind: str  # TP / FP / FN / PARTIAL
     label: str
+
     start: int
     end: int
     source: str
     text: str
+
+    pred_start: Optional[int] = None
+    pred_end: Optional[int] = None
+    pred_source: Optional[str] = None
+    pred_text: Optional[str] = None
 
 
 def _load_eval_config(eval_root: Path) -> Dict[str, Any]:
@@ -407,6 +414,10 @@ def _apply_label_rules(
     return out
 
 
+def _overlaps(a_start: int, a_end: int, b_start: int, b_end: int) -> bool:
+    return not (a_end <= b_start or b_end <= a_start)
+
+
 def _evaluate(
     text: str,
     gold_entities: List[GoldEntity],
@@ -449,6 +460,7 @@ def _evaluate(
     misses: List[Miss] = []
 
     matched_pred_keys: Set[Tuple[int, int, str]] = set()
+    partial_pred_keys: Set[Tuple[int, int, str]] = set()
 
     for g in gold_entities:
         if not _gold_required_for_mode(g, mode_sources):
@@ -458,24 +470,24 @@ def _evaluate(
         if not candidates:
             continue
 
-        found_key: Optional[Tuple[int, int, str]] = None
+        lbl_counts = counts_by_label.setdefault(g.primary_label, EvalCounts())
+
+        found_exact: Optional[Tuple[int, int, str]] = None
         for c in candidates:
             for L in g.acceptable_labels:
                 k = (c.start, c.end, L)
                 if k in pred_by_key:
-                    found_key = k
+                    found_exact = k
                     break
-            if found_key is not None:
+            if found_exact is not None:
                 break
 
-        lbl_counts = counts_by_label.setdefault(g.primary_label, EvalCounts())
-
-        if found_key is not None:
+        if found_exact is not None:
             counts_total.tp += 1
             lbl_counts.tp += 1
-            matched_pred_keys.add(found_key)
+            matched_pred_keys.add(found_exact)
 
-            p = pred_by_key[found_key]
+            p = pred_by_key[found_exact]
             misses.append(
                 Miss(
                     kind="TP",
@@ -486,25 +498,65 @@ def _evaluate(
                     text=text[p.start : p.end],
                 )
             )
-        else:
-            counts_total.fn += 1
-            lbl_counts.fn += 1
+            continue
 
-            c0 = candidates[0]
+        best_partial_pred: Optional[Span] = None
+        best_partial_gold: Optional[GoldCandidate] = None
+
+        for c in candidates:
+            for p in preds:
+                if p.label not in g.acceptable_labels:
+                    continue
+                if not _overlaps(p.start, p.end, c.start, c.end):
+                    continue
+
+                if (p.start == c.start and p.end == c.end):
+                    continue
+
+                best_partial_pred = p
+                best_partial_gold = c
+                break
+            if best_partial_pred is not None:
+                break
+
+        if best_partial_pred is not None and best_partial_gold is not None:
+            partial_pred_keys.add(best_partial_pred.key())
             misses.append(
                 Miss(
-                    kind="FN",
+                    kind="PARTIAL",
                     label=g.primary_label,
-                    start=c0.start,
-                    end=c0.end,
+                    start=best_partial_gold.start,
+                    end=best_partial_gold.end,
                     source="gold",
-                    text=c0.text,
+                    text=best_partial_gold.text or text[best_partial_gold.start : best_partial_gold.end],
+                    pred_start=best_partial_pred.start,
+                    pred_end=best_partial_pred.end,
+                    pred_source=best_partial_pred.source,
+                    pred_text=text[best_partial_pred.start : best_partial_pred.end],
                 )
             )
+            continue
+
+        counts_total.fn += 1
+        lbl_counts.fn += 1
+
+        c0 = candidates[0]
+        misses.append(
+            Miss(
+                kind="FN",
+                label=g.primary_label,
+                start=c0.start,
+                end=c0.end,
+                source="gold",
+                text=c0.text or text[c0.start : c0.end],
+            )
+        )
 
     for p in preds:
         k = p.key()
         if k in matched_pred_keys:
+            continue
+        if k in partial_pred_keys:
             continue
         counts_total.fp += 1
         lbl_counts = counts_by_label.setdefault(p.label, EvalCounts())
@@ -556,11 +608,9 @@ def _format_misses(
 ) -> List[str]:
     lines: List[str] = []
 
-    def dump(kind: str, title: str, want: bool) -> None:
-        if not want:
-            return
-        items = [m for m in misses if m.kind == kind]
-        lines.append(f"{title}: {len(items)}")
+    def dump_fn() -> None:
+        items = [m for m in misses if m.kind == "FN"]
+        lines.append(f"NOT DETECTED (FN): {len(items)}")
         if not items:
             return
         shown = 0
@@ -575,10 +625,84 @@ def _format_misses(
                 lines.append(f"  - {m.label:14s} {m.start}:{m.end} [{m.source}] '{m.text}'")
             shown += 1
 
-    dump("FN", "NOT DETECTED (FN)", True)
-    dump("FP", "UNEXPECTED (FP)", True)
-    dump("TP", "DETECTED (TP)", show_tp)
+    def dump_fp() -> None:
+        items = [m for m in misses if m.kind == "FP"]
+        lines.append(f"UNEXPECTED (FP): {len(items)}")
+        if not items:
+            return
+        shown = 0
+        for m in items:
+            if shown >= max_lines:
+                lines.append(f"  ... truncated ({len(items) - max_lines} more)")
+                break
+            ctx = _ctx(text, m.start, m.end, ctx_radius) if ctx_radius > 0 else ""
+            if ctx:
+                lines.append(f"  - {m.label:14s} {m.start}:{m.end} [{m.source}] '{m.text}' ctx='{ctx}'")
+            else:
+                lines.append(f"  - {m.label:14s} {m.start}:{m.end} [{m.source}] '{m.text}'")
+            shown += 1
 
+    def dump_partial() -> None:
+        items = [m for m in misses if m.kind == "PARTIAL"]
+        lines.append(f"NOT FULLY DETECTED (PARTIAL): {len(items)}")
+        if not items:
+            return
+        shown = 0
+        for m in items:
+            if shown >= max_lines:
+                lines.append(f"  ... truncated ({len(items) - max_lines} more)")
+                break
+
+            g_ctx = _ctx(text, m.start, m.end, ctx_radius) if ctx_radius > 0 else ""
+            p_ctx = ""
+            if m.pred_start is not None and m.pred_end is not None and ctx_radius > 0:
+                p_ctx = _ctx(text, m.pred_start, m.pred_end, ctx_radius)
+
+            p_meta = ""
+            if m.pred_start is not None and m.pred_end is not None and m.pred_source is not None:
+                p_meta = f"[pred:{m.pred_source}:{m.pred_start}:{m.pred_end}] '{m.pred_text or ''}'"
+
+            if g_ctx:
+                if p_ctx:
+                    lines.append(
+                        f"  - {m.label:14s} gold {m.start}:{m.end} [{m.source}] '{m.text}' "
+                        f"{p_meta} gold_ctx='{g_ctx}' pred_ctx='{p_ctx}'"
+                    )
+                else:
+                    lines.append(
+                        f"  - {m.label:14s} gold {m.start}:{m.end} [{m.source}] '{m.text}' "
+                        f"{p_meta} gold_ctx='{g_ctx}'"
+                    )
+            else:
+                lines.append(
+                    f"  - {m.label:14s} gold {m.start}:{m.end} [{m.source}] '{m.text}' {p_meta}"
+                )
+
+            shown += 1
+
+    def dump_tp() -> None:
+        if not show_tp:
+            return
+        items = [m for m in misses if m.kind == "TP"]
+        lines.append(f"DETECTED (TP): {len(items)}")
+        if not items:
+            return
+        shown = 0
+        for m in items:
+            if shown >= max_lines:
+                lines.append(f"  ... truncated ({len(items) - max_lines} more)")
+                break
+            ctx = _ctx(text, m.start, m.end, ctx_radius) if ctx_radius > 0 else ""
+            if ctx:
+                lines.append(f"  - {m.label:14s} {m.start}:{m.end} [{m.source}] '{m.text}' ctx='{ctx}'")
+            else:
+                lines.append(f"  - {m.label:14s} {m.start}:{m.end} [{m.source}] '{m.text}'")
+            shown += 1
+
+    dump_fn()
+    dump_partial()
+    dump_fp()
+    dump_tp()
     return lines
 
 
@@ -603,11 +727,11 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--name", required=True, help="Basename like Dataset_01 (without extension)")
     ap.add_argument("--eval-root", default="evaluation", help="Root folder containing datasets/, result/, token/, script/")
-    ap.add_argument("--debug", action="store_true", help="Write FN/FP (and optional TP) into debug file")
+    ap.add_argument("--debug", action="store_true", help="Write FN/FP/PARTIAL (and optional TP) into debug file")
     ap.add_argument("--show-tp", action="store_true", help="Include TP list in debug file")
     ap.add_argument("--per-label", action="store_true", help="Include per-label stats in result file")
     ap.add_argument("--ctx", type=int, default=20, help="Context radius for debug lines (0 disables)")
-    ap.add_argument("--max-lines", type=int, default=200, help="Max lines per section (FN/FP/TP) before truncation")
+    ap.add_argument("--max-lines", type=int, default=200, help="Max lines per section before truncation")
     ap.add_argument("--no-ner-post", action="store_true", help="Disable NER postprocessing (raw spaCy output)")
     args = ap.parse_args()
 
@@ -627,7 +751,6 @@ def main() -> int:
 
     snap = _snapshot_config()
 
-    # NER Post Processing aktivieren/deaktivieren (default: aktiviert)
     if args.no_ner_post:
         config.set("use_ner_postprocessing", False)
     else:
