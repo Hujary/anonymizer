@@ -1,0 +1,79 @@
+{
+  "document_id": "Dataset_25",
+  "items": [
+    {
+      "label": "RECHNUNGS_NUMMER",
+      "expected_sources": ["regex"],
+      "text": "HD-2025-0731"
+    },
+    {
+      "label": "LOC",
+      "expected_sources": ["ner"],
+      "text": "Stuttgart"
+    },
+    {
+      "label": "URL",
+      "expected_sources": ["regex"],
+      "text": "vpn01.firma-intern.de"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "alternatives": [
+        {
+          "text": "Markus Vogel",
+          "expected_sources": ["ner"]
+        }
+      ]
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "alternatives": [
+        {
+          "text": "Herr Vogel",
+          "expected_sources": ["ner"]
+        },
+        {
+          "text": "Vogel",
+          "expected_sources": ["ner"]
+        }
+      ]
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "markus.vogel@firma.de"
+    },
+    {
+      "label": "TELEFON",
+      "expected_sources": ["regex"],
+      "text": "0711 4587321"
+    },
+    {
+      "label": "LOC",
+      "expected_sources": ["ner"],
+      "text": "Tübinger Straße 54"
+    },
+{
+      "label": "IP_ADRESSE",
+      "expected_sources": ["regex"],
+      "text": "84.167.23.91"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Markus Vogel"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Julia Schneider"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "12.05.2025"
+    }
+  ]
+}

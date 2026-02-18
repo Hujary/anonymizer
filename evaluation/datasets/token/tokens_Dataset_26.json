@@ -1,0 +1,54 @@
+{
+    "document_id": "Dataset_25",
+    "items": [
+        {
+            "label": "ORG",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "TechSolutions GmbH"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Andreas Kühn"
+        },
+        {
+            "label": "E_MAIL",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "andreas.kuehn@techsolutions.de"
+        },
+        {
+            "label": "URL",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "erp-test01.techsolutions.local"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Sabine Roth"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Daniel Meier"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "30.06.2025"
+        }
+    ]
+}

@@ -42,14 +42,14 @@ python src/ui_app.py
 ### Goldset Token/Zeilen Script ausführen
 ```bash
 python evaluation/script/gold_validator.py \
- --name Dataset_20 \
-  --tokens evaluation/datasets/token/tokens_Dataset_20.json \
+ --name Dataset_26 \
+  --tokens evaluation/datasets/token/tokens_Dataset_26.json \
   --write-gold
 ```
 
 ### Validierung Test Script ausführen (Combined)
 ```bash
-python evaluation/script/eval_all.py --debug
+python evaluation/script/eval_all.py --debug --label-report
 ```
 
 ### Validierung ohne NER Post Processing:

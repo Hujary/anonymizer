@@ -1,0 +1,106 @@
+{
+    "document_id": "Dataset_22",
+    "items": [
+        {
+            "label": "PER",
+            "expected_sources": ["ner"],
+            "alternatives": [
+                {
+                    "text": "Frau Katharina Schmitt",
+                    "expected_sources": ["ner"]
+                },
+                {
+                    "text": "Katharina Schmitt",
+                    "expected_sources": ["ner"]
+                }
+            ]
+        },
+        {
+            "label": "LOC",
+            "expected_sources": ["ner"],
+            "text": "Augustenstraße 33"
+        },
+        {
+            "label": "PLZ",
+            "expected_sources": ["regex"],
+            "text": "80333"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": ["ner"],
+            "text": "München"
+        },
+        {
+            "label": "PER",
+            "expected_sources": ["ner"],
+            "alternatives": [
+                {
+                    "text": "Herrn Daniel Roth",
+                    "expected_sources": ["ner"]
+                },
+                {
+                    "text": "Daniel Roth",
+                    "expected_sources": ["ner"]
+                }
+            ]
+        },
+        {
+            "label": "LOC",
+            "expected_sources": ["ner"],
+            "text": "Lindwurmstraße 115"
+        },
+        {
+            "label": "PLZ",
+            "expected_sources": ["regex"],
+            "text": "80337"
+        },
+        {
+            "label": "PER",
+            "expected_sources": ["ner"],
+            "alternatives": [
+                {
+                    "text": "Frau Schmitt",
+                    "expected_sources": ["ner"]
+                },
+                {
+                    "text": "Schmitt",
+                    "expected_sources": ["ner"]
+                }
+            ]
+        },
+        {
+            "label": "PER",
+            "expected_sources": ["ner"],
+            "alternatives": [
+                {
+                    "text": "Herrn Roth",
+                    "expected_sources": ["ner"]
+                },
+                {
+                    "text": "Roth",
+                    "expected_sources": ["ner"]
+                }
+            ]
+        },
+        {
+            "label": "BETRAG",
+            "expected_sources": ["regex"],
+            "text": "480,00 EUR"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": ["regex"],
+            "text": "05.05.2025"
+        },
+        {
+            "label": "PER",
+            "expected_sources": ["ner"],
+            "text": "Katharina Schmitt"
+        },
+        {
+            "label": "PER",
+            "expected_sources": ["ner"],
+            "text": "Daniel Roth"
+        }
+    ]
+}

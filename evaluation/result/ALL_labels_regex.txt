@@ -3,7 +3,7 @@ LABEL REPORT | MODE: regex
 
 BETRAG
 --------------------------------------------------------------------------------
-ERKANNT (TP): 11
+ERKANNT (TP): 15
   - Dataset_07 218:228 [regex] '4.820,00 €'
   - Dataset_11 221:229 [regex] '18.500 €'
   - Dataset_14 402:411 [regex] '500.000 €'
@@ -15,6 +15,10 @@ ERKANNT (TP): 11
   - Dataset_19 1089:1101 [regex] '2.670,00 EUR'
   - Dataset_20 712:724 [regex] '2.400,00 EUR'
   - Dataset_20 763:773 [regex] '350,00 EUR'
+  - Dataset_21 635:647 [regex] '1.050,00 EUR'
+  - Dataset_22 627:637 [regex] '480,00 EUR'
+  - Dataset_23 1607:1619 [regex] '4.800,00 EUR'
+  - Dataset_24 1632:1644 [regex] '3.900,00 EUR'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
@@ -33,12 +37,14 @@ NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
 NICHT ERKANNT (FN): 0
 
-UNERWARTET (FP): 0
+UNERWARTET (FP): 2
+  - Dataset_21 0:11 [regex] 'KAUFVERTRAG'
+  - Dataset_22 0:11 [regex] 'KAUFVERTRAG'
 
 
 DATUM
 --------------------------------------------------------------------------------
-ERKANNT (TP): 50
+ERKANNT (TP): 60
   - Dataset_01 435:445 [regex] '03.02.2024'
   - Dataset_02 671:681 [regex] '14.02.2024'
   - Dataset_02 868:878 [regex] '13.02.2024'
@@ -89,6 +95,16 @@ ERKANNT (TP): 50
   - Dataset_19 1520:1530 [regex] '12.03.2025'
   - Dataset_20 531:541 [regex] '01.07.2025'
   - Dataset_20 1465:1475 [regex] '15.04.2025'
+  - Dataset_21 989:999 [regex] '20.04.2025'
+  - Dataset_21 1030:1040 [regex] '20.04.2025'
+  - Dataset_22 939:949 [regex] '05.05.2025'
+  - Dataset_22 982:992 [regex] '05.05.2025'
+  - Dataset_23 287:297 [regex] '01.05.2025'
+  - Dataset_23 2740:2750 [regex] '18.03.2025'
+  - Dataset_24 330:340 [regex] '01.06.2025'
+  - Dataset_24 3056:3066 [regex] '22.04.2025'
+  - Dataset_25 955:965 [regex] '12.05.2025'
+  - Dataset_26 757:767 [regex] '30.06.2025'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
@@ -108,7 +124,7 @@ UNERWARTET (FP): 0
 
 E_MAIL
 --------------------------------------------------------------------------------
-ERKANNT (TP): 31
+ERKANNT (TP): 33
   - Dataset_01 118:147 [regex] 'max.berger@berger-logistik.de'
   - Dataset_02 131:158 [regex] 'laura.schmid@kramer-sohn.de'
   - Dataset_03 331:359 [regex] 'tobias.klein@klein-handel.de'
@@ -140,6 +156,8 @@ ERKANNT (TP): 31
   - Dataset_17 50:77 [regex] 'thomas.berger@bewerbung.net'
   - Dataset_18 44:66 [regex] 'hr@company-internal.de'
   - Dataset_18 154:178 [regex] 'k.sommer@private-mail.de'
+  - Dataset_25 157:178 [regex] 'markus.vogel@firma.de'
+  - Dataset_26 108:138 [regex] 'andreas.kuehn@techsolutions.de'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
@@ -161,9 +179,21 @@ NICHT ERKANNT (FN): 0
 UNERWARTET (FP): 0
 
 
+IP_ADRESSE
+--------------------------------------------------------------------------------
+ERKANNT (TP): 0
+
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
+
+NICHT ERKANNT (FN): 1
+  - Dataset_25 615:627 [gold] '84.167.23.91'
+
+UNERWARTET (FP): 0
+
+
 PLZ
 --------------------------------------------------------------------------------
-ERKANNT (TP): 11
+ERKANNT (TP): 19
   - Dataset_13 85:90 [regex] '60313'
   - Dataset_14 40:45 [regex] '48143'
   - Dataset_15 226:231 [regex] '90402'
@@ -175,6 +205,14 @@ ERKANNT (TP): 11
   - Dataset_20 68:73 [regex] '70173'
   - Dataset_20 183:188 [regex] '70178'
   - Dataset_20 399:404 [regex] '70173'
+  - Dataset_21 72:77 [regex] '70190'
+  - Dataset_21 148:153 [regex] '70178'
+  - Dataset_22 81:86 [regex] '80333'
+  - Dataset_22 155:160 [regex] '80337'
+  - Dataset_23 71:76 [regex] '70173'
+  - Dataset_23 162:167 [regex] '70178'
+  - Dataset_24 80:85 [regex] '70469'
+  - Dataset_24 218:223 [regex] '70188'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
@@ -185,7 +223,7 @@ UNERWARTET (FP): 0
 
 RECHNUNGS_NUMMER
 --------------------------------------------------------------------------------
-ERKANNT (TP): 8
+ERKANNT (TP): 9
   - Dataset_01 50:63 [regex] 'ST-2024-00123'
   - Dataset_02 63:76 [regex] 'ST-2024-00478'
   - Dataset_02 587:599 [regex] 'BS-2024-1187'
@@ -194,6 +232,7 @@ ERKANNT (TP): 8
   - Dataset_07 185:197 [regex] 'AC-2024-0311'
   - Dataset_12 88:99 [regex] 'NL-2024-119'
   - Dataset_12 556:567 [regex] 'NL-2024-119'
+  - Dataset_25 11:23 [regex] 'HD-2025-0731'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
@@ -209,7 +248,7 @@ UNERWARTET (FP): 0
 
 TELEFON
 --------------------------------------------------------------------------------
-ERKANNT (TP): 18
+ERKANNT (TP): 19
   - Dataset_01 157:173 [regex] '+49 711 99887766'
   - Dataset_02 168:183 [regex] '+49 711 4567890'
   - Dataset_03 365:376 [regex] '0751 987654'
@@ -228,6 +267,7 @@ ERKANNT (TP): 18
   - Dataset_16 56:72 [regex] '+49 157 22334455'
   - Dataset_17 115:128 [regex] '0160 44556677'
   - Dataset_18 471:484 [regex] '0151 66778899'
+  - Dataset_25 185:197 [regex] '0711 4587321'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
@@ -249,6 +289,8 @@ ERKANNT (TP): 7
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
-NICHT ERKANNT (FN): 0
+NICHT ERKANNT (FN): 2
+  - Dataset_25 102:123 [gold] 'vpn01.firma-intern.de'
+  - Dataset_26 426:456 [gold] 'erp-test01.techsolutions.local'
 
 UNERWARTET (FP): 0

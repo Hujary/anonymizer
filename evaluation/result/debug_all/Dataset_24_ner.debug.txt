@@ -1,0 +1,9 @@
+DATASET: Dataset_24 | MODE: ner
+MODE ner      | TP=  9 FP=  1 FN=  1 | P=0.900 R=0.900 F1=0.900
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - LOC            3041:3050 [gold] 'Stuttgart' ctx='ublik Deutschland.\n\n▮Stuttgart▮, den 22.04.2025 von'
+NOT FULLY DETECTED (PARTIAL): 1
+  - PER            gold 191:196 [gold] 'Weber' [pred:ner:185:196] 'Jonas Weber' gold_ctx='r – und Herrn Jonas ▮Weber▮, Schönbühlstraße 27' pred_ctx='itgeber – und Herrn ▮Jonas Weber▮, Schönbühlstraße 27'
+UNEXPECTED (FP): 1
+  - LOC            3012:3038 [ner] 'Bundesrepublik Deutschland' ctx=' gilt das Recht der ▮Bundesrepublik Deutschland▮.\n\nStuttgart, den 22'

@@ -1,0 +1,10 @@
+DATASET: Dataset_25 | MODE: combined
+MODE combined | TP= 14 FP=  1 FN=  2 | P=0.933 R=0.875 F1=0.903
+----------------------------------------------------------------------
+NOT DETECTED (FN): 2
+  - URL            102:123 [gold] 'vpn01.firma-intern.de' ctx='System: VPN-Gateway ▮vpn01.firma-intern.de▮\n\n[08:47] Markus Vog'
+  - IP_ADRESSE     615:627 [gold] '84.167.23.91' ctx='versuche von der IP ▮84.167.23.91▮. Ich setze Ihr MFA-'
+NOT FULLY DETECTED (PARTIAL): 1
+  - PER            gold 140:145 [gold] 'Vogel' [pred:ner:133:145] 'Markus Vogel' gold_ctx='.de\n\n[08:47] Markus ▮Vogel▮ (Vertrieb, markus.v' pred_ctx='-intern.de\n\n[08:47] ▮Markus Vogel▮ (Vertrieb, markus.v'
+UNEXPECTED (FP): 1
+  - LOC            520:539 [ner] 'Self-Service-Portal' ctx=' 18:30 Uhr über das ▮Self-Service-Portal▮.\n\n[08:52] Julia Sch'

@@ -1,0 +1,88 @@
+{
+  "document_id": "Dataset_24",
+  "items": [
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "Hansen & Reuter Logistik GmbH"
+    },
+    {
+      "label": "LOC",
+      "expected_sources": ["ner"],
+      "text": "Industriestraße 18"
+    },
+    {
+      "label": "PLZ",
+      "expected_sources": ["regex"],
+      "text": "70469"
+    },
+    {
+      "label": "LOC",
+      "expected_sources": ["ner"],
+      "text": "Stuttgart"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "alternatives": [
+        {
+          "text": "Herrn Jonas Weber",
+          "expected_sources": ["ner"]
+        },
+        {
+          "text": "Jonas Weber",
+          "expected_sources": ["ner"]
+        }
+      ]
+    },
+    {
+      "label": "LOC",
+      "expected_sources": ["ner"],
+      "text": "Schönbühlstraße 27"
+    },
+    {
+      "label": "PLZ",
+      "expected_sources": ["regex"],
+      "text": "70188"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "alternatives": [
+        {
+          "text": "Herr Weber",
+          "expected_sources": ["ner"]
+        },
+        {
+          "text": "Weber",
+          "expected_sources": ["ner"]
+        }
+      ]
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Markus Hansen"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "01.06.2025"
+    },
+    {
+      "label": "BETRAG",
+      "expected_sources": ["regex"],
+      "text": "3.900,00 EUR"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "22.04.2025"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Jonas Weber"
+    }
+  ]
+}

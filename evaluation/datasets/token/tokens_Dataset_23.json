@@ -1,0 +1,69 @@
+{
+    "document_id": "Dataset_23",
+    "items": [
+        {
+            "label": "ORG",
+            "expected_sources": ["ner"],
+            "text": "Bergmann IT-Systeme GmbH"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": ["ner"],
+            "text": "Königstraße 45"
+        },
+        {
+            "label": "PLZ",
+            "expected_sources": ["regex"],
+            "text": "70173"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": ["ner"],
+            "text": "Stuttgart"
+        },
+        {
+            "label": "PER",
+            "expected_sources": ["ner"],
+            "alternatives": [
+                {
+                    "text": "Frau Laura Schneider",
+                    "expected_sources": ["ner"]
+                },
+                {
+                    "text": "Laura Schneider",
+                    "expected_sources": ["ner"]
+                }
+            ]
+        },
+        {
+            "label": "LOC",
+            "expected_sources": ["ner"],
+            "text": "Rotebühlstraße 112"
+        },
+        {
+            "label": "PLZ",
+            "expected_sources": ["regex"],
+            "text": "70178"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": ["regex"],
+            "text": "01.05.2025"
+        },
+        {
+            "label": "BETRAG",
+            "expected_sources": ["regex"],
+            "text": "4.800,00 EUR"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": ["regex"],
+            "text": "18.03.2025"
+        },
+        {
+            "label": "PER",
+            "expected_sources": ["ner"],
+            "text": "Laura Schneider"
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+DATASET: Dataset_23 | MODE: combined
+MODE combined | TP= 12 FP=  2 FN=  2 | P=0.857 R=0.857 F1=0.857
+----------------------------------------------------------------------
+NOT DETECTED (FN): 2
+  - LOC            142:160 [gold] 'Rotebühlstraße 112' ctx='au Laura Schneider, ▮Rotebühlstraße 112▮, 70178 Stuttgart, –'
+  - LOC            2725:2734 [gold] 'Stuttgart' ctx='ublik Deutschland.\n\n▮Stuttgart▮, den 18.03.2025 von'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 2
+  - PER            142:156 [ner] 'Rotebühlstraße' ctx='au Laura Schneider, ▮Rotebühlstraße▮ 112, 70178 Stuttgar'
+  - LOC            2696:2722 [ner] 'Bundesrepublik Deutschland' ctx=' gilt das Recht der ▮Bundesrepublik Deutschland▮.\n\nStuttgart, den 18'

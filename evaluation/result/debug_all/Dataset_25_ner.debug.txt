@@ -1,0 +1,8 @@
+DATASET: Dataset_25 | MODE: ner
+MODE ner      | TP= 10 FP=  1 FN=  0 | P=0.909 R=1.000 F1=0.952
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 1
+  - PER            gold 140:145 [gold] 'Vogel' [pred:ner:133:145] 'Markus Vogel' gold_ctx='.de\n\n[08:47] Markus ▮Vogel▮ (Vertrieb, markus.v' pred_ctx='-intern.de\n\n[08:47] ▮Markus Vogel▮ (Vertrieb, markus.v'
+UNEXPECTED (FP): 1
+  - LOC            520:539 [ner] 'Self-Service-Portal' ctx=' 18:30 Uhr über das ▮Self-Service-Portal▮.\n\n[08:52] Julia Sch'

@@ -1,0 +1,7 @@
+DATASET: Dataset_26 | MODE: ner
+MODE ner      | TP= 11 FP=  1 FN=  0 | P=0.917 R=1.000 F1=0.957
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 1
+  - PER            398:408 [ner] 'Testimport' ctx='nd Ansprechpartner. ▮Testimport▮ läuft auf Server er'

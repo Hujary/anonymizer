@@ -1,0 +1,148 @@
+{
+    "document_id": "Dataset_21",
+    "items": [
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "alternatives": [
+                {
+                    "text": "Herrn Lukas Berger",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                },
+                {
+                    "text": "Lukas Berger",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                }
+            ]
+        },
+        {
+            "label": "LOC",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Talstraße 14"
+        },
+        {
+            "label": "PLZ",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "70190"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Stuttgart"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "alternatives": [
+                {
+                    "text": "Frau Nina Hofmann",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                },
+                {
+                    "text": "Nina Hofmann",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                }
+            ]
+        },
+        {
+            "label": "LOC",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Reinsburgstraße 62"
+        },
+        {
+            "label": "PLZ",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "70178"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "alternatives": [
+                {
+                    "text": "Herr Berger",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                },
+                {
+                    "text": "Berger",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                }
+            ]
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "alternatives": [
+                {
+                    "text": "Frau Hofmann",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                },
+                {
+                    "text": "Hofmann",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                }
+            ]
+        },
+        {
+            "label": "BETRAG",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "1.050,00 EUR"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "20.04.2025"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Lukas Berger"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Nina Hofmann"
+        }
+    ]
+}
