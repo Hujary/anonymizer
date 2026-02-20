@@ -29,33 +29,6 @@
       "text": "05.03.2024"
     },
     {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 120,
-      "end": 130,
-      "text": "WE-2024-19"
-    },
-    {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 195,
-      "end": 205,
-      "text": "WE-2024-19"
-    },
-    {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 338,
-      "end": 348,
-      "text": "WE-2024-19"
-    },
-    {
       "label": "PER",
       "expected_sources": [
         "ner"

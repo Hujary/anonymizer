@@ -1,12 +1,10 @@
-# detectors/regex/__init__.py
 from typing import Iterable, Tuple, Callable, Dict, List
-from core import config  # Zugriff auf Konfiguration (z.B. aktivierte Labels)
+from core import config
 
 from .contact import finde_contact      # E-Mail + Telefon
 from .finance import finde_finance      # IBAN, BIC, USTID, Betrag
 from .location import finde_location    # PLZ, Ort, Straße
 from .date import finde_date            # Datumsformate
-from .invoice import finde_invoice      # Rechnungsnummern
 from .url import finde_url              # URLs
 
 
@@ -16,7 +14,6 @@ _PRODUCES: Dict[str, List[str]] = {
     "finde_finance": ["IBAN", "BIC", "USTID", "BETRAG"],
     "finde_location": ["PLZ", "ORT", "STRASSE"],
     "finde_date": ["DATUM"],
-    "finde_invoice": ["RECHNUNGS_NUMMER"],
     "finde_url": ["URL"],
 }
 
@@ -27,7 +24,6 @@ _FINDERS: Dict[str, Callable[[str], Iterable[Tuple[int, int, str]]]] = {
     "finde_finance": finde_finance,
     "finde_location": finde_location,
     "finde_date": finde_date,
-    "finde_invoice": finde_invoice,
     "finde_url": finde_url,
 }
 
@@ -49,7 +45,6 @@ def finde_regex(text: str):
         "BIC",
         "URL",
         "USTID",
-        "RECHNUNGS_NUMMER",
         "PLZ",
         "ORT",
         "STRASSE",
@@ -60,7 +55,6 @@ def finde_regex(text: str):
     # Feste Ausführungsreihenfolge (Priorisierung grober Klassen zuerst)
     order = [
         "finde_finance",
-        "finde_invoice",
         "finde_contact",
         "finde_url",
         "finde_location",

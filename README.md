@@ -42,8 +42,8 @@ python src/ui_app.py
 ### Goldset Token/Zeilen Script ausführen
 ```bash
 python evaluation/script/gold_validator.py \
- --name Dataset_26 \
-  --tokens evaluation/datasets/token/tokens_Dataset_26.json \
+ --name Dataset_27 \
+  --tokens evaluation/datasets/token/tokens_Dataset_27.json \
   --write-gold
 ```
 

@@ -23,20 +23,6 @@
       "text": "07.03.2024"
     },
     {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": [
-        "regex"
-      ],
-      "text": "LT-8841"
-    },
-    {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": [
-        "regex"
-      ],
-      "text": "LT-9912"
-    },
-    {
       "label": "DATUM",
       "expected_sources": [
         "regex"

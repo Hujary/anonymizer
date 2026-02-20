@@ -2,11 +2,6 @@
   "document_id": "Dataset_25",
   "items": [
     {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": ["regex"],
-      "text": "HD-2025-0731"
-    },
-    {
       "label": "LOC",
       "expected_sources": ["ner"],
       "text": "Stuttgart"

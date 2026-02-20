@@ -2,15 +2,6 @@
   "document_id": "Dataset_25",
   "entities": [
     {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 11,
-      "end": 23,
-      "text": "HD-2025-0731"
-    },
-    {
       "label": "LOC",
       "expected_sources": [
         "ner"

@@ -29,24 +29,6 @@
       "text": "07.03.2024"
     },
     {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 238,
-      "end": 245,
-      "text": "LT-8841"
-    },
-    {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 250,
-      "end": 257,
-      "text": "LT-9912"
-    },
-    {
       "label": "PER",
       "expected_sources": [
         "ner"

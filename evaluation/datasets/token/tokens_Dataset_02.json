@@ -2,11 +2,6 @@
   "document_id": "Dataset_02",
   "items": [
     {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": ["regex"],
-      "text": "ST-2024-00478"
-    },
-    {
       "label": "PER",
       "expected_sources": ["ner"],
       "text": "Laura Schmid"
@@ -35,11 +30,6 @@
       "label": "URL",
       "expected_sources": ["regex"],
       "text": "https://admin.kramer-sohn.de"
-    },
-    {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": ["regex"],
-      "text": "BS-2024-1187"
     },
     {
       "label": "DATUM",

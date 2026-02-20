@@ -1,7 +1,6 @@
 DATASET: Dataset_26 | MODE: regex
-MODE regex    | TP=  2 FP=  0 FN=  1 | P=1.000 R=0.667 F1=0.800
+MODE regex    | TP=  3 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - URL            426:456 [gold] 'erp-test01.techsolutions.local' ctx='rt läuft auf Server ▮erp-test01.techsolutions.local▮.\n\n[10:07] Daniel Me'
+NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

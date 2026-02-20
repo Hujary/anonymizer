@@ -1,5 +1,5 @@
 DATASET: Dataset_07 | MODE: combined
-MODE combined | TP= 16 FP=  0 FN=  1 | P=1.000 R=0.941 F1=0.970
+MODE combined | TP= 14 FP=  0 FN=  1 | P=1.000 R=0.933 F1=0.966
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
   - PER            141:152 [gold] 'Frau Berger' ctx='-0311\n\nSehr geehrte ▮Frau Berger▮,\n\nbezugnehmend auf '

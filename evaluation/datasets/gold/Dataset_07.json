@@ -29,15 +29,6 @@
       "text": "04.03.2024"
     },
     {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 114,
-      "end": 126,
-      "text": "AC-2024-0311"
-    },
-    {
       "label": "PER",
       "expected_sources": [
         "ner"
@@ -60,15 +51,6 @@
           ]
         }
       ]
-    },
-    {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 185,
-      "end": 197,
-      "text": "AC-2024-0311"
     },
     {
       "label": "DATUM",

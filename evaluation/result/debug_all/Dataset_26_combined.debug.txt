@@ -1,8 +1,7 @@
 DATASET: Dataset_26 | MODE: combined
-MODE combined | TP= 13 FP=  1 FN=  1 | P=0.929 R=0.929 F1=0.929
+MODE combined | TP= 14 FP=  1 FN=  0 | P=0.933 R=1.000 F1=0.966
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - URL            426:456 [gold] 'erp-test01.techsolutions.local' ctx='rt läuft auf Server ▮erp-test01.techsolutions.local▮.\n\n[10:07] Daniel Me'
+NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 1
   - PER            398:408 [ner] 'Testimport' ctx='nd Ansprechpartner. ▮Testimport▮ läuft auf Server er'

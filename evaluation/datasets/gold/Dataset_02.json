@@ -2,15 +2,6 @@
   "document_id": "Dataset_02",
   "entities": [
     {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 63,
-      "end": 76,
-      "text": "ST-2024-00478"
-    },
-    {
       "label": "PER",
       "expected_sources": [
         "ner"
@@ -65,15 +56,6 @@
       "text": "https://admin.kramer-sohn.de"
     },
     {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 587,
-      "end": 599,
-      "text": "BS-2024-1187"
-    },
-    {
       "label": "DATUM",
       "expected_sources": [
         "regex"
@@ -81,15 +63,6 @@
       "start": 671,
       "end": 681,
       "text": "14.02.2024"
-    },
-    {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 717,
-      "end": 729,
-      "text": "BS-2024-1187"
     },
     {
       "label": "DATUM",

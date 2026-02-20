@@ -18,7 +18,6 @@ STRUCT_TYPES = {
     "E_MAIL",
     "URL",
     "USTID",
-    "RECHNUNGS_NUMMER",
     "PLZ",
     "DATUM",
     "BETRAG",

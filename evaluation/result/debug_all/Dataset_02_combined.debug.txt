@@ -1,5 +1,5 @@
 DATASET: Dataset_02 | MODE: combined
-MODE combined | TP=  9 FP=  1 FN=  1 | P=0.900 R=0.900 F1=0.900
+MODE combined | TP=  6 FP=  1 FN=  1 | P=0.857 R=0.857 F1=0.857
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
   - ORG            222:233 [gold] 'Kramer-Sued' ctx='tal v2.8.1\nMandant: ▮Kramer-Sued▮\nBetroffene Funktion'

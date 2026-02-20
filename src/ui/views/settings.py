@@ -102,7 +102,7 @@ def view(
         "MISC": "Miscellaneous / other (MISC)",
     }
 
-    REGEX_TYPES = ["E_MAIL", "TELEFON", "IBAN", "BIC", "URL", "USTID", "RECHNUNGS_NUMMER", "PLZ", "DATUM", "BETRAG"]
+    REGEX_TYPES = ["E_MAIL", "TELEFON", "IBAN", "BIC", "URL", "USTID", "PLZ", "DATUM", "BETRAG"]
     RX_RECOMMENDED = list(REGEX_TYPES)
 
     R_LABELS_DE = {
@@ -112,7 +112,6 @@ def view(
         "BIC": "BIC",
         "URL": "URL",
         "USTID": "USt-ID",
-        "RECHNUNGS_NUMMER": "Rechnungsnummer",
         "PLZ": "PLZ",
         "DATUM": "Datum",
         "BETRAG": "Geldbetrag",
@@ -124,7 +123,6 @@ def view(
         "BIC": "BIC",
         "URL": "URL",
         "USTID": "VAT ID",
-        "RECHNUNGS_NUMMER": "Invoice no.",
         "PLZ": "ZIP",
         "DATUM": "Date",
         "BETRAG": "Amount",

@@ -2,11 +2,6 @@
   "document_id": "Dataset_01",
   "items": [
     {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": ["regex"],
-      "text": "ST-2024-00123"
-    },
-    {
       "label": "PER",
       "expected_sources": ["ner"],
       "text": "Max Berger"

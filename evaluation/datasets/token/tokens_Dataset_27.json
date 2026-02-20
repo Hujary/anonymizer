@@ -1,0 +1,131 @@
+{
+    "document_id": "Dataset_26",
+    "items": [
+        {
+            "label": "ORG",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "NordCom Vertriebs GmbH"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "21.05.2025"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Anna Keller"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Lukas Reinhardt"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Sophie Lang"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Thomas Neumann"
+        },
+        {
+            "label": "ORG",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Bergmann Industrie AG"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Hafenstraße 12"
+        },
+        {
+            "label": "PLZ",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "20457"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Hamburg"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Michael Bergmann"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "M. Bergmann"
+        },
+        {
+            "label": "E_MAIL",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "anna.keller@nordcom.de"
+        },
+        {
+            "label": "E_MAIL",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "s.lang@nordcom.de"
+        },
+        {
+            "label": "E_MAIL",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "michael.bergmann@bergmann-industrie.de"
+        },
+        {
+            "label": "BETRAG",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "184.500 EUR"
+        },
+        {
+            "label": "USTID",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "DE289774561"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "31.12.2025"
+        }
+    ]
+}

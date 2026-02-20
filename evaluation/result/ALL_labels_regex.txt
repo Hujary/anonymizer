@@ -3,7 +3,7 @@ LABEL REPORT | MODE: regex
 
 BETRAG
 --------------------------------------------------------------------------------
-ERKANNT (TP): 15
+ERKANNT (TP): 16
   - Dataset_07 218:228 [regex] '4.820,00 €'
   - Dataset_11 221:229 [regex] '18.500 €'
   - Dataset_14 402:411 [regex] '500.000 €'
@@ -19,6 +19,7 @@ ERKANNT (TP): 15
   - Dataset_22 627:637 [regex] '480,00 EUR'
   - Dataset_23 1607:1619 [regex] '4.800,00 EUR'
   - Dataset_24 1632:1644 [regex] '3.900,00 EUR'
+  - Dataset_27 853:864 [regex] '184.500 EUR'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
@@ -44,7 +45,7 @@ UNERWARTET (FP): 2
 
 DATUM
 --------------------------------------------------------------------------------
-ERKANNT (TP): 60
+ERKANNT (TP): 62
   - Dataset_01 435:445 [regex] '03.02.2024'
   - Dataset_02 671:681 [regex] '14.02.2024'
   - Dataset_02 868:878 [regex] '13.02.2024'
@@ -105,6 +106,8 @@ ERKANNT (TP): 60
   - Dataset_24 3056:3066 [regex] '22.04.2025'
   - Dataset_25 955:965 [regex] '12.05.2025'
   - Dataset_26 757:767 [regex] '30.06.2025'
+  - Dataset_27 97:107 [regex] '21.05.2025'
+  - Dataset_27 759:769 [regex] '31.12.2025'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
@@ -124,7 +127,7 @@ UNERWARTET (FP): 0
 
 E_MAIL
 --------------------------------------------------------------------------------
-ERKANNT (TP): 33
+ERKANNT (TP): 36
   - Dataset_01 118:147 [regex] 'max.berger@berger-logistik.de'
   - Dataset_02 131:158 [regex] 'laura.schmid@kramer-sohn.de'
   - Dataset_03 331:359 [regex] 'tobias.klein@klein-handel.de'
@@ -158,6 +161,9 @@ ERKANNT (TP): 33
   - Dataset_18 154:178 [regex] 'k.sommer@private-mail.de'
   - Dataset_25 157:178 [regex] 'markus.vogel@firma.de'
   - Dataset_26 108:138 [regex] 'andreas.kuehn@techsolutions.de'
+  - Dataset_27 130:152 [regex] 'anna.keller@nordcom.de'
+  - Dataset_27 573:611 [regex] 'michael.bergmann@bergmann-industrie.de'
+  - Dataset_27 646:663 [regex] 's.lang@nordcom.de'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
@@ -193,7 +199,7 @@ UNERWARTET (FP): 0
 
 PLZ
 --------------------------------------------------------------------------------
-ERKANNT (TP): 19
+ERKANNT (TP): 20
   - Dataset_13 85:90 [regex] '60313'
   - Dataset_14 40:45 [regex] '48143'
   - Dataset_15 226:231 [regex] '90402'
@@ -213,35 +219,11 @@ ERKANNT (TP): 19
   - Dataset_23 162:167 [regex] '70178'
   - Dataset_24 80:85 [regex] '70469'
   - Dataset_24 218:223 [regex] '70188'
+  - Dataset_27 417:422 [regex] '20457'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
 NICHT ERKANNT (FN): 0
-
-UNERWARTET (FP): 0
-
-
-RECHNUNGS_NUMMER
---------------------------------------------------------------------------------
-ERKANNT (TP): 9
-  - Dataset_01 50:63 [regex] 'ST-2024-00123'
-  - Dataset_02 63:76 [regex] 'ST-2024-00478'
-  - Dataset_02 587:599 [regex] 'BS-2024-1187'
-  - Dataset_02 717:729 [regex] 'BS-2024-1187'
-  - Dataset_07 114:126 [regex] 'AC-2024-0311'
-  - Dataset_07 185:197 [regex] 'AC-2024-0311'
-  - Dataset_12 88:99 [regex] 'NL-2024-119'
-  - Dataset_12 556:567 [regex] 'NL-2024-119'
-  - Dataset_25 11:23 [regex] 'HD-2025-0731'
-
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
-
-NICHT ERKANNT (FN): 5
-  - Dataset_08 120:130 [gold] 'WE-2024-19'
-  - Dataset_08 195:205 [gold] 'WE-2024-19'
-  - Dataset_08 338:348 [gold] 'WE-2024-19'
-  - Dataset_10 238:245 [gold] 'LT-8841'
-  - Dataset_10 250:257 [gold] 'LT-9912'
 
 UNERWARTET (FP): 0
 
@@ -278,7 +260,7 @@ UNERWARTET (FP): 0
 
 URL
 --------------------------------------------------------------------------------
-ERKANNT (TP): 7
+ERKANNT (TP): 9
   - Dataset_01 324:357 [regex] 'https://portal.berger-logistik.de'
   - Dataset_02 511:539 [regex] 'https://admin.kramer-sohn.de'
   - Dataset_03 540:589 [regex] 'https://portal.klein-handel.de/reset?token=abc123'
@@ -286,11 +268,23 @@ ERKANNT (TP): 7
   - Dataset_06 600:634 [regex] 'https://app.cloudware-solutions.de'
   - Dataset_10 450:481 [regex] 'https://dashboard.fleetcloud.io'
   - Dataset_12 506:536 [regex] 'https://portal.nordlogistik.de'
+  - Dataset_25 102:123 [regex] 'vpn01.firma-intern.de'
+  - Dataset_26 426:456 [regex] 'erp-test01.techsolutions.local'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
-NICHT ERKANNT (FN): 2
-  - Dataset_25 102:123 [gold] 'vpn01.firma-intern.de'
-  - Dataset_26 426:456 [gold] 'erp-test01.techsolutions.local'
+NICHT ERKANNT (FN): 0
+
+UNERWARTET (FP): 0
+
+
+USTID
+--------------------------------------------------------------------------------
+ERKANNT (TP): 1
+  - Dataset_27 998:1009 [regex] 'DE289774561'
+
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
+
+NICHT ERKANNT (FN): 0
 
 UNERWARTET (FP): 0

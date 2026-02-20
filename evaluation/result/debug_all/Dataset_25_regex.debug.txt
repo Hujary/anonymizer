@@ -1,8 +1,7 @@
 DATASET: Dataset_25 | MODE: regex
-MODE regex    | TP=  4 FP=  0 FN=  2 | P=1.000 R=0.667 F1=0.800
+MODE regex    | TP=  4 FP=  0 FN=  1 | P=1.000 R=0.800 F1=0.889
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 2
-  - URL            102:123 [gold] 'vpn01.firma-intern.de' ctx='System: VPN-Gateway ▮vpn01.firma-intern.de▮\n\n[08:47] Markus Vog'
+NOT DETECTED (FN): 1
   - IP_ADRESSE     615:627 [gold] '84.167.23.91' ctx='versuche von der IP ▮84.167.23.91▮. Ich setze Ihr MFA-'
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

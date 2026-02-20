@@ -17,11 +17,6 @@
       "text": "09.03.2024"
     },
     {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": ["regex"],
-      "text": "NL-2024-119"
-    },
-    {
       "label": "PER",
       "expected_sources": ["ner"],
       "text": "Martin Schulz"

@@ -1,8 +1,6 @@
 DATASET: Dataset_10 | MODE: regex
-MODE regex    | TP=  7 FP=  0 FN=  2 | P=1.000 R=0.778 F1=0.875
+MODE regex    | TP=  7 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 2
-  - RECHNUNGS_NUMMER 238:245 [gold] 'LT-8841' ctx='betrifft es die IDs ▮LT-8841▮ und LT-9912.\n\nIch b'
-  - RECHNUNGS_NUMMER 250:257 [gold] 'LT-9912' ctx='die IDs LT-8841 und ▮LT-9912▮.\n\nIch bin Thomas Re'
+NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

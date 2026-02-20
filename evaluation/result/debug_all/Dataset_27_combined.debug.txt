@@ -1,0 +1,10 @@
+DATASET: Dataset_27 | MODE: combined
+MODE combined | TP= 20 FP=  1 FN=  1 | P=0.952 R=0.952 F1=0.952
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - PER            487:498 [gold] 'M. Bergmann' ctx='Bergmann und einmal ▮M. Bergmann▮.\n\n[10:18] Anna Kell'
+NOT FULLY DETECTED (PARTIAL): 2
+  - ORG            gold 67:89 [gold] 'NordCom Vertriebs GmbH' [pred:ner:75:89] 'Vertriebs GmbH' gold_ctx='nigung\nUnternehmen: ▮NordCom Vertriebs GmbH▮\nDatum: 21.05.2025\n\n' pred_ctx='nternehmen: NordCom ▮Vertriebs GmbH▮\nDatum: 21.05.2025\n\n'
+  - ORG            gold 244:265 [gold] 'Bergmann Industrie AG' [pred:ner:253:265] 'Industrie AG' gold_ctx='inträge zum Kunden „▮Bergmann Industrie AG▮“ aufgefallen. Kunde' pred_ctx='um Kunden „Bergmann ▮Industrie AG▮“ aufgefallen. Kunde'
+UNEXPECTED (FP): 1
+  - PER            0:23 [ner] 'Exportierter Teams-Chat' ctx='▮Exportierter Teams-Chat▮\nProjekt: CRM-Datenb'

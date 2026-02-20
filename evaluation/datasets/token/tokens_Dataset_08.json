@@ -17,11 +17,6 @@
       "text": "05.03.2024"
     },
     {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": ["regex"],
-      "text": "WE-2024-19"
-    },
-    {
       "label": "PER",
       "expected_sources": ["ner"],
       "text": "Michael Roth"

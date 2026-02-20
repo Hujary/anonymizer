@@ -1,10 +1,7 @@
 DATASET: Dataset_08 | MODE: combined
-MODE combined | TP=  9 FP=  1 FN=  3 | P=0.900 R=0.750 F1=0.818
+MODE combined | TP=  9 FP=  1 FN=  0 | P=0.900 R=1.000 F1=0.947
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 3
-  - RECHNUNGS_NUMMER 120:130 [gold] 'WE-2024-19' ctx='ung Wartungsvertrag ▮WE-2024-19▮\n\nSehr geehrte Damen'
-  - RECHNUNGS_NUMMER 195:205 [gold] 'WE-2024-19' ctx='es Wartungsvertrags ▮WE-2024-19▮ benötigen wir eine '
-  - RECHNUNGS_NUMMER 338:348 [gold] 'WE-2024-19' ctx='t  \nVertragsnummer: ▮WE-2024-19▮  \nAnsprechpartner: '
+NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 1
   - LOC            297:319 [ner] 'Solarpark München-West' ctx='tervalle.\n\nProjekt: ▮Solarpark München-West▮  \nVertragsnummer: W'

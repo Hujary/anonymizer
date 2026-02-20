@@ -2,15 +2,6 @@
   "document_id": "Dataset_01",
   "entities": [
     {
-      "label": "RECHNUNGS_NUMMER",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 50,
-      "end": 63,
-      "text": "ST-2024-00123"
-    },
-    {
       "label": "PER",
       "expected_sources": [
         "ner"
