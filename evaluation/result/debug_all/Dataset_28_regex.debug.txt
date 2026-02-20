@@ -1,0 +1,7 @@
+DATASET: Dataset_28 | MODE: regex
+MODE regex    | TP=  8 FP=  1 FN=  0 | P=0.889 R=1.000 F1=0.941
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 1
+  - PLZ            591:596 [regex] '77134' ctx=' Personalnummer ist ▮77134▮.\n\n[13:12] Miriam Sc'

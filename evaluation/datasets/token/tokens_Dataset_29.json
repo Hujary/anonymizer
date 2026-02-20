@@ -1,0 +1,80 @@
+{
+  "document_id": "Dataset_29",
+  "items": [
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "Spintex AG"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "16.05.2025"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Laura Weber"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Martin Keller"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Stefan Braun"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Thomas Meyer"
+    },
+    {
+      "label": "PER",
+      "expected_sources": ["ner"],
+      "text": "Oliver Brandt"
+    },
+    {
+      "label": "ORG",
+      "expected_sources": ["ner"],
+      "text": "Meyer Bau AG"
+    },
+    {
+      "label": "LOC",
+      "expected_sources": ["ner"],
+      "text": "München"
+    },
+    {
+      "label": "LOC",
+      "expected_sources": ["ner"],
+      "text": "Leopoldstraße 23"
+    },
+    {
+      "label": "E_MAIL",
+      "expected_sources": ["regex"],
+      "text": "laura.weber@spintex.de"
+    },
+    {
+      "label": "URL",
+      "expected_sources": ["regex"],
+      "text": "report-fin-02.spintex.local"
+    },
+    {
+      "label": "URL",
+      "expected_sources": ["regex"],
+      "text": "db-fin-02.spintex.local"
+    },
+    {
+      "label": "IP_ADRESSE",
+      "expected_sources": ["regex"],
+      "text": "10.0.4.22"
+    },
+    {
+      "label": "DATUM",
+      "expected_sources": ["regex"],
+      "text": "14.05.2025"
+    }
+  ]
+}

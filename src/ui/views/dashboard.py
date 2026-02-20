@@ -29,7 +29,6 @@ BASE_TYPES = [
     "BIC",
     "URL",
     "USTID",
-    "RECHNUNGS_NUMMER",
     "PLZ",
     "DATUM",
     "PER",

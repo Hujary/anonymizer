@@ -6,30 +6,30 @@ from .finance import finde_finance      # IBAN, BIC, USTID, Betrag
 from .location import finde_location    # PLZ, Ort, Straße
 from .date import finde_date            # Datumsformate
 from .url import finde_url              # URLs
+from .ip import finde_ip                # IP-Adressen
 
 
-# Mapping: Finder-Name → produzierte Labels
 _PRODUCES: Dict[str, List[str]] = {
     "finde_contact": ["E_MAIL", "TELEFON"],
     "finde_finance": ["IBAN", "BIC", "USTID", "BETRAG"],
     "finde_location": ["PLZ", "ORT", "STRASSE"],
     "finde_date": ["DATUM"],
     "finde_url": ["URL"],
+    "finde_ip": ["IP_ADRESSE"],
 }
 
 
-# Mapping: Finder-Name → konkrete Funktion
 _FINDERS: Dict[str, Callable[[str], Iterable[Tuple[int, int, str]]]] = {
     "finde_contact": finde_contact,
     "finde_finance": finde_finance,
     "finde_location": finde_location,
     "finde_date": finde_date,
     "finde_url": finde_url,
+    "finde_ip": finde_ip,
 }
 
 
 def _should_run(finder_name: str, allowed: set[str]) -> bool:
-    # Prüft, ob mindestens ein vom Finder erzeugtes Label aktiviert ist
     for t in _PRODUCES.get(finder_name, []):
         if t in allowed:
             return True
@@ -37,7 +37,6 @@ def _should_run(finder_name: str, allowed: set[str]) -> bool:
 
 
 def finde_regex(text: str):
-    # Aktivierte Labels aus Config (Fallback auf Default-Liste)
     allowed = set(config.get("regex_labels", [
         "E_MAIL",
         "TELEFON",
@@ -50,20 +49,21 @@ def finde_regex(text: str):
         "STRASSE",
         "DATUM",
         "BETRAG",
+        "IP_ADRESSE",
     ]))
 
-    # Feste Ausführungsreihenfolge (Priorisierung grober Klassen zuerst)
     order = [
         "finde_finance",
         "finde_contact",
         "finde_url",
+        "finde_ip",
         "finde_location",
         "finde_date",
     ]
 
     for name in order:
-        if not _should_run(name, allowed):  # Finder überspringen, wenn keine relevanten Labels aktiv
+        if not _should_run(name, allowed):
             continue
         for s, e, label in _FINDERS[name](text):
-            if label in allowed:  # Zusätzliche Absicherung auf Label-Ebene
+            if label in allowed:
                 yield (s, e, label)

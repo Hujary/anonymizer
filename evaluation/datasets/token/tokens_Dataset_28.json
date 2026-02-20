@@ -1,0 +1,90 @@
+{
+    "document_id": "Dataset_28",
+    "items": [
+        {
+            "label": "ORG",
+            "expected_sources": ["ner"],
+            "text": "Helion Manufacturing GmbH"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": ["regex"],
+            "text": "04.06.2025"
+        },
+        {
+            "label": "PER",
+            "expected_sources": ["ner"],
+            "text": "Miriam Scholz"
+        },
+        {
+            "label": "E_MAIL",
+            "expected_sources": ["regex"],
+            "text": "m.scholz@helion-mfg.de"
+        },
+        {
+            "label": "PER",
+            "expected_sources": ["ner"],
+            "text": "Daniel Fischer"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": ["regex"],
+            "text": "01.03.2022"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": ["ner"],
+            "text": "Stuttgart"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": ["ner"],
+            "text": "Industriestraße 45"
+        },
+        {
+            "label": "PER",
+            "expected_sources": ["ner"],
+            "text": "Robert Klein"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": ["ner"],
+            "text": "München"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": ["regex"],
+            "text": "01.07.2025"
+        },
+        {
+            "label": "BETRAG",
+            "expected_sources": ["regex"],
+            "text": "4.800 EUR"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": ["ner"],
+            "text": "Rosenstraße 8"
+        },
+        {
+            "label": "PLZ",
+            "expected_sources": ["regex"],
+            "text": "70182"
+        },
+        {
+            "label": "TELEFON",
+            "expected_sources": ["regex"],
+            "text": "0172 5566778"
+        },
+        {
+            "label": "PER",
+            "expected_sources": ["ner"],
+            "text": "Sabine Köhler"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": ["regex"],
+            "text": "20.06.2025"
+        }
+    ]
+}

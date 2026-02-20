@@ -1,0 +1,10 @@
+DATASET: Dataset_29 | MODE: combined
+MODE combined | TP= 22 FP=  3 FN=  1 | P=0.880 R=0.957 F1=0.917
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - LOC            473:489 [gold] 'Leopoldstraße 23' ctx='derlassung München, ▮Leopoldstraße 23▮. Ich bin im interne'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 3
+  - LOC            141:160 [ner] 'Reporting-Dashboard' ctx='llo, ich bekomme im ▮Reporting-Dashboard▮ report-fin-02.spint'
+  - PER            473:486 [ner] 'Leopoldstraße' ctx='derlassung München, ▮Leopoldstraße▮ 23. Ich bin im inte'
+  - LOC            866:880 [ner] 'Datenbank-Last' ctx='2025. Ich prüfe die ▮Datenbank-Last▮.\n\n[15:59] Laura Web'

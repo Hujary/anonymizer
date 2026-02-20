@@ -1,0 +1,10 @@
+DATASET: Dataset_28 | MODE: ner
+MODE ner      | TP= 15 FP=  2 FN=  1 | P=0.882 R=0.938 F1=0.909
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - LOC            750:763 [gold] 'Rosenstraße 8' ctx='von Daniel ist noch ▮Rosenstraße 8▮, 70182 Stuttgart hi'
+NOT FULLY DETECTED (PARTIAL): 1
+  - ORG            gold 62:87 [gold] 'Helion Manufacturing GmbH' [pred:ner:69:87] 'Manufacturing GmbH' gold_ctx='-recht\nUnternehmen: ▮Helion Manufacturing GmbH▮\nDatum: 04.06.2025\n\n' pred_ctx='Unternehmen: Helion ▮Manufacturing GmbH▮\nDatum: 04.06.2025\n\n'
+UNEXPECTED (FP): 2
+  - PER            212:226 [ner] 'Eintrittsdatum' ctx='iel Fischer prüfen. ▮Eintrittsdatum▮ war der 01.03.2022,'
+  - LOC            734:740 [ner] 'Daniel' ctx=' Klein:\nAdresse von ▮Daniel▮ ist noch Rosenstraß'

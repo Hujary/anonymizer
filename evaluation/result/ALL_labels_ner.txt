@@ -3,7 +3,7 @@ LABEL REPORT | MODE: ner
 
 LOC
 --------------------------------------------------------------------------------
-ERKANNT (TP): 41
+ERKANNT (TP): 48
   - Dataset_13 91:108 [ner] 'Frankfurt am Main'
   - Dataset_13 429:438 [ner] 'Wiesbaden'
   - Dataset_15 195:203 [ner] 'Nürnberg'
@@ -45,13 +45,20 @@ ERKANNT (TP): 41
   - Dataset_25 341:359 [ner] 'Tübinger Straße 54'
   - Dataset_27 401:415 [ner] 'Hafenstraße 12'
   - Dataset_27 423:430 [ner] 'Hamburg'
+  - Dataset_28 256:265 [ner] 'Stuttgart'
+  - Dataset_28 267:285 [ner] 'Industriestraße 45'
+  - Dataset_28 341:348 [ner] 'München'
+  - Dataset_28 771:780 [ner] 'Stuttgart'
+  - Dataset_29 464:471 [ner] 'München'
+  - Dataset_30 284:294 [ner] 'Düsseldorf'
+  - Dataset_30 296:314 [ner] 'Speditionstraße 21'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 3
   - Dataset_16 gold:91:95 [gold] 'Köln' <- pred:ner:85:95 '50667 Köln'
   - Dataset_19 gold:274:287 [gold] 'Hegelstraße 7' <- pred:ner:268:287 'Hause Hegelstraße 7'
   - Dataset_20 gold:383:397 [gold] 'Konigstraße 11' <- pred:ner:375:397 'Gebaude Konigstraße 11'
 
-NICHT ERKANNT (FN): 14
+NICHT ERKANNT (FN): 16
   - Dataset_13 244:253 [gold] 'Frankfurt'
   - Dataset_14 23:39 [gold] 'Bahnhofstraße 17'
   - Dataset_14 46:53 [gold] 'Münster'
@@ -66,8 +73,10 @@ NICHT ERKANNT (FN): 14
   - Dataset_23 142:160 [gold] 'Rotebühlstraße 112'
   - Dataset_23 2725:2734 [gold] 'Stuttgart'
   - Dataset_24 3041:3050 [gold] 'Stuttgart'
+  - Dataset_28 750:763 [gold] 'Rosenstraße 8'
+  - Dataset_29 473:489 [gold] 'Leopoldstraße 23'
 
-UNERWARTET (FP): 15
+UNERWARTET (FP): 19
   - Dataset_02 693:715 [ner] 'Beispiel-Bestellnummer'
   - Dataset_08 297:319 [ner] 'Solarpark München-West'
   - Dataset_09 93:108 [ner] 'Patientenportal'
@@ -83,11 +92,15 @@ UNERWARTET (FP): 15
   - Dataset_23 2696:2722 [ner] 'Bundesrepublik Deutschland'
   - Dataset_24 3012:3038 [ner] 'Bundesrepublik Deutschland'
   - Dataset_25 520:539 [ner] 'Self-Service-Portal'
+  - Dataset_28 734:740 [ner] 'Daniel'
+  - Dataset_29 141:160 [ner] 'Reporting-Dashboard'
+  - Dataset_29 866:880 [ner] 'Datenbank-Last'
+  - Dataset_30 641:648 [ner] 'WL-2025'
 
 
 ORG
 --------------------------------------------------------------------------------
-ERKANNT (TP): 26
+ERKANNT (TP): 28
   - Dataset_07 422:434 [ner] 'AlphaCore AG'
   - Dataset_07 614:626 [ner] 'AlphaCore AG'
   - Dataset_08 595:610 [ner] 'Innoventis GmbH'
@@ -114,8 +127,10 @@ ERKANNT (TP): 26
   - Dataset_24 29:58 [ner] 'Hansen & Reuter Logistik GmbH'
   - Dataset_24 3071:3100 [ner] 'Hansen & Reuter Logistik GmbH'
   - Dataset_26 37:55 [ner] 'TechSolutions GmbH'
+  - Dataset_29 43:53 [ner] 'Spintex AG'
+  - Dataset_29 281:293 [ner] 'Meyer Bau AG'
 
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 12
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 14
   - Dataset_01 gold:89:109 [gold] 'Berger Logistik GmbH' <- pred:ner:96:109 'Logistik GmbH'
   - Dataset_02 gold:104:122 [gold] 'Kramer & Sohn GmbH' <- pred:ner:113:122 'Sohn GmbH'
   - Dataset_03 gold:313:330 [gold] 'Klein Handel GmbH' <- pred:ner:319:330 'Handel GmbH'
@@ -128,6 +143,8 @@ NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 12
   - Dataset_20 gold:1560:1577 [gold] 'Urban Coffee GmbH' <- pred:ner:1566:1577 'Coffee GmbH'
   - Dataset_27 gold:67:89 [gold] 'NordCom Vertriebs GmbH' <- pred:ner:75:89 'Vertriebs GmbH'
   - Dataset_27 gold:244:265 [gold] 'Bergmann Industrie AG' <- pred:ner:253:265 'Industrie AG'
+  - Dataset_28 gold:62:87 [gold] 'Helion Manufacturing GmbH' <- pred:ner:69:87 'Manufacturing GmbH'
+  - Dataset_30 gold:839:852 [gold] 'TransLog GmbH' <- pred:ner:831:852 'anderem TransLog GmbH'
 
 NICHT ERKANNT (FN): 7
   - Dataset_02 222:233 [gold] 'Kramer-Sued'
@@ -143,7 +160,7 @@ UNERWARTET (FP): 0
 
 PER
 --------------------------------------------------------------------------------
-ERKANNT (TP): 67
+ERKANNT (TP): 102
   - Dataset_01 71:81 [ner] 'Max Berger'
   - Dataset_02 84:96 [ner] 'Laura Schmid'
   - Dataset_03 657:663 [ner] 'Tobias'
@@ -211,14 +228,51 @@ ERKANNT (TP): 67
   - Dataset_27 1034:1045 [ner] 'Sophie Lang'
   - Dataset_27 1131:1142 [ner] 'Anna Keller'
   - Dataset_27 1235:1249 [ner] 'Thomas Neumann'
+  - Dataset_28 115:128 [ner] 'Miriam Scholz'
+  - Dataset_28 189:203 [ner] 'Daniel Fischer'
+  - Dataset_28 296:308 [ner] 'Robert Klein'
+  - Dataset_28 359:372 [ner] 'Miriam Scholz'
+  - Dataset_28 483:495 [ner] 'Robert Klein'
+  - Dataset_28 607:620 [ner] 'Miriam Scholz'
+  - Dataset_28 708:720 [ner] 'Robert Klein'
+  - Dataset_28 838:851 [ner] 'Miriam Scholz'
+  - Dataset_28 945:957 [ner] 'Robert Klein'
+  - Dataset_28 995:1008 [ner] 'Sabine Köhler'
+  - Dataset_28 1038:1051 [ner] 'Miriam Scholz'
+  - Dataset_29 81:92 [ner] 'Laura Weber'
+  - Dataset_29 353:366 [ner] 'Martin Keller'
+  - Dataset_29 429:440 [ner] 'Laura Weber'
+  - Dataset_29 526:539 [ner] 'Martin Keller'
+  - Dataset_29 656:667 [ner] 'Laura Weber'
+  - Dataset_29 709:721 [ner] 'Stefan Braun'
+  - Dataset_29 773:786 [ner] 'Martin Keller'
+  - Dataset_29 891:902 [ner] 'Laura Weber'
+  - Dataset_29 998:1010 [ner] 'Thomas Meyer'
+  - Dataset_29 1021:1034 [ner] 'Martin Keller'
+  - Dataset_29 1057:1070 [ner] 'Oliver Brandt'
+  - Dataset_29 1108:1121 [ner] 'Martin Keller'
+  - Dataset_29 1198:1209 [ner] 'Laura Weber'
+  - Dataset_30 105:118 [ner] 'Jana Hoffmann'
+  - Dataset_30 325:338 [ner] 'Markus Ritter'
+  - Dataset_30 454:467 [ner] 'Jana Hoffmann'
+  - Dataset_30 663:676 [ner] 'Markus Ritter'
+  - Dataset_30 863:876 [ner] 'Jana Hoffmann'
+  - Dataset_30 947:960 [ner] 'Thomas Berger'
+  - Dataset_30 1011:1022 [ner] 'Elena Rossi'
+  - Dataset_30 1043:1056 [ner] 'Markus Ritter'
+  - Dataset_30 1142:1155 [ner] 'Jana Hoffmann'
+  - Dataset_30 1277:1290 [ner] 'Markus Ritter'
+  - Dataset_30 1398:1411 [ner] 'Jana Hoffmann'
 
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 6
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 8
   - Dataset_06 gold:334:340 [gold] 'Daniel' <- pred:ner:334:347 'Daniel Krüger'
   - Dataset_21 gold:34:40 [gold] 'Berger' <- pred:ner:28:40 'Lukas Berger'
   - Dataset_21 gold:230:242 [gold] 'Frau Hofmann' <- pred:ner:235:242 'Hofmann'
   - Dataset_22 gold:207:219 [gold] 'Frau Schmitt' <- pred:ner:212:219 'Schmitt'
   - Dataset_24 gold:191:196 [gold] 'Weber' <- pred:ner:185:196 'Jonas Weber'
   - Dataset_25 gold:140:145 [gold] 'Vogel' <- pred:ner:133:145 'Markus Vogel'
+  - Dataset_30 gold:522:546 [gold] 'Herrn Dr. Matthias König' <- pred:ner:532:546 'Matthias König'
+  - Dataset_30 gold:541:546 [gold] 'König' <- pred:ner:532:546 'Matthias König'
 
 NICHT ERKANNT (FN): 14
   - Dataset_03 300:312 [gold] 'Tobias Klein'
@@ -236,9 +290,11 @@ NICHT ERKANNT (FN): 14
   - Dataset_22 1019:1030 [gold] 'Daniel Roth'
   - Dataset_27 487:498 [gold] 'M. Bergmann'
 
-UNERWARTET (FP): 5
+UNERWARTET (FP): 7
   - Dataset_01 9:21 [ner] 'Login-Fehler'
   - Dataset_11 528:531 [ner] 'Tel'
   - Dataset_23 142:156 [ner] 'Rotebühlstraße'
   - Dataset_26 398:408 [ner] 'Testimport'
   - Dataset_27 0:23 [ner] 'Exportierter Teams-Chat'
+  - Dataset_28 212:226 [ner] 'Eintrittsdatum'
+  - Dataset_29 473:486 [ner] 'Leopoldstraße'

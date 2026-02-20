@@ -17,6 +17,7 @@
     "DATUM",
     "E_MAIL",
     "IBAN",
+    "IP_ADRESSE",
     "PLZ",
     "TELEFON",
     "URL",

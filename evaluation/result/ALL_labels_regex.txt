@@ -3,7 +3,7 @@ LABEL REPORT | MODE: regex
 
 BETRAG
 --------------------------------------------------------------------------------
-ERKANNT (TP): 16
+ERKANNT (TP): 17
   - Dataset_07 218:228 [regex] '4.820,00 €'
   - Dataset_11 221:229 [regex] '18.500 €'
   - Dataset_14 402:411 [regex] '500.000 €'
@@ -20,6 +20,7 @@ ERKANNT (TP): 16
   - Dataset_23 1607:1619 [regex] '4.800,00 EUR'
   - Dataset_24 1632:1644 [regex] '3.900,00 EUR'
   - Dataset_27 853:864 [regex] '184.500 EUR'
+  - Dataset_28 642:651 [regex] '4.800 EUR'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
@@ -45,7 +46,7 @@ UNERWARTET (FP): 2
 
 DATUM
 --------------------------------------------------------------------------------
-ERKANNT (TP): 62
+ERKANNT (TP): 72
   - Dataset_01 435:445 [regex] '03.02.2024'
   - Dataset_02 671:681 [regex] '14.02.2024'
   - Dataset_02 868:878 [regex] '13.02.2024'
@@ -108,6 +109,16 @@ ERKANNT (TP): 62
   - Dataset_26 757:767 [regex] '30.06.2025'
   - Dataset_27 97:107 [regex] '21.05.2025'
   - Dataset_27 759:769 [regex] '31.12.2025'
+  - Dataset_28 95:105 [regex] '04.06.2025'
+  - Dataset_28 235:245 [regex] '01.03.2022'
+  - Dataset_28 395:405 [regex] '01.07.2025'
+  - Dataset_28 1101:1111 [regex] '20.06.2025'
+  - Dataset_29 61:71 [regex] '16.05.2025'
+  - Dataset_29 840:850 [regex] '14.05.2025'
+  - Dataset_30 85:95 [regex] '03.06.2025'
+  - Dataset_30 366:376 [regex] '15.04.2025'
+  - Dataset_30 985:995 [regex] '12.02.2024'
+  - Dataset_30 1454:1464 [regex] '10.06.2025'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
@@ -127,7 +138,7 @@ UNERWARTET (FP): 0
 
 E_MAIL
 --------------------------------------------------------------------------------
-ERKANNT (TP): 36
+ERKANNT (TP): 39
   - Dataset_01 118:147 [regex] 'max.berger@berger-logistik.de'
   - Dataset_02 131:158 [regex] 'laura.schmid@kramer-sohn.de'
   - Dataset_03 331:359 [regex] 'tobias.klein@klein-handel.de'
@@ -164,6 +175,9 @@ ERKANNT (TP): 36
   - Dataset_27 130:152 [regex] 'anna.keller@nordcom.de'
   - Dataset_27 573:611 [regex] 'michael.bergmann@bergmann-industrie.de'
   - Dataset_27 646:663 [regex] 's.lang@nordcom.de'
+  - Dataset_28 130:152 [regex] 'm.scholz@helion-mfg.de'
+  - Dataset_29 94:116 [regex] 'laura.weber@spintex.de'
+  - Dataset_30 120:145 [regex] 'jana.hoffmann@intralog.de'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
@@ -187,7 +201,8 @@ UNERWARTET (FP): 0
 
 IP_ADRESSE
 --------------------------------------------------------------------------------
-ERKANNT (TP): 0
+ERKANNT (TP): 1
+  - Dataset_29 611:620 [regex] '10.0.4.22'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
@@ -199,7 +214,7 @@ UNERWARTET (FP): 0
 
 PLZ
 --------------------------------------------------------------------------------
-ERKANNT (TP): 20
+ERKANNT (TP): 21
   - Dataset_13 85:90 [regex] '60313'
   - Dataset_14 40:45 [regex] '48143'
   - Dataset_15 226:231 [regex] '90402'
@@ -220,17 +235,19 @@ ERKANNT (TP): 20
   - Dataset_24 80:85 [regex] '70469'
   - Dataset_24 218:223 [regex] '70188'
   - Dataset_27 417:422 [regex] '20457'
+  - Dataset_28 765:770 [regex] '70182'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
 NICHT ERKANNT (FN): 0
 
-UNERWARTET (FP): 0
+UNERWARTET (FP): 1
+  - Dataset_28 591:596 [regex] '77134'
 
 
 TELEFON
 --------------------------------------------------------------------------------
-ERKANNT (TP): 19
+ERKANNT (TP): 20
   - Dataset_01 157:173 [regex] '+49 711 99887766'
   - Dataset_02 168:183 [regex] '+49 711 4567890'
   - Dataset_03 365:376 [regex] '0751 987654'
@@ -250,6 +267,7 @@ ERKANNT (TP): 19
   - Dataset_17 115:128 [regex] '0160 44556677'
   - Dataset_18 471:484 [regex] '0151 66778899'
   - Dataset_25 185:197 [regex] '0711 4587321'
+  - Dataset_28 905:917 [regex] '0172 5566778'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
@@ -260,7 +278,7 @@ UNERWARTET (FP): 0
 
 URL
 --------------------------------------------------------------------------------
-ERKANNT (TP): 9
+ERKANNT (TP): 11
   - Dataset_01 324:357 [regex] 'https://portal.berger-logistik.de'
   - Dataset_02 511:539 [regex] 'https://admin.kramer-sohn.de'
   - Dataset_03 540:589 [regex] 'https://portal.klein-handel.de/reset?token=abc123'
@@ -270,6 +288,8 @@ ERKANNT (TP): 9
   - Dataset_12 506:536 [regex] 'https://portal.nordlogistik.de'
   - Dataset_25 102:123 [regex] 'vpn01.firma-intern.de'
   - Dataset_26 426:456 [regex] 'erp-test01.techsolutions.local'
+  - Dataset_29 161:188 [regex] 'report-fin-02.spintex.local'
+  - Dataset_29 583:606 [regex] 'db-fin-02.spintex.local'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 

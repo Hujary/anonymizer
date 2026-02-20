@@ -1,0 +1,10 @@
+DATASET: Dataset_30 | MODE: combined
+MODE combined | TP= 18 FP=  1 FN=  0 | P=0.947 R=1.000 F1=0.973
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 3
+  - PER            gold 522:546 [gold] 'Herrn Dr. Matthias König' [pred:ner:532:546] 'Matthias König' gold_ctx='g. Für den Auditor, ▮Herrn Dr. Matthias König▮, brauchen wir die a' pred_ctx=' Auditor, Herrn Dr. ▮Matthias König▮, brauchen wir die a'
+  - PER            gold 541:546 [gold] 'König' [pred:ner:532:546] 'Matthias König' gold_ctx=' Herrn Dr. Matthias ▮König▮, brauchen wir die a' pred_ctx=' Auditor, Herrn Dr. ▮Matthias König▮, brauchen wir die a'
+  - ORG            gold 839:852 [gold] 'TransLog GmbH' [pred:ner:831:852] 'anderem TransLog GmbH' gold_ctx='ster, unter anderem ▮TransLog GmbH▮.\n\n[09:23] Jana Hoff' pred_ctx='ienstleister, unter ▮anderem TransLog GmbH▮.\n\n[09:23] Jana Hoff'
+UNEXPECTED (FP): 1
+  - LOC            641:648 [ner] 'WL-2025' ctx='se 2.0“ (Projekt-ID ▮WL-2025▮-77).\n\n[09:20] Marku'

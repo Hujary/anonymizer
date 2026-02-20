@@ -1,0 +1,142 @@
+{
+    "document_id": "Dataset_30",
+    "items": [
+        {
+            "label": "DATUM",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "03.06.2025"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Jana Hoffmann"
+        },
+        {
+            "label": "E_MAIL",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "jana.hoffmann@intralog.de"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Markus Ritter"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Düsseldorf"
+        },
+        {
+            "label": "LOC",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Speditionstraße 21"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "15.04.2025"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "alternatives": [
+                {
+                    "text": "Herrn Dr. Matthias König",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                },
+                {
+                    "text": "Dr. Matthias König",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                }
+            ]
+        },
+        {
+            "label": "ORG",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "TransLog GmbH"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "text": "Thomas Berger"
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "12.02.2024"
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "alternatives": [
+                {
+                    "text": "Frau Elena Rossi",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                },
+                {
+                    "text": "Elena Rossi",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                }
+            ]
+        },
+        {
+            "label": "PER",
+            "expected_sources": [
+                "ner"
+            ],
+            "alternatives": [
+                {
+                    "text": "Dr. König",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                },
+                {
+                    "text": "König",
+                    "expected_sources": [
+                        "ner"
+                    ]
+                }
+            ]
+        },
+        {
+            "label": "DATUM",
+            "expected_sources": [
+                "regex"
+            ],
+            "text": "10.06.2025"
+        }
+    ]
+}

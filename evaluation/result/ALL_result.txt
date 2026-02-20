@@ -1,5 +1,5 @@
 EVAL ROOT: evaluation
-DATASETS: 27
+DATASETS: 30
 NER_POSTPROCESSING: True
 
 DATASET: Dataset_01
@@ -326,8 +326,44 @@ MODE combined | TP= 20 FP=  1 FN=  1 | P=0.952 R=0.952 F1=0.952
 
 ======================================================================
 
+DATASET: Dataset_28
+TEXT: evaluation/datasets/data/Dataset_28.txt
+GOLD: evaluation/datasets/gold/Dataset_28.json
+
+SUMMARY
+----------------------------------------------------------------------
+MODE regex    | TP=  8 FP=  1 FN=  0 | P=0.889 R=1.000 F1=0.941
+MODE ner      | TP= 15 FP=  2 FN=  1 | P=0.882 R=0.938 F1=0.909
+MODE combined | TP= 23 FP=  3 FN=  1 | P=0.885 R=0.958 F1=0.920
+
+======================================================================
+
+DATASET: Dataset_29
+TEXT: evaluation/datasets/data/Dataset_29.txt
+GOLD: evaluation/datasets/gold/Dataset_29.json
+
+SUMMARY
+----------------------------------------------------------------------
+MODE regex    | TP=  6 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
+MODE ner      | TP= 16 FP=  3 FN=  1 | P=0.842 R=0.941 F1=0.889
+MODE combined | TP= 22 FP=  3 FN=  1 | P=0.880 R=0.957 F1=0.917
+
+======================================================================
+
+DATASET: Dataset_30
+TEXT: evaluation/datasets/data/Dataset_30.txt
+GOLD: evaluation/datasets/gold/Dataset_30.json
+
+SUMMARY
+----------------------------------------------------------------------
+MODE regex    | TP=  5 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
+MODE ner      | TP= 13 FP=  1 FN=  0 | P=0.929 R=1.000 F1=0.963
+MODE combined | TP= 18 FP=  1 FN=  0 | P=0.947 R=1.000 F1=0.973
+
+======================================================================
+
 GLOBAL SUMMARY (micro-averaged over all datasets)
 ----------------------------------------------------------------------
-MODE regex    | TP= 167 FP=   2 FN=  10 | P=0.988 R=0.944 F1=0.965
-MODE ner      | TP= 134 FP=  20 FN=  35 | P=0.870 R=0.793 F1=0.830
-MODE combined | TP= 300 FP=  19 FN=  47 | P=0.940 R=0.865 F1=0.901
+MODE regex    | TP= 186 FP=   3 FN=  10 | P=0.984 R=0.949 F1=0.966
+MODE ner      | TP= 178 FP=  26 FN=  37 | P=0.873 R=0.828 F1=0.850
+MODE combined | TP= 363 FP=  26 FN=  49 | P=0.933 R=0.881 F1=0.906

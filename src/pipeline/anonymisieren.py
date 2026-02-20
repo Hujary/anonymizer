@@ -23,6 +23,7 @@ STRUCT_TYPES = {
     "BETRAG",
     "STRASSE",
     "ORT",
+    "IP_ADRESSE",
 }
 
 
