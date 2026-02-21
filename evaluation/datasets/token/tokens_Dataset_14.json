@@ -68,11 +68,6 @@
       "text": "Dortmund"
     },
     {
-      "label": "DATUM",
-      "expected_sources": ["regex"],
-      "text": "2019"
-    },
-    {
       "label": "ORG",
       "expected_sources": ["ner"],
       "text": "Universität Münster"

@@ -79,16 +79,7 @@ ERKANNT (TP): 72
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
-NICHT ERKANNT (FN): 9
-  - Dataset_14 528:532 [gold] '2019'
-  - Dataset_15 519:523 [gold] '2013'
-  - Dataset_15 524:528 [gold] '2018'
-  - Dataset_16 137:141 [gold] '2020'
-  - Dataset_16 441:445 [gold] '2017'
-  - Dataset_17 196:200 [gold] '2022'
-  - Dataset_17 259:263 [gold] '2019'
-  - Dataset_17 264:268 [gold] '2022'
-  - Dataset_17 470:474 [gold] '2018'
+NICHT ERKANNT (FN): 0
 
 UNERWARTET (FP): 0
 

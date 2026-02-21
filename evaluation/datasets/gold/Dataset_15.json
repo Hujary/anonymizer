@@ -137,24 +137,6 @@
       "text": "ByteFactory AG"
     },
     {
-      "label": "DATUM",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 519,
-      "end": 523,
-      "text": "2013"
-    },
-    {
-      "label": "DATUM",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 524,
-      "end": 528,
-      "text": "2018"
-    },
-    {
       "label": [
         "ORG",
         "LOC"

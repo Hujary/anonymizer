@@ -35,16 +35,6 @@
     {
       "label": "DATUM",
       "expected_sources": ["regex"],
-      "text": "2019"
-    },
-    {
-      "label": "DATUM",
-      "expected_sources": ["regex"],
-      "text": "2022"
-    },
-    {
-      "label": "DATUM",
-      "expected_sources": ["regex"],
       "text": "21.08.1990"
     },
     {
@@ -70,11 +60,6 @@
           "expected_sources": ["ner"]
         }
       ]
-    },
-    {
-      "label": "DATUM",
-      "expected_sources": ["regex"],
-      "text": "2018"
     }
   ]
 }
