@@ -38,15 +38,6 @@
       "text": "BlueWave"
     },
     {
-      "label": "BETRAG",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 221,
-      "end": 229,
-      "text": "18.500 €"
-    },
-    {
       "label": "ORG",
       "expected_sources": [
         "ner"

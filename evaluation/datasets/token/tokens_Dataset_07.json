@@ -30,11 +30,6 @@
       "text": "20.02.2024"
     },
     {
-      "label": "BETRAG",
-      "expected_sources": ["regex"],
-      "text": "4.820,00 €"
-    },
-    {
       "label": "DATUM",
       "expected_sources": ["regex"],
       "text": "10.03.2024"
@@ -43,11 +38,6 @@
       "label": "IBAN",
       "expected_sources": ["regex"],
       "text": "DE44500105175407324931"
-    },
-    {
-      "label": "BIC",
-      "expected_sources": ["regex"],
-      "text": "INGDDEFFXXX"
     },
     {
       "label": "ORG",

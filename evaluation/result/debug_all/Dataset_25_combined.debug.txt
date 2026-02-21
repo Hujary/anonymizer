@@ -1,8 +1,7 @@
 DATASET: Dataset_25 | MODE: combined
-MODE combined | TP= 14 FP=  1 FN=  1 | P=0.933 R=0.933 F1=0.933
+MODE combined | TP= 15 FP=  1 FN=  0 | P=0.938 R=1.000 F1=0.968
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - IP_ADRESSE     615:627 [gold] '84.167.23.91' ctx='versuche von der IP ▮84.167.23.91▮. Ich setze Ihr MFA-'
+NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 1
   - PER            gold 140:145 [gold] 'Vogel' [pred:ner:133:145] 'Markus Vogel' gold_ctx='.de\n\n[08:47] Markus ▮Vogel▮ (Vertrieb, markus.v' pred_ctx='-intern.de\n\n[08:47] ▮Markus Vogel▮ (Vertrieb, markus.v'
 UNEXPECTED (FP): 1

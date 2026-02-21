@@ -1,5 +1,5 @@
 DATASET: Dataset_20 | MODE: combined
-MODE combined | TP= 13 FP=  1 FN=  3 | P=0.929 R=0.812 F1=0.867
+MODE combined | TP= 11 FP=  1 FN=  3 | P=0.917 R=0.786 F1=0.846
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 3
   - LOC            74:83 [gold] 'Stuttgart' ctx='onigstraße 11\n70173 ▮Stuttgart▮\n\nvertreten durch de'

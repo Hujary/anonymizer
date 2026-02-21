@@ -1,5 +1,5 @@
 DATASET: Dataset_14 | MODE: combined
-MODE combined | TP= 10 FP=  0 FN=  6 | P=1.000 R=0.625 F1=0.769
+MODE combined | TP=  9 FP=  0 FN=  6 | P=1.000 R=0.600 F1=0.750
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 6
   - LOC            23:39 [gold] 'Bahnhofstraße 17' ctx='takt\nMaria Hoffmann\n▮Bahnhofstraße 17▮\n48143 Münster\nmaria'

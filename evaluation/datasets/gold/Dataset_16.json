@@ -110,15 +110,6 @@
       "text": "02/2019"
     },
     {
-      "label": "BETRAG",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 353,
-      "end": 362,
-      "text": "250.000 €"
-    },
-    {
       "label": [
         "ORG",
         "LOC"

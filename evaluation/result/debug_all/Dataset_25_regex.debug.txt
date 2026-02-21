@@ -1,7 +1,6 @@
 DATASET: Dataset_25 | MODE: regex
-MODE regex    | TP=  4 FP=  0 FN=  1 | P=1.000 R=0.800 F1=0.889
+MODE regex    | TP=  5 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - IP_ADRESSE     615:627 [gold] '84.167.23.91' ctx='versuche von der IP ▮84.167.23.91▮. Ich setze Ihr MFA-'
+NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

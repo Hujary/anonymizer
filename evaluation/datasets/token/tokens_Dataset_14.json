@@ -48,11 +48,6 @@
       "text": "TechFlow Solutions AG"
     },
     {
-      "label": "BETRAG",
-      "expected_sources": ["regex"],
-      "text": "500.000 €"
-    },
-    {
       "label": "DATUM",
       "expected_sources": ["regex"],
       "text": "09/2019"

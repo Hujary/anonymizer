@@ -1,5 +1,5 @@
 DATASET: Dataset_28 | MODE: combined
-MODE combined | TP= 23 FP=  3 FN=  1 | P=0.885 R=0.958 F1=0.920
+MODE combined | TP= 22 FP=  3 FN=  1 | P=0.880 R=0.957 F1=0.917
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
   - LOC            750:763 [gold] 'Rosenstraße 8' ctx='von Daniel ist noch ▮Rosenstraße 8▮, 70182 Stuttgart hi'

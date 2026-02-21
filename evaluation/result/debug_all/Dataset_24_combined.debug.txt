@@ -1,5 +1,5 @@
 DATASET: Dataset_24 | MODE: combined
-MODE combined | TP= 14 FP=  1 FN=  1 | P=0.933 R=0.933 F1=0.933
+MODE combined | TP= 13 FP=  1 FN=  1 | P=0.929 R=0.929 F1=0.929
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
   - LOC            3041:3050 [gold] 'Stuttgart' ctx='ublik Deutschland.\n\n▮Stuttgart▮, den 22.04.2025 von'

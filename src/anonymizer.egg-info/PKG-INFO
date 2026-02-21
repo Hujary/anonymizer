@@ -83,7 +83,7 @@ maskiert → /Users/tompetzold/Desktop/RWU/Semester 10/Bachelorarbeit/bachelor_p
   Verwendet zur Erkennung flexible Regex-Muster für Alltagstexte.
 
 ### src/detectors/regex/finance.py
-  Erkennt IBANs und BICs nach offiziellen Strukturen.
+  Erkennt IBANs nach offiziellen Strukturen.
   Prüft gültige Länderpräfixe (z. B. DE, AT, CH).
   Erkennt auch einfache Kontonummern und Banknamen, falls vorhanden.
 

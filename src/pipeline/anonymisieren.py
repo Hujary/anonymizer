@@ -13,16 +13,12 @@ from detectors.custom.manual_dict import finde_manual_tokens
 
 STRUCT_TYPES = {
     "IBAN",
-    "BIC",
     "TELEFON",
     "E_MAIL",
     "URL",
-    "USTID",
     "PLZ",
     "DATUM",
-    "BETRAG",
     "STRASSE",
-    "ORT",
     "IP_ADRESSE",
 }
 

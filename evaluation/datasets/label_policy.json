@@ -2,7 +2,7 @@
   "version": 1,
   "ignore_labels": ["MISC"],
   "allowed_sources": {
-    "regex": ["E_MAIL", "TELEFON", "IBAN", "BIC", "URL", "USTID", "PLZ", "DATUM", "BETRAG", "STRASSE", "ORT"],
+    "regex": ["E_MAIL", "TELEFON", "IBAN", "URL", "PLZ", "DATUM", "STRASSE", "ORT"],
     "ner": ["PER", "ORG", "LOC", "GPE"]
   },
   "ner_normalize_labels": {

@@ -128,15 +128,6 @@
       "text": "Miriam Scholz"
     },
     {
-      "label": "BETRAG",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 642,
-      "end": 651,
-      "text": "4.800 EUR"
-    },
-    {
       "label": "PER",
       "expected_sources": [
         "ner"

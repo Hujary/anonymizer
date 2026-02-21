@@ -45,8 +45,6 @@ MASKIERUNGEN = {
     "ORT": "[ORT]",
     "STRASSE": "[STRASSE]",
     "IBAN": "[IBAN]",
-    "BIC": "[BIC]",
-    "USTID": "[USTID]",
     "DATUM": "[DATUM]",
     "NAME": "[NAME]",
     "ORGANISATION": "[ORGANISATION]",
@@ -79,7 +77,3 @@ DEBUG_MASK = False
 # Globale Detection-Flags (Legacy-Fallback, wenn Config nicht genutzt wird)
 USE_REGEX = True
 USE_NER = True
-
-
-# Regex-spezifisches Feature-Flag (z.B. BIC-Erkennung aktivieren/deaktivieren)
-MASK_BIC = True

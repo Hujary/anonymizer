@@ -12,16 +12,13 @@
     "PER"
   ],
   "regex_labels": [
-    "BETRAG",
-    "BIC",
     "DATUM",
     "E_MAIL",
     "IBAN",
     "IP_ADRESSE",
     "PLZ",
     "TELEFON",
-    "URL",
-    "USTID"
+    "URL"
   ],
   "auto_demask_enabled": true,
   "auto_mask_enabled": true,

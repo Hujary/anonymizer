@@ -1,6 +1,7 @@
 DATASET: Dataset_17 | MODE: ner
-MODE ner      | TP=  6 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
+MODE ner      | TP=  5 FP=  0 FN=  1 | P=1.000 R=0.833 F1=0.909
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 0
+NOT DETECTED (FN): 1
+  - PER            21:34 [gold] 'Thomas Berger' ctx='otiz HR – Kandidat: ▮Thomas Berger▮\n\nMail kam von: thom'
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

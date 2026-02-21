@@ -1,5 +1,5 @@
 DATASET: Dataset_28 | MODE: regex
-MODE regex    | TP=  8 FP=  1 FN=  0 | P=0.889 R=1.000 F1=0.941
+MODE regex    | TP=  7 FP=  1 FN=  0 | P=0.875 R=1.000 F1=0.933
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0

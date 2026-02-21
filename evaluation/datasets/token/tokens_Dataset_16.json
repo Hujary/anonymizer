@@ -79,11 +79,6 @@
                     "expected_sources": ["ner"]
                 }
             ]
-        },
-        {
-            "label": "BETRAG",
-            "expected_sources": ["regex"],
-            "text": "250.000 €"
         }
     ]
 }

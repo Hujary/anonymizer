@@ -1,7 +1,6 @@
 DATASET: Dataset_22 | MODE: regex
-MODE regex    | TP=  5 FP=  1 FN=  0 | P=0.833 R=1.000 F1=0.909
+MODE regex    | TP=  4 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
-  - BIC            0:11 [regex] 'KAUFVERTRAG' ctx='▮KAUFVERTRAG▮\n\nZwischen Frau Kath'
+UNEXPECTED (FP): 0

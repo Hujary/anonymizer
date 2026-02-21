@@ -82,7 +82,6 @@ def view(
         "GPE": "Staat/Gebiet (GPE)",
         "DATE": "Datum (DATE)",
         "TIME": "Uhrzeit (TIME)",
-        "MONEY": "Geldbetrag (MONEY)",
         "PERCENT": "Prozentangabe (PERCENT)",
         "PRODUCT": "Produktname (PRODUCT)",
         "EVENT": "Ereignis (EVENT)",
@@ -95,26 +94,22 @@ def view(
         "GPE": "Country or region (GPE)",
         "DATE": "Date (DATE)",
         "TIME": "Time expression (TIME)",
-        "MONEY": "Monetary amount (MONEY)",
         "PERCENT": "Percentage (PERCENT)",
         "PRODUCT": "Product name (PRODUCT)",
         "EVENT": "Event or occasion (EVENT)",
         "MISC": "Miscellaneous / other (MISC)",
     }
 
-    REGEX_TYPES = ["E_MAIL", "TELEFON", "IBAN", "BIC", "URL", "USTID", "PLZ", "DATUM", "BETRAG", "IP_ADRESSE"]
+    REGEX_TYPES = ["E_MAIL", "TELEFON", "IBAN", "URL", "PLZ", "DATUM", "IP_ADRESSE"]
     RX_RECOMMENDED = list(REGEX_TYPES)
 
     R_LABELS_DE = {
         "E_MAIL": "E-Mail",
         "TELEFON": "Telefon",
         "IBAN": "IBAN",
-        "BIC": "BIC",
         "URL": "URL",
-        "USTID": "USt-ID",
         "PLZ": "PLZ",
         "DATUM": "Datum",
-        "BETRAG": "Geldbetrag",
         "IP_ADRESSE": "IP-Adresse",
     }
 
@@ -122,12 +117,9 @@ def view(
         "E_MAIL": "Email",
         "TELEFON": "Phone",
         "IBAN": "IBAN",
-        "BIC": "BIC",
         "URL": "URL",
-        "USTID": "VAT ID",
         "PLZ": "ZIP",
         "DATUM": "Date",
-        "BETRAG": "Amount",
         "IP_ADRESSE": "IP address",
     }
 

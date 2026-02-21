@@ -107,20 +107,6 @@
             "text": "michael.bergmann@bergmann-industrie.de"
         },
         {
-            "label": "BETRAG",
-            "expected_sources": [
-                "regex"
-            ],
-            "text": "184.500 EUR"
-        },
-        {
-            "label": "USTID",
-            "expected_sources": [
-                "regex"
-            ],
-            "text": "DE289774561"
-        },
-        {
             "label": "DATUM",
             "expected_sources": [
                 "regex"

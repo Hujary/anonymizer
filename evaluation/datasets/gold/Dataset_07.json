@@ -62,15 +62,6 @@
       "text": "20.02.2024"
     },
     {
-      "label": "BETRAG",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 218,
-      "end": 228,
-      "text": "4.820,00 €"
-    },
-    {
       "label": "DATUM",
       "expected_sources": [
         "regex"
@@ -87,15 +78,6 @@
       "start": 364,
       "end": 386,
       "text": "DE44500105175407324931"
-    },
-    {
-      "label": "BIC",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 394,
-      "end": 405,
-      "text": "INGDDEFFXXX"
     },
     {
       "label": "ORG",

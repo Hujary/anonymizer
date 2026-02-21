@@ -57,11 +57,6 @@
             "text": "01.07.2025"
         },
         {
-            "label": "BETRAG",
-            "expected_sources": ["regex"],
-            "text": "4.800 EUR"
-        },
-        {
             "label": "LOC",
             "expected_sources": ["ner"],
             "text": "Rosenstraße 8"

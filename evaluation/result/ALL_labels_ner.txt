@@ -160,8 +160,7 @@ UNERWARTET (FP): 0
 
 PER
 --------------------------------------------------------------------------------
-ERKANNT (TP): 102
-  - Dataset_01 71:81 [ner] 'Max Berger'
+ERKANNT (TP): 98
   - Dataset_02 84:96 [ner] 'Laura Schmid'
   - Dataset_03 657:663 [ner] 'Tobias'
   - Dataset_04 326:338 [ner] 'Simon Franke'
@@ -182,7 +181,6 @@ ERKANNT (TP): 102
   - Dataset_15 12:23 [ner] 'Lukas Meier'
   - Dataset_15 157:168 [ner] 'Lukas Meier'
   - Dataset_16 9:20 [ner] 'Sarah Klein'
-  - Dataset_17 21:34 [ner] 'Thomas Berger'
   - Dataset_18 136:152 [ner] 'Katharina Sommer'
   - Dataset_19 36:50 [ner] 'Sabine Lehmann'
   - Dataset_19 124:137 [ner] 'Tobias Kruger'
@@ -190,7 +188,6 @@ ERKANNT (TP): 102
   - Dataset_19 1603:1616 [ner] 'Tobias Kruger'
   - Dataset_20 127:139 [ner] 'Markus Dietz'
   - Dataset_20 243:254 [ner] 'Julia Maier'
-  - Dataset_21 28:40 [ner] 'Lukas Berger'
   - Dataset_21 98:110 [ner] 'Nina Hofmann'
   - Dataset_22 27:44 [ner] 'Katharina Schmitt'
   - Dataset_22 106:117 [ner] 'Daniel Roth'
@@ -257,16 +254,14 @@ ERKANNT (TP): 102
   - Dataset_30 454:467 [ner] 'Jana Hoffmann'
   - Dataset_30 663:676 [ner] 'Markus Ritter'
   - Dataset_30 863:876 [ner] 'Jana Hoffmann'
-  - Dataset_30 947:960 [ner] 'Thomas Berger'
   - Dataset_30 1011:1022 [ner] 'Elena Rossi'
   - Dataset_30 1043:1056 [ner] 'Markus Ritter'
   - Dataset_30 1142:1155 [ner] 'Jana Hoffmann'
   - Dataset_30 1277:1290 [ner] 'Markus Ritter'
   - Dataset_30 1398:1411 [ner] 'Jana Hoffmann'
 
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 8
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 7
   - Dataset_06 gold:334:340 [gold] 'Daniel' <- pred:ner:334:347 'Daniel Krüger'
-  - Dataset_21 gold:34:40 [gold] 'Berger' <- pred:ner:28:40 'Lukas Berger'
   - Dataset_21 gold:230:242 [gold] 'Frau Hofmann' <- pred:ner:235:242 'Hofmann'
   - Dataset_22 gold:207:219 [gold] 'Frau Schmitt' <- pred:ner:212:219 'Schmitt'
   - Dataset_24 gold:191:196 [gold] 'Weber' <- pred:ner:185:196 'Jonas Weber'
@@ -274,7 +269,8 @@ NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 8
   - Dataset_30 gold:522:546 [gold] 'Herrn Dr. Matthias König' <- pred:ner:532:546 'Matthias König'
   - Dataset_30 gold:541:546 [gold] 'König' <- pred:ner:532:546 'Matthias König'
 
-NICHT ERKANNT (FN): 14
+NICHT ERKANNT (FN): 19
+  - Dataset_01 71:81 [gold] 'Max Berger'
   - Dataset_03 300:312 [gold] 'Tobias Klein'
   - Dataset_07 141:152 [gold] 'Frau Berger'
   - Dataset_09 562:568 [gold] 'Sabine'
@@ -283,12 +279,16 @@ NICHT ERKANNT (FN): 14
   - Dataset_11 469:481 [gold] 'Markus Weber'
   - Dataset_11 596:600 [gold] 'Lisa'
   - Dataset_12 698:703 [gold] 'Julia'
+  - Dataset_17 21:34 [gold] 'Thomas Berger'
   - Dataset_18 589:601 [gold] 'Markus Klein'
+  - Dataset_21 22:40 [gold] 'Herrn Lukas Berger'
+  - Dataset_21 206:217 [gold] 'Herr Berger'
   - Dataset_21 1045:1057 [gold] 'Lukas Berger'
   - Dataset_21 1062:1074 [gold] 'Nina Hofmann'
   - Dataset_22 997:1014 [gold] 'Katharina Schmitt'
   - Dataset_22 1019:1030 [gold] 'Daniel Roth'
   - Dataset_27 487:498 [gold] 'M. Bergmann'
+  - Dataset_30 947:960 [gold] 'Thomas Berger'
 
 UNERWARTET (FP): 7
   - Dataset_01 9:21 [ner] 'Login-Fehler'

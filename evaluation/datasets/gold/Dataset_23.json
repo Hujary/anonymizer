@@ -98,15 +98,6 @@
       "text": "01.05.2025"
     },
     {
-      "label": "BETRAG",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 1607,
-      "end": 1619,
-      "text": "4.800,00 EUR"
-    },
-    {
       "label": "LOC",
       "expected_sources": [
         "ner"

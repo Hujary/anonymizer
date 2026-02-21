@@ -140,33 +140,6 @@
       "text": "01.04.2025"
     },
     {
-      "label": "BETRAG",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 756,
-      "end": 766,
-      "text": "890,00 EUR"
-    },
-    {
-      "label": "BETRAG",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 802,
-      "end": 812,
-      "text": "210,00 EUR"
-    },
-    {
-      "label": "BETRAG",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 891,
-      "end": 903,
-      "text": "1.100,00 EUR"
-    },
-    {
       "label": "IBAN",
       "expected_sources": [
         "regex"
@@ -174,24 +147,6 @@
       "start": 1010,
       "end": 1037,
       "text": "DE91 6005 0101 2345 6789 01"
-    },
-    {
-      "label": "BIC",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 1043,
-      "end": 1054,
-      "text": "SOLADEST600"
-    },
-    {
-      "label": "BETRAG",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 1089,
-      "end": 1101,
-      "text": "2.670,00 EUR"
     },
     {
       "label": "LOC",

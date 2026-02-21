@@ -152,15 +152,6 @@
       ]
     },
     {
-      "label": "BETRAG",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 635,
-      "end": 647,
-      "text": "1.050,00 EUR"
-    },
-    {
       "label": "DATUM",
       "expected_sources": [
         "regex"

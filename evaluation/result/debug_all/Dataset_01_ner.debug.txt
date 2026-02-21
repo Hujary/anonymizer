@@ -1,7 +1,8 @@
 DATASET: Dataset_01 | MODE: ner
-MODE ner      | TP=  1 FP=  1 FN=  0 | P=0.500 R=1.000 F1=0.667
+MODE ner      | TP=  0 FP=  1 FN=  1 | P=0.000 R=0.000 F1=0.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 0
+NOT DETECTED (FN): 1
+  - PER            71:81 [gold] 'Max Berger' ctx='T-2024-00123\nKunde: ▮Max Berger▮\nFirma: Berger Logis'
 NOT FULLY DETECTED (PARTIAL): 1
   - ORG            gold 89:109 [gold] 'Berger Logistik GmbH' [pred:ner:96:109] 'Logistik GmbH' gold_ctx=': Max Berger\nFirma: ▮Berger Logistik GmbH▮\nE-Mail: max.berger@' pred_ctx='erger\nFirma: Berger ▮Logistik GmbH▮\nE-Mail: max.berger@'
 UNEXPECTED (FP): 1

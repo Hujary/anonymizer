@@ -1,7 +1,8 @@
 DATASET: Dataset_30 | MODE: combined
-MODE combined | TP= 18 FP=  1 FN=  0 | P=0.947 R=1.000 F1=0.973
+MODE combined | TP= 17 FP=  1 FN=  1 | P=0.944 R=0.944 F1=0.944
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 0
+NOT DETECTED (FN): 1
+  - PER            947:960 [gold] 'Thomas Berger' ctx=' alte Kontaktperson ▮Thomas Berger▮ steht. Laut Vertrag'
 NOT FULLY DETECTED (PARTIAL): 3
   - PER            gold 522:546 [gold] 'Herrn Dr. Matthias König' [pred:ner:532:546] 'Matthias König' gold_ctx='g. Für den Auditor, ▮Herrn Dr. Matthias König▮, brauchen wir die a' pred_ctx=' Auditor, Herrn Dr. ▮Matthias König▮, brauchen wir die a'
   - PER            gold 541:546 [gold] 'König' [pred:ner:532:546] 'Matthias König' gold_ctx=' Herrn Dr. Matthias ▮König▮, brauchen wir die a' pred_ctx=' Auditor, Herrn Dr. ▮Matthias König▮, brauchen wir die a'

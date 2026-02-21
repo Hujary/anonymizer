@@ -1,5 +1,5 @@
 DATASET: Dataset_19 | MODE: combined
-MODE combined | TP= 20 FP=  3 FN=  1 | P=0.870 R=0.952 F1=0.909
+MODE combined | TP= 15 FP=  3 FN=  1 | P=0.833 R=0.938 F1=0.882
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
   - LOC            1505:1514 [gold] 'Stuttgart' ctx='eter ausgehändigt.\n\n▮Stuttgart▮, den 12.03.2025\n\n\n_'

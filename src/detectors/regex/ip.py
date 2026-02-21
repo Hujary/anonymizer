@@ -6,11 +6,11 @@ _OCTET = r"(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)"
 
 _IPV4_RE = re.compile(
     rf"""
-    (?<![\d.])
+    (?<!\d)
     (?:
         {_OCTET}\.{_OCTET}\.{_OCTET}\.{_OCTET}
     )
-    (?![\d.])
+    (?!\d)
     """,
     re.VERBOSE,
 )
@@ -25,7 +25,7 @@ def finde_ip(text: str) -> Iterable[Tuple[int, int, str]]:
 
     Nicht erkannt (absichtlich hier):
       - IPv6
-      - IPs als Teil längerer Token mit zusätzlichen Ziffern/Punkten drumherum
+      - IPs als Teil längerer Token mit zusätzlichen Ziffern drumherum
 
     Rückgabe:
       (start_index, end_index, "IP_ADRESSE")

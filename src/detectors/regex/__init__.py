@@ -2,7 +2,7 @@ from typing import Iterable, Tuple, Callable, Dict, List
 from core import config
 
 from .contact import finde_contact      # E-Mail + Telefon
-from .finance import finde_finance      # IBAN, BIC, USTID, Betrag
+from .finance import finde_finance      # IBAN
 from .location import finde_location    # PLZ, Ort, Straße
 from .date import finde_date            # Datumsformate
 from .url import finde_url              # URLs
@@ -11,7 +11,7 @@ from .ip import finde_ip                # IP-Adressen
 
 _PRODUCES: Dict[str, List[str]] = {
     "finde_contact": ["E_MAIL", "TELEFON"],
-    "finde_finance": ["IBAN", "BIC", "USTID", "BETRAG"],
+    "finde_finance": ["IBAN"],
     "finde_location": ["PLZ", "ORT", "STRASSE"],
     "finde_date": ["DATUM"],
     "finde_url": ["URL"],
@@ -41,14 +41,11 @@ def finde_regex(text: str):
         "E_MAIL",
         "TELEFON",
         "IBAN",
-        "BIC",
         "URL",
-        "USTID",
         "PLZ",
         "ORT",
         "STRASSE",
         "DATUM",
-        "BETRAG",
         "IP_ADRESSE",
     ]))
 

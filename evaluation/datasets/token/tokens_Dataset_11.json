@@ -37,13 +37,6 @@
       "text": "BlueWave"
     },
     {
-      "label": "BETRAG",
-      "expected_sources": [
-        "regex"
-      ],
-      "text": "18.500 €"
-    },
-    {
       "label": "DATUM",
       "expected_sources": [
         "regex"

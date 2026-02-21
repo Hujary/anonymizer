@@ -1,5 +1,5 @@
 DATASET: Dataset_16 | MODE: regex
-MODE regex    | TP=  7 FP=  0 FN=  2 | P=1.000 R=0.778 F1=0.875
+MODE regex    | TP=  6 FP=  0 FN=  2 | P=1.000 R=0.750 F1=0.857
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 2
   - DATUM          137:141 [gold] '2020' ctx='92\n\nErfahrung:\nSeit ▮2020▮ Projektmanagerin be'

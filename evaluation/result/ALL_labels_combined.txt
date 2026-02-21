@@ -1,49 +1,6 @@
 LABEL REPORT | MODE: combined
 --------------------------------------------------------------------------------
 
-BETRAG
---------------------------------------------------------------------------------
-ERKANNT (TP): 17
-  - Dataset_07 218:228 [regex] '4.820,00 €'
-  - Dataset_11 221:229 [regex] '18.500 €'
-  - Dataset_14 402:411 [regex] '500.000 €'
-  - Dataset_16 353:362 [regex] '250.000 €'
-  - Dataset_18 550:558 [regex] '72.000 €'
-  - Dataset_19 756:766 [regex] '890,00 EUR'
-  - Dataset_19 802:812 [regex] '210,00 EUR'
-  - Dataset_19 891:903 [regex] '1.100,00 EUR'
-  - Dataset_19 1089:1101 [regex] '2.670,00 EUR'
-  - Dataset_20 712:724 [regex] '2.400,00 EUR'
-  - Dataset_20 763:773 [regex] '350,00 EUR'
-  - Dataset_21 635:647 [regex] '1.050,00 EUR'
-  - Dataset_22 627:637 [regex] '480,00 EUR'
-  - Dataset_23 1607:1619 [regex] '4.800,00 EUR'
-  - Dataset_24 1632:1644 [regex] '3.900,00 EUR'
-  - Dataset_27 853:864 [regex] '184.500 EUR'
-  - Dataset_28 642:651 [regex] '4.800 EUR'
-
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
-
-NICHT ERKANNT (FN): 0
-
-UNERWARTET (FP): 0
-
-
-BIC
---------------------------------------------------------------------------------
-ERKANNT (TP): 2
-  - Dataset_07 394:405 [regex] 'INGDDEFFXXX'
-  - Dataset_19 1043:1054 [regex] 'SOLADEST600'
-
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
-
-NICHT ERKANNT (FN): 0
-
-UNERWARTET (FP): 2
-  - Dataset_21 0:11 [regex] 'KAUFVERTRAG'
-  - Dataset_22 0:11 [regex] 'KAUFVERTRAG'
-
-
 DATUM
 --------------------------------------------------------------------------------
 ERKANNT (TP): 72
@@ -201,13 +158,13 @@ UNERWARTET (FP): 0
 
 IP_ADRESSE
 --------------------------------------------------------------------------------
-ERKANNT (TP): 1
+ERKANNT (TP): 2
+  - Dataset_25 615:627 [regex] '84.167.23.91'
   - Dataset_29 611:620 [regex] '10.0.4.22'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
-NICHT ERKANNT (FN): 1
-  - Dataset_25 615:627 [gold] '84.167.23.91'
+NICHT ERKANNT (FN): 0
 
 UNERWARTET (FP): 0
 
@@ -368,8 +325,7 @@ UNERWARTET (FP): 0
 
 PER
 --------------------------------------------------------------------------------
-ERKANNT (TP): 102
-  - Dataset_01 71:81 [ner] 'Max Berger'
+ERKANNT (TP): 98
   - Dataset_02 84:96 [ner] 'Laura Schmid'
   - Dataset_03 657:663 [ner] 'Tobias'
   - Dataset_04 326:338 [ner] 'Simon Franke'
@@ -390,7 +346,6 @@ ERKANNT (TP): 102
   - Dataset_15 12:23 [ner] 'Lukas Meier'
   - Dataset_15 157:168 [ner] 'Lukas Meier'
   - Dataset_16 9:20 [ner] 'Sarah Klein'
-  - Dataset_17 21:34 [ner] 'Thomas Berger'
   - Dataset_18 136:152 [ner] 'Katharina Sommer'
   - Dataset_19 36:50 [ner] 'Sabine Lehmann'
   - Dataset_19 124:137 [ner] 'Tobias Kruger'
@@ -398,7 +353,6 @@ ERKANNT (TP): 102
   - Dataset_19 1603:1616 [ner] 'Tobias Kruger'
   - Dataset_20 127:139 [ner] 'Markus Dietz'
   - Dataset_20 243:254 [ner] 'Julia Maier'
-  - Dataset_21 28:40 [ner] 'Lukas Berger'
   - Dataset_21 98:110 [ner] 'Nina Hofmann'
   - Dataset_22 27:44 [ner] 'Katharina Schmitt'
   - Dataset_22 106:117 [ner] 'Daniel Roth'
@@ -465,16 +419,14 @@ ERKANNT (TP): 102
   - Dataset_30 454:467 [ner] 'Jana Hoffmann'
   - Dataset_30 663:676 [ner] 'Markus Ritter'
   - Dataset_30 863:876 [ner] 'Jana Hoffmann'
-  - Dataset_30 947:960 [ner] 'Thomas Berger'
   - Dataset_30 1011:1022 [ner] 'Elena Rossi'
   - Dataset_30 1043:1056 [ner] 'Markus Ritter'
   - Dataset_30 1142:1155 [ner] 'Jana Hoffmann'
   - Dataset_30 1277:1290 [ner] 'Markus Ritter'
   - Dataset_30 1398:1411 [ner] 'Jana Hoffmann'
 
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 8
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 7
   - Dataset_06 gold:334:340 [gold] 'Daniel' <- pred:ner:334:347 'Daniel Krüger'
-  - Dataset_21 gold:34:40 [gold] 'Berger' <- pred:ner:28:40 'Lukas Berger'
   - Dataset_21 gold:230:242 [gold] 'Frau Hofmann' <- pred:ner:235:242 'Hofmann'
   - Dataset_22 gold:207:219 [gold] 'Frau Schmitt' <- pred:ner:212:219 'Schmitt'
   - Dataset_24 gold:191:196 [gold] 'Weber' <- pred:ner:185:196 'Jonas Weber'
@@ -482,7 +434,8 @@ NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 8
   - Dataset_30 gold:522:546 [gold] 'Herrn Dr. Matthias König' <- pred:ner:532:546 'Matthias König'
   - Dataset_30 gold:541:546 [gold] 'König' <- pred:ner:532:546 'Matthias König'
 
-NICHT ERKANNT (FN): 14
+NICHT ERKANNT (FN): 19
+  - Dataset_01 71:81 [gold] 'Max Berger'
   - Dataset_03 300:312 [gold] 'Tobias Klein'
   - Dataset_07 141:152 [gold] 'Frau Berger'
   - Dataset_09 562:568 [gold] 'Sabine'
@@ -491,12 +444,16 @@ NICHT ERKANNT (FN): 14
   - Dataset_11 469:481 [gold] 'Markus Weber'
   - Dataset_11 596:600 [gold] 'Lisa'
   - Dataset_12 698:703 [gold] 'Julia'
+  - Dataset_17 21:34 [gold] 'Thomas Berger'
   - Dataset_18 589:601 [gold] 'Markus Klein'
+  - Dataset_21 22:40 [gold] 'Herrn Lukas Berger'
+  - Dataset_21 206:217 [gold] 'Herr Berger'
   - Dataset_21 1045:1057 [gold] 'Lukas Berger'
   - Dataset_21 1062:1074 [gold] 'Nina Hofmann'
   - Dataset_22 997:1014 [gold] 'Katharina Schmitt'
   - Dataset_22 1019:1030 [gold] 'Daniel Roth'
   - Dataset_27 487:498 [gold] 'M. Bergmann'
+  - Dataset_30 947:960 [gold] 'Thomas Berger'
 
 UNERWARTET (FP): 7
   - Dataset_01 9:21 [ner] 'Login-Fehler'
@@ -586,18 +543,6 @@ ERKANNT (TP): 11
   - Dataset_26 426:456 [regex] 'erp-test01.techsolutions.local'
   - Dataset_29 161:188 [regex] 'report-fin-02.spintex.local'
   - Dataset_29 583:606 [regex] 'db-fin-02.spintex.local'
-
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
-
-NICHT ERKANNT (FN): 0
-
-UNERWARTET (FP): 0
-
-
-USTID
---------------------------------------------------------------------------------
-ERKANNT (TP): 1
-  - Dataset_27 998:1009 [regex] 'DE289774561'
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 

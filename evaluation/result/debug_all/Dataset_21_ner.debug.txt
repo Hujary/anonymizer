@@ -1,11 +1,12 @@
 DATASET: Dataset_21 | MODE: ner
-MODE ner      | TP=  7 FP=  0 FN=  3 | P=1.000 R=0.700 F1=0.824
+MODE ner      | TP=  6 FP=  0 FN=  5 | P=1.000 R=0.545 F1=0.706
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 3
+NOT DETECTED (FN): 5
+  - PER            22:40 [gold] 'Herrn Lukas Berger' ctx='UFVERTRAG\n\nZwischen ▮Herrn Lukas Berger▮, wohnhaft in der Ta'
+  - PER            206:217 [gold] 'Herr Berger' ctx='rtrag geschlossen:\n\n▮Herr Berger▮ verkauft an Frau Ho'
   - LOC            1015:1024 [gold] 'Stuttgart' ctx='2025 in Stuttgart.\n\n▮Stuttgart▮, den 20.04.2025\n\n⸻\n'
   - PER            1045:1057 [gold] 'Lukas Berger' ctx=' den 20.04.2025\n\n⸻\n\n▮Lukas Berger▮\n\n⸻\n\nNina Hofmann'
   - PER            1062:1074 [gold] 'Nina Hofmann' ctx='⸻\n\nLukas Berger\n\n⸻\n\n▮Nina Hofmann▮'
-NOT FULLY DETECTED (PARTIAL): 2
-  - PER            gold 34:40 [gold] 'Berger' [pred:ner:28:40] 'Lukas Berger' gold_ctx='wischen Herrn Lukas ▮Berger▮, wohnhaft in der Ta' pred_ctx='RAG\n\nZwischen Herrn ▮Lukas Berger▮, wohnhaft in der Ta'
+NOT FULLY DETECTED (PARTIAL): 1
   - PER            gold 230:242 [gold] 'Frau Hofmann' [pred:ner:235:242] 'Hofmann' gold_ctx=' Berger verkauft an ▮Frau Hofmann▮ sein gebrauchtes Ap' pred_ctx='er verkauft an Frau ▮Hofmann▮ sein gebrauchtes Ap'
 UNEXPECTED (FP): 0

@@ -1,5 +1,5 @@
 DATASET: Dataset_23 | MODE: combined
-MODE combined | TP= 12 FP=  2 FN=  2 | P=0.857 R=0.857 F1=0.857
+MODE combined | TP= 11 FP=  2 FN=  2 | P=0.846 R=0.846 F1=0.846
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 2
   - LOC            142:160 [gold] 'Rotebühlstraße 112' ctx='au Laura Schneider, ▮Rotebühlstraße 112▮, 70178 Stuttgart, –'

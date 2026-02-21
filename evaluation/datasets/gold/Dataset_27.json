@@ -155,15 +155,6 @@
       "text": "Lukas Reinhardt"
     },
     {
-      "label": "BETRAG",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 853,
-      "end": 864,
-      "text": "184.500 EUR"
-    },
-    {
       "label": "PER",
       "expected_sources": [
         "ner"
@@ -171,15 +162,6 @@
       "start": 875,
       "end": 886,
       "text": "Anna Keller"
-    },
-    {
-      "label": "USTID",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 998,
-      "end": 1009,
-      "text": "DE289774561"
     },
     {
       "label": "PER",

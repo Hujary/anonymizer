@@ -92,15 +92,6 @@
       "text": "Münster"
     },
     {
-      "label": "BETRAG",
-      "expected_sources": [
-        "regex"
-      ],
-      "start": 402,
-      "end": 411,
-      "text": "500.000 €"
-    },
-    {
       "label": "DATUM",
       "expected_sources": [
         "regex"

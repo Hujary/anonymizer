@@ -1,5 +1,5 @@
 DATASET: Dataset_16 | MODE: combined
-MODE combined | TP= 10 FP=  0 FN=  5 | P=1.000 R=0.667 F1=0.800
+MODE combined | TP=  9 FP=  0 FN=  5 | P=1.000 R=0.643 F1=0.783
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 5
   - PLZ            85:90 [gold] '50667' ctx='2334455\nWohnhaft in ▮50667▮ Köln\nGeburtsdatum 0'

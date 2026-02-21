@@ -1,5 +1,5 @@
 DATASET: Dataset_22 | MODE: combined
-MODE combined | TP= 13 FP=  1 FN=  3 | P=0.929 R=0.812 F1=0.867
+MODE combined | TP= 12 FP=  0 FN=  3 | P=1.000 R=0.800 F1=0.889
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 3
   - LOC            969:976 [gold] 'München' ctx=' in München statt.\n\n▮München▮, den 05.05.2025\n\n⸻\n'
@@ -7,5 +7,4 @@ NOT DETECTED (FN): 3
   - PER            1019:1030 [gold] 'Daniel Roth' ctx='tharina Schmitt\n\n⸻\n\n▮Daniel Roth▮'
 NOT FULLY DETECTED (PARTIAL): 1
   - PER            gold 207:219 [gold] 'Frau Schmitt' [pred:ner:212:219] 'Schmitt' gold_ctx='rtrag geschlossen:\n\n▮Frau Schmitt▮ verkauft an Herrn R' pred_ctx=' geschlossen:\n\nFrau ▮Schmitt▮ verkauft an Herrn R'
-UNEXPECTED (FP): 1
-  - BIC            0:11 [regex] 'KAUFVERTRAG' ctx='▮KAUFVERTRAG▮\n\nZwischen Frau Kath'
+UNEXPECTED (FP): 0
