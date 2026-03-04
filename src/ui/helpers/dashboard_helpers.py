@@ -3,10 +3,15 @@ from __future__ import annotations
 import math
 import re
 import hashlib
+import hmac
 from typing import Dict, Tuple
+
+from pipeline.anonymisieren import maskiere
 
 
 TYP_RE = re.compile(r"^\[([A-ZÄÖÜa-zäöü_]+)(?:_[^\]]+)?\]$")
+
+_SECRET_KEY = b"prototype-secret-change-me"
 
 
 def typ_of(key: str) -> str:
@@ -15,8 +20,9 @@ def typ_of(key: str) -> str:
 
 
 def gen_token(typ: str, value: str) -> str:
-    h = hashlib.sha1((typ + "::" + (value or "")).encode("utf-8")).hexdigest()[:8]
-    return f"[{typ}_{h}]"
+    msg = (typ.upper() + "::" + (value or "")).encode("utf-8")
+    h = hmac.new(_SECRET_KEY, msg, hashlib.sha256).hexdigest()[:16]
+    return f"[{typ.upper()}_{h}]"
 
 
 TYPE_LABELS_DE: Dict[str, str] = {

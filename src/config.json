@@ -12,7 +12,6 @@
     "PER"
   ],
   "regex_labels": [
-    "DATUM",
     "E_MAIL",
     "IBAN",
     "IP_ADRESSE",
@@ -23,5 +22,6 @@
   "auto_demask_enabled": true,
   "auto_mask_enabled": true,
   "reversible_masking": true,
-  "use_ner_postprocessing": true
+  "use_ner_postprocessing": true,
+  "copy_ai_prompt_enabled": false
 }

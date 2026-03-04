@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import flet as ft
-from detectors.ner.ner_core import set_spacy_model, get_current_model
+from detectors.ner.ner_core import get_current_model, set_spacy_model
 from ui.style.translations import t
 from core import config
 
@@ -72,8 +72,8 @@ def view(
     model_ref = ft.Ref[ft.Dropdown]()
     lang_ref = ft.Ref[ft.Dropdown]()
 
-    NER_TYPES = ["PER", "ORG", "LOC", "GPE", "DATE", "TIME", "MONEY", "PERCENT", "PRODUCT", "EVENT", "MISC"]
-    NER_RECOMMENDED = ["PER", "ORG", "LOC", "GPE"]
+    NER_UI_TYPES = ["PER", "ORG", "LOC", "GPE"]
+    NER_MINIMAL = {"PER"}
 
     LABELS_DE = {
         "PER": "Person (PER)",
@@ -82,6 +82,7 @@ def view(
         "GPE": "Staat/Gebiet (GPE)",
         "DATE": "Datum (DATE)",
         "TIME": "Uhrzeit (TIME)",
+        "MONEY": "Geldbetrag (MONEY)",
         "PERCENT": "Prozentangabe (PERCENT)",
         "PRODUCT": "Produktname (PRODUCT)",
         "EVENT": "Ereignis (EVENT)",
@@ -94,6 +95,7 @@ def view(
         "GPE": "Country or region (GPE)",
         "DATE": "Date (DATE)",
         "TIME": "Time expression (TIME)",
+        "MONEY": "Money amount (MONEY)",
         "PERCENT": "Percentage (PERCENT)",
         "PRODUCT": "Product name (PRODUCT)",
         "EVENT": "Event or occasion (EVENT)",
@@ -101,7 +103,7 @@ def view(
     }
 
     REGEX_TYPES = ["E_MAIL", "TELEFON", "IBAN", "URL", "PLZ", "DATUM", "IP_ADRESSE"]
-    RX_RECOMMENDED = list(REGEX_TYPES)
+    RX_MINIMAL = {"E_MAIL", "TELEFON", "IBAN", "IP_ADRESSE"}
 
     R_LABELS_DE = {
         "E_MAIL": "E-Mail",
@@ -129,19 +131,27 @@ def view(
     def rlabel_for(code: str, lng: str) -> str:
         return (R_LABELS_DE if lng == "de" else R_LABELS_EN).get(code, code)
 
-    selected_ner: set[str] = set(
-        config.get(
-            "ner_labels",
-            ["PER", "ORG", "LOC", "GPE", "DATE", "TIME", "MONEY", "PERCENT", "PRODUCT", "EVENT"],
-        )
-    )
+    selected_ner: set[str] = set(config.get("ner_labels", list(NER_UI_TYPES)))
     selected_rx: set[str] = set(config.get("regex_labels", REGEX_TYPES))
+
+    selected_ner = {x.upper() for x in selected_ner if isinstance(x, str)}
+    selected_rx = {x.upper() for x in selected_rx if isinstance(x, str)}
+
+    selected_ner.intersection_update(set(NER_UI_TYPES))
+    selected_rx.intersection_update(set(REGEX_TYPES))
+
+    divider_color = theme.get("divider", theme.get("surface_muted"))
 
     saved_label = ft.Text(
         f"{t(lang, 'loaded')}: {config.get('spacy_model', '') or '-'}",
         size=12,
         color=theme["text_secondary"],
     )
+
+    def _prune_mapping():
+        allowed = {x.upper() for x in (list(selected_rx) + list(selected_ner)) if isinstance(x, str) and x.strip()}
+        if store is not None and hasattr(store, "session_mgr") and store.session_mgr is not None:
+            store.session_mgr.prune_active_mapping_by_allowed_labels(allowed)
 
     def _persist_flags_and_labels():
         use_regex = bool(selected_rx)
@@ -152,13 +162,9 @@ def view(
             use_ner=use_ner,
             debug_mask=current_flags.get("debug_mask", False),
         )
-        config.set("ner_labels", sorted(selected_ner))
-        config.set("regex_labels", sorted(selected_rx))
-
-    allowed = {x.upper() for x in (list(selected_rx) + list(selected_ner)) if isinstance(x, str) and x.strip()}
-
-    if store is not None and hasattr(store, "session_mgr") and store.session_mgr is not None:
-        store.session_mgr.prune_active_mapping_by_allowed_labels(allowed)
+        config.set("ner_labels", sorted(set(selected_ner).intersection(set(NER_UI_TYPES))))
+        config.set("regex_labels", sorted(set(selected_rx).intersection(set(REGEX_TYPES))))
+        _prune_mapping()
 
     def _notify_saved(msg: str):
         page.snack_bar = ft.SnackBar(ft.Text(msg), bgcolor=theme["success"])
@@ -190,6 +196,28 @@ def view(
         on_toggle_theme("dark" if theme_switch.value else "light")
 
     theme_switch.on_change = toggle_theme
+
+    ner_post_switch = ft.Switch(
+        label=t(lang, "ner_postprocessing"),
+        value=bool(config.get("use_ner_postprocessing", False)),
+    )
+
+    def toggle_ner_postprocessing(e: ft.ControlEvent):
+        config.set("use_ner_postprocessing", bool(e.control.value))
+        _notify_saved(("Gespeichert" if lang == "de" else "Saved"))
+
+    ner_post_switch.on_change = toggle_ner_postprocessing
+
+    copy_ai_prompt_switch = ft.Switch(
+        label=("KI Prompt Ergänzung bei Kopieren" if lang == "de" else "Add AI prompt when copying"),
+        value=bool(config.get("copy_ai_prompt_enabled", False)),
+    )
+
+    def toggle_copy_ai_prompt(e: ft.ControlEvent):
+        config.set("copy_ai_prompt_enabled", bool(e.control.value))
+        _notify_saved(("Gespeichert" if lang == "de" else "Saved"))
+
+    copy_ai_prompt_switch.on_change = toggle_copy_ai_prompt
 
     def make_model_dropdown(cur_lang: str, value_key: str) -> ft.Control:
         if not installed_keys:
@@ -249,8 +277,6 @@ def view(
         width=420,
     )
 
-    divider_color = theme.get("divider", theme.get("surface_muted"))
-
     ner_col_left = ft.Column(spacing=6)
     ner_col_right = ft.Column(spacing=6)
     ner_cb_by_code: dict[str, ft.Checkbox] = {}
@@ -268,6 +294,7 @@ def view(
         store_dict: dict[str, ft.Checkbox],
         lang_code: str,
         on_any_change,
+        clamp_allowed: set[str] | None = None,
     ):
         col_left.controls = []
         col_right.controls = []
@@ -282,6 +309,8 @@ def view(
                     selected.add(code)
                 else:
                     selected.discard(code)
+                if clamp_allowed is not None:
+                    selected.intersection_update(clamp_allowed)
                 on_any_change()
 
             return ft.Checkbox(
@@ -301,17 +330,48 @@ def view(
             col_right.controls.append(cb)
 
     def _on_any_settings_change():
+        selected_ner.intersection_update(set(NER_UI_TYPES))
+        selected_rx.intersection_update(set(REGEX_TYPES))
         _persist_flags_and_labels()
         _notify_saved(("Gespeichert" if lang == "de" else "Saved"))
 
-    build_two_col_checkboxes(NER_TYPES, label_for, selected_ner, ner_col_left, ner_col_right, ner_cb_by_code, lang, _on_any_settings_change)
-    build_two_col_checkboxes(REGEX_TYPES, rlabel_for, selected_rx, rx_col_left, rx_col_right, rx_cb_by_code, lang, _on_any_settings_change)
+    build_two_col_checkboxes(
+        NER_UI_TYPES,
+        label_for,
+        selected_ner,
+        ner_col_left,
+        ner_col_right,
+        ner_cb_by_code,
+        lang,
+        _on_any_settings_change,
+        clamp_allowed=set(NER_UI_TYPES),
+    )
+    build_two_col_checkboxes(
+        REGEX_TYPES,
+        rlabel_for,
+        selected_rx,
+        rx_col_left,
+        rx_col_right,
+        rx_cb_by_code,
+        lang,
+        _on_any_settings_change,
+        clamp_allowed=set(REGEX_TYPES),
+    )
 
     def ner_select_all(_):
         selected_ner.clear()
-        selected_ner.update(NER_TYPES)
-        for cb in ner_cb_by_code.values():
-            cb.value = True
+        selected_ner.update(NER_UI_TYPES)
+        for code, cb in ner_cb_by_code.items():
+            cb.value = code in selected_ner
+        _on_any_settings_change()
+        page.update()
+
+    def ner_select_minimal(_):
+        selected_ner.clear()
+        selected_ner.update(NER_MINIMAL)
+        selected_ner.intersection_update(set(NER_UI_TYPES))
+        for code, cb in ner_cb_by_code.items():
+            cb.value = code in selected_ner
         _on_any_settings_change()
         page.update()
 
@@ -319,14 +379,6 @@ def view(
         selected_ner.clear()
         for cb in ner_cb_by_code.values():
             cb.value = False
-        _on_any_settings_change()
-        page.update()
-
-    def ner_select_recommended(_):
-        selected_ner.clear()
-        selected_ner.update(NER_RECOMMENDED)
-        for code, cb in ner_cb_by_code.items():
-            cb.value = code in selected_ner
         _on_any_settings_change()
         page.update()
 
@@ -338,6 +390,15 @@ def view(
         _on_any_settings_change()
         page.update()
 
+    def rx_select_minimal(_):
+        selected_rx.clear()
+        selected_rx.update(RX_MINIMAL)
+        selected_rx.intersection_update(set(REGEX_TYPES))
+        for code, cb in rx_cb_by_code.items():
+            cb.value = code in selected_rx
+        _on_any_settings_change()
+        page.update()
+
     def rx_select_none(_):
         selected_rx.clear()
         for cb in rx_cb_by_code.values():
@@ -345,50 +406,74 @@ def view(
         _on_any_settings_change()
         page.update()
 
-    def rx_select_recommended(_):
-        selected_rx.clear()
-        selected_rx.update(RX_RECOMMENDED)
-        for code, cb in rx_cb_by_code.items():
-            cb.value = code in selected_rx
-        _on_any_settings_change()
-        page.update()
+    def section_divider() -> ft.Control:
+        return ft.Divider(height=1, thickness=1, color=divider_color)
 
-    top_bar = ft.Container(
-        padding=ft.padding.symmetric(16, 16),
-        content=ft.Column(
+    sections = ft.ListView(spacing=0, padding=0, expand=True, auto_scroll=False)
+
+    sections.controls.append(
+        ft.Row(
             [
-                ft.Row(
-                    [
-                        lang_host,
-                        ft.Container(width=20),
-                        model_host,
-                        ft.Container(width=40),
-                        theme_switch,
-                    ],
-                    alignment=ft.MainAxisAlignment.START,
-                    vertical_alignment=ft.CrossAxisAlignment.START,
-                ),
+                lang_host,
+                ft.Container(width=20),
+                model_host,
             ],
-            spacing=12,
-        ),
+            alignment=ft.MainAxisAlignment.START,
+            vertical_alignment=ft.CrossAxisAlignment.START,
+        )
     )
 
-    sections = ft.ListView(spacing=16, padding=0, expand=True, auto_scroll=False)
-    sections.controls.append(top_bar)
-    sections.controls.append(ft.Divider(height=24, color=divider_color))
+    sections.controls.append(ft.Container(height=16))
+    sections.controls.append(section_divider())
+    sections.controls.append(ft.Container(height=16))
+
+    sections.controls.append(
+        ft.Row(
+            [
+                ft.Text(
+                    "Allgemeine Einstellungen" if lang == "de" else "General settings",
+                    weight=ft.FontWeight.W_600,
+                    color=theme["text_secondary"],
+                ),
+                ft.Container(expand=True),
+            ],
+            vertical_alignment=ft.CrossAxisAlignment.CENTER,
+        )
+    )
+
+    sections.controls.append(ft.Container(height=10))
+
+    sections.controls.append(
+        ft.Row(
+            [
+                theme_switch,
+                ft.Container(width=32),
+                ner_post_switch,
+                ft.Container(width=32),
+                copy_ai_prompt_switch,
+            ],
+            alignment=ft.MainAxisAlignment.START,
+            vertical_alignment=ft.CrossAxisAlignment.CENTER,
+        )
+    )
+
+    sections.controls.append(ft.Container(height=16))
+    sections.controls.append(section_divider())
+    sections.controls.append(ft.Container(height=16))
 
     sections.controls.append(
         ft.Row(
             [
                 ft.Text("NER-Typen", weight=ft.FontWeight.W_600, color=theme["text_secondary"]),
                 ft.Container(expand=True),
-                ft.TextButton(t(lang, "settings.recommended"), on_click=ner_select_recommended),
                 ft.TextButton(t(lang, "settings.all"), on_click=ner_select_all),
+                ft.TextButton("Minimal" if lang == "de" else "Minimal", on_click=ner_select_minimal),
                 ft.TextButton(t(lang, "settings.none"), on_click=ner_select_none),
             ],
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
         )
     )
+    sections.controls.append(ft.Container(height=10))
     sections.controls.append(
         ft.Row(
             [ft.Container(ner_col_left, expand=1), ft.Container(ner_col_right, expand=1)],
@@ -396,20 +481,23 @@ def view(
         )
     )
 
-    sections.controls.append(ft.Divider(height=24, color=divider_color))
+    sections.controls.append(ft.Container(height=16))
+    sections.controls.append(section_divider())
+    sections.controls.append(ft.Container(height=16))
 
     sections.controls.append(
         ft.Row(
             [
                 ft.Text("Regex-Typen", weight=ft.FontWeight.W_600, color=theme["text_secondary"]),
                 ft.Container(expand=True),
-                ft.TextButton(t(lang, "settings.recommended"), on_click=rx_select_recommended),
                 ft.TextButton(t(lang, "settings.all"), on_click=rx_select_all),
+                ft.TextButton("Minimal" if lang == "de" else "Minimal", on_click=rx_select_minimal),
                 ft.TextButton(t(lang, "settings.none"), on_click=rx_select_none),
             ],
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
         )
     )
+    sections.controls.append(ft.Container(height=10))
     sections.controls.append(
         ft.Row(
             [ft.Container(rx_col_left, expand=1), ft.Container(rx_col_right, expand=1)],
@@ -421,5 +509,5 @@ def view(
         padding=24,
         expand=True,
         bgcolor=theme["background"],
-        content=ft.Column([ft.Container(sections, expand=True)], spacing=12, expand=True),
+        content=sections,
     )

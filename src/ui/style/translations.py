@@ -14,6 +14,7 @@ STRINGS = {
         "use_regex": "Use Regex",
         "use_ner": "Use NER",
         "debug_mask": "Debug_MASK",
+        "ner_postprocessing": "NER postprocessing (recommended)",
 
         "settings.title": "Settings",
         "settings.all": "All",
@@ -42,13 +43,11 @@ STRINGS = {
         "status.banner.one": "Found 1 potential GDPR-relevant finding.",
         "status.banner.some": "Found {total} potential GDPR-relevant findings.",
 
-        # Vault / Demask view
         "vault.apply_active": "Unmask text",
         "vault.active_map": "Active mapping (JSON)",
         "vault.masked_in": "Paste masked text here",
         "vault.demasked_out": "De-masked output",
 
-        # NEW – demask input header + toggle + search placeholder
         "vault.input.title": "Paste masked text here",
         "vault.input.sub": (
             "Paste already anonymized text that should be restored to clear text using the active mapping. "
@@ -57,19 +56,16 @@ STRINGS = {
         "vault.live_demask": "Live unmask",
         "search.placeholder": "Search…",
 
-        # snackbar / mapping
         "sb.no_mapping": "No mapping available",
         "sb.map_copied": "Mapping copied to clipboard",
         "sb.map_saved": "Saved mapping to {path}",
         "sb.map_save_fail": "Save failed: {err}",
 
-        # navigation
         "nav.dashboard": "Dashboard",
         "nav.vault": "Unmask",
         "nav.dictionary": "Dictionary",
         "nav.settings": "Settings",
 
-        # help overlay
         "help.title": "Welcome to anonymizer",
         "help.intro": (
             "This app helps you mask sensitive information in text and unmask it again when needed. "
@@ -102,7 +98,6 @@ STRINGS = {
         "help.dictionary.bullet": "Dictionary",
         "help.settings.bullet": "Settings",
 
-        # token source labels
         "token.src.ner": "NER",
         "token.src.regex": "Regex",
         "token.src.auto": "Automatic",
@@ -120,6 +115,7 @@ STRINGS = {
         "use_regex": "Regex verwenden",
         "use_ner": "NER verwenden",
         "debug_mask": "Debug_MASK",
+        "ner_postprocessing": "NER-Postprocessing (empfohlen)",
 
         "settings.title": "Einstellungen",
         "settings.all": "Alle",
@@ -148,13 +144,11 @@ STRINGS = {
         "status.banner.one": "Es wurde 1 DSGVO-relevanter Treffer gefunden.",
         "status.banner.some": "Es wurden {total} DSGVO-relevante Treffer gefunden.",
 
-        # Vault / Demask view
         "vault.apply_active": "Text demaskieren",
         "vault.active_map": "Aktives Mapping (JSON)",
         "vault.masked_in": "Hier maskierten Text einfügen",
         "vault.demasked_out": "Demaskierte Ausgabe",
 
-        # NEU – Demask Überschriften + Toggle + Suche
         "vault.input.title": "Maskierten Text hier eingeben oder einfügen",
         "vault.input.sub": (
             "Füge bereits anonymisierten Text ein, der mithilfe der aktiven Zuordnung wieder in Klartext "
@@ -163,19 +157,16 @@ STRINGS = {
         "vault.live_demask": "Live demaskieren",
         "search.placeholder": "Suchen…",
 
-        # Snackbar / Mapping
         "sb.no_mapping": "Kein Mapping vorhanden",
         "sb.map_copied": "Mapping in Zwischenablage kopiert",
         "sb.map_saved": "Mapping gespeichert nach {path}",
         "sb.map_save_fail": "Speichern fehlgeschlagen: {err}",
 
-        # Navigation
         "nav.dashboard": "Dashboard",
         "nav.vault": "Demaskieren",
         "nav.dictionary": "Wörterbuch",
         "nav.settings": "Einstellungen",
 
-        # Hilfe-Overlay
         "help.title": "Willkommen im anonymizer",
         "help.intro": (
             "Diese App hilft dir dabei, sensible Informationen in Texten zu maskieren und bei Bedarf wieder zu "
@@ -209,7 +200,6 @@ STRINGS = {
         "help.dictionary.bullet": "Wörterbuch",
         "help.settings.bullet": "Einstellungen",
 
-        # Token-Quellen
         "token.src.ner": "NER",
         "token.src.regex": "Regex",
         "token.src.auto": "Automatisch",

@@ -472,6 +472,42 @@ def view(page: ft.Page, theme: dict, store) -> ft.Control:
 
     search_box.on_change = on_search_change
 
+    _TOKEN_PATTERN = re.compile(r"\[[A-Z_]+_[0-9a-fA-F]+\]")
+
+    def build_ai_prompt(masked_text: str) -> str:
+        prompt = (
+            "---\n"
+            "KI-PROMPT\n"
+            "---\n\n"
+            "Der folgende Text enthält anonymisierte Tokens.\n\n"
+            "Tokenformat:\n"
+            "[TYPE_HASH]\n\n"
+            "Beispiele:\n"
+            "[PER_123456]\n"
+            "[E_MAIL_abc123]\n\n"
+            "Regeln:\n"
+            "- Tokens repräsentieren personenbezogene Daten.\n"
+            "- Tokens dürfen als Kontext verwendet werden.\n"
+            "- Tokens dürfen NICHT verändert werden.\n"
+            "- Das Tokenformat muss exakt erhalten bleiben.\n\n"
+            "Beispiel:\n"
+            "Input: Brief an [PER_123456]\n"
+            "Antwort: Der Brief wurde an [PER_123456] gesendet.\n\n"
+            "---\n"
+            "TEXT\n"
+            "---\n\n"
+        )
+
+        return prompt + masked_text
+
+    def copy_output(_: ft.ControlEvent):
+        text = output_field.value or ""
+
+        if config.get("copy_ai_prompt_enabled", False):
+            text = build_ai_prompt(text)
+
+        page.set_clipboard(text)
+
     actions = ft.Row(
         [
             ft.Row(
@@ -486,7 +522,7 @@ def view(page: ft.Page, theme: dict, store) -> ft.Control:
                     outlined_pill(
                         t(lang, "btn.copy_out"),
                         icon=ft.Icons.CONTENT_COPY,
-                        on_click=lambda _: page.set_clipboard(output_field.value or ""),
+                        on_click=copy_output,
                         theme=theme,
                         scale=1.05,
                     ),
