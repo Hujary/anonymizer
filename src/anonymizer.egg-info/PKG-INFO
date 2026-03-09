@@ -5,7 +5,6 @@ Summary: Anonymisierung personenbezogener Daten (Regex + NER, reversible Token o
 Requires-Python: >=3.10
 Description-Content-Type: text/markdown
 Requires-Dist: spacy>=3.7
-Requires-Dist: cryptography>=43.0.0
 Requires-Dist: python-dotenv>=1.0.1
 Requires-Dist: click>=8.1.7
 Requires-Dist: flet>=0.27.2

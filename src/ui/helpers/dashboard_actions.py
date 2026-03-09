@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, List, Set, Tuple
+from typing import Dict, Set
 import threading
 
 import flet as ft
@@ -13,9 +13,13 @@ from ui.helpers.dashboard_token_renderer import build_token_rows
 from ui.style.translations import t
 
 
-# ------------------------------------------------------------
-# Settings-Helper: welche Token-Typen sind aktuell erlaubt?
-# ------------------------------------------------------------
+def _active_session_secret(ctx: DashboardContext) -> str:
+    mgr = getattr(ctx.store, "session_mgr", None)
+    if mgr is None:
+        raise RuntimeError("SessionManager nicht verfügbar.")
+    return mgr.get_or_create_active_session_secret()
+
+
 def _allowed_token_types_from_config() -> Set[str]:
     flags = config.get_flags() or {}
 
@@ -38,7 +42,10 @@ def _allowed_token_types_from_config() -> Set[str]:
     return allowed
 
 
-def _filter_session_mapping_to_allowed_types(session_mapping: Dict[str, str], allowed_types: Set[str]) -> Dict[str, str]:
+def _filter_session_mapping_to_allowed_types(
+    session_mapping: Dict[str, str],
+    allowed_types: Set[str],
+) -> Dict[str, str]:
     if not session_mapping:
         return {}
     if not allowed_types:
@@ -55,9 +62,6 @@ def _filter_session_mapping_to_allowed_types(session_mapping: Dict[str, str], al
     return out
 
 
-# ------------------------------------------------------------
-# Snackbar / Banner
-# ------------------------------------------------------------
 def show_snack(ctx: DashboardContext, message: str, kind: str) -> None:
     if kind == "danger":
         bg = ctx.theme["danger"]
@@ -88,9 +92,6 @@ def update_banner(ctx: DashboardContext, mapping: Dict[str, str]) -> None:
     )
 
 
-# ------------------------------------------------------------
-# Session push (nur reversible)
-# ------------------------------------------------------------
 def _push_mapping_into_session(ctx: DashboardContext, mapping: Dict[str, str]) -> None:
     if not mapping:
         return
@@ -103,9 +104,6 @@ def _push_mapping_into_session(ctx: DashboardContext, mapping: Dict[str, str]) -
             pass
 
 
-# ------------------------------------------------------------
-# Quellenlabel pro Token (NER/Regex/Manual) anhand last_hits
-# ------------------------------------------------------------
 def token_source_label(ctx: DashboardContext, key: str, value: str) -> str:
     hits = getattr(ctx.store, "last_hits", []) or []
     src = ctx.input_field.value or ""
@@ -154,14 +152,14 @@ def token_source_label(ctx: DashboardContext, key: str, value: str) -> str:
     return "Manual"
 
 
-# ------------------------------------------------------------
-# UI Sync + Render
-# ------------------------------------------------------------
 def _sync_ctx_token_state(ctx: DashboardContext, mapping: Dict[str, str]) -> None:
     ctx.token_vals.clear()
     ctx.token_keys_order.clear()
 
-    for key, value in sorted((mapping or {}).items(), key=lambda kv: (typ_of(kv[0]), kv[0].lower())):
+    for key, value in sorted(
+        (mapping or {}).items(),
+        key=lambda kv: (typ_of(kv[0]), kv[0].lower()),
+    ):
         ctx.token_vals[key] = value
         ctx.token_keys_order.append(key)
 
@@ -217,9 +215,6 @@ def update_add_button_state(ctx: DashboardContext) -> None:
     ctx.page.update()
 
 
-# ------------------------------------------------------------
-# Edit lifecycle
-# ------------------------------------------------------------
 def _on_start_edit(ctx: DashboardContext, key: str) -> None:
     ctx.editing_keys.add(key)
     mapping = {k: ctx.token_vals[k] for k in ctx.token_keys_order if k in ctx.token_vals}
@@ -270,7 +265,11 @@ def _on_save_edit(ctx: DashboardContext, key: str, new_val: str) -> None:
         _rebuild_token_ui(ctx, mapping)
         return
 
-    new_token = gen_token(typ_of(key), new_val)
+    new_token = gen_token(
+        typ_of(key),
+        new_val,
+        session_secret=_active_session_secret(ctx),
+    )
 
     if new_token not in ctx.token_vals:
         ctx.token_vals[new_token] = new_val
@@ -320,9 +319,6 @@ def _on_delete_token(ctx: DashboardContext, key: str) -> None:
     ctx.page.update()
 
 
-# ------------------------------------------------------------
-# Manual add + deterministic remask
-# ------------------------------------------------------------
 def add_manual_token(ctx: DashboardContext) -> None:
     src = ctx.input_field.value or ""
     if not src.strip():
@@ -358,7 +354,12 @@ def add_manual_token(ctx: DashboardContext) -> None:
     for k in to_delete:
         current_map.pop(k, None)
 
-    token = gen_token(typ, val)
+    token = gen_token(
+        typ,
+        val,
+        session_secret=_active_session_secret(ctx),
+    )
+
     candidate_map = dict(current_map)
     candidate_map[token] = val
 
@@ -441,9 +442,6 @@ def apply_current_edits(ctx: DashboardContext) -> None:
     ctx.page.update()
 
 
-# ------------------------------------------------------------
-# Masking run (Service + Session merge, aber gefiltert nach Settings)
-# ------------------------------------------------------------
 def run_masking_internal(ctx: DashboardContext, auto: bool = False) -> None:
     if ctx.on_masking_state is not None:
         try:
@@ -468,7 +466,11 @@ def run_masking_internal(ctx: DashboardContext, auto: bool = False) -> None:
             return
 
         try:
-            _, base_mapping, hits = anonymize(text, reversible=getattr(ctx.store, "reversible", True))
+            _, base_mapping, hits = anonymize(
+                text,
+                reversible=getattr(ctx.store, "reversible", True),
+                session_mgr=getattr(ctx.store, "session_mgr", None),
+            )
         except Exception as e:
             show_snack(ctx, f"Masking failed: {e}", "danger")
             return
@@ -526,9 +528,6 @@ def run_masking_internal(ctx: DashboardContext, auto: bool = False) -> None:
                 pass
 
 
-# ------------------------------------------------------------
-# Debounce + clear/reset
-# ------------------------------------------------------------
 def _cancel_debounce(ctx: DashboardContext) -> None:
     if ctx.debounce_timer is not None:
         try:
@@ -605,7 +604,7 @@ def handle_input_change(ctx: DashboardContext) -> None:
 
     _cancel_debounce(ctx)
 
-    def _run():
+    def _run() -> None:
         try:
             run_masking_internal(ctx, auto=True)
         except Exception:

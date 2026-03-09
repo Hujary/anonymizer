@@ -6,12 +6,8 @@ import hashlib
 import hmac
 from typing import Dict, Tuple
 
-from pipeline.anonymisieren import maskiere
-
 
 TYP_RE = re.compile(r"^\[([A-ZÄÖÜa-zäöü_]+)(?:_[^\]]+)?\]$")
-
-_SECRET_KEY = b"prototype-secret-change-me"
 
 
 def typ_of(key: str) -> str:
@@ -19,9 +15,10 @@ def typ_of(key: str) -> str:
     return m.group(1).upper() if m else "MISC"
 
 
-def gen_token(typ: str, value: str) -> str:
+def gen_token(typ: str, value: str, *, session_secret: str) -> str:
     msg = (typ.upper() + "::" + (value or "")).encode("utf-8")
-    h = hmac.new(_SECRET_KEY, msg, hashlib.sha256).hexdigest()[:16]
+    key = session_secret.encode("utf-8")
+    h = hmac.new(key, msg, hashlib.sha256).hexdigest()[:16]
     return f"[{typ.upper()}_{h}]"
 
 
@@ -83,15 +80,20 @@ def group_sort_key(typ: str) -> Tuple[int, str]:
 def estimate_wrapped_lines(text: str, chars_per_line: int) -> int:
     if chars_per_line <= 0:
         chars_per_line = 80
+
     total_lines = 0
+
     for raw in (text.splitlines() or [""]):
         if raw.strip() == "":
             total_lines += 1
             continue
+
         line_len = 0
         lines_here = 1
+
         for word in raw.split(" "):
             w = len(word)
+
             if line_len == 0:
                 line_len = w
             elif line_len + 1 + w <= chars_per_line:
@@ -99,7 +101,9 @@ def estimate_wrapped_lines(text: str, chars_per_line: int) -> int:
             else:
                 lines_here += 1
                 line_len = w
+
         total_lines += lines_here
+
     return total_lines
 
 

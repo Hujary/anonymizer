@@ -1,31 +1,7 @@
-###     SessionManager (Persistente Masking-Sessions mit TTL)
-### __________________________________________________________________________
-#
-#  - Verwaltet Sessions für reversible Maskierung (token -> original)
-#  - Persistiert Sessions auf Disk als JSON (<data>/sessions.json)
-#  - TTL gilt ab closed_at (aktive Sessions laufen unbegrenzt bis close_active_session())
-#  - Cleanup wird beim Laden (Startup) und vor Operationen durchgeführt
-#  - Atomisches Schreiben über *.tmp + replace()
-#
-#  Erweiterung (wichtig für stabile Tokens):
-#    - Pro Session zusätzlich ein Index: (LABEL, ORIGINAL) -> TOKEN
-#    - Damit kann die Pipeline beim Maskieren denselben Token wiederverwenden,
-#      ohne dass Session-Mapping als "Detektor" missbraucht wird.
-#
-#  Datei-Format (pro Session):
-#    {
-#      "session_id": "...",
-#      "created_at": ...,
-#      "closed_at": ... | null,
-#      "mapping": { "[PER_xxx]": "Max", ... },
-#      "index": { "PER\u0000max": "[PER_xxx]", ... }
-#    }
-#
-
-
 from __future__ import annotations
 
 import json
+import secrets
 import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -65,7 +41,7 @@ class SessionManager:
 
     def _save_to_disk(self) -> None:
         payload = {
-            "version": 2,
+            "version": 3,
             "ttl_seconds": self.ttl_seconds,
             "active_session_id": self._active_session_id,
             "sessions": list(self._sessions.values()),
@@ -78,6 +54,13 @@ class SessionManager:
     def _make_index_key(self, label: str, original: str) -> str:
         return f"{label.upper()}\u0000{str(original).strip().lower()}"
 
+    def _token_label(self, token: str) -> str:
+        tok = (token or "").strip()
+        if not tok.startswith("[") or "_" not in tok:
+            return ""
+        head = tok[1:].split("_", 1)[0].strip().upper()
+        return head
+
     def _rebuild_index(self, mapping: Dict[str, str]) -> Dict[str, str]:
         idx: Dict[str, str] = {}
         for token, original in mapping.items():
@@ -85,9 +68,11 @@ class SessionManager:
                 continue
             if original is None:
                 continue
-            if "_" not in token:
+
+            label = self._token_label(token)
+            if not label:
                 continue
-            label = token.split("_", 1)[0].upper()
+
             key = self._make_index_key(label, str(original))
             if key not in idx:
                 idx[key] = token
@@ -133,6 +118,7 @@ class SessionManager:
             closed_at = s.get("closed_at")
             mapping = s.get("mapping")
             index = s.get("index")
+            session_secret = s.get("session_secret")
 
             if not isinstance(created_at, (int, float)):
                 created_at = self._now()
@@ -163,8 +149,12 @@ class SessionManager:
             if not norm_idx:
                 norm_idx = self._rebuild_index(norm_map)
 
+            if not isinstance(session_secret, str) or not session_secret.strip():
+                session_secret = secrets.token_hex(32)
+
             self._sessions[sid] = {
                 "session_id": sid,
+                "session_secret": session_secret.strip(),
                 "created_at": float(created_at),
                 "closed_at": float(closed_at) if isinstance(closed_at, (int, float)) else None,
                 "mapping": norm_map,
@@ -204,6 +194,7 @@ class SessionManager:
 
         sess = {
             "session_id": sid,
+            "session_secret": secrets.token_hex(32),
             "created_at": now,
             "closed_at": None,
             "mapping": {},
@@ -214,6 +205,35 @@ class SessionManager:
         self._active_session_id = sid
         self._save_to_disk()
         return sess
+
+    def get_active_session_id(self) -> Optional[str]:
+        self._cleanup_expired()
+        if not self._active_session_id:
+            return None
+        if self._active_session_id not in self._sessions:
+            return None
+        return self._active_session_id
+
+    def get_active_session_secret(self) -> Optional[str]:
+        self._cleanup_expired()
+        if not self._active_session_id:
+            return None
+        sess = self._sessions.get(self._active_session_id)
+        if not sess:
+            return None
+        secret = sess.get("session_secret")
+        if not isinstance(secret, str) or not secret:
+            return None
+        return secret
+
+    def get_or_create_active_session_secret(self) -> str:
+        sess = self._ensure_active_session()
+        secret = sess.get("session_secret")
+        if not isinstance(secret, str) or not secret:
+            secret = secrets.token_hex(32)
+            sess["session_secret"] = secret
+            self._save_to_disk()
+        return secret
 
     def get_active_mapping(self) -> Dict[str, str]:
         self._cleanup_expired()
@@ -243,6 +263,7 @@ class SessionManager:
         self._cleanup_expired()
         if not self._active_session_id:
             return None
+
         sess = self._sessions.get(self._active_session_id)
         if not sess:
             return None
@@ -289,8 +310,8 @@ class SessionManager:
                 sess_map[token] = sv
                 changed = True
 
-            if "_" in token:
-                label = token.split("_", 1)[0].upper()
+            label = self._token_label(token)
+            if label:
                 idx_key = self._make_index_key(label, sv)
                 if sess_idx.get(idx_key) != token:
                     sess_idx[idx_key] = token
@@ -317,8 +338,9 @@ class SessionManager:
 
         if token in mapping:
             old_val = mapping.pop(token, None)
-            if old_val is not None and "_" in token:
-                label = token.split("_", 1)[0].upper()
+
+            label = self._token_label(token)
+            if old_val is not None and label:
                 idx_key = self._make_index_key(label, str(old_val))
                 if index.get(idx_key) == token:
                     index.pop(idx_key, None)

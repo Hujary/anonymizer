@@ -12,6 +12,7 @@
     "PER"
   ],
   "regex_labels": [
+    "DATUM",
     "E_MAIL",
     "IBAN",
     "IP_ADRESSE",
