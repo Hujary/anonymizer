@@ -11,18 +11,6 @@ from detectors.regex import finde_regex
 from detectors.custom.manual_dict import finde_manual_tokens
 
 
-STRUCT_TYPES = {
-    "IBAN",
-    "TELEFON",
-    "E_MAIL",
-    "URL",
-    "PLZ",
-    "DATUM",
-    "STRASSE",
-    "IP_ADRESSE",
-}
-
-
 def _norm_labels(xs: object) -> List[str]:
     if not isinstance(xs, (list, tuple)):
         return []
@@ -73,6 +61,7 @@ def _run_ner(text: str, allowed_labels: List[str]) -> List[Treffer]:
 
     allowed_set = set(allowed_labels)
     raw_ner: List[Treffer] = []
+
     for s, e, l in finde_ner(text):
         L = str(l).strip().upper()
         if not L or L not in allowed_set:
@@ -82,7 +71,6 @@ def _run_ner(text: str, allowed_labels: List[str]) -> List[Treffer]:
     if not raw_ner:
         return []
 
-    # Post Processing ist optional
     use_post = bool(config.get("use_ner_postprocessing", True))
     if not use_post:
         return raw_ner
@@ -96,6 +84,7 @@ def _overlaps_any(a: Treffer, hits: List[Treffer]) -> bool:
 
 def _flagge_quellen(merged: List[Treffer], regex_hits: List[Treffer], ner_hits: List[Treffer]) -> List[Treffer]:
     out: List[Treffer] = []
+
     for m in merged:
         fr0 = bool(getattr(m, "from_regex", False)) or getattr(m, "source", "") == "regex"
         fn0 = bool(getattr(m, "from_ner", False)) or getattr(m, "source", "") == "ner"
@@ -104,17 +93,8 @@ def _flagge_quellen(merged: List[Treffer], regex_hits: List[Treffer], ner_hits: 
         fn = fn0 or _overlaps_any(m, ner_hits)
 
         out.append(m.with_flags(regex=fr, ner=fn))
+
     return out
-
-
-def _prefer_regex_for_struct_types(merged: List[Treffer], regex_hits: List[Treffer]) -> List[Treffer]:
-    keep: List[Treffer] = []
-    for m in merged:
-        overlaps_struct = any(m.überschneidet(r) and r.label.upper() in STRUCT_TYPES for r in regex_hits)
-        if overlaps_struct and getattr(m, "source", "") != "regex":
-            continue
-        keep.append(m)
-    return keep
 
 
 def _apply_dict_priority(base_hits: List[Treffer], dict_hits: List[Treffer]) -> List[Treffer]:
@@ -122,6 +102,7 @@ def _apply_dict_priority(base_hits: List[Treffer], dict_hits: List[Treffer]) -> 
         return base_hits
 
     filtered_base: List[Treffer] = []
+
     for h in base_hits:
         if any(h.überschneidet(d) for d in dict_hits):
             continue
@@ -140,7 +121,10 @@ def erkenne(text: str) -> List[Treffer]:
     dict_treffer: List[Treffer] = []
 
     if flags.get("use_regex", True):
-        regex_treffer = [Treffer(s, e, l, "regex", from_regex=True) for s, e, l in finde_regex(text)]
+        regex_treffer = [
+            Treffer(s, e, l, "regex", from_regex=True)
+            for s, e, l in finde_regex(text)
+        ]
 
     allowed = _norm_labels(config.get("ner_labels", []))
     if allowed and _is_ner_runtime_available():
@@ -158,9 +142,6 @@ def erkenne(text: str) -> List[Treffer]:
         merged = zusammenführen(regex_treffer, ner_treffer)
     else:
         merged = []
-
-    if regex_treffer and flags.get("use_regex", True):
-        merged = _prefer_regex_for_struct_types(merged, regex_treffer)
 
     if dict_treffer:
         merged = _apply_dict_priority(merged, dict_treffer)
@@ -202,5 +183,13 @@ def anwenden(text: str, treffer: List[Treffer], *, reversible: bool) -> str:
 
 def maskiere(text: str, *, reversible: bool = False) -> Tuple[str, List[Treffer]]:
     t = erkenne(text)
+
+    for tr in t:
+        print(
+            f"Treffer(start={tr.start}, ende={tr.ende}, "
+            f"label='{tr.label}', source='{tr.source}', "
+            f"from_regex={tr.from_regex}, from_ner={tr.from_ner})"
+        )
+
     out = anwenden(text, t, reversible=reversible)
     return out, t

@@ -1,61 +1,44 @@
-###     Treffer-Merge (Regex + NER Konfliktauflösung)
-### __________________________________________________________________________
-#
-#  - Kombiniert Treffer aus Regex- und NER-Detektoren
-#  - Sortiert initial nach Startposition und Länge (längere zuerst bei gleichem Start)
-#  - Bevorzugt Regex gegenüber NER bei Overlap (wenn mindestens gleich lang)
-#  - Entfernt vollständig enthaltene (nested) Treffer
-#  - Liefert überlappungsfreie, start-sortierte Ergebnisliste
-
+from __future__ import annotations
 
 from typing import List
-from .typen import Treffer
+
+from core.typen import Treffer
 
 
-# Führt Regex- und NER-Treffer zusammen und löst Konflikte deterministisch auf
-def zusammenführen(regex_treffer: List[Treffer], ner_treffer: List[Treffer]) -> List[Treffer]:
+def _priority(hit: Treffer) -> tuple[int, int, int]:
+    source = getattr(hit, "source", "")
+    source_rank = 0 if source == "regex" else 1 if source == "ner" else 2
+    length_rank = -(hit.ende - hit.start)
+    start_rank = hit.start
+    return (source_rank, length_rank, start_rank)
 
-    # Alle Treffer kombinieren und nach (start, -länge) sortieren
-    alles = sorted(
-        regex_treffer + ner_treffer,
-        key=lambda t: (t.start, -(t.ende - t.start)),
-    )
 
-    result: List[Treffer] = []
+def _choose_better(a: Treffer, b: Treffer) -> Treffer:
+    return a if _priority(a) <= _priority(b) else b
 
-    # Erste Konfliktauflösung (Regex-Präferenz bei Overlap)
-    for t in alles:
-        konflikt = False
 
-        for r in result:
-            if t.überschneidet(r):
+def zusammenführen(regex_hits: List[Treffer], ner_hits: List[Treffer]) -> List[Treffer]:
+    candidates: List[Treffer] = list(regex_hits) + list(ner_hits)
 
-                # Regex gewinnt gegen NER, wenn mindestens gleich lang
-                if (
-                    t.source == "regex"
-                    and r.source == "ner"
-                    and t.länge() >= r.länge()
-                ):
-                    result.remove(r)
-                    result.append(t)
+    if not candidates:
+        return []
 
-                konflikt = True
-                break
+    candidates.sort(key=lambda t: (t.start, t.ende, _priority(t)))
 
-        if not konflikt:
-            result.append(t)
+    merged: List[Treffer] = []
 
-    # Final nach Startposition sortieren
-    result.sort(key=lambda t: t.start)
+    for hit in candidates:
+        if not merged:
+            merged.append(hit)
+            continue
 
-    # Entfernt vollständig enthaltene (nested) Treffer
-    gefiltert: List[Treffer] = []
+        last = merged[-1]
 
-    for t in result:
-        if not any(
-            (t != u and t.start >= u.start and t.ende <= u.ende)
-            for u in result
-        ):
-            gefiltert.append(t)
+        if not last.überschneidet(hit):
+            merged.append(hit)
+            continue
 
-    return gefiltert
+        best = _choose_better(last, hit)
+        merged[-1] = best
+
+    return merged
