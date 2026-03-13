@@ -1,8 +1,17 @@
 DATASET: Dataset_25 | MODE: combined
-MODE combined | TP= 15 FP=  1 FN=  0 | P=0.938 R=1.000 F1=0.968
+MODE combined | TP=  5 FP=  0 FN= 11 | P=1.000 R=0.312 F1=0.476
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 1
-  - PER            gold 140:145 [gold] 'Vogel' [pred:ner:133:145] 'Markus Vogel' gold_ctx='.de\n\n[08:47] Markus ▮Vogel▮ (Vertrieb, markus.v' pred_ctx='-intern.de\n\n[08:47] ▮Markus Vogel▮ (Vertrieb, markus.v'
-UNEXPECTED (FP): 1
-  - LOC            520:539 [ner] 'Self-Service-Portal' ctx=' 18:30 Uhr über das ▮Self-Service-Portal▮.\n\n[08:52] Julia Sch'
+NOT DETECTED (FN): 11
+  - LOC            60:69 [gold] 'Stuttgart' ctx=' Helpdesk\nStandort: ▮Stuttgart▮\nBetroffenes System:'
+  - PER            133:145 [gold] 'Markus Vogel' ctx='-intern.de\n\n[08:47] ▮Markus Vogel▮ (Vertrieb, markus.v'
+  - PER            133:145 [gold] 'Markus Vogel' ctx='-intern.de\n\n[08:47] ▮Markus Vogel▮ (Vertrieb, markus.v'
+  - LOC            341:359 [gold] 'Tübinger Straße 54' ctx='m Homeoffice in der ▮Tübinger Straße 54▮.\n\n[08:49] Julia Sch'
+  - PER            370:385 [gold] 'Julia Schneider' ctx='Straße 54.\n\n[08:49] ▮Julia Schneider▮ (IT-Support):\nHallo'
+  - PER            406:416 [gold] 'Herr Vogel' ctx='(IT-Support):\nHallo ▮Herr Vogel▮, haben Sie Ihr Pass'
+  - PER            469:481 [gold] 'Markus Vogel' ctx=' geändert?\n\n[08:50] ▮Markus Vogel▮:\nJa, gestern gegen '
+  - PER            550:565 [gold] 'Julia Schneider' ctx='ce-Portal.\n\n[08:52] ▮Julia Schneider▮:\nDanke. Ich sehe me'
+  - PER            700:712 [gold] 'Markus Vogel' ctx=' anmelden.\n\n[08:57] ▮Markus Vogel▮:\nJetzt funktioniert'
+  - PER            753:768 [gold] 'Julia Schneider' ctx='es wieder.\n\n[08:58] ▮Julia Schneider▮:\nGut. Ich dokumenti'
+  - PER            932:947 [gold] 'Julia Schneider' ctx='elöst\nBearbeiterin: ▮Julia Schneider▮\nDatum: 12.05.2025'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 0

@@ -1,7 +1,17 @@
 DATASET: Dataset_26 | MODE: ner
-MODE ner      | TP= 11 FP=  1 FN=  0 | P=0.917 R=1.000 F1=0.957
+MODE ner      | TP=  0 FP=  0 FN= 11 | P=0.000 R=0.000 F1=0.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 0
+NOT DETECTED (FN): 11
+  - ORG            37:55 [gold] 'TechSolutions GmbH' ctx='ation 2025\nMandant: ▮TechSolutions GmbH▮\nProjektleitung: And'
+  - PER            72:84 [gold] 'Andreas Kühn' ctx='mbH\nProjektleitung: ▮Andreas Kühn▮\n\n[10:03] Andreas Kü'
+  - PER            94:106 [gold] 'Andreas Kühn' ctx='dreas Kühn\n\n[10:03] ▮Andreas Kühn▮ (andreas.kuehn@tech'
+  - PER            173:184 [gold] 'Sabine Roth' ctx='zur Datenmigration. ▮Sabine Roth▮, wie weit sind wir '
+  - PER            234:245 [gold] 'Sabine Roth' ctx='ndendaten?\n\n[10:05] ▮Sabine Roth▮ (Data Engineering):'
+  - PER            467:479 [gold] 'Daniel Meier' ctx='ons.local.\n\n[10:07] ▮Daniel Meier▮ (IT-Security):\nBitt'
+  - PER            614:625 [gold] 'Sabine Roth' ctx='ndet wird.\n\n[10:09] ▮Sabine Roth▮:\nAktuell liegt sie '
+  - PER            711:723 [gold] 'Andreas Kühn' ctx='25\export.\n\n[10:12] ▮Andreas Kühn▮:\nDeadline für Go-Li'
+  - PER            862:874 [gold] 'Daniel Meier' ctx='chlüsselung prüfen (▮Daniel Meier▮)\n	•	Stichprobenkont'
+  - PER            920:931 [gold] 'Sabine Roth' ctx='von 50 Datensätzen (▮Sabine Roth▮)\n	•	Budget-Update a'
+  - PER            963:975 [gold] 'Andreas Kühn' ctx='Update an Vorstand (▮Andreas Kühn▮)'
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
-  - PER            398:408 [ner] 'Testimport' ctx='nd Ansprechpartner. ▮Testimport▮ läuft auf Server er'
+UNEXPECTED (FP): 0

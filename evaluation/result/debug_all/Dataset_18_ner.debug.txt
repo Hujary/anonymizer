@@ -1,8 +1,12 @@
 DATASET: Dataset_18 | MODE: ner
-MODE ner      | TP=  4 FP=  0 FN=  2 | P=1.000 R=0.667 F1=0.800
+MODE ner      | TP=  0 FP=  0 FN=  6 | P=0.000 R=0.000 F1=0.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 2
+NOT DETECTED (FN): 6
+  - PER            136:152 [gold] 'Katharina Sommer' ctx='llo,\n\nmein Name ist ▮Katharina Sommer▮ (k.sommer@private-m'
+  - LOC            200:209 [gold] 'Stuttgart' ctx='\nIch wohne in 70563 ▮Stuttgart▮ und bin 29 Jahre al'
+  - ORG            270:287 [gold] 'AnalyticsPro GmbH' ctx='018 bis 06/2023 bei ▮AnalyticsPro GmbH▮ als Data Scientist '
   - ORG            424:439 [gold] 'Universität Ulm' ctx='er in Data Science, ▮Universität Ulm▮.\n\nTelefonisch errei'
   - PER            589:601 [gold] 'Markus Klein' ctx='\nEvtl. Referenz von ▮Markus Klein▮ bei DataConsult AG '
+  - ORG            606:620 [gold] 'DataConsult AG' ctx='on Markus Klein bei ▮DataConsult AG▮ einholen.'
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

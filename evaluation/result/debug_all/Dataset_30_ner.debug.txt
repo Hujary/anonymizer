@@ -1,10 +1,22 @@
 DATASET: Dataset_30 | MODE: ner
-MODE ner      | TP= 13 FP=  1 FN=  0 | P=0.929 R=1.000 F1=0.963
+MODE ner      | TP=  0 FP=  0 FN= 16 | P=0.000 R=0.000 F1=0.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 3
-  - PER            gold 522:546 [gold] 'Herrn Dr. Matthias König' [pred:ner:532:546] 'Matthias König' gold_ctx='g. Für den Auditor, ▮Herrn Dr. Matthias König▮, brauchen wir die a' pred_ctx=' Auditor, Herrn Dr. ▮Matthias König▮, brauchen wir die a'
-  - PER            gold 541:546 [gold] 'König' [pred:ner:532:546] 'Matthias König' gold_ctx=' Herrn Dr. Matthias ▮König▮, brauchen wir die a' pred_ctx=' Auditor, Herrn Dr. ▮Matthias König▮, brauchen wir die a'
-  - ORG            gold 839:852 [gold] 'TransLog GmbH' [pred:ner:831:852] 'anderem TransLog GmbH' gold_ctx='ster, unter anderem ▮TransLog GmbH▮.\n\n[09:23] Jana Hoff' pred_ctx='ienstleister, unter ▮anderem TransLog GmbH▮.\n\n[09:23] Jana Hoff'
-UNEXPECTED (FP): 1
-  - LOC            641:648 [ner] 'WL-2025' ctx='se 2.0“ (Projekt-ID ▮WL-2025▮-77).\n\n[09:20] Marku'
+NOT DETECTED (FN): 16
+  - PER            105:118 [gold] 'Jana Hoffmann' ctx='03.06.2025\n\n[09:12] ▮Jana Hoffmann▮ (jana.hoffmann@intr'
+  - LOC            284:294 [gold] 'Düsseldorf' ctx='linien für Standort ▮Düsseldorf▮, Speditionstraße 21'
+  - LOC            296:314 [gold] 'Speditionstraße 21' ctx='tandort Düsseldorf, ▮Speditionstraße 21▮.\n\n[09:15] Markus Ri'
+  - PER            325:338 [gold] 'Markus Ritter' ctx='straße 21.\n\n[09:15] ▮Markus Ritter▮:\nMeinst du die Vers'
+  - PER            454:467 [gold] 'Jana Hoffmann' ctx='ance\2025.\n\n[09:17] ▮Jana Hoffmann▮:\nIm Ordner ist nur '
+  - PER            522:546 [gold] 'Herrn Dr. Matthias König' ctx='g. Für den Auditor, ▮Herrn Dr. Matthias König▮, brauchen wir die a'
+  - PER            663:676 [gold] 'Markus Ritter' ctx='-2025-77).\n\n[09:20] ▮Markus Ritter▮:\nOkay, ich sehe ger'
+  - ORG            839:852 [gold] 'TransLog GmbH' ctx='ster, unter anderem ▮TransLog GmbH▮.\n\n[09:23] Jana Hoff'
+  - PER            863:876 [gold] 'Jana Hoffmann' ctx='sLog GmbH.\n\n[09:23] ▮Jana Hoffmann▮:\nBitte prüfen, ob i'
+  - PER            947:960 [gold] 'Thomas Berger' ctx=' alte Kontaktperson ▮Thomas Berger▮ steht. Laut Vertrag'
+  - PER            1006:1022 [gold] 'Frau Elena Rossi' ctx='2.02.2024 ist jetzt ▮Frau Elena Rossi▮ zuständig.\n\n[09:26]'
+  - PER            1043:1056 [gold] 'Markus Ritter' ctx='zuständig.\n\n[09:26] ▮Markus Ritter▮:\nStimmt, ich aktual'
+  - PER            1142:1155 [gold] 'Jana Hoffmann' ctx=', richtig?\n\n[09:28] ▮Jana Hoffmann▮:\nJa, genau. Und bit'
+  - PER            1277:1290 [gold] 'Markus Ritter' ctx='rn teilen.\n\n[09:32] ▮Markus Ritter▮:\nAlles klar. Ich sp'
+  - PER            1398:1411 [gold] 'Jana Hoffmann' ctx='iere dich.\n\n[09:35] ▮Jana Hoffmann▮:\nPerfekt. Der Termi'
+  - PER            1437:1446 [gold] 'Dr. König' ctx='ekt. Der Termin mit ▮Dr. König▮ ist am 10.06.2025 u'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 0

@@ -1,11 +1,17 @@
 DATASET: Dataset_19 | MODE: combined
-MODE combined | TP= 15 FP=  3 FN=  1 | P=0.833 R=0.938 F1=0.882
+MODE combined | TP=  6 FP=  0 FN= 11 | P=1.000 R=0.353 F1=0.522
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 1
+NOT DETECTED (FN): 11
+  - PER            31:50 [gold] 'Frau Sabine Lehmann' ctx='TVERTRAG\n\nZwischen\n\n▮Frau Sabine Lehmann▮\nUhlandstraße 19\n701'
+  - LOC            51:66 [gold] 'Uhlandstraße 19' ctx='Frau Sabine Lehmann\n▮Uhlandstraße 19▮\n70182 Stuttgart\n\n- '
+  - LOC            73:82 [gold] 'Stuttgart' ctx='landstraße 19\n70182 ▮Stuttgart▮\n\n- nachfolgend Verm'
+  - PER            118:137 [gold] 'Herrn Tobias Kruger' ctx='Vermieterin -\n\nund\n\n▮Herrn Tobias Kruger▮\nHegelstraße 7\n70174'
+  - LOC            138:151 [gold] 'Hegelstraße 7' ctx='Herrn Tobias Kruger\n▮Hegelstraße 7▮\n70174 Stuttgart\n\n- '
+  - LOC            158:167 [gold] 'Stuttgart' ctx='Hegelstraße 7\n70174 ▮Stuttgart▮\n\n- nachfolgend Miet'
+  - LOC            274:287 [gold] 'Hegelstraße 7' ctx='hoss links\nim Hause ▮Hegelstraße 7▮, 70174 Stuttgart.\n\n'
+  - LOC            295:304 [gold] 'Stuttgart' ctx='egelstraße 7, 70174 ▮Stuttgart▮.\n\nDie Wohnung beste'
   - LOC            1505:1514 [gold] 'Stuttgart' ctx='eter ausgehändigt.\n\n▮Stuttgart▮, den 12.03.2025\n\n\n_'
-NOT FULLY DETECTED (PARTIAL): 1
-  - LOC            gold 274:287 [gold] 'Hegelstraße 7' [pred:ner:268:287] 'Hause Hegelstraße 7' gold_ctx='hoss links\nim Hause ▮Hegelstraße 7▮, 70174 Stuttgart.\n\n' pred_ctx='ergeschoss links\nim ▮Hause Hegelstraße 7▮, 70174 Stuttgart.\n\n'
-UNEXPECTED (FP): 3
-  - LOC            354:358 [ner] 'Flur' ctx='immern, Küche, Bad, ▮Flur▮,\nmit einer Wohnflac'
-  - LOC            454:464 [ner] 'Waschraums' ctx=' 4\nMitbenutzung des ▮Waschraums▮ im Untergeschoss.\n\n'
-  - LOC            1105:1121 [ner] 'Monatskaltmieten' ctx='agt 2.670,00 EUR (3 ▮Monatskaltmieten▮).\nSie ist vor überg'
+  - PER            1560:1574 [gold] 'Sabine Lehmann' ctx='___________________\n▮Sabine Lehmann▮\n\n__________________'
+  - PER            1603:1616 [gold] 'Tobias Kruger' ctx='___________________\n▮Tobias Kruger▮'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 0

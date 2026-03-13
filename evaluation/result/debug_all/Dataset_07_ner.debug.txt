@@ -1,7 +1,11 @@
 DATASET: Dataset_07 | MODE: ner
-MODE ner      | TP=  4 FP=  0 FN=  1 | P=1.000 R=0.800 F1=0.889
+MODE ner      | TP=  0 FP=  0 FN=  5 | P=0.000 R=0.000 F1=0.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 1
+NOT DETECTED (FN): 5
   - PER            141:152 [gold] 'Frau Berger' ctx='-0311\n\nSehr geehrte ▮Frau Berger▮,\n\nbezugnehmend auf '
+  - ORG            422:434 [gold] 'AlphaCore AG' ctx='XXX  \nKontoinhaber: ▮AlphaCore AG▮  \n\nBei Rückfragen s'
+  - PER            470:481 [gold] 'Daniel Vogt' ctx='en steht Ihnen Herr ▮Daniel Vogt▮ (daniel.vogt@alphac'
+  - PER            582:593 [gold] 'Anna Keller' ctx='eundlichen Grüßen  \n▮Anna Keller▮  \nFinanzabteilung  '
+  - ORG            614:626 [gold] 'AlphaCore AG' ctx=' \nFinanzabteilung  \n▮AlphaCore AG▮'
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

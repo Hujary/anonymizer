@@ -25,19 +25,23 @@ def view(
             from spacy.util import is_package
         except Exception:
             return []
+
         out: list[tuple[str, str]] = []
         fast = model_map["fast"]
         large = model_map["large"]
+
         try:
             if is_package(fast):
                 out.append(("fast", fast))
         except Exception:
             pass
+
         try:
             if is_package(large):
                 out.append(("large", large))
         except Exception:
             pass
+
         return out
 
     installed = _installed_models()
@@ -72,45 +76,33 @@ def view(
     model_ref = ft.Ref[ft.Dropdown]()
     lang_ref = ft.Ref[ft.Dropdown]()
 
-    NER_UI_TYPES = ["PER", "ORG", "LOC", "GPE"]
-    NER_MINIMAL = {"PER"}
+    NER_UI_TYPES = ["PER", "ORG", "LOC", "STRASSE"]
+    NER_MINIMAL = {"PER", "STRASSE"}
 
     LABELS_DE = {
         "PER": "Person (PER)",
         "ORG": "Organisation (ORG)",
-        "LOC": "Ort (LOC)",
-        "GPE": "Staat/Gebiet (GPE)",
-        "DATE": "Datum (DATE)",
-        "TIME": "Uhrzeit (TIME)",
-        "MONEY": "Geldbetrag (MONEY)",
-        "PERCENT": "Prozentangabe (PERCENT)",
-        "PRODUCT": "Produktname (PRODUCT)",
-        "EVENT": "Ereignis (EVENT)",
-        "MISC": "Sonstiges (MISC)",
-    }
-    LABELS_EN = {
-        "PER": "Person name (PER)",
-        "ORG": "Organization or company (ORG)",
-        "LOC": "Physical location (LOC)",
-        "GPE": "Country or region (GPE)",
-        "DATE": "Date (DATE)",
-        "TIME": "Time expression (TIME)",
-        "MONEY": "Money amount (MONEY)",
-        "PERCENT": "Percentage (PERCENT)",
-        "PRODUCT": "Product name (PRODUCT)",
-        "EVENT": "Event or occasion (EVENT)",
-        "MISC": "Miscellaneous / other (MISC)",
+        "LOC": "Ort / Ortseinheit (LOC)",
+        "STRASSE": "Straße / Hausnummer (STRASSE)",
     }
 
-    REGEX_TYPES = ["E_MAIL", "TELEFON", "IBAN", "URL", "PLZ", "DATUM", "IP_ADRESSE"]
-    RX_MINIMAL = {"E_MAIL", "TELEFON", "IBAN", "IP_ADRESSE"}
+    LABELS_EN = {
+        "PER": "Person (PER)",
+        "ORG": "Organization (ORG)",
+        "LOC": "Location / place entity (LOC)",
+        "STRASSE": "Street / house number (STRASSE)",
+    }
+
+    REGEX_TYPES = ["E_MAIL", "TELEFON", "IBAN", "URL", "PLZ", "STRASSE", "DATUM", "IP_ADRESSE"]
+    RX_MINIMAL = {"E_MAIL", "TELEFON", "IBAN", "IP_ADRESSE", "STRASSE"}
 
     R_LABELS_DE = {
         "E_MAIL": "E-Mail",
         "TELEFON": "Telefon",
         "IBAN": "IBAN",
         "URL": "URL",
-        "PLZ": "PLZ",
+        "PLZ": "Postleitzahl (PLZ)",
+        "STRASSE": "Straße / Hausnummer (STRASSE)",
         "DATUM": "Datum",
         "IP_ADRESSE": "IP-Adresse",
     }
@@ -120,7 +112,8 @@ def view(
         "TELEFON": "Phone",
         "IBAN": "IBAN",
         "URL": "URL",
-        "PLZ": "ZIP",
+        "PLZ": "Postal code (PLZ)",
+        "STRASSE": "Street / house number (STRASSE)",
         "DATUM": "Date",
         "IP_ADRESSE": "IP address",
     }
@@ -204,7 +197,7 @@ def view(
 
     def toggle_ner_postprocessing(e: ft.ControlEvent):
         config.set("use_ner_postprocessing", bool(e.control.value))
-        _notify_saved(("Gespeichert" if lang == "de" else "Saved"))
+        _notify_saved("Gespeichert" if lang == "de" else "Saved")
 
     ner_post_switch.on_change = toggle_ner_postprocessing
 
@@ -215,7 +208,7 @@ def view(
 
     def toggle_copy_ai_prompt(e: ft.ControlEvent):
         config.set("copy_ai_prompt_enabled", bool(e.control.value))
-        _notify_saved(("Gespeichert" if lang == "de" else "Saved"))
+        _notify_saved("Gespeichert" if lang == "de" else "Saved")
 
     copy_ai_prompt_switch.on_change = toggle_copy_ai_prompt
 
@@ -244,7 +237,9 @@ def view(
             key = e.control.value
             if not key or key not in installed_keys:
                 return
+
             target = model_map.get(key, model_map["large"])
+
             try:
                 eff = set_spacy_model(target)
             except Exception as ex:
@@ -263,7 +258,7 @@ def view(
             config.set("spacy_model", eff)
             saved_label.value = f"{t(cur_lang, 'loaded')}: {eff}"
             _persist_flags_and_labels()
-            _notify_saved(("Gespeichert" if cur_lang == "de" else "Saved"))
+            _notify_saved("Gespeichert" if cur_lang == "de" else "Saved")
             page.update()
 
         dd.on_change = on_model_change
@@ -299,6 +294,7 @@ def view(
         col_left.controls = []
         col_right.controls = []
         store_dict.clear()
+
         half = (len(codes) + 1) // 2
         left_codes = codes[:half]
         right_codes = codes[half:]
@@ -309,8 +305,10 @@ def view(
                     selected.add(code)
                 else:
                     selected.discard(code)
+
                 if clamp_allowed is not None:
                     selected.intersection_update(clamp_allowed)
+
                 on_any_change()
 
             return ft.Checkbox(
@@ -333,7 +331,7 @@ def view(
         selected_ner.intersection_update(set(NER_UI_TYPES))
         selected_rx.intersection_update(set(REGEX_TYPES))
         _persist_flags_and_labels()
-        _notify_saved(("Gespeichert" if lang == "de" else "Saved"))
+        _notify_saved("Gespeichert" if lang == "de" else "Saved")
 
     build_two_col_checkboxes(
         NER_UI_TYPES,
@@ -346,6 +344,7 @@ def view(
         _on_any_settings_change,
         clamp_allowed=set(NER_UI_TYPES),
     )
+
     build_two_col_checkboxes(
         REGEX_TYPES,
         rlabel_for,
@@ -464,7 +463,7 @@ def view(
     sections.controls.append(
         ft.Row(
             [
-                ft.Text("NER-Typen", weight=ft.FontWeight.W_600, color=theme["text_secondary"]),
+                ft.Text("NER-basiert", weight=ft.FontWeight.W_600, color=theme["text_secondary"]),
                 ft.Container(expand=True),
                 ft.TextButton(t(lang, "settings.all"), on_click=ner_select_all),
                 ft.TextButton("Minimal" if lang == "de" else "Minimal", on_click=ner_select_minimal),
@@ -473,6 +472,7 @@ def view(
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
         )
     )
+
     sections.controls.append(ft.Container(height=10))
     sections.controls.append(
         ft.Row(
@@ -488,7 +488,7 @@ def view(
     sections.controls.append(
         ft.Row(
             [
-                ft.Text("Regex-Typen", weight=ft.FontWeight.W_600, color=theme["text_secondary"]),
+                ft.Text("Regex-basiert", weight=ft.FontWeight.W_600, color=theme["text_secondary"]),
                 ft.Container(expand=True),
                 ft.TextButton(t(lang, "settings.all"), on_click=rx_select_all),
                 ft.TextButton("Minimal" if lang == "de" else "Minimal", on_click=rx_select_minimal),
@@ -497,6 +497,7 @@ def view(
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
         )
     )
+
     sections.controls.append(ft.Container(height=10))
     sections.controls.append(
         ft.Row(

@@ -1,9 +1,17 @@
 DATASET: Dataset_24 | MODE: ner
-MODE ner      | TP=  9 FP=  1 FN=  1 | P=0.900 R=0.900 F1=0.900
+MODE ner      | TP=  0 FP=  0 FN= 11 | P=0.000 R=0.000 F1=0.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 1
+NOT DETECTED (FN): 11
+  - ORG            29:58 [gold] 'Hansen & Reuter Logistik GmbH' ctx='RTRAG\n\nZwischen der ▮Hansen & Reuter Logistik GmbH▮, Industriestraße 18'
+  - LOC            60:78 [gold] 'Industriestraße 18' ctx='uter Logistik GmbH, ▮Industriestraße 18▮, 70469 Stuttgart, v'
+  - LOC            86:95 [gold] 'Stuttgart' ctx='riestraße 18, 70469 ▮Stuttgart▮, vertreten durch de'
+  - PER            133:146 [gold] 'Markus Hansen' ctx='den Geschäftsführer ▮Markus Hansen▮ – nachfolgend Arbei'
+  - PER            179:196 [gold] 'Herrn Jonas Weber' ctx='d Arbeitgeber – und ▮Herrn Jonas Weber▮, Schönbühlstraße 27'
+  - LOC            198:216 [gold] 'Schönbühlstraße 27' ctx=' Herrn Jonas Weber, ▮Schönbühlstraße 27▮, 70188 Stuttgart – '
+  - LOC            224:233 [gold] 'Stuttgart' ctx='ühlstraße 27, 70188 ▮Stuttgart▮ – nachfolgend Arbei'
+  - PER            307:317 [gold] 'Herr Weber' ctx='rtrag geschlossen:\n\n▮Herr Weber▮ wird ab dem 01.06.2'
   - LOC            3041:3050 [gold] 'Stuttgart' ctx='ublik Deutschland.\n\n▮Stuttgart▮, den 22.04.2025 von'
-NOT FULLY DETECTED (PARTIAL): 1
-  - PER            gold 191:196 [gold] 'Weber' [pred:ner:185:196] 'Jonas Weber' gold_ctx='r – und Herrn Jonas ▮Weber▮, Schönbühlstraße 27' pred_ctx='itgeber – und Herrn ▮Jonas Weber▮, Schönbühlstraße 27'
-UNEXPECTED (FP): 1
-  - LOC            3012:3038 [ner] 'Bundesrepublik Deutschland' ctx=' gilt das Recht der ▮Bundesrepublik Deutschland▮.\n\nStuttgart, den 22'
+  - ORG            3071:3100 [gold] 'Hansen & Reuter Logistik GmbH' ctx=' den 22.04.2025 von ▮Hansen & Reuter Logistik GmbH▮ mit Jonas Weber'
+  - PER            3105:3116 [gold] 'Jonas Weber' ctx='r Logistik GmbH mit ▮Jonas Weber▮'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 0

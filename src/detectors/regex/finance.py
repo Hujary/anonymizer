@@ -2,9 +2,7 @@
 #
 # Regex-basierte Erkennung finanzbezogener Daten:
 #   - IBAN (DE)
-#   - USt-IdNr (DE)
-#   - Geldbeträge (€, EUR, verschiedene Schreibweisen)
-#
+
 # Rückgabeformat:
 #   (start_index, end_index, label)
 #   -> Character-Offsets für Masking-Pipeline

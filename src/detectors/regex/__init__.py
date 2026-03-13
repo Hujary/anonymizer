@@ -1,23 +1,23 @@
-from typing import Iterable, Tuple, Callable, Dict, List
+from typing import Callable, Dict, Iterable, List, Tuple
+
 from core import config
 
-from .contact import finde_contact      # E-Mail + Telefon
-from .finance import finde_finance      # IBAN
-from .location import finde_location    # PLZ, Ort, Straße
-from .date import finde_date            # Datumsformate
-from .url import finde_url              # URLs
-from .ip import finde_ip                # IP-Adressen
+from .contact import finde_contact
+from .date import finde_date
+from .finance import finde_finance
+from .ip import finde_ip
+from .location import finde_location
+from .url import finde_url
 
 
 _PRODUCES: Dict[str, List[str]] = {
     "finde_contact": ["E_MAIL", "TELEFON"],
     "finde_finance": ["IBAN"],
-    "finde_location": ["PLZ", "ORT", "STRASSE"],
+    "finde_location": ["PLZ", "STRASSE"],
     "finde_date": ["DATUM"],
     "finde_url": ["URL"],
     "finde_ip": ["IP_ADRESSE"],
 }
-
 
 _FINDERS: Dict[str, Callable[[str], Iterable[Tuple[int, int, str]]]] = {
     "finde_contact": finde_contact,
@@ -43,7 +43,6 @@ def finde_regex(text: str):
         "IBAN",
         "URL",
         "PLZ",
-        "ORT",
         "STRASSE",
         "DATUM",
         "IP_ADRESSE",

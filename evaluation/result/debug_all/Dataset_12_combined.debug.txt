@@ -1,7 +1,10 @@
 DATASET: Dataset_12 | MODE: combined
-MODE combined | TP= 11 FP=  0 FN=  1 | P=1.000 R=0.917 F1=0.957
+MODE combined | TP=  8 FP=  0 FN=  4 | P=1.000 R=0.667 F1=0.800
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 1
+NOT DETECTED (FN): 4
+  - PER            258:271 [gold] 'Martin Schulz' ctx='chon gelöst wurde.\n\n▮Martin Schulz▮ (NordLogistik GmbH,'
+  - ORG            273:290 [gold] 'NordLogistik GmbH' ctx='de.\n\nMartin Schulz (▮NordLogistik GmbH▮, martin.schulz@nord'
   - PER            698:703 [gold] 'Julia' ctx='emlich ungeduldig.\n\n▮Julia▮, InterLog GmbH'
+  - ORG            705:718 [gold] 'InterLog GmbH' ctx='ungeduldig.\n\nJulia, ▮InterLog GmbH▮'
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

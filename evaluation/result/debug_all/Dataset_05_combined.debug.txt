@@ -1,7 +1,9 @@
 DATASET: Dataset_05 | MODE: combined
-MODE combined | TP=  7 FP=  0 FN=  1 | P=1.000 R=0.875 F1=0.933
+MODE combined | TP=  5 FP=  0 FN=  3 | P=1.000 R=0.625 F1=0.769
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 1
+NOT DETECTED (FN): 3
   - ORG            264:285 [gold] 'PixelForge Media GmbH' ctx=' unseren Zugang bei ▮PixelForge Media GmbH▮. Ich heiße Markus W'
+  - PER            297:309 [gold] 'Markus Weber' ctx='dia GmbH. Ich heiße ▮Markus Weber▮, vielleicht hilft d'
+  - PER            812:818 [gold] 'Markus' ctx='ckiert wird?\n\nDanke\n▮Markus▮'
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

@@ -1,8 +1,8 @@
 DATASET: Dataset_09 | MODE: ner
-MODE ner      | TP=  1 FP=  1 FN=  1 | P=0.500 R=0.500 F1=0.500
+MODE ner      | TP=  0 FP=  0 FN=  2 | P=0.000 R=0.000 F1=0.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 1
+NOT DETECTED (FN): 2
+  - ORG            303:319 [gold] 'MediConnect GmbH' ctx='de. Ich arbeite bei ▮MediConnect GmbH▮ im Bereich Verwaltu'
   - PER            562:568 [gold] 'Sabine' ctx='blem gibt?\n\nDanke  \n▮Sabine▮'
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
-  - LOC            93:108 [ner] 'Patientenportal' ctx='etreff: Zugriff auf ▮Patientenportal▮\n\nHallo,\n\nseit heute'
+UNEXPECTED (FP): 0

@@ -1,11 +1,18 @@
 DATASET: Dataset_21 | MODE: combined
-MODE combined | TP= 11 FP=  0 FN=  3 | P=1.000 R=0.786 F1=0.880
+MODE combined | TP=  4 FP=  0 FN= 12 | P=1.000 R=0.250 F1=0.400
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 3
+NOT DETECTED (FN): 12
+  - PER            22:40 [gold] 'Herrn Lukas Berger' ctx='UFVERTRAG\n\nZwischen ▮Herrn Lukas Berger▮, wohnhaft in der Ta'
+  - LOC            58:70 [gold] 'Talstraße 14' ctx='er, wohnhaft in der ▮Talstraße 14▮, 70190 Stuttgart, u'
+  - LOC            78:87 [gold] 'Stuttgart' ctx='Talstraße 14, 70190 ▮Stuttgart▮, und Frau Nina Hofm'
+  - PER            93:110 [gold] 'Frau Nina Hofmann' ctx='0190 Stuttgart, und ▮Frau Nina Hofmann▮, wohnhaft in der Re'
+  - LOC            128:146 [gold] 'Reinsburgstraße 62' ctx='nn, wohnhaft in der ▮Reinsburgstraße 62▮, 70178 Stuttgart, w'
+  - LOC            154:163 [gold] 'Stuttgart' ctx='urgstraße 62, 70178 ▮Stuttgart▮, wird folgender Kau'
+  - PER            206:217 [gold] 'Herr Berger' ctx='rtrag geschlossen:\n\n▮Herr Berger▮ verkauft an Frau Ho'
+  - PER            230:242 [gold] 'Frau Hofmann' ctx=' Berger verkauft an ▮Frau Hofmann▮ sein gebrauchtes Ap'
+  - LOC            1003:1012 [gold] 'Stuttgart' ctx='gt am 20.04.2025 in ▮Stuttgart▮.\n\nStuttgart, den 20'
   - LOC            1015:1024 [gold] 'Stuttgart' ctx='2025 in Stuttgart.\n\n▮Stuttgart▮, den 20.04.2025\n\n⸻\n'
   - PER            1045:1057 [gold] 'Lukas Berger' ctx=' den 20.04.2025\n\n⸻\n\n▮Lukas Berger▮\n\n⸻\n\nNina Hofmann'
   - PER            1062:1074 [gold] 'Nina Hofmann' ctx='⸻\n\nLukas Berger\n\n⸻\n\n▮Nina Hofmann▮'
-NOT FULLY DETECTED (PARTIAL): 2
-  - PER            gold 34:40 [gold] 'Berger' [pred:ner:28:40] 'Lukas Berger' gold_ctx='wischen Herrn Lukas ▮Berger▮, wohnhaft in der Ta' pred_ctx='RAG\n\nZwischen Herrn ▮Lukas Berger▮, wohnhaft in der Ta'
-  - PER            gold 230:242 [gold] 'Frau Hofmann' [pred:ner:235:242] 'Hofmann' gold_ctx=' Berger verkauft an ▮Frau Hofmann▮ sein gebrauchtes Ap' pred_ctx='er verkauft an Frau ▮Hofmann▮ sein gebrauchtes Ap'
+NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

@@ -1,12 +1,14 @@
 DATASET: Dataset_14 | MODE: combined
-MODE combined | TP=  9 FP=  0 FN=  5 | P=1.000 R=0.643 F1=0.783
+MODE combined | TP=  7 FP=  0 FN=  8 | P=1.000 R=0.467 F1=0.636
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 5
+NOT DETECTED (FN): 8
+  - PER            8:22 [gold] 'Maria Hoffmann' ctx='Kontakt\n▮Maria Hoffmann▮\nBahnhofstraße 17\n48'
   - LOC            23:39 [gold] 'Bahnhofstraße 17' ctx='takt\nMaria Hoffmann\n▮Bahnhofstraße 17▮\n48143 Münster\nmaria'
   - LOC            46:53 [gold] 'Münster' ctx='nhofstraße 17\n48143 ▮Münster▮\nmaria.hoffmann@emai'
+  - ORG            264:285 [gold] 'TechFlow Solutions AG' ctx='r (02/2022 – heute)\n▮TechFlow Solutions AG▮, Münster\n\nVerantwor'
   - LOC            287:294 [gold] 'Münster' ctx='hFlow Solutions AG, ▮Münster▮\n\nVerantwortlich für'
+  - ORG            451:462 [gold] 'CoreIT GmbH' ctx='(09/2019 – 01/2022)\n▮CoreIT GmbH▮, Dortmund\n\nAkademis'
   - LOC            464:472 [gold] 'Dortmund' ctx='/2022)\nCoreIT GmbH, ▮Dortmund▮\n\nAkademischer Hinte'
   - ORG            534:553 [gold] 'Universität Münster' ctx='tsinformatik (2019)\n▮Universität Münster▮'
-NOT FULLY DETECTED (PARTIAL): 1
-  - ORG            gold 264:285 [gold] 'TechFlow Solutions AG' [pred:ner:273:285] 'Solutions AG' gold_ctx='r (02/2022 – heute)\n▮TechFlow Solutions AG▮, Münster\n\nVerantwor' pred_ctx='2 – heute)\nTechFlow ▮Solutions AG▮, Münster\n\nVerantwor'
+NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

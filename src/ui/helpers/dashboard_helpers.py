@@ -32,6 +32,7 @@ TYPE_LABELS_DE: Dict[str, str] = {
     "PER": "Person",
     "ORG": "Organisation",
     "LOC": "Ort",
+    "STRASSE": "Straße",
     "MISC": "Sonstiges",
 }
 
@@ -45,6 +46,7 @@ TYPE_LABELS_EN: Dict[str, str] = {
     "PER": "Person",
     "ORG": "Organization",
     "LOC": "Location",
+    "STRASSE": "Street",
     "MISC": "Other",
 }
 
@@ -65,6 +67,7 @@ GROUP_ORDER = [
     "DATUM",
     "PER",
     "ORG",
+    "STRASSE",
     "LOC",
     "MISC",
 ]

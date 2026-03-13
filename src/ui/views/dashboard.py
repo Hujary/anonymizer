@@ -32,6 +32,7 @@ BASE_TYPES = [
     "PER",
     "ORG",
     "LOC",
+    "STRASSE",
     "MISC",
 ]
 

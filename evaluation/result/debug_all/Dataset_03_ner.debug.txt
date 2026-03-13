@@ -1,8 +1,9 @@
 DATASET: Dataset_03 | MODE: ner
-MODE ner      | TP=  1 FP=  0 FN=  1 | P=1.000 R=0.500 F1=0.667
+MODE ner      | TP=  0 FP=  0 FN=  3 | P=0.000 R=0.000 F1=0.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 1
+NOT DETECTED (FN): 3
   - PER            300:312 [gold] 'Tobias Klein' ctx='gend.\n\nMeine Daten:\n▮Tobias Klein▮\nKlein Handel GmbH\nt'
-NOT FULLY DETECTED (PARTIAL): 1
-  - ORG            gold 313:330 [gold] 'Klein Handel GmbH' [pred:ner:319:330] 'Handel GmbH' gold_ctx='Daten:\nTobias Klein\n▮Klein Handel GmbH▮\ntobias.klein@klein-' pred_ctx='\nTobias Klein\nKlein ▮Handel GmbH▮\ntobias.klein@klein-'
+  - ORG            313:330 [gold] 'Klein Handel GmbH' ctx='Daten:\nTobias Klein\n▮Klein Handel GmbH▮\ntobias.klein@klein-'
+  - PER            657:663 [gold] 'Tobias' ctx='roblem gibt?\n\nDanke\n▮Tobias▮'
+NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

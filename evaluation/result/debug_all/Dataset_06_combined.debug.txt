@@ -1,8 +1,10 @@
 DATASET: Dataset_06 | MODE: combined
-MODE combined | TP=  7 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
+MODE combined | TP=  5 FP=  0 FN=  4 | P=1.000 R=0.556 F1=0.714
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 2
-  - ORG            gold 294:318 [gold] 'CloudWare Solutions GmbH' [pred:ner:304:318] 'Solutions GmbH' gold_ctx='.\n\nWir sind von der ▮CloudWare Solutions GmbH▮. Mein Name ist Dani' pred_ctx='d von der CloudWare ▮Solutions GmbH▮. Mein Name ist Dani'
-  - PER            gold 334:340 [gold] 'Daniel' [pred:ner:334:347] 'Daniel Krüger' gold_ctx='GmbH. Mein Name ist ▮Daniel▮ Krüger. Falls ihr r' pred_ctx='GmbH. Mein Name ist ▮Daniel Krüger▮. Falls ihr reinscha'
+NOT DETECTED (FN): 4
+  - ORG            294:318 [gold] 'CloudWare Solutions GmbH' ctx='.\n\nWir sind von der ▮CloudWare Solutions GmbH▮. Mein Name ist Dani'
+  - PER            334:340 [gold] 'Daniel' ctx='GmbH. Mein Name ist ▮Daniel▮ Krüger. Falls ihr r'
+  - PER            334:347 [gold] 'Daniel Krüger' ctx='GmbH. Mein Name ist ▮Daniel Krüger▮. Falls ihr reinscha'
+  - PER            831:837 [gold] 'Daniel' ctx=' Abrechnung.\n\nDanke\n▮Daniel▮'
+NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

@@ -52,30 +52,18 @@ def _is_ner_runtime_available() -> bool:
         return False
 
 
-def _run_ner(text: str, allowed_labels: List[str]) -> List[Treffer]:
+def _run_ner(text: str) -> List[Treffer]:
     try:
         from detectors.ner import finde_ner
-        from detectors.ner.filters import filter_ner_strict
     except Exception:
         return []
 
-    allowed_set = set(allowed_labels)
-    raw_ner: List[Treffer] = []
+    hits: List[Treffer] = []
 
     for s, e, l in finde_ner(text):
-        L = str(l).strip().upper()
-        if not L or L not in allowed_set:
-            continue
-        raw_ner.append(Treffer(s, e, L, "ner", from_ner=True))
+        hits.append(Treffer(s, e, l, "ner", from_ner=True))
 
-    if not raw_ner:
-        return []
-
-    use_post = bool(config.get("use_ner_postprocessing", True))
-    if not use_post:
-        return raw_ner
-
-    return filter_ner_strict(text, raw_ner, allowed_labels=allowed_labels)
+    return hits
 
 
 def _overlaps_any(a: Treffer, hits: List[Treffer]) -> bool:
@@ -126,9 +114,8 @@ def erkenne(text: str) -> List[Treffer]:
             for s, e, l in finde_regex(text)
         ]
 
-    allowed = _norm_labels(config.get("ner_labels", []))
-    if allowed and _is_ner_runtime_available():
-        ner_treffer = _run_ner(text, allowed_labels=allowed)
+    if flags.get("use_ner", True) and _is_ner_runtime_available():
+        ner_treffer = _run_ner(text)
     else:
         ner_treffer = []
 
@@ -183,13 +170,5 @@ def anwenden(text: str, treffer: List[Treffer], *, reversible: bool) -> str:
 
 def maskiere(text: str, *, reversible: bool = False) -> Tuple[str, List[Treffer]]:
     t = erkenne(text)
-
-    for tr in t:
-        print(
-            f"Treffer(start={tr.start}, ende={tr.ende}, "
-            f"label='{tr.label}', source='{tr.source}', "
-            f"from_regex={tr.from_regex}, from_ner={tr.from_ner})"
-        )
-
     out = anwenden(text, t, reversible=reversible)
     return out, t

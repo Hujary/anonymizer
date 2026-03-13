@@ -1,7 +1,15 @@
 DATASET: Dataset_15 | MODE: ner
-MODE ner      | TP=  9 FP=  1 FN=  0 | P=0.900 R=1.000 F1=0.947
+MODE ner      | TP=  0 FP=  0 FN=  9 | P=0.000 R=0.000 F1=0.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 0
+NOT DETECTED (FN): 9
+  - PER            12:23 [gold] 'Lukas Meier' ctx='Bewerbung – ▮Lukas Meier▮\n\nSehr geehrte Damen'
+  - PER            157:168 [gold] 'Lukas Meier' ctx='\nPersönliche Daten:\n▮Lukas Meier▮, geboren am 18.02.1'
+  - LOC            195:203 [gold] 'Nürnberg' ctx='en am 18.02.1994 in ▮Nürnberg▮\nAdresse: Lindenweg '
+  - LOC            213:224 [gold] 'Lindenweg 8' ctx='n Nürnberg\nAdresse: ▮Lindenweg 8▮, 90402 Nürnberg\nTel'
+  - LOC            232:240 [gold] 'Nürnberg' ctx=' Lindenweg 8, 90402 ▮Nürnberg▮\nTelefon 0171 998877'
+  - ORG            374:387 [gold] 'SoftTech GmbH' ctx='d Developer bei der ▮SoftTech GmbH▮ in Nürnberg.\nDavor '
+  - LOC            391:399 [gold] 'Nürnberg' ctx='er SoftTech GmbH in ▮Nürnberg▮.\nDavor war ich von '
+  - ORG            447:461 [gold] 'ByteFactory AG' ctx='bis 03/2021 bei der ▮ByteFactory AG▮ als Junior Entwickl'
+  - ORG            530:579 [gold] 'Friedrich-Alexander-Universität Erlangen-Nürnberg' ctx='ormatik (2013–2018)\n▮Friedrich-Alexander-Universität Erlangen-Nürnberg▮\n\nKenntnisse:\nJava, '
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
-  - LOC            593:597 [ner] 'Java' ctx='rnberg\n\nKenntnisse:\n▮Java▮, Spring Boot, REST,'
+UNEXPECTED (FP): 0

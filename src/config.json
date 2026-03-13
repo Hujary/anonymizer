@@ -6,19 +6,12 @@
   "theme": "light",
   "lang": "de",
   "ner_labels": [
-    "GPE",
     "LOC",
-    "ORG",
-    "PER"
+    "STRASSE"
   ],
   "regex_labels": [
-    "DATUM",
-    "E_MAIL",
-    "IBAN",
-    "IP_ADRESSE",
     "PLZ",
-    "TELEFON",
-    "URL"
+    "STRASSE"
   ],
   "auto_demask_enabled": true,
   "auto_mask_enabled": true,

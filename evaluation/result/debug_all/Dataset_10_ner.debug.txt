@@ -1,9 +1,9 @@
 DATASET: Dataset_10 | MODE: ner
-MODE ner      | TP=  1 FP=  1 FN=  2 | P=0.500 R=0.333 F1=0.400
+MODE ner      | TP=  0 FP=  0 FN=  3 | P=0.000 R=0.000 F1=0.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 2
+NOT DETECTED (FN): 3
   - PER            268:281 [gold] 'Thomas Reuter' ctx='d LT-9912.\n\nIch bin ▮Thomas Reuter▮ von der LogiTrans G'
+  - ORG            290:304 [gold] 'LogiTrans GmbH' ctx='omas Reuter von der ▮LogiTrans GmbH▮ (thomas.reuter@logi'
   - PER            561:567 [gold] 'Thomas' ctx='ist.\n\nViele Grüße  \n▮Thomas▮'
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
-  - LOC            36:57 [ner] 'support@fleetcloud.io' ctx='er@logitrans.de\nAn: ▮support@fleetcloud.io▮\nDatum: 07.03.2024\nB'
+UNEXPECTED (FP): 0

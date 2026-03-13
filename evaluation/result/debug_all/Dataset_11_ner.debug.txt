@@ -1,10 +1,13 @@
 DATASET: Dataset_11 | MODE: ner
-MODE ner      | TP=  4 FP=  1 FN=  3 | P=0.800 R=0.571 F1=0.667
+MODE ner      | TP=  0 FP=  0 FN=  7 | P=0.000 R=0.000 F1=0.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 3
+NOT DETECTED (FN): 7
   - ORG            107:115 [gold] 'BlueWave' ctx='treff: Re: Budget / ▮BlueWave▮\n\nHi,\n\nalso ich vers'
+  - ORG            257:276 [gold] 'BlueWave Media GmbH' ctx='ndsätzlich ok, ABER ▮BlueWave Media GmbH▮ will noch eine Anpa'
+  - PER            322:334 [gold] 'Oliver Braun' ctx='im Vertrag (Kontakt ▮Oliver Braun▮, oliver.braun@bluew'
   - PER            469:481 [gold] 'Markus Weber' ctx=' freigeben müssen.\n\n▮Markus Weber▮ – kannst du bitte d'
+  - PER            511:517 [gold] 'Oliver' ctx='du bitte direkt mit ▮Oliver▮ sprechen? Tel laut '
   - PER            596:600 [gold] 'Lisa' ctx='st mit dem Launch.\n\n▮Lisa▮, CreativeHub GmbH'
+  - ORG            602:618 [gold] 'CreativeHub GmbH' ctx=' dem Launch.\n\nLisa, ▮CreativeHub GmbH▮'
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
-  - PER            528:531 [ner] 'Tel' ctx='it Oliver sprechen? ▮Tel▮ laut Signatur: 040 '
+UNEXPECTED (FP): 0
