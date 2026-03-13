@@ -1,14 +1,12 @@
 DATASET: Dataset_30 | MODE: combined
-MODE combined | TP= 17 FP=  4 FN=  2 | P=0.810 R=0.895 F1=0.850
+MODE combined | TP= 18 FP=  3 FN=  1 | P=0.857 R=0.947 F1=0.900
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 2
-  - LOC            296:314 [gold] 'Speditionstraße 21' ctx='tandort Düsseldorf, ▮Speditionstraße 21▮.\n\n[09:15] Markus Ri'
+NOT DETECTED (FN): 1
   - ORG            839:852 [gold] 'TransLog GmbH' ctx='ster, unter anderem ▮TransLog GmbH▮.\n\n[09:23] Jana Hoff'
 NOT FULLY DETECTED (PARTIAL): 2
   - PER            gold 522:546 [gold] 'Herrn Dr. Matthias König' [pred:ner:532:546] 'Matthias König' gold_ctx='g. Für den Auditor, ▮Herrn Dr. Matthias König▮, brauchen wir die a' pred_ctx=' Auditor, Herrn Dr. ▮Matthias König▮, brauchen wir die a'
   - PER            gold 541:546 [gold] 'König' [pred:ner:532:546] 'Matthias König' gold_ctx=' Herrn Dr. Matthias ▮König▮, brauchen wir die a' pred_ctx=' Auditor, Herrn Dr. ▮Matthias König▮, brauchen wir die a'
-UNEXPECTED (FP): 4
-  - STRASSE        296:314 [regex] 'Speditionstraße 21' ctx='tandort Düsseldorf, ▮Speditionstraße 21▮.\n\n[09:15] Markus Ri'
+UNEXPECTED (FP): 3
   - ORG            630:640 [ner] 'Projekt-ID' ctx='kt „Warehouse 2.0“ (▮Projekt-ID▮ WL-2025-77).\n\n[09:2'
   - LOC            641:648 [ner] 'WL-2025' ctx='se 2.0“ (Projekt-ID ▮WL-2025▮-77).\n\n[09:20] Marku'
   - ORG            1105:1113 [ner] 'TransLog' ctx='s. Kundennummer bei ▮TransLog▮ ist 4471, richtig?\n'

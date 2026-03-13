@@ -197,41 +197,21 @@ ERKANNT (TP): 30
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 1
   - Dataset_28 gold:771:780 [gold] 'Stuttgart' <- pred:ner:773:782 'Stuttgart'
 
-NICHT ERKANNT (FN): 34
+NICHT ERKANNT (FN): 14
   - Dataset_13 244:253 [gold] 'Frankfurt'
-  - Dataset_14 23:39 [gold] 'Bahnhofstraße 17'
   - Dataset_14 46:53 [gold] 'Münster'
   - Dataset_14 287:294 [gold] 'Münster'
   - Dataset_14 464:472 [gold] 'Dortmund'
   - Dataset_15 213:224 [gold] 'Lindenweg 8'
-  - Dataset_19 51:66 [gold] 'Uhlandstraße 19'
-  - Dataset_19 138:151 [gold] 'Hegelstraße 7'
   - Dataset_19 274:287 [gold] 'Hegelstraße 7'
   - Dataset_19 1505:1514 [gold] 'Stuttgart'
-  - Dataset_20 53:67 [gold] 'Konigstraße 11'
   - Dataset_20 74:83 [gold] 'Stuttgart'
-  - Dataset_20 164:182 [gold] 'Tubinger Straße 42'
   - Dataset_20 189:198 [gold] 'Stuttgart'
-  - Dataset_20 383:397 [gold] 'Konigstraße 11'
   - Dataset_20 1450:1459 [gold] 'Stuttgart'
-  - Dataset_21 58:70 [gold] 'Talstraße 14'
-  - Dataset_21 128:146 [gold] 'Reinsburgstraße 62'
   - Dataset_21 1015:1024 [gold] 'Stuttgart'
-  - Dataset_22 62:79 [gold] 'Augustenstraße 33'
-  - Dataset_22 135:153 [gold] 'Lindwurmstraße 115'
   - Dataset_22 969:976 [gold] 'München'
-  - Dataset_23 55:69 [gold] 'Königstraße 45'
-  - Dataset_23 142:160 [gold] 'Rotebühlstraße 112'
   - Dataset_23 2725:2734 [gold] 'Stuttgart'
-  - Dataset_24 60:78 [gold] 'Industriestraße 18'
-  - Dataset_24 198:216 [gold] 'Schönbühlstraße 27'
   - Dataset_24 3041:3050 [gold] 'Stuttgart'
-  - Dataset_25 341:359 [gold] 'Tübinger Straße 54'
-  - Dataset_27 401:415 [gold] 'Hafenstraße 12'
-  - Dataset_28 267:285 [gold] 'Industriestraße 45'
-  - Dataset_28 750:763 [gold] 'Rosenstraße 8'
-  - Dataset_29 473:489 [gold] 'Leopoldstraße 23'
-  - Dataset_30 296:314 [gold] 'Speditionstraße 21'
 
 UNERWARTET (FP): 13
   - Dataset_08 297:319 [ner] 'Solarpark München-West'
@@ -509,18 +489,10 @@ UNERWARTET (FP): 1
 
 STRASSE
 --------------------------------------------------------------------------------
-ERKANNT (TP): 0
-
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
-
-NICHT ERKANNT (FN): 0
-
-UNERWARTET (FP): 21
+ERKANNT (TP): 18
   - Dataset_14 23:39 [regex] 'Bahnhofstraße 17'
-  - Dataset_15 213:224 [regex] 'Lindenweg 8'
   - Dataset_19 51:66 [regex] 'Uhlandstraße 19'
   - Dataset_19 138:151 [regex] 'Hegelstraße 7'
-  - Dataset_19 274:287 [regex] 'Hegelstraße 7'
   - Dataset_20 53:67 [regex] 'Konigstraße 11'
   - Dataset_20 383:397 [regex] 'Konigstraße 11'
   - Dataset_21 58:70 [regex] 'Talstraße 14'
@@ -534,9 +506,18 @@ UNERWARTET (FP): 21
   - Dataset_25 341:359 [regex] 'Tübinger Straße 54'
   - Dataset_27 401:415 [regex] 'Hafenstraße 12'
   - Dataset_28 267:285 [regex] 'Industriestraße 45'
-  - Dataset_28 752:765 [regex] 'Rosenstraße 8'
   - Dataset_29 473:489 [regex] 'Leopoldstraße 23'
   - Dataset_30 296:314 [regex] 'Speditionstraße 21'
+
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 1
+  - Dataset_28 gold:750:763 [gold] 'Rosenstraße 8' <- pred:regex:752:765 'Rosenstraße 8'
+
+NICHT ERKANNT (FN): 1
+  - Dataset_20 164:182 [gold] 'Tubinger Straße 42'
+
+UNERWARTET (FP): 2
+  - Dataset_15 213:224 [regex] 'Lindenweg 8'
+  - Dataset_19 274:287 [regex] 'Hegelstraße 7'
 
 
 TELEFON

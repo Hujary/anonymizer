@@ -2,7 +2,7 @@ DATASET: Dataset_29 | MODE: ner
 MODE ner      | TP= 16 FP=  3 FN=  1 | P=0.842 R=0.941 F1=0.889
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
-  - LOC            473:489 [gold] 'Leopoldstraße 23' ctx='derlassung München, ▮Leopoldstraße 23▮. Ich bin im interne'
+  - STRASSE        473:489 [gold] 'Leopoldstraße 23' ctx='derlassung München, ▮Leopoldstraße 23▮. Ich bin im interne'
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 3
   - ORG            0:7 [ner] 'Channel' ctx='▮Channel▮: #it-support-muench'

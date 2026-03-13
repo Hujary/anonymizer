@@ -1,7 +1,6 @@
 DATASET: Dataset_25 | MODE: regex
-MODE regex    | TP=  5 FP=  1 FN=  0 | P=0.833 R=1.000 F1=0.909
+MODE regex    | TP=  6 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
-  - STRASSE        341:359 [regex] 'Tübinger Straße 54' ctx='m Homeoffice in der ▮Tübinger Straße 54▮.\n\n[08:49] Julia Sch'
+UNEXPECTED (FP): 0

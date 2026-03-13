@@ -56,9 +56,9 @@
       "text": "Lukas Reinhardt"
     },
     {
-      "label": "LOC",
+      "label": "STRASSE",
       "expected_sources": [
-        "ner"
+        "ner", "regex"
       ],
       "start": 401,
       "end": 415,

@@ -2,7 +2,7 @@ DATASET: Dataset_27 | MODE: ner
 MODE ner      | TP= 13 FP=  2 FN=  1 | P=0.867 R=0.929 F1=0.897
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
-  - LOC            401:415 [gold] 'Hafenstraße 12' ctx='Adresse ist jeweils ▮Hafenstraße 12▮, 20457 Hamburg. Ans'
+  - STRASSE        401:415 [gold] 'Hafenstraße 12' ctx='Adresse ist jeweils ▮Hafenstraße 12▮, 20457 Hamburg. Ans'
 NOT FULLY DETECTED (PARTIAL): 1
   - ORG            gold 244:265 [gold] 'Bergmann Industrie AG' [pred:ner:244:262] 'Bergmann Industrie' gold_ctx='inträge zum Kunden „▮Bergmann Industrie AG▮“ aufgefallen. Kunde' pred_ctx='inträge zum Kunden „▮Bergmann Industrie▮ AG“ aufgefallen. Ku'
 UNEXPECTED (FP): 2

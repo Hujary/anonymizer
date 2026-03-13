@@ -1,20 +1,16 @@
 DATASET: Dataset_20 | MODE: combined
-MODE combined | TP=  9 FP=  4 FN= 10 | P=0.692 R=0.474 F1=0.562
+MODE combined | TP= 11 FP=  2 FN=  8 | P=0.846 R=0.579 F1=0.688
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 10
+NOT DETECTED (FN): 8
   - ORG            30:52 [gold] 'Linden Immobilien GmbH' ctx='TVERTRAG\n\nZwischen\n\n▮Linden Immobilien GmbH▮\nKonigstraße 11\n7017'
-  - LOC            53:67 [gold] 'Konigstraße 11' ctx='den Immobilien GmbH\n▮Konigstraße 11▮\n70173 Stuttgart\n\nve'
   - LOC            74:83 [gold] 'Stuttgart' ctx='onigstraße 11\n70173 ▮Stuttgart▮\n\nvertreten durch de'
   - ORG            146:163 [gold] 'Urban Coffee GmbH' ctx=' Markus Dietz\n\nund\n\n▮Urban Coffee GmbH▮\nTubinger Straße 42\n'
-  - LOC            164:182 [gold] 'Tubinger Straße 42' ctx='\n\nUrban Coffee GmbH\n▮Tubinger Straße 42▮\n70178 Stuttgart\n\nve'
+  - STRASSE        164:182 [gold] 'Tubinger Straße 42' ctx='\n\nUrban Coffee GmbH\n▮Tubinger Straße 42▮\n70178 Stuttgart\n\nve'
   - LOC            189:198 [gold] 'Stuttgart' ctx='ger Straße 42\n70178 ▮Stuttgart▮\n\nvertreten durch di'
-  - LOC            383:397 [gold] 'Konigstraße 11' ctx='enflache\nim Gebaude ▮Konigstraße 11▮, 70173 Stuttgart,\nm'
   - LOC            1450:1459 [gold] 'Stuttgart' ctx='and ist Stuttgart.\n\n▮Stuttgart▮, den 15.04.2025\n\n\n_'
   - ORG            1507:1529 [gold] 'Linden Immobilien GmbH' ctx='___________________\n▮Linden Immobilien GmbH▮\n\n__________________'
   - ORG            1560:1577 [gold] 'Urban Coffee GmbH' ctx='___________________\n▮Urban Coffee GmbH▮'
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 4
+UNEXPECTED (FP): 2
   - ORG            0:18 [ner] 'GEWERBEMIETVERTRAG' ctx='▮GEWERBEMIETVERTRAG▮\n\nZwischen\n\nLinden I'
-  - STRASSE        53:67 [regex] 'Konigstraße 11' ctx='den Immobilien GmbH\n▮Konigstraße 11▮\n70173 Stuttgart\n\nve'
   - LOC            360:371 [ner] 'Ladenflache' ctx='rdgeschoss gelegene ▮Ladenflache▮\nim Gebaude Konigstr'
-  - STRASSE        383:397 [regex] 'Konigstraße 11' ctx='enflache\nim Gebaude ▮Konigstraße 11▮, 70173 Stuttgart,\nm'

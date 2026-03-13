@@ -1,14 +1,12 @@
 DATASET: Dataset_14 | MODE: combined
-MODE combined | TP= 11 FP=  3 FN=  4 | P=0.786 R=0.733 F1=0.759
+MODE combined | TP= 12 FP=  2 FN=  3 | P=0.857 R=0.800 F1=0.828
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 4
-  - LOC            23:39 [gold] 'Bahnhofstraße 17' ctx='takt\nMaria Hoffmann\n▮Bahnhofstraße 17▮\n48143 Münster\nmaria'
+NOT DETECTED (FN): 3
   - LOC            46:53 [gold] 'Münster' ctx='nhofstraße 17\n48143 ▮Münster▮\nmaria.hoffmann@emai'
   - LOC            287:294 [gold] 'Münster' ctx='hFlow Solutions AG, ▮Münster▮\n\nVerantwortlich für'
   - LOC            464:472 [gold] 'Dortmund' ctx='/2022)\nCoreIT GmbH, ▮Dortmund▮\n\nAkademischer Hinte'
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 3
-  - STRASSE        23:39 [regex] 'Bahnhofstraße 17' ctx='takt\nMaria Hoffmann\n▮Bahnhofstraße 17▮\n48143 Münster\nmaria'
+UNEXPECTED (FP): 2
   - ORG            287:294 [ner] 'Münster' ctx='hFlow Solutions AG, ▮Münster▮\n\nVerantwortlich für'
   - ORG            464:486 [ner] 'Dortmund
 

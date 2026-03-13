@@ -26,9 +26,9 @@
       ]
     },
     {
-      "label": "LOC",
+      "label": "STRASSE",
       "expected_sources": [
-        "ner"
+        "ner", "regex"
       ],
       "start": 62,
       "end": 79,
@@ -77,9 +77,9 @@
       ]
     },
     {
-      "label": "LOC",
+      "label": "STRASSE",
       "expected_sources": [
-        "ner"
+        "ner", "regex"
       ],
       "start": 135,
       "end": 153,

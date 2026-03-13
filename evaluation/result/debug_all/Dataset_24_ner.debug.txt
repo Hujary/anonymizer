@@ -2,8 +2,8 @@ DATASET: Dataset_24 | MODE: ner
 MODE ner      | TP=  6 FP=  2 FN=  3 | P=0.750 R=0.667 F1=0.706
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 3
-  - LOC            60:78 [gold] 'Industriestraße 18' ctx='uter Logistik GmbH, ▮Industriestraße 18▮, 70469 Stuttgart, v'
-  - LOC            198:216 [gold] 'Schönbühlstraße 27' ctx=' Herrn Jonas Weber, ▮Schönbühlstraße 27▮, 70188 Stuttgart – '
+  - STRASSE        60:78 [gold] 'Industriestraße 18' ctx='uter Logistik GmbH, ▮Industriestraße 18▮, 70469 Stuttgart, v'
+  - STRASSE        198:216 [gold] 'Schönbühlstraße 27' ctx=' Herrn Jonas Weber, ▮Schönbühlstraße 27▮, 70188 Stuttgart – '
   - LOC            3041:3050 [gold] 'Stuttgart' ctx='ublik Deutschland.\n\n▮Stuttgart▮, den 22.04.2025 von'
 NOT FULLY DETECTED (PARTIAL): 2
   - PER            gold 191:196 [gold] 'Weber' [pred:ner:185:196] 'Jonas Weber' gold_ctx='r – und Herrn Jonas ▮Weber▮, Schönbühlstraße 27' pred_ctx='itgeber – und Herrn ▮Jonas Weber▮, Schönbühlstraße 27'

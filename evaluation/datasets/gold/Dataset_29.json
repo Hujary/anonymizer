@@ -83,9 +83,9 @@
       "text": "München"
     },
     {
-      "label": "LOC",
+      "label": "STRASSE",
       "expected_sources": [
-        "ner"
+        "ner", "regex"
       ],
       "start": 473,
       "end": 489,

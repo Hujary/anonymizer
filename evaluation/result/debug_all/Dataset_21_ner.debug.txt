@@ -2,8 +2,8 @@ DATASET: Dataset_21 | MODE: ner
 MODE ner      | TP=  5 FP=  2 FN=  5 | P=0.714 R=0.500 F1=0.588
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 5
-  - LOC            58:70 [gold] 'Talstraße 14' ctx='er, wohnhaft in der ▮Talstraße 14▮, 70190 Stuttgart, u'
-  - LOC            128:146 [gold] 'Reinsburgstraße 62' ctx='nn, wohnhaft in der ▮Reinsburgstraße 62▮, 70178 Stuttgart, w'
+  - STRASSE        58:70 [gold] 'Talstraße 14' ctx='er, wohnhaft in der ▮Talstraße 14▮, 70190 Stuttgart, u'
+  - STRASSE        128:146 [gold] 'Reinsburgstraße 62' ctx='nn, wohnhaft in der ▮Reinsburgstraße 62▮, 70178 Stuttgart, w'
   - LOC            1015:1024 [gold] 'Stuttgart' ctx='2025 in Stuttgart.\n\n▮Stuttgart▮, den 20.04.2025\n\n⸻\n'
   - PER            1045:1057 [gold] 'Lukas Berger' ctx=' den 20.04.2025\n\n⸻\n\n▮Lukas Berger▮\n\n⸻\n\nNina Hofmann'
   - PER            1062:1074 [gold] 'Nina Hofmann' ctx='⸻\n\nLukas Berger\n\n⸻\n\n▮Nina Hofmann▮'

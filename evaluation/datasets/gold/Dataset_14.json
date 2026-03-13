@@ -11,9 +11,9 @@
       "text": "Maria Hoffmann"
     },
     {
-      "label": "LOC",
+      "label": "STRASSE",
       "expected_sources": [
-        "ner"
+        "ner", "regex"
       ],
       "start": 23,
       "end": 39,

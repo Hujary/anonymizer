@@ -2,8 +2,8 @@ DATASET: Dataset_19 | MODE: ner
 MODE ner      | TP=  7 FP=  6 FN=  4 | P=0.538 R=0.636 F1=0.583
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 4
-  - LOC            51:66 [gold] 'Uhlandstraße 19' ctx='Frau Sabine Lehmann\n▮Uhlandstraße 19▮\n70182 Stuttgart\n\n- '
-  - LOC            138:151 [gold] 'Hegelstraße 7' ctx='Herrn Tobias Kruger\n▮Hegelstraße 7▮\n70174 Stuttgart\n\n- '
+  - STRASSE        51:66 [gold] 'Uhlandstraße 19' ctx='Frau Sabine Lehmann\n▮Uhlandstraße 19▮\n70182 Stuttgart\n\n- '
+  - STRASSE        138:151 [gold] 'Hegelstraße 7' ctx='Herrn Tobias Kruger\n▮Hegelstraße 7▮\n70174 Stuttgart\n\n- '
   - LOC            274:287 [gold] 'Hegelstraße 7' ctx='hoss links\nim Hause ▮Hegelstraße 7▮, 70174 Stuttgart.\n\n'
   - LOC            1505:1514 [gold] 'Stuttgart' ctx='eter ausgehändigt.\n\n▮Stuttgart▮, den 12.03.2025\n\n\n_'
 NOT FULLY DETECTED (PARTIAL): 0

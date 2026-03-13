@@ -11,9 +11,9 @@
       "text": "Bergmann IT-Systeme GmbH"
     },
     {
-      "label": "LOC",
+      "label": "STRASSE",
       "expected_sources": [
-        "ner"
+        "ner", "regex"
       ],
       "start": 55,
       "end": 69,
@@ -62,9 +62,9 @@
       ]
     },
     {
-      "label": "LOC",
+      "label": "STRASSE",
       "expected_sources": [
-        "ner"
+        "ner", "regex"
       ],
       "start": 142,
       "end": 160,

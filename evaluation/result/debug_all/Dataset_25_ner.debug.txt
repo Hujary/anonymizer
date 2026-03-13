@@ -2,7 +2,7 @@ DATASET: Dataset_25 | MODE: ner
 MODE ner      | TP=  9 FP=  2 FN=  1 | P=0.818 R=0.900 F1=0.857
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
-  - LOC            341:359 [gold] 'Tübinger Straße 54' ctx='m Homeoffice in der ▮Tübinger Straße 54▮.\n\n[08:49] Julia Sch'
+  - STRASSE        341:359 [gold] 'Tübinger Straße 54' ctx='m Homeoffice in der ▮Tübinger Straße 54▮.\n\n[08:49] Julia Sch'
 NOT FULLY DETECTED (PARTIAL): 1
   - PER            gold 140:145 [gold] 'Vogel' [pred:ner:133:145] 'Markus Vogel' gold_ctx='.de\n\n[08:47] Markus ▮Vogel▮ (Vertrieb, markus.v' pred_ctx='-intern.de\n\n[08:47] ▮Markus Vogel▮ (Vertrieb, markus.v'
 UNEXPECTED (FP): 2

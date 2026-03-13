@@ -38,9 +38,9 @@
       "text": "Düsseldorf"
     },
     {
-      "label": "LOC",
+      "label": "STRASSE",
       "expected_sources": [
-        "ner"
+        "ner", "regex"
       ],
       "start": 296,
       "end": 314,

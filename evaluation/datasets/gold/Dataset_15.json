@@ -40,7 +40,7 @@
     {
       "label": "LOC",
       "expected_sources": [
-        "ner"
+        "ner", "regex"
       ],
       "start": 213,
       "end": 224,

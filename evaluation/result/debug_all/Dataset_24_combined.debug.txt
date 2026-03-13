@@ -1,15 +1,11 @@
 DATASET: Dataset_24 | MODE: combined
-MODE combined | TP= 10 FP=  4 FN=  3 | P=0.714 R=0.769 F1=0.741
+MODE combined | TP= 12 FP=  2 FN=  1 | P=0.857 R=0.923 F1=0.889
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 3
-  - LOC            60:78 [gold] 'Industriestraße 18' ctx='uter Logistik GmbH, ▮Industriestraße 18▮, 70469 Stuttgart, v'
-  - LOC            198:216 [gold] 'Schönbühlstraße 27' ctx=' Herrn Jonas Weber, ▮Schönbühlstraße 27▮, 70188 Stuttgart – '
+NOT DETECTED (FN): 1
   - LOC            3041:3050 [gold] 'Stuttgart' ctx='ublik Deutschland.\n\n▮Stuttgart▮, den 22.04.2025 von'
 NOT FULLY DETECTED (PARTIAL): 2
   - PER            gold 191:196 [gold] 'Weber' [pred:ner:185:196] 'Jonas Weber' gold_ctx='r – und Herrn Jonas ▮Weber▮, Schönbühlstraße 27' pred_ctx='itgeber – und Herrn ▮Jonas Weber▮, Schönbühlstraße 27'
   - ORG            gold 3071:3100 [gold] 'Hansen & Reuter Logistik GmbH' [pred:ner:3071:3086] 'Hansen & Reuter' gold_ctx=' den 22.04.2025 von ▮Hansen & Reuter Logistik GmbH▮ mit Jonas Weber' pred_ctx=' den 22.04.2025 von ▮Hansen & Reuter▮ Logistik GmbH mit J'
-UNEXPECTED (FP): 4
+UNEXPECTED (FP): 2
   - ORG            0:14 [ner] 'ARBEITSVERTRAG' ctx='▮ARBEITSVERTRAG▮\n\nZwischen der Hanse'
-  - STRASSE        60:78 [regex] 'Industriestraße 18' ctx='uter Logistik GmbH, ▮Industriestraße 18▮, 70469 Stuttgart, v'
-  - STRASSE        198:216 [regex] 'Schönbühlstraße 27' ctx=' Herrn Jonas Weber, ▮Schönbühlstraße 27▮, 70188 Stuttgart – '
   - LOC            3012:3038 [ner] 'Bundesrepublik Deutschland' ctx=' gilt das Recht der ▮Bundesrepublik Deutschland▮.\n\nStuttgart, den 22'

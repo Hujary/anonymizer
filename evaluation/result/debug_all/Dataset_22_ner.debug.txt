@@ -2,8 +2,8 @@ DATASET: Dataset_22 | MODE: ner
 MODE ner      | TP=  6 FP=  0 FN=  5 | P=1.000 R=0.545 F1=0.706
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 5
-  - LOC            62:79 [gold] 'Augustenstraße 33' ctx='tt, wohnhaft in der ▮Augustenstraße 33▮, 80333 München, und'
-  - LOC            135:153 [gold] 'Lindwurmstraße 115' ctx='th, wohnhaft in der ▮Lindwurmstraße 115▮, 80337 München, wir'
+  - STRASSE        62:79 [gold] 'Augustenstraße 33' ctx='tt, wohnhaft in der ▮Augustenstraße 33▮, 80333 München, und'
+  - STRASSE        135:153 [gold] 'Lindwurmstraße 115' ctx='th, wohnhaft in der ▮Lindwurmstraße 115▮, 80337 München, wir'
   - LOC            969:976 [gold] 'München' ctx=' in München statt.\n\n▮München▮, den 05.05.2025\n\n⸻\n'
   - PER            997:1014 [gold] 'Katharina Schmitt' ctx=' den 05.05.2025\n\n⸻\n\n▮Katharina Schmitt▮\n\n⸻\n\nDaniel Roth'
   - PER            1019:1030 [gold] 'Daniel Roth' ctx='tharina Schmitt\n\n⸻\n\n▮Daniel Roth▮'

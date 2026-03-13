@@ -2,8 +2,8 @@ DATASET: Dataset_28 | MODE: ner
 MODE ner      | TP=  8 FP=  2 FN=  2 | P=0.800 R=0.800 F1=0.800
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 2
-  - LOC            267:285 [gold] 'Industriestraße 45' ctx='Standort Stuttgart, ▮Industriestraße 45▮.\n\n[13:07] Robert Kl'
-  - LOC            750:763 [gold] 'Rosenstraße 8' ctx='e von Daniel ist noc▮h Rosenstraße▮ 8, 70182 Stuttgart '
+  - STRASSE        267:285 [gold] 'Industriestraße 45' ctx='Standort Stuttgart, ▮Industriestraße 45▮.\n\n[13:07] Robert Kl'
+  - STRASSE        750:763 [gold] 'Rosenstraße 8' ctx='e von Daniel ist noc▮h Rosenstraße▮ 8, 70182 Stuttgart '
 NOT FULLY DETECTED (PARTIAL): 7
   - PER            gold 607:620 [gold] 'Miriam Scholz' [pred:ner:607:623] 'Miriam Scholz:#-' gold_ctx='ist 77134.\n\n[13:12] ▮Miriam Scholz▮:#-\nGut. Gehalt aktu' pred_ctx='ist 77134.\n\n[13:12] ▮Miriam Scholz:#-▮\nGut. Gehalt aktuell'
   - PER            gold 708:720 [gold] 'Robert Klein' [pred:ner:710:722] 'Robert Klein' gold_ctx='e wäre 4102.\n\n[13:14▮] Robert Kle▮in:\nAdresse von Dani' pred_ctx='wäre 4102.\n\n[13:14] ▮Robert Klein▮:\nAdresse von Daniel'

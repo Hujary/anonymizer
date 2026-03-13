@@ -1,7 +1,6 @@
 DATASET: Dataset_14 | MODE: regex
-MODE regex    | TP=  7 FP=  1 FN=  0 | P=0.875 R=1.000 F1=0.933
+MODE regex    | TP=  8 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
-  - STRASSE        23:39 [regex] 'Bahnhofstraße 17' ctx='takt\nMaria Hoffmann\n▮Bahnhofstraße 17▮\n48143 Münster\nmaria'
+UNEXPECTED (FP): 0

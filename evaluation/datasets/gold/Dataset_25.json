@@ -63,9 +63,9 @@
       "text": "0711 4587321"
     },
     {
-      "label": "LOC",
+      "label": "STRASSE",
       "expected_sources": [
-        "ner"
+        "ner", "regex"
       ],
       "start": 341,
       "end": 359,

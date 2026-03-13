@@ -1,10 +1,8 @@
 DATASET: Dataset_29 | MODE: combined
-MODE combined | TP= 22 FP=  3 FN=  1 | P=0.880 R=0.957 F1=0.917
+MODE combined | TP= 23 FP=  2 FN=  0 | P=0.920 R=1.000 F1=0.958
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - LOC            473:489 [gold] 'Leopoldstraße 23' ctx='derlassung München, ▮Leopoldstraße 23▮. Ich bin im interne'
+NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 3
+UNEXPECTED (FP): 2
   - ORG            0:7 [ner] 'Channel' ctx='▮Channel▮: #it-support-muench'
-  - STRASSE        473:489 [regex] 'Leopoldstraße 23' ctx='derlassung München, ▮Leopoldstraße 23▮. Ich bin im interne'
   - ORG            941:951 [ner] 'Projekt-ID' ctx='iell die Zahlen für ▮Projekt-ID▮ PRJ-2025-118. Anspr'

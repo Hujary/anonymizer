@@ -1,12 +1,11 @@
 DATASET: Dataset_28 | MODE: regex
-MODE regex    | TP=  4 FP=  3 FN=  0 | P=0.571 R=1.000 F1=0.727
+MODE regex    | TP=  5 FP=  1 FN=  0 | P=0.833 R=1.000 F1=0.909
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 3
+NOT FULLY DETECTED (PARTIAL): 4
+  - STRASSE        gold 750:763 [gold] 'Rosenstraße 8' [pred:regex:752:765] 'Rosenstraße 8' gold_ctx='e von Daniel ist noc▮h Rosenstraße▮ 8, 70182 Stuttgart ' pred_ctx='von Daniel ist noch ▮Rosenstraße 8▮, 70182 Stuttgart hi'
   - PLZ            gold 765:770 [gold] '70182' [pred:regex:767:772] '70182' gold_ctx='t noch Rosenstraße 8▮, 701▮82 Stuttgart hinterl' pred_ctx='noch Rosenstraße 8, ▮70182▮ Stuttgart hinterleg'
   - TELEFON        gold 905:917 [gold] '0172 5566778' [pred:regex:907:919] '0172 5566778' gold_ctx='private Telefonnumme▮r 0172 55667▮78 noch aktuell ist.' pred_ctx='ivate Telefonnummer ▮0172 5566778▮ noch aktuell ist.\n\n'
   - DATUM          gold 1101:1111 [gold] '20.06.2025' [pred:regex:1103:1113] '20.06.2025' gold_ctx='chtrag bis spätesten▮s 20.06.20▮25 zu finalisieren.' pred_ctx='trag bis spätestens ▮20.06.2025▮ zu finalisieren.'
-UNEXPECTED (FP): 3
-  - STRASSE        267:285 [regex] 'Industriestraße 45' ctx='Standort Stuttgart, ▮Industriestraße 45▮.\n\n[13:07] Robert Kl'
+UNEXPECTED (FP): 1
   - PLZ            591:596 [regex] '77134' ctx=' Personalnummer ist ▮77134▮.\n\n[13:12] Miriam Sc'
-  - STRASSE        752:765 [regex] 'Rosenstraße 8' ctx='von Daniel ist noch ▮Rosenstraße 8▮, 70182 Stuttgart hi'

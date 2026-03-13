@@ -65,9 +65,9 @@
       "text": "Stuttgart"
     },
     {
-      "label": "LOC",
+      "label": "STRASSE",
       "expected_sources": [
-        "ner"
+        "ner", "regex"
       ],
       "start": 267,
       "end": 285,
@@ -137,9 +137,9 @@
       "text": "Robert Klein"
     },
     {
-      "label": "LOC",
+      "label": "STRASSE",
       "expected_sources": [
-        "ner"
+        "ner", "regex"
       ],
       "start": 750,
       "end": 763,

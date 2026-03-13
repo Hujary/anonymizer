@@ -11,9 +11,9 @@
       "text": "Linden Immobilien GmbH"
     },
     {
-      "label": "LOC",
+      "label": "STRASSE",
       "expected_sources": [
-        "ner"
+        "ner", "regex"
       ],
       "start": 53,
       "end": 67,
@@ -71,9 +71,9 @@
       "text": "Urban Coffee GmbH"
     },
     {
-      "label": "LOC",
+      "label": "STRASSE",
       "expected_sources": [
-        "ner"
+        "ner", "regex"
       ],
       "start": 164,
       "end": 182,
@@ -122,9 +122,9 @@
       ]
     },
     {
-      "label": "LOC",
+      "label": "STRASSE",
       "expected_sources": [
-        "ner"
+        "ner", "regex"
       ],
       "start": 383,
       "end": 397,
