@@ -6,7 +6,7 @@
   "theme": "light",
   "lang": "de",
   "ner_labels": [
-    "ORG"
+    "PER"
   ],
   "regex_labels": [],
   "auto_demask_enabled": true,
