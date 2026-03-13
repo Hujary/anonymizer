@@ -1,4 +1,3 @@
-# evaluation/script/eval_single.py
 from __future__ import annotations
 
 import argparse
@@ -15,6 +14,18 @@ if str(SRC_DIR) not in sys.path:
 
 from core import config
 from pipeline.anonymisieren import erkenne
+
+
+POLICY_SPECS: Dict[str, Dict[str, List[str]]] = {
+    "minimal": {
+        "ner_labels": ["PER", "STRASSE"],
+        "regex_labels": ["E_MAIL", "TELEFON", "IBAN", "IP_ADRESSE", "STRASSE"],
+    },
+    "secure": {
+        "ner_labels": ["PER", "ORG", "LOC", "STRASSE"],
+        "regex_labels": ["DATUM", "E_MAIL", "IBAN", "IP_ADRESSE", "PLZ", "STRASSE", "TELEFON", "URL"],
+    },
+}
 
 
 @dataclass(frozen=True)
@@ -65,6 +76,20 @@ class EvalCounts:
         return (2.0 * p * r / d) if d else 0.0
 
 
+@dataclass(frozen=True)
+class Miss:
+    kind: str
+    label: str
+    start: int
+    end: int
+    source: str
+    text: str
+    pred_start: Optional[int] = None
+    pred_end: Optional[int] = None
+    pred_source: Optional[str] = None
+    pred_text: Optional[str] = None
+
+
 def _read_text(p: Path) -> str:
     return p.read_text(encoding="utf-8")
 
@@ -84,6 +109,56 @@ def _norm_source(s: Any) -> str:
 
 def _norm_label(s: Any) -> str:
     return str(s or "").strip().upper()
+
+
+def _normalize_label_list(values: List[str]) -> List[str]:
+    out: List[str] = []
+    seen: Set[str] = set()
+
+    for value in values:
+        label = _norm_label(value)
+        if not label:
+            continue
+        if label in seen:
+            continue
+        seen.add(label)
+        out.append(label)
+
+    return out
+
+
+def _apply_policy(policy_name: str) -> None:
+    policy_key = str(policy_name or "").strip().lower()
+
+    if policy_key not in POLICY_SPECS:
+        raise ValueError(f"Unknown policy: {policy_name}")
+
+    spec = POLICY_SPECS[policy_key]
+    config.set("ner_labels", _normalize_label_list(spec.get("ner_labels", [])))
+    config.set("regex_labels", _normalize_label_list(spec.get("regex_labels", [])))
+
+
+# Liefert die Label-Menge, die für die gewählte Policy in diesem Modus überhaupt bewertet werden darf.
+def _policy_labels_for_mode(policy_name: str, mode: str) -> Set[str]:
+    policy_key = str(policy_name or "").strip().lower()
+
+    if policy_key not in POLICY_SPECS:
+        raise ValueError(f"Unknown policy: {policy_name}")
+
+    spec = POLICY_SPECS[policy_key]
+    ner_labels = set(_normalize_label_list(spec.get("ner_labels", [])))
+    regex_labels = set(_normalize_label_list(spec.get("regex_labels", [])))
+
+    if mode == "regex":
+        return regex_labels
+
+    if mode == "ner":
+        return ner_labels
+
+    if mode == "combined":
+        return ner_labels.union(regex_labels)
+
+    raise ValueError(f"Unknown mode: {mode}")
 
 
 def _extract_spans(text: str, *, allowed_sources: Set[str]) -> List[Span]:
@@ -123,12 +198,14 @@ def _extract_regex_spans_raw(text: str) -> List[Span]:
         return []
 
     out: List[Span] = []
+
     for s, e, label in finde_regex(text) or []:
         if not isinstance(s, int) or not isinstance(e, int):
             continue
         if s < 0 or e <= s or e > len(text):
             continue
         out.append(Span(start=s, end=e, label=_norm_label(label), source="regex"))
+
     return out
 
 
@@ -228,10 +305,18 @@ def _parse_gold(gold: Dict[str, Any]) -> List[GoldEntity]:
     return out
 
 
+# Gold ist nur dann für den aktuellen Modus relevant, wenn die erwartete Source zu diesem Modus passt.
 def _gold_required_for_mode(g: GoldEntity, mode_sources: Set[str]) -> bool:
     if not g.expected_sources:
         return True
     return bool(g.expected_sources.intersection(mode_sources))
+
+
+# Gold ist nur dann für die aktuelle Policy relevant, wenn das Label in dieser Policy überhaupt ausgewertet wird.
+def _gold_required_for_policy(g: GoldEntity, allowed_labels: Set[str]) -> bool:
+    if not allowed_labels:
+        return False
+    return bool(g.acceptable_labels.intersection(allowed_labels))
 
 
 def _candidate_allowed_for_mode(c: GoldCandidate, mode_sources: Set[str]) -> bool:
@@ -240,6 +325,7 @@ def _candidate_allowed_for_mode(c: GoldCandidate, mode_sources: Set[str]) -> boo
     return bool(c.expected_sources.intersection(mode_sources))
 
 
+# Aktiviert intern den gewünschten Auswertungsmodus.
 def _set_config_for_mode(mode: str) -> None:
     flags = dict(config.get_flags() or {})
     debug_mask = bool(flags.get("debug_mask", False))
@@ -250,11 +336,11 @@ def _set_config_for_mode(mode: str) -> None:
     elif mode == "ner":
         config.set_flags(use_regex=False, use_ner=True, debug_mask=debug_mask)
         if not (config.get("ner_labels", None) or []):
-            config.set("ner_labels", ["PER", "ORG", "LOC", "GPE"])
+            config.set("ner_labels", ["PER", "ORG", "LOC", "STRASSE"])
     elif mode == "combined":
         config.set_flags(use_regex=True, use_ner=True, debug_mask=debug_mask)
         if not (config.get("ner_labels", None) or []):
-            config.set("ner_labels", ["PER", "ORG", "LOC", "GPE"])
+            config.set("ner_labels", ["PER", "ORG", "LOC", "STRASSE"])
     else:
         raise ValueError(f"Unknown mode: {mode}")
 
@@ -285,32 +371,17 @@ def _restore_config(snap: Dict[str, Any]) -> None:
 
 
 def _ctx(text: str, start: int, end: int, radius: int) -> str:
-    left = text[max(0, start - radius) : start].replace("\n", "\\n").replace("\r", "\\r")
+    left = text[max(0, start - radius):start].replace("\n", "\\n").replace("\r", "\\r")
     mid = text[start:end].replace("\n", "\\n").replace("\r", "\\r")
-    right = text[end : min(len(text), end + radius)].replace("\n", "\\n").replace("\r", "\\r")
+    right = text[end:min(len(text), end + radius)].replace("\n", "\\n").replace("\r", "\\r")
     return f"{left}▮{mid}▮{right}"
-
-
-@dataclass(frozen=True)
-class Miss:
-    kind: str  # TP / FP / FN / PARTIAL
-    label: str
-
-    start: int
-    end: int
-    source: str
-    text: str
-
-    pred_start: Optional[int] = None
-    pred_end: Optional[int] = None
-    pred_source: Optional[str] = None
-    pred_text: Optional[str] = None
 
 
 def _load_eval_config(eval_root: Path) -> Dict[str, Any]:
     cfg_path = eval_root / "eval_config.json"
     if not cfg_path.exists():
         return {}
+
     try:
         raw = json.loads(cfg_path.read_text(encoding="utf-8"))
         return raw if isinstance(raw, dict) else {}
@@ -328,13 +399,16 @@ def _allowed_labels_for_source(cfg: Dict[str, Any], source: str) -> Set[str]:
         return set()
 
     out: Set[str] = set()
+
     for x in xs:
         s = str(x or "").strip().upper()
         if s:
             out.add(s)
+
     return out
 
 
+# Wendet zusätzliche Label-Regeln aus eval_config.json auf die Vorhersagen an.
 def _apply_label_rules(
     text: str,
     spans: List[Span],
@@ -367,16 +441,20 @@ def _apply_label_rules(
         for r in loc_rules:
             if not isinstance(r, dict):
                 continue
+
             domain_label = str(r.get("domain_label", "")).strip().upper()
             overlaps = r.get("when_regex_label_overlaps", [])
+
             if not domain_label:
                 continue
+
             ov: Set[str] = set()
             if isinstance(overlaps, list):
                 for x in overlaps:
                     s = str(x).strip().upper()
                     if s:
                         ov.add(s)
+
             if ov:
                 rules.append((domain_label, ov))
 
@@ -399,6 +477,7 @@ def _apply_label_rules(
         if s.source == "ner" and L == "LOC" and rules:
             for domain_label, overlap_labels in rules:
                 matched = False
+
                 for r in regex_spans:
                     if r.label.upper() not in overlap_labels:
                         continue
@@ -406,6 +485,7 @@ def _apply_label_rules(
                         new_label = domain_label
                         matched = True
                         break
+
                 if matched:
                     break
 
@@ -424,19 +504,23 @@ def _evaluate(
     *,
     mode: str,
     mode_sources: Set[str],
+    policy_name: str,
     eval_root: Optional[Path] = None,
 ) -> Tuple[EvalCounts, Dict[str, EvalCounts], List[Miss]]:
     _set_config_for_mode(mode)
 
     cfg = _load_eval_config(eval_root or Path("evaluation"))
+    allowed_policy_labels = _policy_labels_for_mode(policy_name, mode)
 
     preds = _extract_spans(text, allowed_sources=mode_sources)
 
     allowed_regex = _allowed_labels_for_source(cfg, "regex")
     allowed_ner = _allowed_labels_for_source(cfg, "ner")
 
+    # Filtert die Predictions zusätzlich anhand der eval_config pro Source.
     if allowed_regex or allowed_ner:
         filtered: List[Span] = []
+
         for p in preds:
             if p.source == "regex":
                 if allowed_regex and p.label.upper() not in allowed_regex:
@@ -445,6 +529,7 @@ def _evaluate(
                 if allowed_ner and p.label.upper() not in allowed_ner:
                     continue
             filtered.append(p)
+
         preds = filtered
 
     regex_ref = _extract_regex_spans_raw(text)
@@ -466,6 +551,9 @@ def _evaluate(
         if not _gold_required_for_mode(g, mode_sources):
             continue
 
+        if not _gold_required_for_policy(g, allowed_policy_labels):
+            continue
+
         candidates = [c for c in g.candidates if _candidate_allowed_for_mode(c, mode_sources)]
         if not candidates:
             continue
@@ -473,12 +561,18 @@ def _evaluate(
         lbl_counts = counts_by_label.setdefault(g.primary_label, EvalCounts())
 
         found_exact: Optional[Tuple[int, int, str]] = None
+
+        # Ein exakter Treffer zählt nur, wenn das Label sowohl zum Gold als auch zur Policy passt.
         for c in candidates:
             for L in g.acceptable_labels:
+                if L not in allowed_policy_labels:
+                    continue
+
                 k = (c.start, c.end, L)
                 if k in pred_by_key:
                     found_exact = k
                     break
+
             if found_exact is not None:
                 break
 
@@ -495,7 +589,7 @@ def _evaluate(
                     start=p.start,
                     end=p.end,
                     source=p.source,
-                    text=text[p.start : p.end],
+                    text=text[p.start:p.end],
                 )
             )
             continue
@@ -503,19 +597,22 @@ def _evaluate(
         best_partial_pred: Optional[Span] = None
         best_partial_gold: Optional[GoldCandidate] = None
 
+        # PARTIAL zählt nur innerhalb des für diese Policy erlaubten Labelraums.
         for c in candidates:
             for p in preds:
                 if p.label not in g.acceptable_labels:
                     continue
+                if p.label not in allowed_policy_labels:
+                    continue
                 if not _overlaps(p.start, p.end, c.start, c.end):
                     continue
-
-                if (p.start == c.start and p.end == c.end):
+                if p.start == c.start and p.end == c.end:
                     continue
 
                 best_partial_pred = p
                 best_partial_gold = c
                 break
+
             if best_partial_pred is not None:
                 break
 
@@ -528,11 +625,11 @@ def _evaluate(
                     start=best_partial_gold.start,
                     end=best_partial_gold.end,
                     source="gold",
-                    text=best_partial_gold.text or text[best_partial_gold.start : best_partial_gold.end],
+                    text=best_partial_gold.text or text[best_partial_gold.start:best_partial_gold.end],
                     pred_start=best_partial_pred.start,
                     pred_end=best_partial_pred.end,
                     pred_source=best_partial_pred.source,
-                    pred_text=text[best_partial_pred.start : best_partial_pred.end],
+                    pred_text=text[best_partial_pred.start:best_partial_pred.end],
                 )
             )
             continue
@@ -548,16 +645,22 @@ def _evaluate(
                 start=c0.start,
                 end=c0.end,
                 source="gold",
-                text=c0.text or text[c0.start : c0.end],
+                text=c0.text or text[c0.start:c0.end],
             )
         )
 
+    # FP werden nur für Labels gezählt, die diese Policy in diesem Modus überhaupt bewerten soll.
     for p in preds:
+        if p.label not in allowed_policy_labels:
+            continue
+
         k = p.key()
+
         if k in matched_pred_keys:
             continue
         if k in partial_pred_keys:
             continue
+
         counts_total.fp += 1
         lbl_counts = counts_by_label.setdefault(p.label, EvalCounts())
         lbl_counts.fp += 1
@@ -569,7 +672,7 @@ def _evaluate(
                 start=p.start,
                 end=p.end,
                 source=p.source,
-                text=text[p.start : p.end],
+                text=text[p.start:p.end],
             )
         )
 
@@ -587,14 +690,17 @@ def _format_summary(mode: str, total: EvalCounts) -> str:
 
 def _format_per_label(by_label: Dict[str, EvalCounts]) -> List[str]:
     lines: List[str] = []
+
     for lbl in sorted(by_label.keys()):
         c = by_label[lbl]
         if (c.tp + c.fp + c.fn) == 0:
             continue
+
         lines.append(
             f"  {lbl:14s} TP={c.tp:3d} FP={c.fp:3d} FN={c.fn:3d} "
             f"P={c.precision():.3f} R={c.recall():.3f} F1={c.f1():.3f}"
         )
+
     return lines
 
 
@@ -613,16 +719,19 @@ def _format_misses(
         lines.append(f"NOT DETECTED (FN): {len(items)}")
         if not items:
             return
+
         shown = 0
         for m in items:
             if shown >= max_lines:
                 lines.append(f"  ... truncated ({len(items) - max_lines} more)")
                 break
+
             ctx = _ctx(text, m.start, m.end, ctx_radius) if ctx_radius > 0 else ""
             if ctx:
                 lines.append(f"  - {m.label:14s} {m.start}:{m.end} [{m.source}] '{m.text}' ctx='{ctx}'")
             else:
                 lines.append(f"  - {m.label:14s} {m.start}:{m.end} [{m.source}] '{m.text}'")
+
             shown += 1
 
     def dump_fp() -> None:
@@ -630,16 +739,19 @@ def _format_misses(
         lines.append(f"UNEXPECTED (FP): {len(items)}")
         if not items:
             return
+
         shown = 0
         for m in items:
             if shown >= max_lines:
                 lines.append(f"  ... truncated ({len(items) - max_lines} more)")
                 break
+
             ctx = _ctx(text, m.start, m.end, ctx_radius) if ctx_radius > 0 else ""
             if ctx:
                 lines.append(f"  - {m.label:14s} {m.start}:{m.end} [{m.source}] '{m.text}' ctx='{ctx}'")
             else:
                 lines.append(f"  - {m.label:14s} {m.start}:{m.end} [{m.source}] '{m.text}'")
+
             shown += 1
 
     def dump_partial() -> None:
@@ -647,6 +759,7 @@ def _format_misses(
         lines.append(f"NOT FULLY DETECTED (PARTIAL): {len(items)}")
         if not items:
             return
+
         shown = 0
         for m in items:
             if shown >= max_lines:
@@ -683,26 +796,31 @@ def _format_misses(
     def dump_tp() -> None:
         if not show_tp:
             return
+
         items = [m for m in misses if m.kind == "TP"]
         lines.append(f"DETECTED (TP): {len(items)}")
         if not items:
             return
+
         shown = 0
         for m in items:
             if shown >= max_lines:
                 lines.append(f"  ... truncated ({len(items) - max_lines} more)")
                 break
+
             ctx = _ctx(text, m.start, m.end, ctx_radius) if ctx_radius > 0 else ""
             if ctx:
                 lines.append(f"  - {m.label:14s} {m.start}:{m.end} [{m.source}] '{m.text}' ctx='{ctx}'")
             else:
                 lines.append(f"  - {m.label:14s} {m.start}:{m.end} [{m.source}] '{m.text}'")
+
             shown += 1
 
     dump_fn()
     dump_partial()
     dump_fp()
     dump_tp()
+
     return lines
 
 
@@ -726,13 +844,14 @@ def _resolve_paths(eval_root: Path, basename: str) -> Tuple[Path, Path, Path, Pa
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--name", required=True, help="Basename like Dataset_01 (without extension)")
-    ap.add_argument("--eval-root", default="evaluation", help="Root folder containing datasets/, result/, token/, script/")
-    ap.add_argument("--debug", action="store_true", help="Write FN/FP/PARTIAL (and optional TP) into debug file")
-    ap.add_argument("--show-tp", action="store_true", help="Include TP list in debug file")
-    ap.add_argument("--per-label", action="store_true", help="Include per-label stats in result file")
-    ap.add_argument("--ctx", type=int, default=20, help="Context radius for debug lines (0 disables)")
-    ap.add_argument("--max-lines", type=int, default=200, help="Max lines per section before truncation")
-    ap.add_argument("--no-ner-post", action="store_true", help="Disable NER postprocessing (raw spaCy output)")
+    ap.add_argument("--eval-root", default="evaluation")
+    ap.add_argument("--policy", choices=sorted(POLICY_SPECS.keys()), default="secure")
+    ap.add_argument("--debug", action="store_true")
+    ap.add_argument("--show-tp", action="store_true")
+    ap.add_argument("--per-label", action="store_true")
+    ap.add_argument("--ctx", type=int, default=20)
+    ap.add_argument("--max-lines", type=int, default=200)
+    ap.add_argument("--no-ner-post", action="store_true")
     args = ap.parse_args()
 
     eval_root = Path(args.eval_root)
@@ -757,6 +876,8 @@ def main() -> int:
         config.set("use_ner_postprocessing", True)
 
     try:
+        _apply_policy(args.policy)
+
         modes: List[Tuple[str, Set[str]]] = [
             ("regex", {"regex"}),
             ("ner", {"ner"}),
@@ -769,6 +890,10 @@ def main() -> int:
         report_lines.append(f"DATASET: {basename}")
         report_lines.append(f"TEXT: {text_path}")
         report_lines.append(f"GOLD: {gold_path}")
+        report_lines.append(f"POLICY: {args.policy}")
+        report_lines.append(f"NER_LABELS: {config.get('ner_labels', [])}")
+        report_lines.append(f"REGEX_LABELS: {config.get('regex_labels', [])}")
+        report_lines.append(f"NER_POSTPROCESSING: {bool(config.get('use_ner_postprocessing', True))}")
         report_lines.append("")
         report_lines.append("SUMMARY")
         report_lines.append("-" * 70)
@@ -779,8 +904,10 @@ def main() -> int:
                 gold_entities,
                 mode=mode,
                 mode_sources=set(sources),
+                policy_name=args.policy,
                 eval_root=eval_root,
             )
+
             report_lines.append(_format_summary(mode, total))
 
             if args.per_label:
@@ -790,7 +917,7 @@ def main() -> int:
                 report_lines.append("")
 
             if args.debug:
-                debug_lines.append(f"DATASET: {basename} | MODE: {mode}")
+                debug_lines.append(f"DATASET: {basename} | POLICY: {args.policy} | MODE: {mode}")
                 debug_lines.append(_format_summary(mode, total))
                 debug_lines.append("-" * 70)
                 debug_lines.extend(
@@ -817,6 +944,7 @@ def main() -> int:
     print(f"Wrote: {out_path}")
     if args.debug:
         print(f"Wrote: {dbg_path}")
+
     return 0
 
 
