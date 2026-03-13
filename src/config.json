@@ -1,26 +1,14 @@
 {
-  "use_regex": true,
+  "use_regex": false,
   "use_ner": true,
   "debug_mask": false,
   "spacy_model": "de_core_news_lg",
   "theme": "light",
   "lang": "de",
   "ner_labels": [
-    "LOC",
-    "ORG",
-    "PER",
-    "STRASSE"
+    "ORG"
   ],
-  "regex_labels": [
-    "DATUM",
-    "E_MAIL",
-    "IBAN",
-    "IP_ADRESSE",
-    "PLZ",
-    "STRASSE",
-    "TELEFON",
-    "URL"
-  ],
+  "regex_labels": [],
   "auto_demask_enabled": true,
   "auto_mask_enabled": true,
   "reversible_masking": true,

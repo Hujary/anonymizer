@@ -4,44 +4,87 @@ from typing import Final, Set
 
 
 PER_BAD_TOKENS: Final[Set[str]] = {
-    # greetings
+    # greetings / sign-offs
     "hallo",
     "hi",
     "hey",
     "servus",
     "moin",
-    "grüße",
     "gruß",
-    "guten",
-    "gutenmorgen",
-    "gutenabend",
-    "guten tag",
-
-    # email phrases
+    "grüße",
     "danke",
-    "vielen dank",
+    "bitte",
+    "sorry",
+
+    # politeness / mail phrases
     "mit",
     "freundlichen",
     "freundliche",
     "beste",
     "lieben",
     "liebe",
-    "beste grüße",
-    "mit freundlichen grüßen",
+    "vielen",
+    "dank",
 
-    # conversational tokens
-    "bitte",
-    "sorry",
+    # conversational fillers
     "ok",
     "okay",
     "ja",
     "nein",
 
-    # sentence starters
+    # pronouns / generic starters
+    "ich",
+    "wir",
     "mein",
     "meine",
     "unser",
     "unsere",
-    "ich",
-    "wir",
+    "dein",
+    "deine",
+    "sein",
+    "seine",
+    "ihr",
+    "ihre",
+
+    # generic document / support / workflow terms
+    "betreff",
+    "ticket",
+    "ticket-id",
+    "id",
+    "kunde",
+    "firma",
+    "produkt",
+    "zeitpunkt",
+    "fehler",
+    "fehlerbeschreibung",
+    "benutzer",
+    "passwort",
+    "benutzername",
+    "meldung",
+    "sitzung",
+    "prüfung",
+    "mitarbeiter",
+    "anfrage",
+    "vorgang",
+    "anliegen",
+    "status",
+
+    # generic system / ui terms
+    "login",
+    "logout",
+    "anmelden",
+    "dashboard",
+    "portal",
+    "system",
+    "plattform",
+    "backend",
+    "frontend",
+    "support",
+    "service",
+
+    # time / date context words
+    "uhr",
+    "heute",
+    "morgen",
+    "gestern",
 }
