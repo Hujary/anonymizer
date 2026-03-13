@@ -1,6 +1,8 @@
 DATASET: Dataset_22 | MODE: regex
-MODE regex    | TP=  4 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
+MODE regex    | TP=  4 FP=  2 FN=  0 | P=0.667 R=1.000 F1=0.800
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0
+UNEXPECTED (FP): 2
+  - STRASSE        62:79 [regex] 'Augustenstraße 33' ctx='tt, wohnhaft in der ▮Augustenstraße 33▮, 80333 München, und'
+  - STRASSE        135:153 [regex] 'Lindwurmstraße 115' ctx='th, wohnhaft in der ▮Lindwurmstraße 115▮, 80337 München, wir'

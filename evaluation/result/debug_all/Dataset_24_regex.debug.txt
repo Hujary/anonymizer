@@ -1,6 +1,8 @@
 DATASET: Dataset_24 | MODE: regex
-MODE regex    | TP=  4 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
+MODE regex    | TP=  4 FP=  2 FN=  0 | P=0.667 R=1.000 F1=0.800
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0
+UNEXPECTED (FP): 2
+  - STRASSE        60:78 [regex] 'Industriestraße 18' ctx='uter Logistik GmbH, ▮Industriestraße 18▮, 70469 Stuttgart, v'
+  - STRASSE        198:216 [regex] 'Schönbühlstraße 27' ctx=' Herrn Jonas Weber, ▮Schönbühlstraße 27▮, 70188 Stuttgart – '

@@ -1,6 +1,8 @@
 DATASET: Dataset_20 | MODE: regex
-MODE regex    | TP=  5 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
+MODE regex    | TP=  5 FP=  2 FN=  0 | P=0.714 R=1.000 F1=0.833
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0
+UNEXPECTED (FP): 2
+  - STRASSE        53:67 [regex] 'Konigstraße 11' ctx='den Immobilien GmbH\n▮Konigstraße 11▮\n70173 Stuttgart\n\nve'
+  - STRASSE        383:397 [regex] 'Konigstraße 11' ctx='enflache\nim Gebaude ▮Konigstraße 11▮, 70173 Stuttgart,\nm'

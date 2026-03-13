@@ -1,13 +1,12 @@
 DATASET: Dataset_13 | MODE: combined
-MODE combined | TP=  9 FP=  0 FN=  7 | P=1.000 R=0.562 F1=0.720
+MODE combined | TP= 14 FP=  2 FN=  2 | P=0.875 R=0.875 F1=0.875
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 7
-  - PER            38:50 [gold] 'Daniel Weber' ctx='liche Angaben\nName: ▮Daniel Weber▮\nGeburtsdatum: 09.01'
-  - LOC            91:108 [gold] 'Frankfurt am Main' ctx='1991\nWohnort: 60313 ▮Frankfurt am Main▮\nTelefon: +49 176 77'
-  - ORG            226:242 [gold] 'DataSystems GmbH' ctx='enior IT-Consultant\n▮DataSystems GmbH▮, Frankfurt\n\n• Berat'
+NOT DETECTED (FN): 2
   - LOC            244:253 [gold] 'Frankfurt' ctx='t\nDataSystems GmbH, ▮Frankfurt▮\n\n• Beratung im Bere'
-  - ORG            412:427 [gold] 'NetSolutions AG' ctx='21\nIT-Administrator\n▮NetSolutions AG▮, Wiesbaden\n\nAusbild'
-  - LOC            429:438 [gold] 'Wiesbaden' ctx='or\nNetSolutions AG, ▮Wiesbaden▮\n\nAusbildung\n10/2012'
   - ORG            486:518 [gold] 'Technische Universität Darmstadt' ctx='17\nB.Sc. Informatik\n▮Technische Universität Darmstadt▮\n\nFachkenntnisse\nClo'
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0
+UNEXPECTED (FP): 2
+  - ORG            244:265 [ner] 'Frankfurt
+
+• Beratung' ctx='t\nDataSystems GmbH, ▮Frankfurt\n\n• Beratung▮ im Bereich Cloud-Mi'
+  - LOC            277:292 [ner] 'Cloud-Migration' ctx='Beratung im Bereich ▮Cloud-Migration▮\n• Implementierung v'

@@ -1,23 +1,17 @@
 DATASET: Dataset_28 | MODE: ner
-MODE ner      | TP=  0 FP=  0 FN= 17 | P=0.000 R=0.000 F1=0.000
+MODE ner      | TP=  8 FP=  2 FN=  2 | P=0.800 R=0.800 F1=0.800
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 17
-  - ORG            62:87 [gold] 'Helion Manufacturing GmbH' ctx='-recht\nUnternehmen: ▮Helion Manufacturing GmbH▮\nDatum: 04.06.2025\n\n'
-  - PER            115:128 [gold] 'Miriam Scholz' ctx='04.06.2025\n\n[13:05] ▮Miriam Scholz▮ (m.scholz@helion-mf'
-  - PER            189:203 [gold] 'Daniel Fischer' ctx=' Arbeitsvertrag von ▮Daniel Fischer▮ prüfen. Eintrittsda'
-  - LOC            256:265 [gold] 'Stuttgart' ctx='1.03.2022, Standort ▮Stuttgart▮, Industriestraße 45'
+NOT DETECTED (FN): 2
   - LOC            267:285 [gold] 'Industriestraße 45' ctx='Standort Stuttgart, ▮Industriestraße 45▮.\n\n[13:07] Robert Kl'
-  - PER            296:308 [gold] 'Robert Klein' ctx='straße 45.\n\n[13:07] ▮Robert Klein▮:\nGeht es um die Ver'
-  - LOC            341:348 [gold] 'München' ctx='die Versetzung nach ▮München▮?\n\n[13:08] Miriam Sc'
-  - PER            359:372 [gold] 'Miriam Scholz' ctx='h München?\n\n[13:08] ▮Miriam Scholz▮:\nJa. Neue Position '
-  - PER            483:495 [gold] 'Robert Klein' ctx='alten ist.\n\n[13:10] ▮Robert Klein▮:\nIch sehe im Dokume'
-  - PER            607:620 [gold] 'Miriam Scholz' ctx='ist 77134.\n\n[13:12] ▮Miriam Scholz▮:\nGut. Gehalt aktuel'
-  - PER            708:720 [gold] 'Robert Klein' ctx='wäre 4102.\n\n[13:14] ▮Robert Klein▮:\nAdresse von Daniel'
-  - LOC            750:763 [gold] 'Rosenstraße 8' ctx='von Daniel ist noch ▮Rosenstraße 8▮, 70182 Stuttgart hi'
-  - LOC            771:780 [gold] 'Stuttgart' ctx='osenstraße 8, 70182 ▮Stuttgart▮ hinterlegt. Müssen '
-  - PER            838:851 [gold] 'Miriam Scholz' ctx='alisieren.\n\n[13:16] ▮Miriam Scholz▮:\nBitte außerdem prü'
-  - PER            945:957 [gold] 'Robert Klein' ctx='tuell ist.\n\n[13:18] ▮Robert Klein▮:\nIch stimme das mit'
-  - PER            995:1008 [gold] 'Sabine Köhler' ctx='it dem Betriebsrat (▮Sabine Köhler▮) ab und melde mich.'
-  - PER            1038:1051 [gold] 'Miriam Scholz' ctx='elde mich.\n\n[13:21] ▮Miriam Scholz▮:\nDanke. Ziel ist Ve'
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0
+  - LOC            750:763 [gold] 'Rosenstraße 8' ctx='e von Daniel ist noc▮h Rosenstraße▮ 8, 70182 Stuttgart '
+NOT FULLY DETECTED (PARTIAL): 7
+  - PER            gold 607:620 [gold] 'Miriam Scholz' [pred:ner:607:623] 'Miriam Scholz:#-' gold_ctx='ist 77134.\n\n[13:12] ▮Miriam Scholz▮:#-\nGut. Gehalt aktu' pred_ctx='ist 77134.\n\n[13:12] ▮Miriam Scholz:#-▮\nGut. Gehalt aktuell'
+  - PER            gold 708:720 [gold] 'Robert Klein' [pred:ner:710:722] 'Robert Klein' gold_ctx='e wäre 4102.\n\n[13:14▮] Robert Kle▮in:\nAdresse von Dani' pred_ctx='wäre 4102.\n\n[13:14] ▮Robert Klein▮:\nAdresse von Daniel'
+  - LOC            gold 771:780 [gold] 'Stuttgart' [pred:ner:773:782] 'Stuttgart' gold_ctx=' Rosenstraße 8, 7018▮2 Stuttga▮rt hinterlegt. Müsse' pred_ctx='osenstraße 8, 70182 ▮Stuttgart▮ hinterlegt. Müssen '
+  - PER            gold 838:851 [gold] 'Miriam Scholz' [pred:ner:840:853] 'Miriam Scholz' gold_ctx='tualisieren.\n\n[13:16▮] Miriam Scho▮lz:\nBitte außerdem p' pred_ctx='alisieren.\n\n[13:16] ▮Miriam Scholz▮:\nBitte außerdem prü'
+  - PER            gold 945:957 [gold] 'Robert Klein' [pred:ner:947:959] 'Robert Klein' gold_ctx='aktuell ist.\n\n[13:18▮] Robert Kle▮in:\nIch stimme das m' pred_ctx='tuell ist.\n\n[13:18] ▮Robert Klein▮:\nIch stimme das mit'
+  - PER            gold 995:1008 [gold] 'Sabine Köhler' [pred:ner:997:1010] 'Sabine Köhler' gold_ctx=' mit dem Betriebsrat▮ (Sabine Köhl▮er) ab und melde mic' pred_ctx='it dem Betriebsrat (▮Sabine Köhler▮) ab und melde mich.'
+  - PER            gold 1038:1051 [gold] 'Miriam Scholz' [pred:ner:1040:1053] 'Miriam Scholz' gold_ctx=' melde mich.\n\n[13:21▮] Miriam Scho▮lz:\nDanke. Ziel ist ' pred_ctx='elde mich.\n\n[13:21] ▮Miriam Scholz▮:\nDanke. Ziel ist Ve'
+UNEXPECTED (FP): 2
+  - PER            212:226 [ner] 'Eintrittsdatum' ctx='iel Fischer prüfen. ▮Eintrittsdatum▮ war der 01.03.2022,'
+  - LOC            736:742 [ner] 'Daniel' ctx=' Klein:\nAdresse von ▮Daniel▮ ist noch Rosenstraß'

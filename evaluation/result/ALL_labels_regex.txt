@@ -3,7 +3,7 @@ LABEL REPORT | MODE: regex
 
 DATUM
 --------------------------------------------------------------------------------
-ERKANNT (TP): 72
+ERKANNT (TP): 71
   - Dataset_01 435:445 [regex] '03.02.2024'
   - Dataset_02 671:681 [regex] '14.02.2024'
   - Dataset_02 868:878 [regex] '13.02.2024'
@@ -69,7 +69,6 @@ ERKANNT (TP): 72
   - Dataset_28 95:105 [regex] '04.06.2025'
   - Dataset_28 235:245 [regex] '01.03.2022'
   - Dataset_28 395:405 [regex] '01.07.2025'
-  - Dataset_28 1101:1111 [regex] '20.06.2025'
   - Dataset_29 61:71 [regex] '16.05.2025'
   - Dataset_29 840:850 [regex] '14.05.2025'
   - Dataset_30 85:95 [regex] '03.06.2025'
@@ -77,7 +76,8 @@ ERKANNT (TP): 72
   - Dataset_30 985:995 [regex] '12.02.2024'
   - Dataset_30 1454:1464 [regex] '10.06.2025'
 
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 1
+  - Dataset_28 gold:1101:1111 [gold] '20.06.2025' <- pred:regex:1103:1113 '20.06.2025'
 
 NICHT ERKANNT (FN): 0
 
@@ -162,7 +162,7 @@ UNERWARTET (FP): 0
 
 PLZ
 --------------------------------------------------------------------------------
-ERKANNT (TP): 21
+ERKANNT (TP): 20
   - Dataset_13 85:90 [regex] '60313'
   - Dataset_14 40:45 [regex] '48143'
   - Dataset_15 226:231 [regex] '90402'
@@ -183,9 +183,9 @@ ERKANNT (TP): 21
   - Dataset_24 80:85 [regex] '70469'
   - Dataset_24 218:223 [regex] '70188'
   - Dataset_27 417:422 [regex] '20457'
-  - Dataset_28 765:770 [regex] '70182'
 
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 1
+  - Dataset_28 gold:765:770 [gold] '70182' <- pred:regex:767:772 '70182'
 
 NICHT ERKANNT (FN): 0
 
@@ -193,9 +193,41 @@ UNERWARTET (FP): 1
   - Dataset_28 591:596 [regex] '77134'
 
 
+STRASSE
+--------------------------------------------------------------------------------
+ERKANNT (TP): 0
+
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
+
+NICHT ERKANNT (FN): 0
+
+UNERWARTET (FP): 21
+  - Dataset_14 23:39 [regex] 'Bahnhofstraße 17'
+  - Dataset_15 213:224 [regex] 'Lindenweg 8'
+  - Dataset_19 51:66 [regex] 'Uhlandstraße 19'
+  - Dataset_19 138:151 [regex] 'Hegelstraße 7'
+  - Dataset_19 274:287 [regex] 'Hegelstraße 7'
+  - Dataset_20 53:67 [regex] 'Konigstraße 11'
+  - Dataset_20 383:397 [regex] 'Konigstraße 11'
+  - Dataset_21 58:70 [regex] 'Talstraße 14'
+  - Dataset_21 128:146 [regex] 'Reinsburgstraße 62'
+  - Dataset_22 62:79 [regex] 'Augustenstraße 33'
+  - Dataset_22 135:153 [regex] 'Lindwurmstraße 115'
+  - Dataset_23 55:69 [regex] 'Königstraße 45'
+  - Dataset_23 142:160 [regex] 'Rotebühlstraße 112'
+  - Dataset_24 60:78 [regex] 'Industriestraße 18'
+  - Dataset_24 198:216 [regex] 'Schönbühlstraße 27'
+  - Dataset_25 341:359 [regex] 'Tübinger Straße 54'
+  - Dataset_27 401:415 [regex] 'Hafenstraße 12'
+  - Dataset_28 267:285 [regex] 'Industriestraße 45'
+  - Dataset_28 752:765 [regex] 'Rosenstraße 8'
+  - Dataset_29 473:489 [regex] 'Leopoldstraße 23'
+  - Dataset_30 296:314 [regex] 'Speditionstraße 21'
+
+
 TELEFON
 --------------------------------------------------------------------------------
-ERKANNT (TP): 20
+ERKANNT (TP): 19
   - Dataset_01 157:173 [regex] '+49 711 99887766'
   - Dataset_02 168:183 [regex] '+49 711 4567890'
   - Dataset_03 365:376 [regex] '0751 987654'
@@ -215,9 +247,9 @@ ERKANNT (TP): 20
   - Dataset_17 115:128 [regex] '0160 44556677'
   - Dataset_18 471:484 [regex] '0151 66778899'
   - Dataset_25 185:197 [regex] '0711 4587321'
-  - Dataset_28 905:917 [regex] '0172 5566778'
 
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 1
+  - Dataset_28 gold:905:917 [gold] '0172 5566778' <- pred:regex:907:919 '0172 5566778'
 
 NICHT ERKANNT (FN): 0
 

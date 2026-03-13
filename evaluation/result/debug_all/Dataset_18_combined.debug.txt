@@ -1,12 +1,9 @@
 DATASET: Dataset_18 | MODE: combined
-MODE combined | TP=  7 FP=  0 FN=  6 | P=1.000 R=0.538 F1=0.700
+MODE combined | TP= 13 FP=  3 FN=  0 | P=0.812 R=1.000 F1=0.897
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 6
-  - PER            136:152 [gold] 'Katharina Sommer' ctx='llo,\n\nmein Name ist ▮Katharina Sommer▮ (k.sommer@private-m'
-  - LOC            200:209 [gold] 'Stuttgart' ctx='\nIch wohne in 70563 ▮Stuttgart▮ und bin 29 Jahre al'
-  - ORG            270:287 [gold] 'AnalyticsPro GmbH' ctx='018 bis 06/2023 bei ▮AnalyticsPro GmbH▮ als Data Scientist '
-  - ORG            424:439 [gold] 'Universität Ulm' ctx='er in Data Science, ▮Universität Ulm▮.\n\nTelefonisch errei'
-  - PER            589:601 [gold] 'Markus Klein' ctx='\nEvtl. Referenz von ▮Markus Klein▮ bei DataConsult AG '
-  - ORG            606:620 [gold] 'DataConsult AG' ctx='on Markus Klein bei ▮DataConsult AG▮ einholen.'
+NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0
+UNEXPECTED (FP): 3
+  - ORG            0:2 [ner] 'FW' ctx='▮FW▮: Bewerbung Position'
+  - ORG            341:365 [ner] 'Machine-Learning-Modelle' ctx='rt war ich u.a. für ▮Machine-Learning-Modelle▮ im Finanzbereich ve'
+  - PER            570:574 [ner] 'Evtl' ctx='72.000 € jährlich).\n▮Evtl▮. Referenz von Marku'

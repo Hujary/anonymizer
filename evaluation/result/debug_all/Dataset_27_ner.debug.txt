@@ -1,21 +1,10 @@
 DATASET: Dataset_27 | MODE: ner
-MODE ner      | TP=  0 FP=  0 FN= 15 | P=0.000 R=0.000 F1=0.000
+MODE ner      | TP= 13 FP=  2 FN=  1 | P=0.867 R=0.929 F1=0.897
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 15
-  - ORG            67:89 [gold] 'NordCom Vertriebs GmbH' ctx='nigung\nUnternehmen: ▮NordCom Vertriebs GmbH▮\nDatum: 21.05.2025\n\n'
-  - PER            117:128 [gold] 'Anna Keller' ctx='21.05.2025\n\n[10:14] ▮Anna Keller▮ (anna.keller@nordco'
-  - ORG            244:265 [gold] 'Bergmann Industrie AG' ctx='inträge zum Kunden „▮Bergmann Industrie AG▮“ aufgefallen. Kunde'
-  - PER            345:360 [gold] 'Lukas Reinhardt' ctx='h zu sein.\n\n[10:16] ▮Lukas Reinhardt▮:\nIch sehe das auch.'
+NOT DETECTED (FN): 1
   - LOC            401:415 [gold] 'Hafenstraße 12' ctx='Adresse ist jeweils ▮Hafenstraße 12▮, 20457 Hamburg. Ans'
-  - LOC            423:430 [gold] 'Hamburg' ctx='fenstraße 12, 20457 ▮Hamburg▮. Ansprechpartner is'
-  - PER            459:475 [gold] 'Michael Bergmann' ctx='hpartner ist einmal ▮Michael Bergmann▮ und einmal M. Bergm'
-  - PER            487:498 [gold] 'M. Bergmann' ctx='Bergmann und einmal ▮M. Bergmann▮.\n\n[10:18] Anna Kell'
-  - PER            509:520 [gold] 'Anna Keller' ctx=' Bergmann.\n\n[10:18] ▮Anna Keller▮:\nGenau. In einem Da'
-  - PER            633:644 [gold] 'Sophie Lang' ctx='interlegt.\n\n[10:20] ▮Sophie Lang▮ (s.lang@nordcom.de)'
-  - PER            780:795 [gold] 'Lukas Reinhardt' ctx='1.12.2025.\n\n[10:22] ▮Lukas Reinhardt▮:\nVertrag ist an Kun'
-  - PER            875:886 [gold] 'Anna Keller' ctx='4.500 EUR.\n\n[10:24] ▮Anna Keller▮:\nDann sollten wir 7'
-  - PER            1034:1045 [gold] 'Sophie Lang' ctx='tisch ist.\n\n[10:27] ▮Sophie Lang▮:\nIst identisch. Ich'
-  - PER            1131:1142 [gold] 'Anna Keller' ctx='g-2025-05.\n\n[10:30] ▮Anna Keller▮:\nDanke. Bitte bis m'
-  - PER            1235:1249 [gold] 'Thomas Neumann' ctx='e Geschäftsführung (▮Thomas Neumann▮) vorbereitet wird.'
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0
+NOT FULLY DETECTED (PARTIAL): 1
+  - ORG            gold 244:265 [gold] 'Bergmann Industrie AG' [pred:ner:244:262] 'Bergmann Industrie' gold_ctx='inträge zum Kunden „▮Bergmann Industrie AG▮“ aufgefallen. Kunde' pred_ctx='inträge zum Kunden „▮Bergmann Industrie▮ AG“ aufgefallen. Ku'
+UNEXPECTED (FP): 2
+  - PER            0:23 [ner] 'Exportierter Teams-Chat' ctx='▮Exportierter Teams-Chat▮\nProjekt: CRM-Datenb'
+  - ORG            33:53 [ner] 'CRM-Datenbereinigung' ctx='Teams-Chat\nProjekt: ▮CRM-Datenbereinigung▮\nUnternehmen: NordCo'

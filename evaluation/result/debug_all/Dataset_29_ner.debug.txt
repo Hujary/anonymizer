@@ -1,23 +1,10 @@
 DATASET: Dataset_29 | MODE: ner
-MODE ner      | TP=  0 FP=  0 FN= 17 | P=0.000 R=0.000 F1=0.000
+MODE ner      | TP= 16 FP=  3 FN=  1 | P=0.842 R=0.941 F1=0.889
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 17
-  - ORG            43:53 [gold] 'Spintex AG' ctx='enchen\nUnternehmen: ▮Spintex AG▮\nDatum: 16.05.2025\n\n'
-  - PER            81:92 [gold] 'Laura Weber' ctx='16.05.2025\n\n[15:48] ▮Laura Weber▮ (laura.weber@spinte'
-  - ORG            281:293 [gold] 'Meyer Bau AG' ctx='hlen für den Kunden ▮Meyer Bau AG▮ (Kundennummer 9921)'
-  - PER            353:366 [gold] 'Martin Keller' ctx='16:30 Uhr.\n\n[15:50] ▮Martin Keller▮ (IT Operations):\nVo'
-  - PER            429:440 [gold] 'Laura Weber' ctx='fst du zu?\n\n[15:50] ▮Laura Weber▮:\nAus der Niederlass'
-  - LOC            464:471 [gold] 'München' ctx='s der Niederlassung ▮München▮, Leopoldstraße 23. '
+NOT DETECTED (FN): 1
   - LOC            473:489 [gold] 'Leopoldstraße 23' ctx='derlassung München, ▮Leopoldstraße 23▮. Ich bin im interne'
-  - PER            526:539 [gold] 'Martin Keller' ctx='rnen WLAN.\n\n[15:52] ▮Martin Keller▮:\nIch sehe gerade, d'
-  - PER            656:667 [gold] 'Laura Weber' ctx='CPU läuft.\n\n[15:54] ▮Laura Weber▮:\nDas betrifft vermu'
-  - PER            709:721 [gold] 'Stefan Braun' ctx='ich mehrere Nutzer? ▮Stefan Braun▮ meinte eben, dass s'
-  - PER            773:786 [gold] 'Martin Keller' ctx='uch hängt.\n\n[15:56] ▮Martin Keller▮:\nJa, mehrere Sessio'
-  - PER            891:902 [gold] 'Laura Weber' ctx='bank-Last.\n\n[15:59] ▮Laura Weber▮:\nWir brauchen spezi'
-  - PER            998:1010 [gold] 'Thomas Meyer' ctx='ner beim Kunden ist ▮Thomas Meyer▮.\n\n[16:03] Martin Ke'
-  - PER            1021:1034 [gold] 'Martin Keller' ctx='mas Meyer.\n\n[16:03] ▮Martin Keller▮:\nOkay. Ich informie'
-  - PER            1057:1070 [gold] 'Oliver Brandt' ctx='kay. Ich informiere ▮Oliver Brandt▮ aus dem Infrastrukt'
-  - PER            1108:1121 [gold] 'Martin Keller' ctx='ktur-Team.\n\n[16:10] ▮Martin Keller▮:\nServer wird neu ge'
-  - PER            1198:1209 [gold] 'Laura Weber' ctx='5 Minuten.\n\n[16:18] ▮Laura Weber▮:\nDashboard lädt wie'
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0
+UNEXPECTED (FP): 3
+  - ORG            0:7 [ner] 'Channel' ctx='▮Channel▮: #it-support-muench'
+  - PER            473:486 [ner] 'Leopoldstraße' ctx='derlassung München, ▮Leopoldstraße▮ 23. Ich bin im inte'
+  - ORG            941:951 [ner] 'Projekt-ID' ctx='iell die Zahlen für ▮Projekt-ID▮ PRJ-2025-118. Anspr'

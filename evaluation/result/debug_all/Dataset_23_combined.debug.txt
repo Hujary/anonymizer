@@ -1,15 +1,14 @@
 DATASET: Dataset_23 | MODE: combined
-MODE combined | TP=  4 FP=  0 FN=  9 | P=1.000 R=0.308 F1=0.471
+MODE combined | TP=  9 FP=  4 FN=  3 | P=0.692 R=0.750 F1=0.720
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 9
-  - ORG            29:53 [gold] 'Bergmann IT-Systeme GmbH' ctx='RTRAG\n\nZwischen der ▮Bergmann IT-Systeme GmbH▮, Königstraße 45, 70'
+NOT DETECTED (FN): 3
   - LOC            55:69 [gold] 'Königstraße 45' ctx='nn IT-Systeme GmbH, ▮Königstraße 45▮, 70173 Stuttgart, –'
-  - LOC            77:86 [gold] 'Stuttgart' ctx='nigstraße 45, 70173 ▮Stuttgart▮, – nachfolgend Arbe'
-  - PER            120:140 [gold] 'Frau Laura Schneider' ctx='d Arbeitgeber – und ▮Frau Laura Schneider▮, Rotebühlstraße 112'
   - LOC            142:160 [gold] 'Rotebühlstraße 112' ctx='au Laura Schneider, ▮Rotebühlstraße 112▮, 70178 Stuttgart, –'
-  - LOC            168:177 [gold] 'Stuttgart' ctx='hlstraße 112, 70178 ▮Stuttgart▮, – nachfolgend Arbe'
   - LOC            2725:2734 [gold] 'Stuttgart' ctx='ublik Deutschland.\n\n▮Stuttgart▮, den 18.03.2025 von'
-  - ORG            2755:2779 [gold] 'Bergmann IT-Systeme GmbH' ctx=' den 18.03.2025 von ▮Bergmann IT-Systeme GmbH▮ mit Laura Schneider'
-  - PER            2784:2799 [gold] 'Laura Schneider' ctx='IT-Systeme GmbH mit ▮Laura Schneider▮'
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0
+NOT FULLY DETECTED (PARTIAL): 1
+  - ORG            gold 2755:2779 [gold] 'Bergmann IT-Systeme GmbH' [pred:ner:2755:2763] 'Bergmann' gold_ctx=' den 18.03.2025 von ▮Bergmann IT-Systeme GmbH▮ mit Laura Schneider' pred_ctx=' den 18.03.2025 von ▮Bergmann▮ IT-Systeme GmbH mit'
+UNEXPECTED (FP): 4
+  - ORG            0:14 [ner] 'ARBEITSVERTRAG' ctx='▮ARBEITSVERTRAG▮\n\nZwischen der Bergm'
+  - STRASSE        55:69 [regex] 'Königstraße 45' ctx='nn IT-Systeme GmbH, ▮Königstraße 45▮, 70173 Stuttgart, –'
+  - STRASSE        142:160 [regex] 'Rotebühlstraße 112' ctx='au Laura Schneider, ▮Rotebühlstraße 112▮, 70178 Stuttgart, –'
+  - LOC            2696:2722 [ner] 'Bundesrepublik Deutschland' ctx=' gilt das Recht der ▮Bundesrepublik Deutschland▮.\n\nStuttgart, den 18'

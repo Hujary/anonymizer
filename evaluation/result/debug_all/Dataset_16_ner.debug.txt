@@ -1,12 +1,6 @@
 DATASET: Dataset_16 | MODE: ner
-MODE ner      | TP=  0 FP=  0 FN=  6 | P=0.000 R=0.000 F1=0.000
+MODE ner      | TP=  6 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 6
-  - PER            9:20 [gold] 'Sarah Klein' ctx='Profil – ▮Sarah Klein▮\n\nKontakt:\nsarah.kle'
-  - LOC            91:95 [gold] 'Köln' ctx='5\nWohnhaft in 50667 ▮Köln▮\nGeburtsdatum 03.11.'
-  - ORG            163:192 [gold] 'DoubleSlash Net-Business GmbH' ctx='rojektmanagerin bei ▮DoubleSlash Net-Business GmbH▮, Friedrichshafen.\nZ'
-  - LOC            194:209 [gold] 'Friedrichshafen' ctx=' Net-Business GmbH, ▮Friedrichshafen▮.\nZuvor Marketing An'
-  - ORG            239:252 [gold] 'MarketView AG' ctx='rketing Analyst bei ▮MarketView AG▮ (03/2017–02/2019).\n'
-  - ORG            423:439 [gold] 'Universität Köln' ctx='ationswissenschaft, ▮Universität Köln▮ (2017)\n\nWeitere Ken'
+NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

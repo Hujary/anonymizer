@@ -1,8 +1,6 @@
 DATASET: Dataset_01 | MODE: combined
-MODE combined | TP=  4 FP=  0 FN=  2 | P=1.000 R=0.667 F1=0.800
+MODE combined | TP=  6 FP=  0 FN=  0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 2
-  - PER            71:81 [gold] 'Max Berger' ctx='T-2024-00123\nKunde: ▮Max Berger▮\nFirma: Berger Logis'
-  - ORG            89:109 [gold] 'Berger Logistik GmbH' ctx=': Max Berger\nFirma: ▮Berger Logistik GmbH▮\nE-Mail: max.berger@'
+NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

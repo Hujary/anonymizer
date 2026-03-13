@@ -1,10 +1,8 @@
 DATASET: Dataset_12 | MODE: ner
-MODE ner      | TP=  0 FP=  0 FN=  4 | P=0.000 R=0.000 F1=0.000
+MODE ner      | TP=  3 FP=  1 FN=  1 | P=0.750 R=0.750 F1=0.750
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 4
-  - PER            258:271 [gold] 'Martin Schulz' ctx='chon gelöst wurde.\n\n▮Martin Schulz▮ (NordLogistik GmbH,'
-  - ORG            273:290 [gold] 'NordLogistik GmbH' ctx='de.\n\nMartin Schulz (▮NordLogistik GmbH▮, martin.schulz@nord'
+NOT DETECTED (FN): 1
   - PER            698:703 [gold] 'Julia' ctx='emlich ungeduldig.\n\n▮Julia▮, InterLog GmbH'
-  - ORG            705:718 [gold] 'InterLog GmbH' ctx='ungeduldig.\n\nJulia, ▮InterLog GmbH▮'
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0
+UNEXPECTED (FP): 1
+  - LOC            323:326 [ner] 'Tel' ctx='lz@nordlogistik.de, ▮Tel▮ 040 99887766) melde'

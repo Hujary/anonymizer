@@ -1,9 +1,7 @@
 DATASET: Dataset_08 | MODE: ner
-MODE ner      | TP=  0 FP=  0 FN=  3 | P=0.000 R=0.000 F1=0.000
+MODE ner      | TP=  3 FP=  1 FN=  0 | P=0.750 R=1.000 F1=0.857
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 3
-  - PER            368:380 [gold] 'Michael Roth' ctx='  \nAnsprechpartner: ▮Michael Roth▮  \nE-Mail: michael.r'
-  - PER            563:575 [gold] 'Michael Roth' ctx='eundlichen Grüßen  \n▮Michael Roth▮  \nProjektleitung  \n'
-  - ORG            595:610 [gold] 'Innoventis GmbH' ctx='  \nProjektleitung  \n▮Innoventis GmbH▮'
+NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0
+UNEXPECTED (FP): 1
+  - LOC            297:319 [ner] 'Solarpark München-West' ctx='tervalle.\n\nProjekt: ▮Solarpark München-West▮  \nVertragsnummer: W'

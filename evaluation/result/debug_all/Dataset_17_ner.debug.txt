@@ -1,12 +1,8 @@
 DATASET: Dataset_17 | MODE: ner
-MODE ner      | TP=  0 FP=  0 FN=  6 | P=0.000 R=0.000 F1=0.000
+MODE ner      | TP=  4 FP=  0 FN=  2 | P=1.000 R=0.667 F1=0.800
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 6
+NOT DETECTED (FN): 2
   - PER            21:34 [gold] 'Thomas Berger' ctx='otiz HR – Kandidat: ▮Thomas Berger▮\n\nMail kam von: thom'
   - ORG            162:177 [gold] 'DeltaLogix GmbH' ctx=' er ist aktuell bei ▮DeltaLogix GmbH▮ beschäftigt (seit 2'
-  - ORG            246:257 [gold] 'NetPoint AG' ctx='vor:\nIT Support bei ▮NetPoint AG▮ (2019–2022)\n\nGebore'
-  - LOC            306:313 [gold] 'Leipzig' ctx='8.1990, wohnhaft in ▮Leipzig▮.\n\nEr hat außerdem g'
-  - ORG            369:392 [gold] 'TechCore Solutions GmbH' ctx=' er ein Angebot von ▮TechCore Solutions GmbH▮ vorliegen hat.\n\nStu'
-  - ORG            440:458 [gold] 'Hochschule Leipzig' ctx='tschaftsinformatik, ▮Hochschule Leipzig▮ (Abschluss 2018)\n\nB'
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0
