@@ -25,5 +25,6 @@
   "auto_mask_enabled": true,
   "reversible_masking": true,
   "use_ner_postprocessing": true,
-  "copy_ai_prompt_enabled": false
+  "copy_ai_prompt_enabled": false,
+  "debug_ner_result": false
 }
