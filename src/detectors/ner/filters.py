@@ -50,27 +50,18 @@ def clean_ner_hits(text: str, hits: List[Treffer]) -> List[Treffer]:
     if not allowed_set:
         return []
 
-    loc_hits: List[Treffer] = []
-    passthrough_hits: List[Treffer] = []
+    current_hits: List[Treffer] = []
 
     for h in hits:
         label = str(h.label).strip().upper()
 
-        if label == "LOC":
-            loc_hits.append(h)
-            continue
-
-        if label in {"PER", "ORG"}:
-            passthrough_hits.append(h)
-            continue
+        if label in {"LOC", "PER", "ORG"}:
+            current_hits.append(h)
 
     use_post = bool(config.get("use_ner_postprocessing", True))
     if use_post:
-        loc_hits = postprocess_hits(text, loc_hits)
+        current_hits = postprocess_hits(text, current_hits)
 
-    refined_loc_hits = refine_ner_labels(text, loc_hits)
-
-    current_hits = passthrough_hits + refined_loc_hits
-    current_hits.sort(key=lambda t: (t.start, t.ende, t.label))
+    current_hits = refine_ner_labels(text, current_hits)
 
     return apply_policy_labels(current_hits, allowed_set)

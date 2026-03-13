@@ -163,10 +163,14 @@ def refine_ner_labels(text: str, hits: List[Treffer]) -> List[Treffer]:
         if not span:
             continue
 
-        if label != "LOC":
+        if label == "LOC":
+            final_label = "STRASSE" if _looks_like_street(span) else "LOC"
+        elif label == "PER":
+            final_label = "PER"
+        elif label == "ORG":
+            final_label = "ORG"
+        else:
             continue
-
-        final_label = "STRASSE" if _looks_like_street(span) else "LOC"
 
         out.append(
             Treffer(
