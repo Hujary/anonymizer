@@ -7,11 +7,19 @@
   "lang": "de",
   "ner_labels": [
     "LOC",
+    "ORG",
+    "PER",
     "STRASSE"
   ],
   "regex_labels": [
+    "DATUM",
+    "E_MAIL",
+    "IBAN",
+    "IP_ADRESSE",
     "PLZ",
-    "STRASSE"
+    "STRASSE",
+    "TELEFON",
+    "URL"
   ],
   "auto_demask_enabled": true,
   "auto_mask_enabled": true,
