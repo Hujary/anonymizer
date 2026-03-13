@@ -1,8 +1,0 @@
-DATASET: Dataset_07 | MODE: ner
-MODE ner      | TP=  4 FP=  1 FN=  1 | P=0.800 R=0.800 F1=0.800
-----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - PER            141:152 [gold] 'Frau Berger' ctx='-0311\n\nSehr geehrte ▮Frau Berger▮,\n\nbezugnehmend auf '
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
-  - ORG            5:25 [ner] 'finance@alphacore-ag' ctx='Von: ▮finance@alphacore-ag▮.de\nAn: buchhaltung@'

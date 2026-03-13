@@ -1,0 +1,7 @@
+DATASET: Dataset_15 | DOMAIN: HR-Dokumente | STRUCTURE: regular | VARIANT: 1 | POLICY: minimal | MODE: combined
+MODE combined | TP=4 FP=1 FN=0 | P=0.800 R=1.000 F1=0.889
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 1
+  - STRASSE        213:224 [regex] 'Lindenweg 8' ctx='n Nürnberg\nAdresse: ▮Lindenweg 8▮, 90402 Nürnberg\nTel'

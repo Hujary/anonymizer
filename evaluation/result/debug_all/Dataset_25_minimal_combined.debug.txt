@@ -1,0 +1,7 @@
+DATASET: Dataset_25 | DOMAIN: Chats | STRUCTURE: structured | VARIANT: 1 | POLICY: minimal | MODE: combined
+MODE combined | TP=12 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 1
+  - PER            gold 140:145 [gold] 'Vogel' [pred:ner:133:145] 'Markus Vogel' gold_ctx='.de\n\n[08:47] Markus ▮Vogel▮ (Vertrieb, markus.v' pred_ctx='-intern.de\n\n[08:47] ▮Markus Vogel▮ (Vertrieb, markus.v'
+UNEXPECTED (FP): 0

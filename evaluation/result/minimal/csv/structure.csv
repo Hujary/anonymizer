@@ -1,0 +1,10 @@
+policy,mode,structure,tp,fp,fn,precision,recall,f1
+minimal,combined,regular,54,3,7,0.947368,0.885246,0.915254
+minimal,combined,structured,61,2,1,0.968254,0.983871,0.976000
+minimal,combined,unstructured,64,3,4,0.955224,0.941176,0.948148
+minimal,ner,regular,34,3,8,0.918919,0.809524,0.860759
+minimal,ner,structured,38,2,2,0.950000,0.950000,0.950000
+minimal,ner,unstructured,42,5,6,0.893617,0.875000,0.884211
+minimal,regex,regular,26,1,0,0.962963,1.000000,0.981132
+minimal,regex,structured,28,1,1,0.965517,0.965517,0.965517
+minimal,regex,unstructured,26,0,0,1.000000,1.000000,1.000000

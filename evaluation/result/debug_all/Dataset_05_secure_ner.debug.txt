@@ -1,0 +1,7 @@
+DATASET: Dataset_05 | DOMAIN: Supporttickets | STRUCTURE: unstructured | VARIANT: 1 | POLICY: secure | MODE: ner
+MODE ner      | TP=3 FP=1 FN=0 | P=0.750 R=1.000 F1=0.857
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 1
+  - ORG            735:737 [ner] 'MB' ctx='n PDFs mit ca. 8–10 ▮MB▮.\n\nKönnt ihr bitte p'

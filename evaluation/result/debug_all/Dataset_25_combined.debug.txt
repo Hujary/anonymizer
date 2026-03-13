@@ -1,9 +1,0 @@
-DATASET: Dataset_25 | MODE: combined
-MODE combined | TP= 15 FP=  2 FN=  0 | P=0.882 R=1.000 F1=0.938
-----------------------------------------------------------------------
-NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 1
-  - PER            gold 140:145 [gold] 'Vogel' [pred:ner:133:145] 'Markus Vogel' gold_ctx='.de\n\n[08:47] Markus ▮Vogel▮ (Vertrieb, markus.v' pred_ctx='-intern.de\n\n[08:47] ▮Markus Vogel▮ (Vertrieb, markus.v'
-UNEXPECTED (FP): 2
-  - ORG            32:49 [ner] 'Internes Helpdesk' ctx='D-2025-0731\nSystem: ▮Internes Helpdesk▮\nStandort: Stuttgart'
-  - ORG            852:862 [ner] 'MFA-Resync' ctx=' Passwort-Reset und ▮MFA-Resync▮ durchgeführt. Ticke'

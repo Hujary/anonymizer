@@ -80,18 +80,18 @@ class MetricAgg:
         self.fn += counts.fn
 
     def precision(self) -> float:
-        d = self.tp + self.fp
-        return (self.tp / d) if d else 0.0
+        denominator = self.tp + self.fp
+        return (self.tp / denominator) if denominator else 0.0
 
     def recall(self) -> float:
-        d = self.tp + self.fn
-        return (self.tp / d) if d else 0.0
+        denominator = self.tp + self.fn
+        return (self.tp / denominator) if denominator else 0.0
 
     def f1(self) -> float:
-        p = self.precision()
-        r = self.recall()
-        d = p + r
-        return (2.0 * p * r / d) if d else 0.0
+        precision = self.precision()
+        recall = self.recall()
+        denominator = precision + recall
+        return (2.0 * precision * recall / denominator) if denominator else 0.0
 
 
 @dataclass(frozen=True)
@@ -120,8 +120,10 @@ def _discover_datasets(eval_root: Path) -> List[str]:
 
 def _load_gold_entities(eval_root: Path, name: str) -> Tuple[str, List[object]]:
     text_path, gold_path, _, _ = _resolve_paths(eval_root, name)
+
     if not text_path.exists():
         raise FileNotFoundError(f"Missing text file: {text_path}")
+
     if not gold_path.exists():
         raise FileNotFoundError(f"Missing gold file: {gold_path}")
 
@@ -139,27 +141,28 @@ def _write_text(path: Path, value: str) -> None:
 def _write_csv(path: Path, rows: List[Dict[str, object]], fieldnames: List[str]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
 
-    with path.open("w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         for row in rows:
             writer.writerow(row)
 
 
-def _miss_line(dataset: str, m: Miss) -> str:
-    if m.kind == "PARTIAL":
-        g = (m.text or "").replace("\n", "\\n").replace("\r", "\\r")
-        p = (m.pred_text or "").replace("\n", "\\n").replace("\r", "\\r")
-        ps = m.pred_source or "?"
-        p_start = m.pred_start if m.pred_start is not None else -1
-        p_end = m.pred_end if m.pred_end is not None else -1
+def _miss_line(dataset: str, miss: Miss) -> str:
+    if miss.kind == "PARTIAL":
+        gold_text = (miss.text or "").replace("\n", "\\n").replace("\r", "\\r")
+        pred_text = (miss.pred_text or "").replace("\n", "\\n").replace("\r", "\\r")
+        pred_source = miss.pred_source or "?"
+        pred_start = miss.pred_start if miss.pred_start is not None else -1
+        pred_end = miss.pred_end if miss.pred_end is not None else -1
+
         return (
-            f"{dataset} gold:{m.start}:{m.end} [{m.source}] '{g}' "
-            f"<- pred:{ps}:{p_start}:{p_end} '{p}'"
+            f"{dataset} gold:{miss.start}:{miss.end} [{miss.source}] '{gold_text}' "
+            f"<- pred:{pred_source}:{pred_start}:{pred_end} '{pred_text}'"
         )
 
-    t = (m.text or "").replace("\n", "\\n").replace("\r", "\\r")
-    return f"{dataset} {m.start}:{m.end} [{m.source}] '{t}'"
+    text = (miss.text or "").replace("\n", "\\n").replace("\r", "\\r")
+    return f"{dataset} {miss.start}:{miss.end} [{miss.source}] '{text}'"
 
 
 def _format_label_report(
@@ -174,9 +177,9 @@ def _format_label_report(
     lines.append("-" * 80)
     lines.append("")
 
-    for lbl in sorted(label_hits.keys()):
-        sections = label_hits[lbl]
-        lines.append(lbl)
+    for label in sorted(label_hits.keys()):
+        sections = label_hits[label]
+        lines.append(label)
         lines.append("-" * 80)
 
         for kind, title in (
@@ -187,6 +190,7 @@ def _format_label_report(
         ):
             items = sections.get(kind, [])
             lines.append(f"{title}: {len(items)}")
+
             if items:
                 shown = 0
                 for item in items:
@@ -195,6 +199,7 @@ def _format_label_report(
                         break
                     lines.append(f"  - {item}")
                     shown += 1
+
             lines.append("")
 
         lines.append("")
@@ -202,7 +207,7 @@ def _format_label_report(
     return "\n".join(lines).rstrip() + "\n"
 
 
-def _format_summary(mode: str, total: EvalCounts) -> str:
+def _format_short_summary(mode: str, total: EvalCounts) -> str:
     return (
         f"MODE {mode:8s} | "
         f"TP={total.tp} FP={total.fp} FN={total.fn} | "
@@ -215,27 +220,27 @@ def _parse_dataset_index(name: str) -> int:
     if len(parts) != 2:
         raise ValueError(f"Unexpected dataset name: {name}")
 
-    idx = int(parts[1])
-    if idx < 1 or idx > 30:
+    index = int(parts[1])
+    if index < 1 or index > 30:
         raise ValueError(f"Dataset index out of range: {name}")
 
-    return idx
+    return index
 
 
 def _dataset_meta(name: str) -> DatasetMeta:
-    idx = _parse_dataset_index(name)
+    index = _parse_dataset_index(name)
 
-    zero_based = idx - 1
-    domain_idx = zero_based // 6
+    zero_based = index - 1
+    domain_index = zero_based // 6
     in_domain = zero_based % 6
-    structure_idx = in_domain // 2
+    structure_index = in_domain // 2
     variant = (in_domain % 2) + 1
 
     return DatasetMeta(
         dataset=name,
-        dataset_index=idx,
-        domain=DOMAINS[domain_idx],
-        structure=STRUCTURES[structure_idx],
+        dataset_index=index,
+        domain=DOMAINS[domain_index],
+        structure=STRUCTURES[structure_index],
         variant=variant,
     )
 
@@ -258,11 +263,11 @@ def _aggregate_rows(
             "mode": row.mode,
         }
 
-        key = tuple(row_dict[k] for k in group_keys)
+        key = tuple(row_dict[key_name] for key_name in group_keys)
 
         if key not in buckets:
             buckets[key] = MetricAgg()
-            key_values[key] = {k: row_dict[k] for k in group_keys}
+            key_values[key] = {key_name: row_dict[key_name] for key_name in group_keys}
 
         buckets[key].tp += row.tp
         buckets[key].fp += row.fp
@@ -292,11 +297,11 @@ def _aggregate_label_rows(
     key_values: Dict[Tuple[object, ...], Dict[str, object]] = {}
 
     for row in label_rows:
-        key = tuple(row[k] for k in group_keys)
+        key = tuple(row[key_name] for key_name in group_keys)
 
         if key not in buckets:
             buckets[key] = MetricAgg()
-            key_values[key] = {k: row[k] for k in group_keys}
+            key_values[key] = {key_name: row[key_name] for key_name in group_keys}
 
         buckets[key].tp += int(row["tp"])
         buckets[key].fp += int(row["fp"])
@@ -318,117 +323,231 @@ def _aggregate_label_rows(
     return out
 
 
+def _build_dataset_csv_rows(rows: List[DatasetRunRow]) -> List[Dict[str, object]]:
+    out: List[Dict[str, object]] = []
+
+    for row in rows:
+        out.append(
+            {
+                "dataset": row.dataset,
+                "dataset_index": row.dataset_index,
+                "domain": row.domain,
+                "structure": row.structure,
+                "variant": row.variant,
+                "policy": row.policy,
+                "mode": row.mode,
+                "tp": row.tp,
+                "fp": row.fp,
+                "fn": row.fn,
+                "precision": f"{row.precision:.6f}",
+                "recall": f"{row.recall:.6f}",
+                "f1": f"{row.f1:.6f}",
+            }
+        )
+
+    return out
+
+
+def _write_policy_csv_files(
+    csv_dir: Path,
+    dataset_rows: List[DatasetRunRow],
+    label_rows: List[Dict[str, object]],
+) -> None:
+    dataset_csv_rows = _build_dataset_csv_rows(dataset_rows)
+
+    _write_csv(
+        csv_dir / "dataset.csv",
+        dataset_csv_rows,
+        [
+            "dataset",
+            "dataset_index",
+            "domain",
+            "structure",
+            "variant",
+            "policy",
+            "mode",
+            "tp",
+            "fp",
+            "fn",
+            "precision",
+            "recall",
+            "f1",
+        ],
+    )
+
+    overall_rows = _aggregate_rows(dataset_rows, ["policy", "mode"])
+    _write_csv(
+        csv_dir / "overall.csv",
+        overall_rows,
+        ["policy", "mode", "tp", "fp", "fn", "precision", "recall", "f1"],
+    )
+
+    domain_rows = _aggregate_rows(dataset_rows, ["policy", "mode", "domain"])
+    _write_csv(
+        csv_dir / "domain.csv",
+        domain_rows,
+        ["policy", "mode", "domain", "tp", "fp", "fn", "precision", "recall", "f1"],
+    )
+
+    structure_rows = _aggregate_rows(dataset_rows, ["policy", "mode", "structure"])
+    _write_csv(
+        csv_dir / "structure.csv",
+        structure_rows,
+        ["policy", "mode", "structure", "tp", "fp", "fn", "precision", "recall", "f1"],
+    )
+
+    domain_structure_rows = _aggregate_rows(dataset_rows, ["policy", "mode", "domain", "structure"])
+    _write_csv(
+        csv_dir / "domain_structure.csv",
+        domain_structure_rows,
+        ["policy", "mode", "domain", "structure", "tp", "fp", "fn", "precision", "recall", "f1"],
+    )
+
+    label_overall_rows = _aggregate_label_rows(label_rows, ["policy", "mode", "label"])
+    _write_csv(
+        csv_dir / "label.csv",
+        label_overall_rows,
+        ["policy", "mode", "label", "tp", "fp", "fn", "precision", "recall", "f1"],
+    )
+
+    label_domain_rows = _aggregate_label_rows(label_rows, ["policy", "mode", "domain", "label"])
+    _write_csv(
+        csv_dir / "domain_label.csv",
+        label_domain_rows,
+        ["policy", "mode", "domain", "label", "tp", "fp", "fn", "precision", "recall", "f1"],
+    )
+
+    label_structure_rows = _aggregate_label_rows(label_rows, ["policy", "mode", "structure", "label"])
+    _write_csv(
+        csv_dir / "structure_label.csv",
+        label_structure_rows,
+        ["policy", "mode", "structure", "label", "tp", "fp", "fn", "precision", "recall", "f1"],
+    )
+
+    label_domain_structure_rows = _aggregate_label_rows(
+        label_rows,
+        ["policy", "mode", "domain", "structure", "label"],
+    )
+    _write_csv(
+        csv_dir / "domain_structure_label.csv",
+        label_domain_structure_rows,
+        ["policy", "mode", "domain", "structure", "label", "tp", "fp", "fn", "precision", "recall", "f1"],
+    )
+
+
 def main() -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--eval-root", default="evaluation")
-    ap.add_argument("--debug", action="store_true", help="Write per-dataset debug files")
-    ap.add_argument("--show-tp", action="store_true", help="Include TP list in debug files")
-    ap.add_argument("--per-label", action="store_true", help="Include per-label stats per dataset in txt report")
-    ap.add_argument("--ctx", type=int, default=20)
-    ap.add_argument("--max-lines", type=int, default=200)
-    ap.add_argument("--only", nargs="*", default=None, help="Run only these dataset basenames")
-    ap.add_argument("--out", default=None, help="Output file for combined report")
-    ap.add_argument("--no-ner-post", action="store_true", help="Disable NER postprocessing")
-    ap.add_argument("--label-report", action="store_true", help="Write aggregated TP/PARTIAL/FN/FP label reports")
-    ap.add_argument("--label-report-max", type=int, default=500)
-    ap.add_argument(
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--eval-root", default="evaluation")
+    parser.add_argument("--debug", action="store_true", help="Write per-dataset debug files")
+    parser.add_argument("--show-tp", action="store_true", help="Include TP list in debug files")
+    parser.add_argument("--per-label", action="store_true", help="Include per-label stats per dataset in txt report")
+    parser.add_argument("--ctx", type=int, default=20)
+    parser.add_argument("--max-lines", type=int, default=200)
+    parser.add_argument("--only", nargs="*", default=None, help="Run only these dataset basenames")
+    parser.add_argument("--no-ner-post", action="store_true", help="Disable NER postprocessing")
+    parser.add_argument("--label-report", action="store_true", help="Write aggregated TP/PARTIAL/FN/FP label reports")
+    parser.add_argument("--label-report-max", type=int, default=500)
+    parser.add_argument(
         "--policies",
         nargs="*",
         default=["minimal", "secure"],
         choices=sorted(POLICY_SPECS.keys()),
         help="Policies to evaluate",
     )
-    ap.add_argument(
+    parser.add_argument(
         "--modes",
         nargs="*",
         default=["regex", "ner", "combined"],
         choices=["regex", "ner", "combined"],
         help="Modes to evaluate",
     )
-    args = ap.parse_args()
+    args = parser.parse_args()
 
     eval_root = Path(args.eval_root)
-    result_dir = eval_root / "result"
-    result_dir.mkdir(parents=True, exist_ok=True)
+    result_root = eval_root / "result"
+    result_root.mkdir(parents=True, exist_ok=True)
 
     dataset_names = _discover_datasets(eval_root)
+
     if args.only:
-        wanted = {x.strip() for x in args.only if x.strip()}
-        dataset_names = [n for n in dataset_names if n in wanted]
+        wanted = {value.strip() for value in args.only if value.strip()}
+        dataset_names = [name for name in dataset_names if name in wanted]
 
     if not dataset_names:
         raise SystemExit("No datasets found (no gold json files).")
 
-    selected_modes = [m for m in MODES if m[0] in set(args.modes)]
+    selected_modes = [mode_tuple for mode_tuple in MODES if mode_tuple[0] in set(args.modes)]
     if not selected_modes:
         raise SystemExit("No modes selected.")
 
-    selected_policies = [p for p in args.policies if p in POLICY_SPECS]
+    selected_policies = [policy for policy in args.policies if policy in POLICY_SPECS]
     if not selected_policies:
         raise SystemExit("No policies selected.")
 
-    out_path = Path(args.out) if args.out else (result_dir / "ALL_result.txt")
-    dbg_dir = result_dir / "debug_all"
-
-    snap = _snapshot_config()
+    debug_dir = result_root / "debug_all"
+    snapshot = _snapshot_config()
 
     try:
         config.set("use_ner_postprocessing", False if args.no_ner_post else True)
 
-        report_lines: List[str] = []
+        for policy in selected_policies:
+            _apply_policy(policy)
 
-        global_agg: Dict[Tuple[str, str], MetricAgg] = {
-            (policy, mode): MetricAgg()
-            for policy in selected_policies
-            for mode, _ in selected_modes
-        }
+            policy_dir = result_root / policy
+            labels_dir = policy_dir / "labels"
+            csv_dir = policy_dir / "csv"
 
-        label_hits_by_run: Dict[Tuple[str, str], Dict[str, Dict[str, List[str]]]] = {}
-        if args.label_report:
-            for policy in selected_policies:
-                for mode, _ in selected_modes:
-                    label_hits_by_run[(policy, mode)] = defaultdict(
+            policy_dir.mkdir(parents=True, exist_ok=True)
+            labels_dir.mkdir(parents=True, exist_ok=True)
+            csv_dir.mkdir(parents=True, exist_ok=True)
+
+            report_lines: List[str] = []
+            policy_dataset_rows: List[DatasetRunRow] = []
+            policy_label_rows: List[Dict[str, object]] = []
+
+            policy_global_agg: Dict[str, MetricAgg] = {
+                mode_name: MetricAgg()
+                for mode_name, _ in selected_modes
+            }
+
+            policy_label_hits_by_mode: Dict[str, Dict[str, Dict[str, List[str]]]] = {}
+            if args.label_report:
+                for mode_name, _ in selected_modes:
+                    policy_label_hits_by_mode[mode_name] = defaultdict(
                         lambda: {"TP": [], "PARTIAL": [], "FN": [], "FP": []}
                     )
 
-        dataset_rows: List[DatasetRunRow] = []
-        label_rows: List[Dict[str, object]] = []
+            for dataset_name in dataset_names:
+                meta = _dataset_meta(dataset_name)
+                text, gold_entities = _load_gold_entities(eval_root, dataset_name)
 
-        for name in dataset_names:
-            meta = _dataset_meta(name)
-            text, gold_entities = _load_gold_entities(eval_root, name)
-
-            report_lines.append(f"DATASET: {name}")
-            report_lines.append(f"DOMAIN: {meta.domain}")
-            report_lines.append(f"STRUCTURE: {meta.structure}")
-            report_lines.append("")
-
-            for policy in selected_policies:
-                _apply_policy(policy)
-
+                report_lines.append(f"DATASET: {dataset_name}")
+                report_lines.append(f"DOMAIN: {meta.domain}")
+                report_lines.append(f"STRUCTURE: {meta.structure}")
+                report_lines.append("")
                 report_lines.append(f"POLICY {policy}")
 
-                for mode, sources in selected_modes:
+                for mode_name, sources in selected_modes:
                     total, by_label, misses = _evaluate(
                         text,
                         gold_entities,
-                        mode=mode,
+                        mode=mode_name,
                         mode_sources=set(sources),
                         policy_name=policy,
                         eval_root=eval_root,
                     )
 
-                    global_agg[(policy, mode)].add(total)
+                    policy_global_agg[mode_name].add(total)
 
-                    dataset_rows.append(
+                    policy_dataset_rows.append(
                         DatasetRunRow(
-                            dataset=name,
+                            dataset=dataset_name,
                             dataset_index=meta.dataset_index,
                             domain=meta.domain,
                             structure=meta.structure,
                             variant=meta.variant,
                             policy=policy,
-                            mode=mode,
+                            mode=mode_name,
                             tp=total.tp,
                             fp=total.fp,
                             fn=total.fn,
@@ -438,51 +557,52 @@ def main() -> int:
                         )
                     )
 
-                    report_lines.append(_format_summary(mode, total))
+                    report_lines.append(_format_short_summary(mode_name, total))
 
                     if args.per_label:
                         report_lines.append("")
-                        report_lines.append(f"PER-LABEL ({policy} | {mode})")
+                        report_lines.append(f"PER-LABEL ({policy} | {mode_name})")
                         report_lines.extend(_format_per_label(by_label))
                         report_lines.append("")
 
-                    known_labels = set(by_label.keys())
-                    for label in sorted(known_labels):
-                        c = by_label[label]
-                        label_rows.append(
+                    for label in sorted(by_label.keys()):
+                        counts = by_label[label]
+                        policy_label_rows.append(
                             {
-                                "dataset": name,
+                                "dataset": dataset_name,
                                 "dataset_index": meta.dataset_index,
                                 "domain": meta.domain,
                                 "structure": meta.structure,
                                 "variant": meta.variant,
                                 "policy": policy,
-                                "mode": mode,
+                                "mode": mode_name,
                                 "label": label,
-                                "tp": c.tp,
-                                "fp": c.fp,
-                                "fn": c.fn,
+                                "tp": counts.tp,
+                                "fp": counts.fp,
+                                "fn": counts.fn,
                             }
                         )
 
                     if args.label_report:
-                        bucket = label_hits_by_run[(policy, mode)]
+                        bucket = policy_label_hits_by_mode[mode_name]
                         for miss in misses:
-                            L = str(miss.label or "").strip().upper() or "?"
-                            K = str(miss.kind or "").strip().upper()
-                            if K not in ("TP", "FN", "FP", "PARTIAL"):
+                            miss_label = str(miss.label or "").strip().upper() or "?"
+                            miss_kind = str(miss.kind or "").strip().upper()
+
+                            if miss_kind not in ("TP", "FN", "FP", "PARTIAL"):
                                 continue
-                            bucket[L][K].append(_miss_line(name, miss))
+
+                            bucket[miss_label][miss_kind].append(_miss_line(dataset_name, miss))
 
                     if args.debug:
-                        dbg_lines: List[str] = []
-                        dbg_lines.append(
-                            f"DATASET: {name} | DOMAIN: {meta.domain} | STRUCTURE: {meta.structure} | "
-                            f"VARIANT: {meta.variant} | POLICY: {policy} | MODE: {mode}"
+                        debug_lines: List[str] = []
+                        debug_lines.append(
+                            f"DATASET: {dataset_name} | DOMAIN: {meta.domain} | STRUCTURE: {meta.structure} | "
+                            f"VARIANT: {meta.variant} | POLICY: {policy} | MODE: {mode_name}"
                         )
-                        dbg_lines.append(_format_summary(mode, total))
-                        dbg_lines.append("-" * 70)
-                        dbg_lines.extend(
+                        debug_lines.append(_format_short_summary(mode_name, total))
+                        debug_lines.append("-" * 70)
+                        debug_lines.extend(
                             _format_misses(
                                 text,
                                 misses,
@@ -491,155 +611,62 @@ def main() -> int:
                                 max_lines=max(1, int(args.max_lines)),
                             )
                         )
-                        dbg_lines.append("")
-                        _write_text(dbg_dir / f"{name}_{policy}_{mode}.debug.txt", "\n".join(dbg_lines))
+                        debug_lines.append("")
+
+                        _write_text(
+                            debug_dir / f"{dataset_name}_{policy}_{mode_name}.debug.txt",
+                            "\n".join(debug_lines),
+                        )
 
                 report_lines.append("")
+                report_lines.append("=" * 70)
+                report_lines.append("")
 
-            report_lines.append("=" * 70)
-            report_lines.append("")
+            report_lines.append("GLOBAL SUMMARY (micro-averaged over all datasets)")
+            report_lines.append("-" * 70)
 
-        report_lines.append("GLOBAL SUMMARY (micro-averaged over all datasets)")
-        report_lines.append("-" * 70)
-
-        for policy in selected_policies:
-            for mode, _ in selected_modes:
-                a = global_agg[(policy, mode)]
+            for mode_name, _ in selected_modes:
+                agg = policy_global_agg[mode_name]
                 report_lines.append(
-                    f"POLICY {policy:8s} | MODE {mode:8s} | "
-                    f"TP={a.tp:4d} FP={a.fp:4d} FN={a.fn:4d} | "
-                    f"P={a.precision():.3f} R={a.recall():.3f} F1={a.f1():.3f}"
+                    f"POLICY {policy:8s} | MODE {mode_name:8s} | "
+                    f"TP={agg.tp:4d} FP={agg.fp:4d} FN={agg.fn:4d} | "
+                    f"P={agg.precision():.3f} R={agg.recall():.3f} F1={agg.f1():.3f}"
                 )
 
-        _write_text(out_path, "\n".join(report_lines))
-        print(f"Wrote: {out_path}")
+            _write_text(policy_dir / "report.txt", "\n".join(report_lines))
+            print(f"Wrote: {policy_dir / 'report.txt'}")
 
-        if args.debug:
-            print(f"Wrote debug files: {dbg_dir}")
-
-        if args.label_report:
-            for policy in selected_policies:
-                for mode, _ in selected_modes:
-                    out_lbl = result_dir / f"ALL_labels_{policy}_{mode}.txt"
-                    txt = _format_label_report(
-                        label_hits_by_run[(policy, mode)],
+            if args.label_report:
+                for mode_name, _ in selected_modes:
+                    label_report_text = _format_label_report(
+                        policy_label_hits_by_mode[mode_name],
                         policy=policy,
-                        mode=mode,
+                        mode=mode_name,
                         max_items_per_section=max(1, int(args.label_report_max)),
                     )
-                    _write_text(out_lbl, txt)
-                    print(f"Wrote: {out_lbl}")
+                    _write_text(labels_dir / f"{mode_name}.txt", label_report_text)
+                    print(f"Wrote: {labels_dir / f'{mode_name}.txt'}")
 
-        dataset_csv_rows: List[Dict[str, object]] = []
-        for row in dataset_rows:
-            dataset_csv_rows.append(
-                {
-                    "dataset": row.dataset,
-                    "dataset_index": row.dataset_index,
-                    "domain": row.domain,
-                    "structure": row.structure,
-                    "variant": row.variant,
-                    "policy": row.policy,
-                    "mode": row.mode,
-                    "tp": row.tp,
-                    "fp": row.fp,
-                    "fn": row.fn,
-                    "precision": f"{row.precision:.6f}",
-                    "recall": f"{row.recall:.6f}",
-                    "f1": f"{row.f1:.6f}",
-                }
+            _write_policy_csv_files(
+                csv_dir=csv_dir,
+                dataset_rows=policy_dataset_rows,
+                label_rows=policy_label_rows,
             )
+            print(f"Wrote: {csv_dir / 'dataset.csv'}")
+            print(f"Wrote: {csv_dir / 'overall.csv'}")
+            print(f"Wrote: {csv_dir / 'domain.csv'}")
+            print(f"Wrote: {csv_dir / 'structure.csv'}")
+            print(f"Wrote: {csv_dir / 'domain_structure.csv'}")
+            print(f"Wrote: {csv_dir / 'label.csv'}")
+            print(f"Wrote: {csv_dir / 'domain_label.csv'}")
+            print(f"Wrote: {csv_dir / 'structure_label.csv'}")
+            print(f"Wrote: {csv_dir / 'domain_structure_label.csv'}")
 
-        _write_csv(
-            result_dir / "metrics_dataset.csv",
-            dataset_csv_rows,
-            [
-                "dataset",
-                "dataset_index",
-                "domain",
-                "structure",
-                "variant",
-                "policy",
-                "mode",
-                "tp",
-                "fp",
-                "fn",
-                "precision",
-                "recall",
-                "f1",
-            ],
-        )
-        print(f"Wrote: {result_dir / 'metrics_dataset.csv'}")
-
-        overall_rows = _aggregate_rows(dataset_rows, ["policy", "mode"])
-        _write_csv(
-            result_dir / "metrics_overall.csv",
-            overall_rows,
-            ["policy", "mode", "tp", "fp", "fn", "precision", "recall", "f1"],
-        )
-        print(f"Wrote: {result_dir / 'metrics_overall.csv'}")
-
-        domain_rows = _aggregate_rows(dataset_rows, ["policy", "mode", "domain"])
-        _write_csv(
-            result_dir / "metrics_domain.csv",
-            domain_rows,
-            ["policy", "mode", "domain", "tp", "fp", "fn", "precision", "recall", "f1"],
-        )
-        print(f"Wrote: {result_dir / 'metrics_domain.csv'}")
-
-        structure_rows = _aggregate_rows(dataset_rows, ["policy", "mode", "structure"])
-        _write_csv(
-            result_dir / "metrics_structure.csv",
-            structure_rows,
-            ["policy", "mode", "structure", "tp", "fp", "fn", "precision", "recall", "f1"],
-        )
-        print(f"Wrote: {result_dir / 'metrics_structure.csv'}")
-
-        domain_structure_rows = _aggregate_rows(dataset_rows, ["policy", "mode", "domain", "structure"])
-        _write_csv(
-            result_dir / "metrics_domain_structure.csv",
-            domain_structure_rows,
-            ["policy", "mode", "domain", "structure", "tp", "fp", "fn", "precision", "recall", "f1"],
-        )
-        print(f"Wrote: {result_dir / 'metrics_domain_structure.csv'}")
-
-        label_overall_rows = _aggregate_label_rows(label_rows, ["policy", "mode", "label"])
-        _write_csv(
-            result_dir / "metrics_label.csv",
-            label_overall_rows,
-            ["policy", "mode", "label", "tp", "fp", "fn", "precision", "recall", "f1"],
-        )
-        print(f"Wrote: {result_dir / 'metrics_label.csv'}")
-
-        label_domain_rows = _aggregate_label_rows(label_rows, ["policy", "mode", "domain", "label"])
-        _write_csv(
-            result_dir / "metrics_domain_label.csv",
-            label_domain_rows,
-            ["policy", "mode", "domain", "label", "tp", "fp", "fn", "precision", "recall", "f1"],
-        )
-        print(f"Wrote: {result_dir / 'metrics_domain_label.csv'}")
-
-        label_structure_rows = _aggregate_label_rows(label_rows, ["policy", "mode", "structure", "label"])
-        _write_csv(
-            result_dir / "metrics_structure_label.csv",
-            label_structure_rows,
-            ["policy", "mode", "structure", "label", "tp", "fp", "fn", "precision", "recall", "f1"],
-        )
-        print(f"Wrote: {result_dir / 'metrics_structure_label.csv'}")
-
-        label_domain_structure_rows = _aggregate_label_rows(
-            label_rows,
-            ["policy", "mode", "domain", "structure", "label"],
-        )
-        _write_csv(
-            result_dir / "metrics_domain_structure_label.csv",
-            label_domain_structure_rows,
-            ["policy", "mode", "domain", "structure", "label", "tp", "fp", "fn", "precision", "recall", "f1"],
-        )
-        print(f"Wrote: {result_dir / 'metrics_domain_structure_label.csv'}")
+        if args.debug:
+            print(f"Wrote debug files: {debug_dir}")
 
     finally:
-        _restore_config(snap)
+        _restore_config(snapshot)
 
     return 0
 

@@ -1,0 +1,7 @@
+DATASET: Dataset_06 | DOMAIN: Supporttickets | STRUCTURE: unstructured | VARIANT: 2 | POLICY: secure | MODE: ner
+MODE ner      | TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 1
+  - PER            gold 334:340 [gold] 'Daniel' [pred:ner:334:347] 'Daniel Krüger' gold_ctx='GmbH. Mein Name ist ▮Daniel▮ Krüger. Falls ihr r' pred_ctx='GmbH. Mein Name ist ▮Daniel Krüger▮. Falls ihr reinscha'
+UNEXPECTED (FP): 0

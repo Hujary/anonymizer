@@ -1,0 +1,8 @@
+DATASET: Dataset_29 | DOMAIN: Chats | STRUCTURE: unstructured | VARIANT: 1 | POLICY: secure | MODE: combined
+MODE combined | TP=23 FP=2 FN=0 | P=0.920 R=1.000 F1=0.958
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 2
+  - ORG            0:7 [ner] 'Channel' ctx='▮Channel▮: #it-support-muench'
+  - ORG            941:951 [ner] 'Projekt-ID' ctx='iell die Zahlen für ▮Projekt-ID▮ PRJ-2025-118. Anspr'

@@ -1,0 +1,7 @@
+DATASET: Dataset_27 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 1 | POLICY: minimal | MODE: ner
+MODE ner      | TP=12 FP=1 FN=0 | P=0.923 R=1.000 F1=0.960
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 1
+  - PER            0:23 [ner] 'Exportierter Teams-Chat' ctx='▮Exportierter Teams-Chat▮\nProjekt: CRM-Datenb'

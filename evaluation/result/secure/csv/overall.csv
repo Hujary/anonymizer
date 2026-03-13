@@ -1,0 +1,4 @@
+policy,mode,tp,fp,fn,precision,recall,f1
+secure,combined,348,44,37,0.887755,0.903896,0.895753
+secure,ner,181,47,41,0.793860,0.815315,0.804444
+secure,regex,182,3,1,0.983784,0.994536,0.989130

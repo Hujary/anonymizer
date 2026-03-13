@@ -1,0 +1,10 @@
+DATASET: Dataset_15 | DOMAIN: HR-Dokumente | STRUCTURE: regular | VARIANT: 1 | POLICY: secure | MODE: combined
+MODE combined | TP=14 FP=2 FN=2 | P=0.875 R=0.875 F1=0.875
+----------------------------------------------------------------------
+NOT DETECTED (FN): 2
+  - LOC            213:224 [gold] 'Lindenweg 8' ctx='n Nürnberg\nAdresse: ▮Lindenweg 8▮, 90402 Nürnberg\nTel'
+  - ORG            530:579 [gold] 'Friedrich-Alexander-Universität Erlangen-Nürnberg' ctx='ormatik (2013–2018)\n▮Friedrich-Alexander-Universität Erlangen-Nürnberg▮\n\nKenntnisse:\nJava, '
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 2
+  - STRASSE        213:224 [regex] 'Lindenweg 8' ctx='n Nürnberg\nAdresse: ▮Lindenweg 8▮, 90402 Nürnberg\nTel'
+  - LOC            593:597 [ner] 'Java' ctx='rnberg\n\nKenntnisse:\n▮Java▮, Spring Boot, REST,'

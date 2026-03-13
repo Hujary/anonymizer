@@ -1,0 +1,7 @@
+DATASET: Dataset_19 | DOMAIN: Verträge | STRUCTURE: structured | VARIANT: 1 | POLICY: minimal | MODE: regex
+MODE regex    | TP=3 FP=1 FN=0 | P=0.750 R=1.000 F1=0.857
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 1
+  - STRASSE        274:287 [regex] 'Hegelstraße 7' ctx='hoss links\nim Hause ▮Hegelstraße 7▮, 70174 Stuttgart.\n\n'

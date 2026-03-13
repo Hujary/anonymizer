@@ -1,0 +1,9 @@
+DATASET: Dataset_26 | DOMAIN: Chats | STRUCTURE: structured | VARIANT: 2 | POLICY: secure | MODE: combined
+MODE combined | TP=14 FP=3 FN=0 | P=0.824 R=1.000 F1=0.903
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 3
+  - PER            398:408 [ner] 'Testimport' ctx='nd Ansprechpartner. ▮Testimport▮ läuft auf Server er'
+  - ORG            481:492 [ner] 'IT-Security' ctx='0:07] Daniel Meier (▮IT-Security▮):\nBitte darauf acht'
+  - ORG            738:745 [ner] 'Go-Live' ctx=' Kühn:\nDeadline für ▮Go-Live▮ bleibt der 30.06.20'
