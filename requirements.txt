@@ -2,3 +2,5 @@ spacy>=3.7
 python-dotenv>=1.0.1
 click>=8.1.7
 flet==0.28.3
+pandas>=2.2.2
+matplotlib>=3.8.4
