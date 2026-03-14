@@ -1,9 +1,12 @@
 DATASET: Dataset_23 | DOMAIN: Verträge | STRUCTURE: unstructured | VARIANT: 1 | POLICY: secure | MODE: ner
-MODE ner      | TP=8 FP=1 FN=2 | P=0.889 R=0.800 F1=0.842
+MODE ner      | TP=6 FP=4 FN=4 | P=0.600 R=0.600 F1=0.600
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 2
   - STRASSE        142:160 [gold] 'Rotebühlstraße 112' ctx='au Laura Schneider, ▮Rotebühlstraße 112▮, 70178 Stuttgart, –'
   - LOC            2725:2734 [gold] 'Stuttgart' ctx='ublik Deutschland.\n\n▮Stuttgart▮, den 18.03.2025 von'
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
+NOT FULLY DETECTED (PARTIAL): 2
+  - STRASSE        gold 55:69 [gold] 'Königstraße 45' [pred:ner:55:66] 'Königstraße' gold_ctx='nn IT-Systeme GmbH, ▮Königstraße 45▮, 70173 Stuttgart, –' pred_ctx='nn IT-Systeme GmbH, ▮Königstraße▮ 45, 70173 Stuttgart'
+  - ORG            gold 2755:2779 [gold] 'Bergmann IT-Systeme GmbH' [pred:ner:2755:2763] 'Bergmann' gold_ctx=' den 18.03.2025 von ▮Bergmann IT-Systeme GmbH▮ mit Laura Schneider' pred_ctx=' den 18.03.2025 von ▮Bergmann▮ IT-Systeme GmbH mit'
+UNEXPECTED (FP): 2
+  - ORG            0:14 [ner] 'ARBEITSVERTRAG' ctx='▮ARBEITSVERTRAG▮\n\nZwischen der Bergm'
   - PER            142:156 [ner] 'Rotebühlstraße' ctx='au Laura Schneider, ▮Rotebühlstraße▮ 112, 70178 Stuttgar'

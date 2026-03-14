@@ -1,6 +1,9 @@
 DATASET: Dataset_08 | DOMAIN: E-Mail | STRUCTURE: structured | VARIANT: 2 | POLICY: secure | MODE: ner
-MODE ner      | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+MODE ner      | TP=3 FP=3 FN=1 | P=0.500 R=0.750 F1=0.600
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0
+NOT FULLY DETECTED (PARTIAL): 1
+  - ORG            gold 595:610 [gold] 'Innoventis GmbH' [pred:ner:595:605] 'Innoventis' gold_ctx='  \nProjektleitung  \n▮Innoventis GmbH▮' pred_ctx='  \nProjektleitung  \n▮Innoventis▮ GmbH'
+UNEXPECTED (FP): 2
+  - ORG            43:65 [ner] 'service@urbanenergy.de' ctx='oventis-gmbh.de\nAn: ▮service@urbanenergy.de▮\nDatum: 05.03.2024\nB'
+  - ORG            391:419 [ner] 'michael.roth@innoventis-gmbh' ctx='hael Roth  \nE-Mail: ▮michael.roth@innoventis-gmbh▮.de  \nTelefon: +49 1'

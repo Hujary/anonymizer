@@ -1,6 +1,9 @@
 DATASET: Dataset_19 | DOMAIN: Verträge | STRUCTURE: structured | VARIANT: 1 | POLICY: minimal | MODE: ner
-MODE ner      | TP=7 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+MODE ner      | TP=4 FP=3 FN=3 | P=0.571 R=0.571 F1=0.571
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 0
+NOT FULLY DETECTED (PARTIAL): 3
+  - STRASSE        gold 51:66 [gold] 'Uhlandstraße 19' [pred:ner:51:63] 'Uhlandstraße' gold_ctx='Frau Sabine Lehmann\n▮Uhlandstraße 19▮\n70182 Stuttgart\n\n- ' pred_ctx='Frau Sabine Lehmann\n▮Uhlandstraße▮ 19\n70182 Stuttgart\n'
+  - STRASSE        gold 138:151 [gold] 'Hegelstraße 7' [pred:ner:138:149] 'Hegelstraße' gold_ctx='Herrn Tobias Kruger\n▮Hegelstraße 7▮\n70174 Stuttgart\n\n- ' pred_ctx='Herrn Tobias Kruger\n▮Hegelstraße▮ 7\n70174 Stuttgart\n\n'
+  - STRASSE        gold 274:287 [gold] 'Hegelstraße 7' [pred:ner:268:285] 'Hause Hegelstraße' gold_ctx='hoss links\nim Hause ▮Hegelstraße 7▮, 70174 Stuttgart.\n\n' pred_ctx='ergeschoss links\nim ▮Hause Hegelstraße▮ 7, 70174 Stuttgart.'
 UNEXPECTED (FP): 0

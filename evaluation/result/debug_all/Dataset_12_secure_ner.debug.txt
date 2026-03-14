@@ -1,9 +1,11 @@
 DATASET: Dataset_12 | DOMAIN: E-Mail | STRUCTURE: unstructured | VARIANT: 2 | POLICY: secure | MODE: ner
-MODE ner      | TP=3 FP=2 FN=1 | P=0.600 R=0.750 F1=0.667
+MODE ner      | TP=3 FP=4 FN=1 | P=0.429 R=0.750 F1=0.545
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
   - PER            698:703 [gold] 'Julia' ctx='emlich ungeduldig.\n\n▮Julia▮, InterLog GmbH'
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 2
-  - ORG            5:17 [ner] 'julia.krause' ctx='Von: ▮julia.krause▮@interlog.de\nAn: it-'
+UNEXPECTED (FP): 4
+  - ORG            5:29 [ner] 'julia.krause@interlog.de' ctx='Von: ▮julia.krause@interlog.de▮\nAn: it-support@inte'
+  - ORG            292:321 [ner] 'martin.schulz@nordlogistik.de' ctx='(NordLogistik GmbH, ▮martin.schulz@nordlogistik.de▮, Tel 040 99887766) '
   - LOC            323:326 [ner] 'Tel' ctx='lz@nordlogistik.de, ▮Tel▮ 040 99887766) melde'
+  - ORG            506:536 [ner] 'https://portal.nordlogistik.de' ctx='etroffen.“\n\nPortal: ▮https://portal.nordlogistik.de▮  \nTicket-Referenz: '

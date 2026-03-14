@@ -1,8 +1,10 @@
 DATASET: Dataset_17 | DOMAIN: HR-Dokumente | STRUCTURE: unstructured | VARIANT: 1 | POLICY: secure | MODE: combined
-MODE combined | TP=8 FP=0 FN=2 | P=1.000 R=0.800 F1=0.889
+MODE combined | TP=8 FP=1 FN=2 | P=0.889 R=0.800 F1=0.842
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 2
-  - PER            21:34 [gold] 'Thomas Berger' ctx='otiz HR – Kandidat: ▮Thomas Berger▮\n\nMail kam von: thom'
+NOT DETECTED (FN): 1
   - ORG            162:177 [gold] 'DeltaLogix GmbH' ctx=' er ist aktuell bei ▮DeltaLogix GmbH▮ beschäftigt (seit 2'
-NOT FULLY DETECTED (PARTIAL): 0
+NOT FULLY DETECTED (PARTIAL): 1
+  - PER            gold 21:34 [gold] 'Thomas Berger' [pred:ner:21:40] 'Thomas Berger
+
+Mail' gold_ctx='otiz HR – Kandidat: ▮Thomas Berger▮\n\nMail kam von: thom' pred_ctx='otiz HR – Kandidat: ▮Thomas Berger\n\nMail▮ kam von: thomas.ber'
 UNEXPECTED (FP): 0

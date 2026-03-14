@@ -3,7 +3,7 @@ LABEL REPORT | POLICY: secure | MODE: regex
 
 DATUM
 --------------------------------------------------------------------------------
-ERKANNT (TP): 71
+ERKANNT (TP): 72
   - Dataset_01 435:445 [regex] '03.02.2024'
   - Dataset_02 671:681 [regex] '14.02.2024'
   - Dataset_02 868:878 [regex] '13.02.2024'
@@ -69,6 +69,7 @@ ERKANNT (TP): 71
   - Dataset_28 95:105 [regex] '04.06.2025'
   - Dataset_28 235:245 [regex] '01.03.2022'
   - Dataset_28 395:405 [regex] '01.07.2025'
+  - Dataset_28 1103:1113 [regex] '20.06.2025'
   - Dataset_29 61:71 [regex] '16.05.2025'
   - Dataset_29 840:850 [regex] '14.05.2025'
   - Dataset_30 85:95 [regex] '03.06.2025'
@@ -76,8 +77,7 @@ ERKANNT (TP): 71
   - Dataset_30 985:995 [regex] '12.02.2024'
   - Dataset_30 1454:1464 [regex] '10.06.2025'
 
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 1
-  - Dataset_28 gold:1101:1111 [gold] '20.06.2025' <- pred:regex:1103:1113 '20.06.2025'
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
 NICHT ERKANNT (FN): 0
 

@@ -1,10 +1,12 @@
 DATASET: Dataset_25 | DOMAIN: Chats | STRUCTURE: structured | VARIANT: 1 | POLICY: secure | MODE: ner
-MODE ner      | TP=9 FP=3 FN=1 | P=0.750 R=0.900 F1=0.818
+MODE ner      | TP=8 FP=5 FN=2 | P=0.615 R=0.800 F1=0.696
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
   - PER            404:415 [gold] 'Herr Vogel' ctx='r (IT-Support):\nHall▮o Herr Voge▮l, haben Sie Ihr Pas'
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 3
+NOT FULLY DETECTED (PARTIAL): 1
+  - STRASSE        gold 341:359 [gold] 'Tübinger Straße 54' [pred:ner:341:356] 'Tübinger Straße' gold_ctx='m Homeoffice in der ▮Tübinger Straße 54▮.\n\n[08:49] Julia Sch' pred_ctx='m Homeoffice in der ▮Tübinger Straße▮ 54.\n\n[08:49] Julia '
+UNEXPECTED (FP): 4
   - ORG            32:49 [ner] 'Internes Helpdesk' ctx='D-2025-0731\nSystem: ▮Internes Helpdesk▮\nStandort: Stuttgart'
   - ORG            70:88 [ner] 'Betroffenes System' ctx='Standort: Stuttgart\n▮Betroffenes System▮: VPN-Gateway vpn01.'
+  - LOC            520:539 [ner] 'Self-Service-Portal' ctx=' 18:30 Uhr über das ▮Self-Service-Portal▮.\n\n[08:52] Julia Sch'
   - ORG            852:862 [ner] 'MFA-Resync' ctx=' Passwort-Reset und ▮MFA-Resync▮ durchgeführt. Ticke'

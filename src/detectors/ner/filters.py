@@ -35,6 +35,7 @@ def apply_policy_labels(hits: List[Treffer], allowed_labels: Iterable[str]) -> L
 
     for h in hits:
         label = str(h.label).strip().upper()
+
         if label in allowed:
             out.append(h)
 
@@ -56,23 +57,38 @@ def clean_ner_hits(text: str, hits: List[Treffer]) -> List[Treffer]:
     if not allowed_set:
         return []
 
-    # Erste Filterstufe: nur relevante NER-Labels übernehmen
+    # Zuerst nur grob auf Labels eingrenzen, die wir überhaupt weiterverarbeiten wollen.
+    # MISC bleibt hier bewusst erhalten, damit der Refiner daraus z.B. ORG machen kann.
     current_hits: List[Treffer] = []
 
     for h in hits:
         label = str(h.label).strip().upper()
 
-        if label in {"LOC", "PER", "ORG"}:
+        if label in {"LOC", "PER", "ORG", "MISC"}:
             current_hits.append(h)
+
+    # WICHTIG:
+    # Label-Refinement vor dem Postprocessing und vor der finalen Filterung.
+    # So können brauchbare MISC-Treffer in echte Labels umklassifiziert werden.
+    current_hits = refine_ner_labels(text, current_hits)
+
+    # Danach nur noch die fachlich relevanten Labels behalten.
+    # Nicht umklassifizierte MISC-Treffer werden hier verworfen.
+    refined_hits: List[Treffer] = []
+
+    for h in current_hits:
+        label = str(h.label).strip().upper()
+
+        if label in {"LOC", "PER", "ORG", "STRASSE"}:
+            refined_hits.append(h)
+
+    current_hits = refined_hits
 
     # Optionales NER-Postprocessing (Span-Korrektur, Blacklists, etc.)
     use_post = bool(config.get("use_ner_postprocessing", True))
 
     if use_post:
         current_hits = postprocess_hits(text, current_hits)
-
-    # Label-Verfeinerung (z.B. Korrektur oder Zusammenführung von Labels)
-    current_hits = refine_ner_labels(text, current_hits)
 
     # Finale Policy-Filterung anhand der erlaubten Labels
     final_hits = apply_policy_labels(current_hits, allowed_set)

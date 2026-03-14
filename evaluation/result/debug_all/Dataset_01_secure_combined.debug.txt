@@ -1,6 +1,7 @@
 DATASET: Dataset_01 | DOMAIN: Supporttickets | STRUCTURE: structured | VARIANT: 1 | POLICY: secure | MODE: combined
-MODE combined | TP=6 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+MODE combined | TP=6 FP=1 FN=0 | P=0.857 R=1.000 F1=0.923
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0
+UNEXPECTED (FP): 1
+  - PER            9:21 [ner] 'Login-Fehler' ctx='Betreff: ▮Login-Fehler▮ im Kundenportal\n\nTi'

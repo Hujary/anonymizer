@@ -1,9 +1,11 @@
 DATASET: Dataset_28 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 2 | POLICY: secure | MODE: combined
-MODE combined | TP=23 FP=3 FN=1 | P=0.885 R=0.958 F1=0.920
+MODE combined | TP=22 FP=5 FN=2 | P=0.815 R=0.917 F1=0.863
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 1
-  - DATUM          gold 1101:1111 [gold] '20.06.2025' [pred:regex:1103:1113] '20.06.2025' gold_ctx='chtrag bis spätesten▮s 20.06.20▮25 zu finalisieren.' pred_ctx='trag bis spätestens ▮20.06.2025▮ zu finalisieren.'
-UNEXPECTED (FP): 2
+NOT FULLY DETECTED (PARTIAL): 2
+  - ORG            gold 62:87 [gold] 'Helion Manufacturing GmbH' [pred:ner:62:82] 'Helion Manufacturing' gold_ctx='-recht\nUnternehmen: ▮Helion Manufacturing GmbH▮\nDatum: 04.06.2025\n\n' pred_ctx='-recht\nUnternehmen: ▮Helion Manufacturing▮ GmbH\nDatum: 04.06.2'
+  - PER            gold 607:620 [gold] 'Miriam Scholz' [pred:ner:607:623] 'Miriam Scholz:#-' gold_ctx='ist 77134.\n\n[13:12] ▮Miriam Scholz▮:#-\nGut. Gehalt aktu' pred_ctx='ist 77134.\n\n[13:12] ▮Miriam Scholz:#-▮\nGut. Gehalt aktuell'
+UNEXPECTED (FP): 3
+  - PER            212:226 [ner] 'Eintrittsdatum' ctx='iel Fischer prüfen. ▮Eintrittsdatum▮ war der 01.03.2022,'
   - PLZ            591:596 [regex] '77134' ctx=' Personalnummer ist ▮77134▮.\n\n[13:12] Miriam Sc'
   - LOC            736:742 [ner] 'Daniel' ctx=' Klein:\nAdresse von ▮Daniel▮ ist noch Rosenstraß'

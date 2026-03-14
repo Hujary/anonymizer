@@ -1,6 +1,8 @@
 DATASET: Dataset_06 | DOMAIN: Supporttickets | STRUCTURE: unstructured | VARIANT: 2 | POLICY: secure | MODE: combined
-MODE combined | TP=8 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+MODE combined | TP=7 FP=2 FN=1 | P=0.778 R=0.875 F1=0.824
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0
+NOT FULLY DETECTED (PARTIAL): 1
+  - ORG            gold 294:318 [gold] 'CloudWare Solutions GmbH' [pred:ner:294:319] 'CloudWare Solutions GmbH.' gold_ctx='.\n\nWir sind von der ▮CloudWare Solutions GmbH▮. Mein Name ist Dani' pred_ctx='.\n\nWir sind von der ▮CloudWare Solutions GmbH.▮ Mein Name ist Danie'
+UNEXPECTED (FP): 1
+  - LOC            746:760 [ner] 'Export-Service' ctx='ein Problem mit dem ▮Export-Service▮ besteht. Wir brauch'

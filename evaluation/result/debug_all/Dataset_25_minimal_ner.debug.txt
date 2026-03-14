@@ -1,7 +1,8 @@
 DATASET: Dataset_25 | DOMAIN: Chats | STRUCTURE: structured | VARIANT: 1 | POLICY: minimal | MODE: ner
-MODE ner      | TP=8 FP=0 FN=1 | P=1.000 R=0.889 F1=0.941
+MODE ner      | TP=7 FP=1 FN=2 | P=0.875 R=0.778 F1=0.824
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
   - PER            404:415 [gold] 'Herr Vogel' ctx='r (IT-Support):\nHall▮o Herr Voge▮l, haben Sie Ihr Pas'
-NOT FULLY DETECTED (PARTIAL): 0
+NOT FULLY DETECTED (PARTIAL): 1
+  - STRASSE        gold 341:359 [gold] 'Tübinger Straße 54' [pred:ner:341:356] 'Tübinger Straße' gold_ctx='m Homeoffice in der ▮Tübinger Straße 54▮.\n\n[08:49] Julia Sch' pred_ctx='m Homeoffice in der ▮Tübinger Straße▮ 54.\n\n[08:49] Julia '
 UNEXPECTED (FP): 0

@@ -1,7 +1,9 @@
 DATASET: Dataset_17 | DOMAIN: HR-Dokumente | STRUCTURE: unstructured | VARIANT: 1 | POLICY: minimal | MODE: ner
-MODE ner      | TP=0 FP=0 FN=1 | P=0.000 R=0.000 F1=0.000
+MODE ner      | TP=0 FP=1 FN=1 | P=0.000 R=0.000 F1=0.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - PER            21:34 [gold] 'Thomas Berger' ctx='otiz HR – Kandidat: ▮Thomas Berger▮\n\nMail kam von: thom'
-NOT FULLY DETECTED (PARTIAL): 0
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 1
+  - PER            gold 21:34 [gold] 'Thomas Berger' [pred:ner:21:40] 'Thomas Berger
+
+Mail' gold_ctx='otiz HR – Kandidat: ▮Thomas Berger▮\n\nMail kam von: thom' pred_ctx='otiz HR – Kandidat: ▮Thomas Berger\n\nMail▮ kam von: thomas.ber'
 UNEXPECTED (FP): 0

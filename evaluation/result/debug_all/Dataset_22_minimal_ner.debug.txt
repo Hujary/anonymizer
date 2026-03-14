@@ -1,9 +1,10 @@
 DATASET: Dataset_22 | DOMAIN: Verträge | STRUCTURE: regular | VARIANT: 2 | POLICY: minimal | MODE: ner
-MODE ner      | TP=5 FP=0 FN=3 | P=1.000 R=0.625 F1=0.769
+MODE ner      | TP=4 FP=2 FN=4 | P=0.667 R=0.500 F1=0.571
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 3
-  - PER            232:242 [gold] 'Herrn Roth' ctx='Schmitt verkauft an ▮Herrn Roth▮ ihr gebrauchtes Fah'
+NOT DETECTED (FN): 2
   - PER            997:1014 [gold] 'Katharina Schmitt' ctx=' den 05.05.2025\n\n⸻\n\n▮Katharina Schmitt▮\n\n⸻\n\nDaniel Roth'
   - PER            1019:1030 [gold] 'Daniel Roth' ctx='tharina Schmitt\n\n⸻\n\n▮Daniel Roth▮'
-NOT FULLY DETECTED (PARTIAL): 0
+NOT FULLY DETECTED (PARTIAL): 2
+  - STRASSE        gold 62:79 [gold] 'Augustenstraße 33' [pred:ner:62:76] 'Augustenstraße' gold_ctx='tt, wohnhaft in der ▮Augustenstraße 33▮, 80333 München, und' pred_ctx='tt, wohnhaft in der ▮Augustenstraße▮ 33, 80333 München, '
+  - STRASSE        gold 135:153 [gold] 'Lindwurmstraße 115' [pred:ner:135:149] 'Lindwurmstraße' gold_ctx='th, wohnhaft in der ▮Lindwurmstraße 115▮, 80337 München, wir' pred_ctx='th, wohnhaft in der ▮Lindwurmstraße▮ 115, 80337 München,'
 UNEXPECTED (FP): 0

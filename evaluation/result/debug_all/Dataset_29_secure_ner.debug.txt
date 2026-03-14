@@ -1,8 +1,12 @@
 DATASET: Dataset_29 | DOMAIN: Chats | STRUCTURE: unstructured | VARIANT: 1 | POLICY: secure | MODE: ner
-MODE ner      | TP=16 FP=1 FN=1 | P=0.941 R=0.941 F1=0.941
+MODE ner      | TP=16 FP=5 FN=1 | P=0.762 R=0.941 F1=0.842
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
   - STRASSE        473:489 [gold] 'Leopoldstraße 23' ctx='derlassung München, ▮Leopoldstraße 23▮. Ich bin im interne'
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
+UNEXPECTED (FP): 5
+  - ORG            0:7 [ner] 'Channel' ctx='▮Channel▮: #it-support-muench'
+  - LOC            141:160 [ner] 'Reporting-Dashboard' ctx='llo, ich bekomme im ▮Reporting-Dashboard▮ report-fin-02.spint'
   - PER            473:486 [ner] 'Leopoldstraße' ctx='derlassung München, ▮Leopoldstraße▮ 23. Ich bin im inte'
+  - LOC            866:880 [ner] 'Datenbank-Last' ctx='2025. Ich prüfe die ▮Datenbank-Last▮.\n\n[15:59] Laura Web'
+  - ORG            941:951 [ner] 'Projekt-ID' ctx='iell die Zahlen für ▮Projekt-ID▮ PRJ-2025-118. Anspr'

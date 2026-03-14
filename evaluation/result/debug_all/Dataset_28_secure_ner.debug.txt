@@ -1,8 +1,13 @@
 DATASET: Dataset_28 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 2 | POLICY: secure | MODE: ner
-MODE ner      | TP=16 FP=1 FN=1 | P=0.941 R=0.941 F1=0.941
+MODE ner      | TP=13 FP=6 FN=4 | P=0.684 R=0.765 F1=0.722
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
   - STRASSE        752:765 [gold] 'Rosenstraße 8' ctx='von Daniel ist noch ▮Rosenstraße 8▮, 70182 Stuttgart hi'
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
+NOT FULLY DETECTED (PARTIAL): 3
+  - ORG            gold 62:87 [gold] 'Helion Manufacturing GmbH' [pred:ner:62:82] 'Helion Manufacturing' gold_ctx='-recht\nUnternehmen: ▮Helion Manufacturing GmbH▮\nDatum: 04.06.2025\n\n' pred_ctx='-recht\nUnternehmen: ▮Helion Manufacturing▮ GmbH\nDatum: 04.06.2'
+  - STRASSE        gold 267:285 [gold] 'Industriestraße 45' [pred:ner:267:282] 'Industriestraße' gold_ctx='Standort Stuttgart, ▮Industriestraße 45▮.\n\n[13:07] Robert Kl' pred_ctx='Standort Stuttgart, ▮Industriestraße▮ 45.\n\n[13:07] Robert'
+  - PER            gold 607:620 [gold] 'Miriam Scholz' [pred:ner:607:623] 'Miriam Scholz:#-' gold_ctx='ist 77134.\n\n[13:12] ▮Miriam Scholz▮:#-\nGut. Gehalt aktu' pred_ctx='ist 77134.\n\n[13:12] ▮Miriam Scholz:#-▮\nGut. Gehalt aktuell'
+UNEXPECTED (FP): 3
+  - PER            212:226 [ner] 'Eintrittsdatum' ctx='iel Fischer prüfen. ▮Eintrittsdatum▮ war der 01.03.2022,'
+  - LOC            395:406 [ner] '01.07.2025.' ctx='a. Neue Position ab ▮01.07.2025.▮ Bitte prüfen, ob im'
   - LOC            736:742 [ner] 'Daniel' ctx=' Klein:\nAdresse von ▮Daniel▮ ist noch Rosenstraß'

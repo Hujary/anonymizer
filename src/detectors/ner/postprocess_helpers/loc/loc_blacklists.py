@@ -3,7 +3,8 @@ from __future__ import annotations
 from typing import Final, Set
 
 
-TECHNICAL_LOC_BLACKLIST: Final[Set[str]] = {
+# Technische Begriffe und Systemkomponenten, die praktisch nie Orte sind
+LOC_BAD_SYSTEM_TOKENS: Final[Set[str]] = {
     "account",
     "accounts",
     "admin",
@@ -12,16 +13,7 @@ TECHNICAL_LOC_BLACKLIST: Final[Set[str]] = {
     "api",
     "app",
     "apps",
-    "auftrag",
-    "aufträge",
     "backend",
-    "bestellung",
-    "bestellungen",
-    "bestellnummer",
-    "bestellnummern",
-    "bereich",
-    "bereiche",
-    "board",
     "browser",
     "browsersession",
     "build",
@@ -60,10 +52,6 @@ TECHNICAL_LOC_BLACKLIST: Final[Set[str]] = {
     "environments",
     "error",
     "errors",
-    "event",
-    "events",
-    "example",
-    "beispiel",
     "export",
     "exports",
     "feed",
@@ -91,16 +79,9 @@ TECHNICAL_LOC_BLACKLIST: Final[Set[str]] = {
     "integrationen",
     "job",
     "jobs",
-    "kanal",
-    "kanäle",
     "komponente",
     "komponenten",
     "konsole",
-    "kontaktformular",
-    "kundencenter",
-    "kundenbereich",
-    "kundennummer",
-    "kundennummern",
     "landingpage",
     "layer",
     "layers",
@@ -111,12 +92,8 @@ TECHNICAL_LOC_BLACKLIST: Final[Set[str]] = {
     "logout",
     "logouts",
     "mailbox",
-    "management",
-    "manager",
     "mapping",
     "mappings",
-    "maske",
-    "masken",
     "menu",
     "menü",
     "message",
@@ -133,12 +110,6 @@ TECHNICAL_LOC_BLACKLIST: Final[Set[str]] = {
     "nodes",
     "notification",
     "notifications",
-    "nummer",
-    "nummern",
-    "option",
-    "optionen",
-    "order",
-    "orders",
     "page",
     "pages",
     "panel",
@@ -157,10 +128,6 @@ TECHNICAL_LOC_BLACKLIST: Final[Set[str]] = {
     "profil",
     "profile",
     "profiles",
-    "projekt",
-    "projekte",
-    "projektid",
-    "projekt-id",
     "queue",
     "queues",
     "record",
@@ -185,14 +152,11 @@ TECHNICAL_LOC_BLACKLIST: Final[Set[str]] = {
     "servicecenter",
     "session",
     "sessions",
-    "seite",
-    "seiten",
     "server",
     "server01",
     "server02",
     "server03",
     "setup",
-    "signatur",
     "snippet",
     "snippets",
     "software",
@@ -200,7 +164,6 @@ TECHNICAL_LOC_BLACKLIST: Final[Set[str]] = {
     "sources",
     "stack",
     "staging",
-    "statistik",
     "status",
     "storage",
     "stream",
@@ -246,3 +209,97 @@ TECHNICAL_LOC_BLACKLIST: Final[Set[str]] = {
     "workspace",
     "workspaces",
 }
+
+
+# Kommunikations- und Kontaktmarker
+LOC_BAD_CONTACT_TOKENS: Final[Set[str]] = {
+    "fax",
+    "mail",
+    "telefon",
+    "telefonnummer",
+    "tel",
+    "kontaktformular",
+    "signatur",
+}
+
+
+# Allgemeine Sach- und Verwaltungsbegriffe, die keine Orte sind
+LOC_BAD_GENERIC_TOKENS: Final[Set[str]] = {
+    "auftrag",
+    "aufträge",
+    "bestellung",
+    "bestellungen",
+    "bestellnummer",
+    "bestellnummern",
+    "bereich",
+    "bereiche",
+    "beispiel",
+    "event",
+    "events",
+    "kundencenter",
+    "kundenbereich",
+    "kundennummer",
+    "kundennummern",
+    "management",
+    "manager",
+    "nummer",
+    "nummern",
+    "option",
+    "optionen",
+    "order",
+    "orders",
+    "projekt",
+    "projekte",
+    "projektid",
+    "projekt-id",
+    "seite",
+    "seiten",
+    "statistik",
+}
+
+
+# Fachliche Begriffe, die in Verträgen / Tickets / Beschreibungen vorkommen,
+# aber keine Orte bezeichnen
+LOC_BAD_DOMAIN_TOKENS: Final[Set[str]] = {
+    "flur",
+    "ladenfläche",
+    "ladenflaeche",
+    "monatskaltmieten",
+    "patientenportal",
+    "waschraum",
+    "waschraums",
+}
+
+
+# Sehr kurze Tokens oder Abkürzungen, die praktisch nie Orte sind
+LOC_BAD_SHORT_TOKENS: Final[Set[str]] = {
+    "tel",
+    "fax",
+    "mob",
+    "fon",
+    "nr",
+    "no",
+    "id",
+    "ref",
+    "url",
+    "uid",
+    "api",
+    "ui",
+    "ip",
+    "db",
+    "vm",
+    "os",
+    "hr",
+    "it",
+    "qa",
+    "pm",
+}
+
+
+TECHNICAL_LOC_BLACKLIST: Final[Set[str]] = (
+    LOC_BAD_SYSTEM_TOKENS
+    | LOC_BAD_CONTACT_TOKENS
+    | LOC_BAD_GENERIC_TOKENS
+    | LOC_BAD_DOMAIN_TOKENS
+    | LOC_BAD_SHORT_TOKENS
+)

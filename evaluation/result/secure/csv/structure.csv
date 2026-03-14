@@ -1,10 +1,10 @@
 policy,mode,structure,tp,fp,fn,precision,recall,f1
-secure,combined,regular,121,8,15,0.937984,0.889706,0.913208
-secure,combined,structured,117,13,16,0.900000,0.879699,0.889734
-secure,combined,unstructured,128,2,12,0.984615,0.914286,0.948148
-secure,ner,regular,67,6,15,0.917808,0.817073,0.864516
-secure,ner,structured,58,15,17,0.794521,0.773333,0.783784
-secure,ner,unstructured,71,5,14,0.934211,0.835294,0.881988
-secure,regex,regular,61,2,1,0.968254,0.983871,0.976000
+secure,combined,regular,120,16,17,0.882353,0.875912,0.879121
+secure,combined,structured,112,27,21,0.805755,0.842105,0.823529
+secure,combined,unstructured,125,23,15,0.844595,0.892857,0.868056
+secure,ner,regular,60,27,23,0.689655,0.722892,0.705882
+secure,ner,structured,47,40,28,0.540230,0.626667,0.580247
+secure,ner,unstructured,64,37,21,0.633663,0.752941,0.688172
+secure,regex,regular,62,1,0,0.984127,1.000000,0.992000
 secure,regex,structured,65,0,1,1.000000,0.984848,0.992366
 secure,regex,unstructured,61,0,0,1.000000,1.000000,1.000000

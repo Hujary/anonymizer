@@ -1,8 +1,7 @@
 DATASET: Dataset_28 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 2 | POLICY: secure | MODE: regex
-MODE regex    | TP=8 FP=2 FN=1 | P=0.800 R=0.889 F1=0.842
+MODE regex    | TP=9 FP=1 FN=0 | P=0.900 R=1.000 F1=0.947
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 1
-  - DATUM          gold 1101:1111 [gold] '20.06.2025' [pred:regex:1103:1113] '20.06.2025' gold_ctx='chtrag bis spätesten▮s 20.06.20▮25 zu finalisieren.' pred_ctx='trag bis spätestens ▮20.06.2025▮ zu finalisieren.'
+NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 1
   - PLZ            591:596 [regex] '77134' ctx=' Personalnummer ist ▮77134▮.\n\n[13:12] Miriam Sc'
