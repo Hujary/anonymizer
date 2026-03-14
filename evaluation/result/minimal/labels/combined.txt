@@ -79,7 +79,7 @@ UNERWARTET (FP): 0
 
 PER
 --------------------------------------------------------------------------------
-ERKANNT (TP): 103
+ERKANNT (TP): 104
   - Dataset_01 71:81 [ner] 'Max Berger'
   - Dataset_02 84:96 [ner] 'Laura Schmid'
   - Dataset_03 657:663 [ner] 'Tobias'
@@ -115,12 +115,12 @@ ERKANNT (TP): 103
   - Dataset_21 235:242 [ner] 'Hofmann'
   - Dataset_22 27:44 [ner] 'Katharina Schmitt'
   - Dataset_22 106:117 [ner] 'Daniel Roth'
+  - Dataset_22 212:219 [ner] 'Schmitt'
   - Dataset_23 125:140 [ner] 'Laura Schneider'
   - Dataset_23 2784:2799 [ner] 'Laura Schneider'
   - Dataset_24 133:146 [ner] 'Markus Hansen'
   - Dataset_24 185:196 [ner] 'Jonas Weber'
   - Dataset_24 3105:3116 [ner] 'Jonas Weber'
-  - Dataset_25 133:145 [ner] 'Markus Vogel'
   - Dataset_25 133:145 [ner] 'Markus Vogel'
   - Dataset_25 370:385 [ner] 'Julia Schneider'
   - Dataset_25 469:481 [ner] 'Markus Vogel'
@@ -175,6 +175,7 @@ ERKANNT (TP): 103
   - Dataset_30 105:118 [ner] 'Jana Hoffmann'
   - Dataset_30 325:338 [ner] 'Markus Ritter'
   - Dataset_30 454:467 [ner] 'Jana Hoffmann'
+  - Dataset_30 532:546 [ner] 'Matthias König'
   - Dataset_30 663:676 [ner] 'Markus Ritter'
   - Dataset_30 863:876 [ner] 'Jana Hoffmann'
   - Dataset_30 947:960 [ner] 'Thomas Berger'
@@ -184,15 +185,9 @@ ERKANNT (TP): 103
   - Dataset_30 1277:1290 [ner] 'Markus Ritter'
   - Dataset_30 1398:1411 [ner] 'Jana Hoffmann'
 
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 6
-  - Dataset_22 gold:113:117 [gold] 'Roth' <- pred:ner:106:117 'Daniel Roth'
-  - Dataset_22 gold:207:219 [gold] 'Frau Schmitt' <- pred:ner:212:219 'Schmitt'
-  - Dataset_24 gold:191:196 [gold] 'Weber' <- pred:ner:185:196 'Jonas Weber'
-  - Dataset_25 gold:140:145 [gold] 'Vogel' <- pred:ner:133:145 'Markus Vogel'
-  - Dataset_30 gold:522:546 [gold] 'Herrn Dr. Matthias König' <- pred:ner:532:546 'Matthias König'
-  - Dataset_30 gold:541:546 [gold] 'König' <- pred:ner:532:546 'Matthias König'
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
-NICHT ERKANNT (FN): 14
+NICHT ERKANNT (FN): 18
   - Dataset_03 300:312 [gold] 'Tobias Klein'
   - Dataset_07 141:152 [gold] 'Frau Berger'
   - Dataset_09 562:568 [gold] 'Sabine'
@@ -204,15 +199,15 @@ NICHT ERKANNT (FN): 14
   - Dataset_21 206:217 [gold] 'Herr Berger'
   - Dataset_21 1045:1057 [gold] 'Lukas Berger'
   - Dataset_21 1062:1074 [gold] 'Nina Hofmann'
+  - Dataset_22 232:242 [gold] 'Herrn Roth'
   - Dataset_22 997:1014 [gold] 'Katharina Schmitt'
   - Dataset_22 1019:1030 [gold] 'Daniel Roth'
+  - Dataset_24 307:317 [gold] 'Herr Weber'
+  - Dataset_25 404:415 [gold] 'Herr Vogel'
   - Dataset_27 487:498 [gold] 'M. Bergmann'
+  - Dataset_30 1437:1446 [gold] 'Dr. König'
 
-UNERWARTET (FP): 4
-  - Dataset_11 94:96 [ner] 'Re'
-  - Dataset_11 528:531 [ner] 'Tel'
-  - Dataset_18 570:574 [ner] 'Evtl'
-  - Dataset_26 398:408 [ner] 'Testimport'
+UNERWARTET (FP): 0
 
 
 STRASSE

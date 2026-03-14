@@ -94,6 +94,14 @@
           "expected_sources": [
             "ner"
           ]
+        },
+        {
+          "start": 532,
+          "end": 546,
+          "text": "Matthias König",
+          "expected_sources": [
+            "ner"
+          ]
         }
       ]
     },
@@ -176,6 +184,15 @@
       "text": "Markus Ritter"
     },
     {
+      "label": "ORG",
+      "expected_sources": [
+        "ner"
+      ],
+      "start": 1105,
+      "end": 1113,
+      "text": "TransLog"
+    },
+    {
       "label": "PER",
       "expected_sources": [
         "ner"
@@ -217,8 +234,8 @@
           ]
         },
         {
-          "start": 541,
-          "end": 546,
+          "start": 1441,
+          "end": 1446,
           "text": "König",
           "expected_sources": [
             "ner"

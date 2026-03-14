@@ -1,8 +1,7 @@
 DATASET: Dataset_30 | DOMAIN: Chats | STRUCTURE: unstructured | VARIANT: 2 | POLICY: minimal | MODE: ner
-MODE ner      | TP=12 FP=2 FN=2 | P=0.857 R=0.857 F1=0.857
+MODE ner      | TP=13 FP=0 FN=1 | P=1.000 R=0.929 F1=0.963
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 2
-  - PER            gold 522:546 [gold] 'Herrn Dr. Matthias König' [pred:ner:532:546] 'Matthias König' gold_ctx='g. Für den Auditor, ▮Herrn Dr. Matthias König▮, brauchen wir die a' pred_ctx=' Auditor, Herrn Dr. ▮Matthias König▮, brauchen wir die a'
-  - PER            gold 541:546 [gold] 'König' [pred:ner:532:546] 'Matthias König' gold_ctx=' Herrn Dr. Matthias ▮König▮, brauchen wir die a' pred_ctx=' Auditor, Herrn Dr. ▮Matthias König▮, brauchen wir die a'
+NOT DETECTED (FN): 1
+  - PER            1437:1446 [gold] 'Dr. König' ctx='ekt. Der Termin mit ▮Dr. König▮ ist am 10.06.2025 u'
+NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

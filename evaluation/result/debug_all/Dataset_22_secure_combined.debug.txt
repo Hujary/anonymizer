@@ -1,11 +1,10 @@
 DATASET: Dataset_22 | DOMAIN: Verträge | STRUCTURE: regular | VARIANT: 2 | POLICY: secure | MODE: combined
-MODE combined | TP=11 FP=2 FN=5 | P=0.846 R=0.688 F1=0.759
+MODE combined | TP=12 FP=0 FN=4 | P=1.000 R=0.750 F1=0.857
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 3
+NOT DETECTED (FN): 4
+  - PER            232:242 [gold] 'Herrn Roth' ctx='Schmitt verkauft an ▮Herrn Roth▮ ihr gebrauchtes Fah'
   - LOC            969:976 [gold] 'München' ctx=' in München statt.\n\n▮München▮, den 05.05.2025\n\n⸻\n'
   - PER            997:1014 [gold] 'Katharina Schmitt' ctx=' den 05.05.2025\n\n⸻\n\n▮Katharina Schmitt▮\n\n⸻\n\nDaniel Roth'
   - PER            1019:1030 [gold] 'Daniel Roth' ctx='tharina Schmitt\n\n⸻\n\n▮Daniel Roth▮'
-NOT FULLY DETECTED (PARTIAL): 2
-  - PER            gold 113:117 [gold] 'Roth' [pred:ner:106:117] 'Daniel Roth' gold_ctx='n, und Herrn Daniel ▮Roth▮, wohnhaft in der Li' pred_ctx=' München, und Herrn ▮Daniel Roth▮, wohnhaft in der Li'
-  - PER            gold 207:219 [gold] 'Frau Schmitt' [pred:ner:212:219] 'Schmitt' gold_ctx='rtrag geschlossen:\n\n▮Frau Schmitt▮ verkauft an Herrn R' pred_ctx=' geschlossen:\n\nFrau ▮Schmitt▮ verkauft an Herrn R'
+NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

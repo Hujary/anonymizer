@@ -1,9 +1,8 @@
 DATASET: Dataset_28 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 2 | POLICY: secure | MODE: combined
-MODE combined | TP=22 FP=4 FN=2 | P=0.846 R=0.917 F1=0.880
+MODE combined | TP=23 FP=3 FN=1 | P=0.885 R=0.958 F1=0.920
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 2
-  - LOC            gold 771:780 [gold] 'Stuttgart' [pred:ner:773:782] 'Stuttgart' gold_ctx=' Rosenstraße 8, 7018▮2 Stuttga▮rt hinterlegt. Müsse' pred_ctx='osenstraße 8, 70182 ▮Stuttgart▮ hinterlegt. Müssen '
+NOT FULLY DETECTED (PARTIAL): 1
   - DATUM          gold 1101:1111 [gold] '20.06.2025' [pred:regex:1103:1113] '20.06.2025' gold_ctx='chtrag bis spätesten▮s 20.06.20▮25 zu finalisieren.' pred_ctx='trag bis spätestens ▮20.06.2025▮ zu finalisieren.'
 UNEXPECTED (FP): 2
   - PLZ            591:596 [regex] '77134' ctx=' Personalnummer ist ▮77134▮.\n\n[13:12] Miriam Sc'

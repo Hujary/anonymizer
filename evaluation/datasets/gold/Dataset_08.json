@@ -29,6 +29,15 @@
       "text": "05.03.2024"
     },
     {
+      "label": "LOC",
+      "expected_sources": [
+        "ner"
+      ],
+      "start": 297,
+      "end": 319,
+      "text": "Solarpark München-West"
+    },
+    {
       "label": "PER",
       "expected_sources": [
         "ner"

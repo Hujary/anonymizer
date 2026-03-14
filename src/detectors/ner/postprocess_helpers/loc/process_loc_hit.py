@@ -8,6 +8,7 @@ from .extract_street_span import extract_street_span_from_loc
 from .normalize_loc_span import normalize_loc_span
 from .validate_loc_span import is_plausible_loc_span
 from .loc_blacklists import TECHNICAL_LOC_BLACKLIST
+from .loc_id_validator import is_invalid_loc_id
 
 
 # Token-Splitting für LOC-Spans (z.B. "Monitoring-Service")
@@ -69,6 +70,10 @@ def process_loc_hit(text: str, hit: Treffer) -> Treffer | None:
 
     # Technische Begriffe (z.B. "Login-Service") verwerfen
     if _contains_technical_loc_term(span):
+        return None
+
+    # Code-/ID-artige Kennungen (z.B. "WL-2025") verwerfen
+    if is_invalid_loc_id(span):
         return None
 
     # Plausibilitätsprüfung für Ortsnamen

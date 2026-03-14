@@ -1,7 +1,7 @@
 DATASET: Dataset_25 | DOMAIN: Chats | STRUCTURE: structured | VARIANT: 1 | POLICY: minimal | MODE: ner
-MODE ner      | TP=9 FP=1 FN=1 | P=0.900 R=0.900 F1=0.900
+MODE ner      | TP=8 FP=0 FN=1 | P=1.000 R=0.889 F1=0.941
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 1
-  - PER            gold 140:145 [gold] 'Vogel' [pred:ner:133:145] 'Markus Vogel' gold_ctx='.de\n\n[08:47] Markus ▮Vogel▮ (Vertrieb, markus.v' pred_ctx='-intern.de\n\n[08:47] ▮Markus Vogel▮ (Vertrieb, markus.v'
+NOT DETECTED (FN): 1
+  - PER            404:415 [gold] 'Herr Vogel' ctx='r (IT-Support):\nHall▮o Herr Voge▮l, haben Sie Ihr Pas'
+NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

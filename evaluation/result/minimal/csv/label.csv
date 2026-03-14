@@ -2,10 +2,10 @@ policy,mode,label,tp,fp,fn,precision,recall,f1
 minimal,combined,E_MAIL,39,0,0,1.000000,1.000000,1.000000
 minimal,combined,IBAN,2,0,0,1.000000,1.000000,1.000000
 minimal,combined,IP_ADRESSE,2,0,0,1.000000,1.000000,1.000000
-minimal,combined,PER,103,10,20,0.911504,0.837398,0.872881
+minimal,combined,PER,104,0,18,1.000000,0.852459,0.920354
 minimal,combined,STRASSE,22,0,0,1.000000,1.000000,1.000000
 minimal,combined,TELEFON,20,0,0,1.000000,1.000000,1.000000
-minimal,ner,PER,103,12,20,0.895652,0.837398,0.865546
+minimal,ner,PER,104,2,18,0.981132,0.852459,0.912281
 minimal,ner,STRASSE,18,0,4,1.000000,0.818182,0.900000
 minimal,regex,E_MAIL,39,0,0,1.000000,1.000000,1.000000
 minimal,regex,IBAN,2,0,0,1.000000,1.000000,1.000000

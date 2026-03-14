@@ -1,9 +1,7 @@
 DATASET: Dataset_18 | DOMAIN: HR-Dokumente | STRUCTURE: unstructured | VARIANT: 2 | POLICY: secure | MODE: combined
-MODE combined | TP=13 FP=3 FN=0 | P=0.812 R=1.000 F1=0.897
+MODE combined | TP=13 FP=1 FN=0 | P=0.929 R=1.000 F1=0.963
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 3
-  - ORG            0:2 [ner] 'FW' ctx='▮FW▮: Bewerbung Position'
+UNEXPECTED (FP): 1
   - ORG            341:365 [ner] 'Machine-Learning-Modelle' ctx='rt war ich u.a. für ▮Machine-Learning-Modelle▮ im Finanzbereich ve'
-  - PER            570:574 [ner] 'Evtl' ctx='72.000 € jährlich).\n▮Evtl▮. Referenz von Marku'

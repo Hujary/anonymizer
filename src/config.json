@@ -26,5 +26,5 @@
   "reversible_masking": true,
   "use_ner_postprocessing": true,
   "copy_ai_prompt_enabled": false,
-  "debug_ner_result": false
+  "debug_ner_result": true
 }

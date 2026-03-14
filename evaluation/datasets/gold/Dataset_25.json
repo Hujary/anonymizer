@@ -24,22 +24,6 @@
       "expected_sources": [
         "ner"
       ],
-      "alternatives": [
-        {
-          "start": 133,
-          "end": 145,
-          "text": "Markus Vogel",
-          "expected_sources": [
-            "ner"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "PER",
-      "expected_sources": [
-        "ner"
-      ],
       "start": 133,
       "end": 145,
       "text": "Markus Vogel"
@@ -87,16 +71,16 @@
       ],
       "alternatives": [
         {
-          "start": 406,
-          "end": 416,
+          "start": 404,
+          "end": 415,
           "text": "Herr Vogel",
           "expected_sources": [
             "ner"
           ]
         },
         {
-          "start": 140,
-          "end": 145,
+          "start": 409,
+          "end": 415,
           "text": "Vogel",
           "expected_sources": [
             "ner"

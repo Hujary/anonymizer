@@ -1,10 +1,7 @@
 DATASET: Dataset_23 | DOMAIN: Verträge | STRUCTURE: unstructured | VARIANT: 1 | POLICY: secure | MODE: combined
-MODE combined | TP=11 FP=3 FN=2 | P=0.786 R=0.846 F1=0.815
+MODE combined | TP=13 FP=0 FN=1 | P=1.000 R=0.929 F1=0.963
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
   - LOC            2725:2734 [gold] 'Stuttgart' ctx='ublik Deutschland.\n\n▮Stuttgart▮, den 18.03.2025 von'
-NOT FULLY DETECTED (PARTIAL): 1
-  - ORG            gold 2755:2779 [gold] 'Bergmann IT-Systeme GmbH' [pred:ner:2755:2763] 'Bergmann' gold_ctx=' den 18.03.2025 von ▮Bergmann IT-Systeme GmbH▮ mit Laura Schneider' pred_ctx=' den 18.03.2025 von ▮Bergmann▮ IT-Systeme GmbH mit'
-UNEXPECTED (FP): 2
-  - ORG            0:14 [ner] 'ARBEITSVERTRAG' ctx='▮ARBEITSVERTRAG▮\n\nZwischen der Bergm'
-  - LOC            2696:2722 [ner] 'Bundesrepublik Deutschland' ctx=' gilt das Recht der ▮Bundesrepublik Deutschland▮.\n\nStuttgart, den 18'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 0

@@ -1,9 +1,8 @@
 DATASET: Dataset_27 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 1 | POLICY: secure | MODE: combined
-MODE combined | TP=19 FP=2 FN=2 | P=0.905 R=0.905 F1=0.905
+MODE combined | TP=20 FP=1 FN=1 | P=0.952 R=0.952 F1=0.952
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
   - PER            487:498 [gold] 'M. Bergmann' ctx='Bergmann und einmal ▮M. Bergmann▮.\n\n[10:18] Anna Kell'
-NOT FULLY DETECTED (PARTIAL): 1
-  - ORG            gold 244:265 [gold] 'Bergmann Industrie AG' [pred:ner:244:262] 'Bergmann Industrie' gold_ctx='inträge zum Kunden „▮Bergmann Industrie AG▮“ aufgefallen. Kunde' pred_ctx='inträge zum Kunden „▮Bergmann Industrie▮ AG“ aufgefallen. Ku'
+NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 1
   - ORG            33:53 [ner] 'CRM-Datenbereinigung' ctx='Teams-Chat\nProjekt: ▮CRM-Datenbereinigung▮\nUnternehmen: NordCo'

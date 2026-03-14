@@ -48,8 +48,8 @@ STRUCTURE: unstructured
 
 POLICY secure
 MODE regex    | TP=5 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=3 FP=1 FN=0 | P=0.750 R=1.000 F1=0.857
-MODE combined | TP=8 FP=1 FN=0 | P=0.889 R=1.000 F1=0.941
+MODE ner      | TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+MODE combined | TP=8 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -81,8 +81,8 @@ STRUCTURE: structured
 
 POLICY secure
 MODE regex    | TP=6 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=3 FP=1 FN=0 | P=0.750 R=1.000 F1=0.857
-MODE combined | TP=9 FP=1 FN=0 | P=0.900 R=1.000 F1=0.947
+MODE ner      | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+MODE combined | TP=10 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -114,8 +114,8 @@ STRUCTURE: unstructured
 
 POLICY secure
 MODE regex    | TP=7 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=4 FP=2 FN=3 | P=0.667 R=0.571 F1=0.615
-MODE combined | TP=11 FP=2 FN=3 | P=0.846 R=0.786 F1=0.815
+MODE ner      | TP=3 FP=0 FN=4 | P=1.000 R=0.429 F1=0.600
+MODE combined | TP=10 FP=0 FN=4 | P=1.000 R=0.714 F1=0.833
 
 ======================================================================
 
@@ -125,7 +125,7 @@ STRUCTURE: unstructured
 
 POLICY secure
 MODE regex    | TP=8 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=3 FP=1 FN=1 | P=0.750 R=0.750 F1=0.750
+MODE ner      | TP=3 FP=2 FN=1 | P=0.600 R=0.750 F1=0.667
 MODE combined | TP=11 FP=1 FN=1 | P=0.917 R=0.917 F1=0.917
 
 ======================================================================
@@ -136,8 +136,8 @@ STRUCTURE: structured
 
 POLICY secure
 MODE regex    | TP=9 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=5 FP=2 FN=2 | P=0.714 R=0.714 F1=0.714
-MODE combined | TP=14 FP=2 FN=2 | P=0.875 R=0.875 F1=0.875
+MODE ner      | TP=5 FP=1 FN=2 | P=0.833 R=0.714 F1=0.769
+MODE combined | TP=14 FP=1 FN=2 | P=0.933 R=0.875 F1=0.903
 
 ======================================================================
 
@@ -147,8 +147,8 @@ STRUCTURE: structured
 
 POLICY secure
 MODE regex    | TP=8 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=4 FP=2 FN=4 | P=0.667 R=0.500 F1=0.571
-MODE combined | TP=12 FP=2 FN=3 | P=0.857 R=0.800 F1=0.828
+MODE ner      | TP=4 FP=1 FN=4 | P=0.800 R=0.500 F1=0.615
+MODE combined | TP=12 FP=1 FN=3 | P=0.923 R=0.800 F1=0.857
 
 ======================================================================
 
@@ -191,8 +191,8 @@ STRUCTURE: unstructured
 
 POLICY secure
 MODE regex    | TP=7 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=6 FP=3 FN=0 | P=0.667 R=1.000 F1=0.800
-MODE combined | TP=13 FP=3 FN=0 | P=0.812 R=1.000 F1=0.897
+MODE ner      | TP=6 FP=1 FN=0 | P=0.857 R=1.000 F1=0.923
+MODE combined | TP=13 FP=1 FN=0 | P=0.929 R=1.000 F1=0.963
 
 ======================================================================
 
@@ -213,8 +213,8 @@ STRUCTURE: structured
 
 POLICY secure
 MODE regex    | TP=7 FP=0 FN=1 | P=1.000 R=0.875 F1=0.933
-MODE ner      | TP=7 FP=2 FN=7 | P=0.778 R=0.500 F1=0.609
-MODE combined | TP=12 FP=2 FN=7 | P=0.857 R=0.632 F1=0.727
+MODE ner      | TP=7 FP=1 FN=7 | P=0.875 R=0.500 F1=0.636
+MODE combined | TP=12 FP=1 FN=7 | P=0.923 R=0.632 F1=0.750
 
 ======================================================================
 
@@ -235,8 +235,8 @@ STRUCTURE: regular
 
 POLICY secure
 MODE regex    | TP=6 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=7 FP=2 FN=5 | P=0.778 R=0.583 F1=0.667
-MODE combined | TP=11 FP=2 FN=5 | P=0.846 R=0.688 F1=0.759
+MODE ner      | TP=8 FP=0 FN=4 | P=1.000 R=0.667 F1=0.800
+MODE combined | TP=12 FP=0 FN=4 | P=1.000 R=0.750 F1=0.857
 
 ======================================================================
 
@@ -246,8 +246,8 @@ STRUCTURE: unstructured
 
 POLICY secure
 MODE regex    | TP=6 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=6 FP=4 FN=3 | P=0.600 R=0.667 F1=0.632
-MODE combined | TP=11 FP=3 FN=2 | P=0.786 R=0.846 F1=0.815
+MODE ner      | TP=8 FP=1 FN=2 | P=0.889 R=0.800 F1=0.842
+MODE combined | TP=13 FP=0 FN=1 | P=1.000 R=0.929 F1=0.963
 
 ======================================================================
 
@@ -257,8 +257,8 @@ STRUCTURE: unstructured
 
 POLICY secure
 MODE regex    | TP=6 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=8 FP=4 FN=3 | P=0.667 R=0.727 F1=0.696
-MODE combined | TP=12 FP=4 FN=3 | P=0.750 R=0.800 F1=0.774
+MODE ner      | TP=10 FP=0 FN=2 | P=1.000 R=0.833 F1=0.909
+MODE combined | TP=14 FP=0 FN=2 | P=1.000 R=0.875 F1=0.933
 
 ======================================================================
 
@@ -268,8 +268,8 @@ STRUCTURE: structured
 
 POLICY secure
 MODE regex    | TP=6 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=10 FP=3 FN=1 | P=0.769 R=0.909 F1=0.833
-MODE combined | TP=15 FP=3 FN=1 | P=0.833 R=0.938 F1=0.882
+MODE ner      | TP=9 FP=3 FN=1 | P=0.750 R=0.900 F1=0.818
+MODE combined | TP=14 FP=3 FN=1 | P=0.824 R=0.933 F1=0.875
 
 ======================================================================
 
@@ -279,8 +279,8 @@ STRUCTURE: structured
 
 POLICY secure
 MODE regex    | TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=11 FP=3 FN=0 | P=0.786 R=1.000 F1=0.880
-MODE combined | TP=14 FP=3 FN=0 | P=0.824 R=1.000 F1=0.903
+MODE ner      | TP=11 FP=2 FN=0 | P=0.846 R=1.000 F1=0.917
+MODE combined | TP=14 FP=2 FN=0 | P=0.875 R=1.000 F1=0.933
 
 ======================================================================
 
@@ -290,8 +290,8 @@ STRUCTURE: regular
 
 POLICY secure
 MODE regex    | TP=7 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=13 FP=2 FN=2 | P=0.867 R=0.867 F1=0.867
-MODE combined | TP=19 FP=2 FN=2 | P=0.905 R=0.905 F1=0.905
+MODE ner      | TP=14 FP=1 FN=1 | P=0.933 R=0.933 F1=0.933
+MODE combined | TP=20 FP=1 FN=1 | P=0.952 R=0.952 F1=0.952
 
 ======================================================================
 
@@ -301,8 +301,8 @@ STRUCTURE: regular
 
 POLICY secure
 MODE regex    | TP=8 FP=2 FN=1 | P=0.800 R=0.889 F1=0.842
-MODE ner      | TP=15 FP=2 FN=2 | P=0.882 R=0.882 F1=0.882
-MODE combined | TP=22 FP=4 FN=2 | P=0.846 R=0.917 F1=0.880
+MODE ner      | TP=16 FP=1 FN=1 | P=0.941 R=0.941 F1=0.941
+MODE combined | TP=23 FP=3 FN=1 | P=0.885 R=0.958 F1=0.920
 
 ======================================================================
 
@@ -312,8 +312,8 @@ STRUCTURE: unstructured
 
 POLICY secure
 MODE regex    | TP=7 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=16 FP=3 FN=1 | P=0.842 R=0.941 F1=0.889
-MODE combined | TP=23 FP=2 FN=0 | P=0.920 R=1.000 F1=0.958
+MODE ner      | TP=16 FP=1 FN=1 | P=0.941 R=0.941 F1=0.941
+MODE combined | TP=23 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -323,13 +323,13 @@ STRUCTURE: unstructured
 
 POLICY secure
 MODE regex    | TP=6 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=13 FP=5 FN=3 | P=0.722 R=0.812 F1=0.765
-MODE combined | TP=18 FP=5 FN=3 | P=0.783 R=0.857 F1=0.818
+MODE ner      | TP=15 FP=0 FN=2 | P=1.000 R=0.882 F1=0.938
+MODE combined | TP=20 FP=0 FN=2 | P=1.000 R=0.909 F1=0.952
 
 ======================================================================
 
 GLOBAL SUMMARY (micro-averaged over all datasets)
 ----------------------------------------------------------------------
 POLICY secure   | MODE regex    | TP= 187 FP=   2 FN=   2 | P=0.989 R=0.989 F1=0.989
-POLICY secure   | MODE ner      | TP= 188 FP=  53 FN=  51 | P=0.780 R=0.787 F1=0.783
-POLICY secure   | MODE combined | TP= 358 FP=  51 FN=  48 | P=0.875 R=0.882 F1=0.879
+POLICY secure   | MODE ner      | TP= 196 FP=  26 FN=  46 | P=0.883 R=0.810 F1=0.845
+POLICY secure   | MODE combined | TP= 366 FP=  23 FN=  43 | P=0.941 R=0.895 F1=0.917

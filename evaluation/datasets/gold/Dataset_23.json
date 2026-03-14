@@ -102,6 +102,15 @@
       "expected_sources": [
         "ner"
       ],
+      "start": 2696,
+      "end": 2722,
+      "text": "Bundesrepublik Deutschland"
+    },
+    {
+      "label": "LOC",
+      "expected_sources": [
+        "ner"
+      ],
       "start": 2725,
       "end": 2734,
       "text": "Stuttgart"
