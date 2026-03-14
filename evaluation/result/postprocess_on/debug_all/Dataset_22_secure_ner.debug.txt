@@ -1,0 +1,12 @@
+DATASET: Dataset_22 | DOMAIN: Verträge | STRUCTURE: regular | VARIANT: 2 | POLICY: secure | MODE: ner | POSTPROCESSING: on
+MODE ner      | TP=6 FP=0 FN=6 | P=1.000 R=0.500 F1=0.667
+----------------------------------------------------------------------
+NOT DETECTED (FN): 6
+  - STRASSE        62:79 [gold] 'Augustenstraße 33' ctx='tt, wohnhaft in der ▮Augustenstraße 33▮, 80333 München, und'
+  - STRASSE        135:153 [gold] 'Lindwurmstraße 115' ctx='th, wohnhaft in der ▮Lindwurmstraße 115▮, 80337 München, wir'
+  - PER            232:242 [gold] 'Herrn Roth' ctx='Schmitt verkauft an ▮Herrn Roth▮ ihr gebrauchtes Fah'
+  - LOC            969:976 [gold] 'München' ctx=' in München statt.\n\n▮München▮, den 05.05.2025\n\n⸻\n'
+  - PER            997:1014 [gold] 'Katharina Schmitt' ctx=' den 05.05.2025\n\n⸻\n\n▮Katharina Schmitt▮\n\n⸻\n\nDaniel Roth'
+  - PER            1019:1030 [gold] 'Daniel Roth' ctx='tharina Schmitt\n\n⸻\n\n▮Daniel Roth▮'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 0

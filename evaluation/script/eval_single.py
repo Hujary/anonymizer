@@ -138,7 +138,6 @@ def _apply_policy(policy_name: str) -> None:
     config.set("regex_labels", _normalize_label_list(spec.get("regex_labels", [])))
 
 
-# Liefert die Label-Menge, die für die gewählte Policy in diesem Modus überhaupt bewertet werden darf.
 def _policy_labels_for_mode(policy_name: str, mode: str) -> Set[str]:
     policy_key = str(policy_name or "").strip().lower()
 
@@ -305,14 +304,12 @@ def _parse_gold(gold: Dict[str, Any]) -> List[GoldEntity]:
     return out
 
 
-# Gold ist nur dann für den aktuellen Modus relevant, wenn die erwartete Source zu diesem Modus passt.
 def _gold_required_for_mode(g: GoldEntity, mode_sources: Set[str]) -> bool:
     if not g.expected_sources:
         return True
     return bool(g.expected_sources.intersection(mode_sources))
 
 
-# Gold ist nur dann für die aktuelle Policy relevant, wenn das Label in dieser Policy überhaupt ausgewertet wird.
 def _gold_required_for_policy(g: GoldEntity, allowed_labels: Set[str]) -> bool:
     if not allowed_labels:
         return False
@@ -325,7 +322,6 @@ def _candidate_allowed_for_mode(c: GoldCandidate, mode_sources: Set[str]) -> boo
     return bool(c.expected_sources.intersection(mode_sources))
 
 
-# Aktiviert intern den gewünschten Auswertungsmodus.
 def _set_config_for_mode(mode: str) -> None:
     flags = dict(config.get_flags() or {})
     debug_mask = bool(flags.get("debug_mask", False))
@@ -408,7 +404,6 @@ def _allowed_labels_for_source(cfg: Dict[str, Any], source: str) -> Set[str]:
     return out
 
 
-# Wendet zusätzliche Label-Regeln aus eval_config.json auf die Vorhersagen an.
 def _apply_label_rules(
     text: str,
     spans: List[Span],
@@ -517,7 +512,6 @@ def _evaluate(
     allowed_regex = _allowed_labels_for_source(cfg, "regex")
     allowed_ner = _allowed_labels_for_source(cfg, "ner")
 
-    # Filtert die Predictions zusätzlich anhand der eval_config pro Source.
     if allowed_regex or allowed_ner:
         filtered: List[Span] = []
 
@@ -562,7 +556,6 @@ def _evaluate(
 
         found_exact: Optional[Tuple[int, int, str]] = None
 
-        # Ein exakter Treffer zählt nur, wenn das Label sowohl zum Gold als auch zur Policy passt.
         for c in candidates:
             for L in g.acceptable_labels:
                 if L not in allowed_policy_labels:
@@ -597,7 +590,6 @@ def _evaluate(
         best_partial_pred: Optional[Span] = None
         best_partial_gold: Optional[GoldCandidate] = None
 
-        # PARTIAL zählt nur innerhalb des für diese Policy erlaubten Labelraums.
         for c in candidates:
             for p in preds:
                 if p.label not in g.acceptable_labels:
@@ -656,7 +648,6 @@ def _evaluate(
             )
         )
 
-    # FP werden nur für Labels gezählt, die diese Policy in diesem Modus überhaupt bewerten soll.
     for p in preds:
         if p.label not in allowed_policy_labels:
             continue
@@ -848,23 +839,19 @@ def _resolve_paths(eval_root: Path, basename: str) -> Tuple[Path, Path, Path, Pa
     return text_path, gold_path, out_path, dbg_path
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--name", required=True, help="Basename like Dataset_01 (without extension)")
-    ap.add_argument("--eval-root", default="evaluation")
-    ap.add_argument("--policy", choices=sorted(POLICY_SPECS.keys()), default="secure")
-    ap.add_argument("--debug", action="store_true")
-    ap.add_argument("--show-tp", action="store_true")
-    ap.add_argument("--per-label", action="store_true")
-    ap.add_argument("--ctx", type=int, default=20)
-    ap.add_argument("--max-lines", type=int, default=200)
-    ap.add_argument("--no-ner-post", action="store_true")
-    args = ap.parse_args()
-
-    eval_root = Path(args.eval_root)
-    basename = args.name
-
-    text_path, gold_path, out_path, dbg_path = _resolve_paths(eval_root, basename)
+def _run_single_variant(
+    *,
+    basename: str,
+    eval_root: Path,
+    policy: str,
+    debug: bool,
+    show_tp: bool,
+    per_label: bool,
+    ctx: int,
+    max_lines: int,
+    postprocess_enabled: bool,
+) -> None:
+    text_path, gold_path, _, _ = _resolve_paths(eval_root, basename)
 
     if not text_path.exists():
         raise FileNotFoundError(f"Missing text file: {text_path}")
@@ -875,82 +862,129 @@ def main() -> int:
     gold = _read_json(gold_path)
     gold_entities = _parse_gold(gold)
 
+    variant_root = eval_root / "result" / ("postprocess_on" if postprocess_enabled else "postprocess_off")
+    variant_root.mkdir(parents=True, exist_ok=True)
+
+    out_path = variant_root / f"{basename}_result.txt"
+    dbg_path = variant_root / f"{basename}_result.debug.txt"
+
+    config.set("use_ner_postprocessing", postprocess_enabled)
+    _apply_policy(policy)
+
+    modes: List[Tuple[str, Set[str]]] = [
+        ("regex", {"regex"}),
+        ("ner", {"ner"}),
+        ("combined", {"regex", "ner"}),
+    ]
+
+    report_lines: List[str] = []
+    debug_lines: List[str] = []
+
+    report_lines.append(f"DATASET: {basename}")
+    report_lines.append(f"TEXT: {text_path}")
+    report_lines.append(f"GOLD: {gold_path}")
+    report_lines.append(f"POLICY: {policy}")
+    report_lines.append(f"NER_LABELS: {config.get('ner_labels', [])}")
+    report_lines.append(f"REGEX_LABELS: {config.get('regex_labels', [])}")
+    report_lines.append(f"NER_POSTPROCESSING: {bool(config.get('use_ner_postprocessing', True))}")
+    report_lines.append("")
+    report_lines.append("SUMMARY")
+    report_lines.append("-" * 70)
+
+    for mode, sources in modes:
+        total, by_label, misses = _evaluate(
+            text,
+            gold_entities,
+            mode=mode,
+            mode_sources=set(sources),
+            policy_name=policy,
+            eval_root=eval_root,
+        )
+
+        report_lines.append(_format_summary(mode, total))
+
+        if per_label:
+            report_lines.append("")
+            report_lines.append(f"PER-LABEL ({mode})")
+            report_lines.extend(_format_per_label(by_label))
+            report_lines.append("")
+
+        if debug:
+            debug_lines.append(
+                f"DATASET: {basename} | POLICY: {policy} | MODE: {mode} | "
+                f"POSTPROCESSING: {'on' if postprocess_enabled else 'off'}"
+            )
+            debug_lines.append(_format_summary(mode, total))
+            debug_lines.append("-" * 70)
+            debug_lines.extend(
+                _format_misses(
+                    text,
+                    misses,
+                    show_tp=bool(show_tp),
+                    ctx_radius=max(0, int(ctx)),
+                    max_lines=max(1, int(max_lines)),
+                )
+            )
+            debug_lines.append("")
+            debug_lines.append("=" * 70)
+            debug_lines.append("")
+
+    out_path.write_text("\n".join(report_lines).rstrip() + "\n", encoding="utf-8")
+
+    if debug:
+        dbg_path.write_text("\n".join(debug_lines).rstrip() + "\n", encoding="utf-8")
+
+    print(f"Wrote: {out_path}")
+    if debug:
+        print(f"Wrote: {dbg_path}")
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--name", required=True, help="Basename like Dataset_01 (without extension)")
+    ap.add_argument("--eval-root", default="evaluation")
+    ap.add_argument("--policy", choices=sorted(POLICY_SPECS.keys()), default="secure")
+    ap.add_argument("--debug", action="store_true")
+    ap.add_argument("--show-tp", action="store_true")
+    ap.add_argument("--per-label", action="store_true")
+    ap.add_argument("--ctx", type=int, default=20)
+    ap.add_argument("--max-lines", type=int, default=200)
+    ap.add_argument(
+        "--only-post",
+        choices=["on", "off"],
+        default=None,
+        help="Optional: run only one variant instead of both",
+    )
+    args = ap.parse_args()
+
+    eval_root = Path(args.eval_root)
     snap = _snapshot_config()
 
-    if args.no_ner_post:
-        config.set("use_ner_postprocessing", False)
-    else:
-        config.set("use_ner_postprocessing", True)
-
     try:
-        _apply_policy(args.policy)
+        run_variants: List[bool]
 
-        modes: List[Tuple[str, Set[str]]] = [
-            ("regex", {"regex"}),
-            ("ner", {"ner"}),
-            ("combined", {"regex", "ner"}),
-        ]
+        if args.only_post == "on":
+            run_variants = [True]
+        elif args.only_post == "off":
+            run_variants = [False]
+        else:
+            run_variants = [False, True]
 
-        report_lines: List[str] = []
-        debug_lines: List[str] = []
-
-        report_lines.append(f"DATASET: {basename}")
-        report_lines.append(f"TEXT: {text_path}")
-        report_lines.append(f"GOLD: {gold_path}")
-        report_lines.append(f"POLICY: {args.policy}")
-        report_lines.append(f"NER_LABELS: {config.get('ner_labels', [])}")
-        report_lines.append(f"REGEX_LABELS: {config.get('regex_labels', [])}")
-        report_lines.append(f"NER_POSTPROCESSING: {bool(config.get('use_ner_postprocessing', True))}")
-        report_lines.append("")
-        report_lines.append("SUMMARY")
-        report_lines.append("-" * 70)
-
-        for mode, sources in modes:
-            total, by_label, misses = _evaluate(
-                text,
-                gold_entities,
-                mode=mode,
-                mode_sources=set(sources),
-                policy_name=args.policy,
+        for postprocess_enabled in run_variants:
+            _run_single_variant(
+                basename=args.name,
                 eval_root=eval_root,
+                policy=args.policy,
+                debug=bool(args.debug),
+                show_tp=bool(args.show_tp),
+                per_label=bool(args.per_label),
+                ctx=int(args.ctx),
+                max_lines=int(args.max_lines),
+                postprocess_enabled=postprocess_enabled,
             )
-
-            report_lines.append(_format_summary(mode, total))
-
-            if args.per_label:
-                report_lines.append("")
-                report_lines.append(f"PER-LABEL ({mode})")
-                report_lines.extend(_format_per_label(by_label))
-                report_lines.append("")
-
-            if args.debug:
-                debug_lines.append(f"DATASET: {basename} | POLICY: {args.policy} | MODE: {mode}")
-                debug_lines.append(_format_summary(mode, total))
-                debug_lines.append("-" * 70)
-                debug_lines.extend(
-                    _format_misses(
-                        text,
-                        misses,
-                        show_tp=bool(args.show_tp),
-                        ctx_radius=max(0, int(args.ctx)),
-                        max_lines=max(1, int(args.max_lines)),
-                    )
-                )
-                debug_lines.append("")
-                debug_lines.append("=" * 70)
-                debug_lines.append("")
-
-        out_path.write_text("\n".join(report_lines).rstrip() + "\n", encoding="utf-8")
-
-        if args.debug:
-            dbg_path.write_text("\n".join(debug_lines).rstrip() + "\n", encoding="utf-8")
 
     finally:
         _restore_config(snap)
-
-    print(f"Wrote: {out_path}")
-    if args.debug:
-        print(f"Wrote: {dbg_path}")
 
     return 0
 

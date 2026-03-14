@@ -1,0 +1,9 @@
+DATASET: Dataset_05 | DOMAIN: Supporttickets | STRUCTURE: unstructured | VARIANT: 1 | POLICY: secure | MODE: ner | POSTPROCESSING: off
+MODE ner      | TP=2 FP=3 FN=1 | P=0.400 R=0.667 F1=0.500
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 1
+  - ORG            gold 264:285 [gold] 'PixelForge Media GmbH' [pred:ner:264:280] 'PixelForge Media' gold_ctx=' unseren Zugang bei ▮PixelForge Media GmbH▮. Ich heiße Markus W' pred_ctx=' unseren Zugang bei ▮PixelForge Media▮ GmbH. Ich heiße Mar'
+UNEXPECTED (FP): 2
+  - ORG            365:397 [ner] 'markus.weber@pixelforge-media.de' ctx='uen. Meine Mail ist ▮markus.weber@pixelforge-media.de▮, erreichbar bin ich'
+  - ORG            735:737 [ner] 'MB' ctx='n PDFs mit ca. 8–10 ▮MB▮.\n\nKönnt ihr bitte p'

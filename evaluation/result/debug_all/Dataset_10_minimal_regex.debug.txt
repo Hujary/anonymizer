@@ -1,6 +1,0 @@
-DATASET: Dataset_10 | DOMAIN: E-Mail | STRUCTURE: regular | VARIANT: 2 | POLICY: minimal | MODE: regex
-MODE regex    | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-----------------------------------------------------------------------
-NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0

@@ -1,7 +1,0 @@
-DATASET: Dataset_20 | DOMAIN: Verträge | STRUCTURE: structured | VARIANT: 2 | POLICY: secure | MODE: regex
-MODE regex    | TP=7 FP=0 FN=1 | P=1.000 R=0.875 F1=0.933
-----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - STRASSE        164:182 [gold] 'Tubinger Straße 42' ctx='\n\nUrban Coffee GmbH\n▮Tubinger Straße 42▮\n70178 Stuttgart\n\nve'
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0

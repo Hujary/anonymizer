@@ -1,0 +1,141 @@
+LABEL REPORT | POLICY: minimal | MODE: regex | POSTPROCESSING: off
+--------------------------------------------------------------------------------
+
+E_MAIL
+--------------------------------------------------------------------------------
+ERKANNT (TP): 39
+  - Dataset_01 118:147 [regex] 'max.berger@berger-logistik.de'
+  - Dataset_02 131:158 [regex] 'laura.schmid@kramer-sohn.de'
+  - Dataset_03 331:359 [regex] 'tobias.klein@klein-handel.de'
+  - Dataset_04 293:319 [regex] 'simon.franke@franke-bau.de'
+  - Dataset_05 365:397 [regex] 'markus.weber@pixelforge-media.de'
+  - Dataset_06 378:415 [regex] 'daniel.krueger@cloudware-solutions.de'
+  - Dataset_07 5:28 [regex] 'finance@alphacore-ag.de'
+  - Dataset_07 33:63 [regex] 'buchhaltung@delta-logistics.de'
+  - Dataset_07 483:510 [regex] 'daniel.vogt@alphacore-ag.de'
+  - Dataset_08 5:38 [regex] 'projektleitung@innoventis-gmbh.de'
+  - Dataset_08 43:65 [regex] 'service@urbanenergy.de'
+  - Dataset_08 391:422 [regex] 'michael.roth@innoventis-gmbh.de'
+  - Dataset_09 5:31 [regex] 'sabine.lang@mediconnect.de'
+  - Dataset_09 36:53 [regex] 'it@mediconnect.de'
+  - Dataset_09 259:285 [regex] 'sabine.lang@mediconnect.de'
+  - Dataset_10 5:31 [regex] 'thomas.reuter@logitrans.de'
+  - Dataset_10 36:57 [regex] 'support@fleetcloud.io'
+  - Dataset_10 306:332 [regex] 'thomas.reuter@logitrans.de'
+  - Dataset_11 5:34 [regex] 'lisa.schneider@creativehub.de'
+  - Dataset_11 39:66 [regex] 'markus.weber@creativehub.de'
+  - Dataset_11 336:366 [regex] 'oliver.braun@bluewave-media.de'
+  - Dataset_12 5:29 [regex] 'julia.krause@interlog.de'
+  - Dataset_12 34:56 [regex] 'it-support@interlog.de'
+  - Dataset_12 292:321 [regex] 'martin.schulz@nordlogistik.de'
+  - Dataset_13 143:166 [regex] 'daniel.weber@webmail.de'
+  - Dataset_14 54:77 [regex] 'maria.hoffmann@email.de'
+  - Dataset_15 271:294 [regex] 'lukas.meier@postmail.de'
+  - Dataset_16 31:53 [regex] 'sarah.klein@mailbox.de'
+  - Dataset_17 50:77 [regex] 'thomas.berger@bewerbung.net'
+  - Dataset_18 44:66 [regex] 'hr@company-internal.de'
+  - Dataset_18 154:178 [regex] 'k.sommer@private-mail.de'
+  - Dataset_25 157:178 [regex] 'markus.vogel@firma.de'
+  - Dataset_26 108:138 [regex] 'andreas.kuehn@techsolutions.de'
+  - Dataset_27 130:152 [regex] 'anna.keller@nordcom.de'
+  - Dataset_27 573:611 [regex] 'michael.bergmann@bergmann-industrie.de'
+  - Dataset_27 646:663 [regex] 's.lang@nordcom.de'
+  - Dataset_28 130:152 [regex] 'm.scholz@helion-mfg.de'
+  - Dataset_29 94:116 [regex] 'laura.weber@spintex.de'
+  - Dataset_30 120:145 [regex] 'jana.hoffmann@intralog.de'
+
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
+
+NICHT ERKANNT (FN): 0
+
+UNERWARTET (FP): 0
+
+
+IBAN
+--------------------------------------------------------------------------------
+ERKANNT (TP): 2
+  - Dataset_07 364:386 [regex] 'DE44500105175407324931'
+  - Dataset_19 1010:1037 [regex] 'DE91 6005 0101 2345 6789 01'
+
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
+
+NICHT ERKANNT (FN): 0
+
+UNERWARTET (FP): 0
+
+
+IP_ADRESSE
+--------------------------------------------------------------------------------
+ERKANNT (TP): 2
+  - Dataset_25 615:627 [regex] '84.167.23.91'
+  - Dataset_29 611:620 [regex] '10.0.4.22'
+
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
+
+NICHT ERKANNT (FN): 0
+
+UNERWARTET (FP): 0
+
+
+STRASSE
+--------------------------------------------------------------------------------
+ERKANNT (TP): 21
+  - Dataset_14 23:39 [regex] 'Bahnhofstraße 17'
+  - Dataset_15 213:224 [regex] 'Lindenweg 8'
+  - Dataset_19 51:66 [regex] 'Uhlandstraße 19'
+  - Dataset_19 138:151 [regex] 'Hegelstraße 7'
+  - Dataset_19 274:287 [regex] 'Hegelstraße 7'
+  - Dataset_20 53:67 [regex] 'Konigstraße 11'
+  - Dataset_20 383:397 [regex] 'Konigstraße 11'
+  - Dataset_21 58:70 [regex] 'Talstraße 14'
+  - Dataset_21 128:146 [regex] 'Reinsburgstraße 62'
+  - Dataset_22 62:79 [regex] 'Augustenstraße 33'
+  - Dataset_22 135:153 [regex] 'Lindwurmstraße 115'
+  - Dataset_23 55:69 [regex] 'Königstraße 45'
+  - Dataset_23 142:160 [regex] 'Rotebühlstraße 112'
+  - Dataset_24 60:78 [regex] 'Industriestraße 18'
+  - Dataset_24 198:216 [regex] 'Schönbühlstraße 27'
+  - Dataset_25 341:359 [regex] 'Tübinger Straße 54'
+  - Dataset_27 401:415 [regex] 'Hafenstraße 12'
+  - Dataset_28 267:285 [regex] 'Industriestraße 45'
+  - Dataset_28 752:765 [regex] 'Rosenstraße 8'
+  - Dataset_29 473:489 [regex] 'Leopoldstraße 23'
+  - Dataset_30 296:314 [regex] 'Speditionstraße 21'
+
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
+
+NICHT ERKANNT (FN): 1
+  - Dataset_20 164:182 [gold] 'Tubinger Straße 42'
+
+UNERWARTET (FP): 0
+
+
+TELEFON
+--------------------------------------------------------------------------------
+ERKANNT (TP): 20
+  - Dataset_01 157:173 [regex] '+49 711 99887766'
+  - Dataset_02 168:183 [regex] '+49 711 4567890'
+  - Dataset_03 365:376 [regex] '0751 987654'
+  - Dataset_04 371:386 [regex] '+49 160 4455667'
+  - Dataset_05 424:437 [regex] '0176 33445588'
+  - Dataset_06 423:436 [regex] '0151 77889900'
+  - Dataset_07 517:532 [regex] '+49 89 44556677'
+  - Dataset_08 434:450 [regex] '+49 151 66778899'
+  - Dataset_09 391:403 [regex] '089 33445566'
+  - Dataset_10 339:354 [regex] '+49 171 5566778'
+  - Dataset_11 547:559 [regex] '040 77889900'
+  - Dataset_12 327:339 [regex] '040 99887766'
+  - Dataset_13 118:134 [regex] '+49 176 77889900'
+  - Dataset_14 85:101 [regex] '+49 152 33445566'
+  - Dataset_15 249:262 [regex] '0171 99887766'
+  - Dataset_16 56:72 [regex] '+49 157 22334455'
+  - Dataset_17 115:128 [regex] '0160 44556677'
+  - Dataset_18 471:484 [regex] '0151 66778899'
+  - Dataset_25 185:197 [regex] '0711 4587321'
+  - Dataset_28 907:919 [regex] '0172 5566778'
+
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
+
+NICHT ERKANNT (FN): 0
+
+UNERWARTET (FP): 0

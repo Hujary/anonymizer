@@ -1,0 +1,9 @@
+DATASET: Dataset_24 | DOMAIN: Verträge | STRUCTURE: unstructured | VARIANT: 2 | POLICY: minimal | MODE: ner | POSTPROCESSING: off
+MODE ner      | TP=3 FP=2 FN=3 | P=0.600 R=0.500 F1=0.545
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - PER            307:317 [gold] 'Herr Weber' ctx='rtrag geschlossen:\n\n▮Herr Weber▮ wird ab dem 01.06.2'
+NOT FULLY DETECTED (PARTIAL): 2
+  - STRASSE        gold 60:78 [gold] 'Industriestraße 18' [pred:ner:60:75] 'Industriestraße' gold_ctx='uter Logistik GmbH, ▮Industriestraße 18▮, 70469 Stuttgart, v' pred_ctx='uter Logistik GmbH, ▮Industriestraße▮ 18, 70469 Stuttgart'
+  - STRASSE        gold 198:216 [gold] 'Schönbühlstraße 27' [pred:ner:198:213] 'Schönbühlstraße' gold_ctx=' Herrn Jonas Weber, ▮Schönbühlstraße 27▮, 70188 Stuttgart – ' pred_ctx=' Herrn Jonas Weber, ▮Schönbühlstraße▮ 27, 70188 Stuttgart'
+UNEXPECTED (FP): 0

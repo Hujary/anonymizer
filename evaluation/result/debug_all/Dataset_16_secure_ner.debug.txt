@@ -1,7 +1,0 @@
-DATASET: Dataset_16 | DOMAIN: HR-Dokumente | STRUCTURE: regular | VARIANT: 2 | POLICY: secure | MODE: ner
-MODE ner      | TP=5 FP=1 FN=1 | P=0.833 R=0.833 F1=0.833
-----------------------------------------------------------------------
-NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 1
-  - LOC            gold 91:95 [gold] 'Köln' [pred:ner:85:95] '50667 Köln' gold_ctx='5\nWohnhaft in 50667 ▮Köln▮\nGeburtsdatum 03.11.' pred_ctx='2334455\nWohnhaft in ▮50667 Köln▮\nGeburtsdatum 03.11.'
-UNEXPECTED (FP): 0

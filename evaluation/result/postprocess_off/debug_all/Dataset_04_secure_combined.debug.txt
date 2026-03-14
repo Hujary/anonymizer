@@ -1,0 +1,10 @@
+DATASET: Dataset_04 | DOMAIN: Supporttickets | STRUCTURE: regular | VARIANT: 2 | POLICY: secure | MODE: combined | POSTPROCESSING: off
+MODE combined | TP=5 FP=3 FN=1 | P=0.625 R=0.833 F1=0.714
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 1
+  - ORG            gold 346:361 [gold] 'Franke Bau GmbH' [pred:ner:346:369] 'Franke Bau GmbH
+Telefon' gold_ctx='Simon Franke\nFirma: ▮Franke Bau GmbH▮\nTelefon: +49 160 44' pred_ctx='Simon Franke\nFirma: ▮Franke Bau GmbH\nTelefon▮: +49 160 4455667\n\nW'
+UNEXPECTED (FP): 2
+  - PER            198:206 [ner] 'SMS-Code' ctx='2FA-Abfrage und der ▮SMS-Code▮ kommt nicht an. Ich'
+  - ORG            526:537 [ner] 'SMS-Gateway' ctx='de Probleme mit dem ▮SMS-Gateway▮ habt? Falls nötig k'

@@ -1,0 +1,7 @@
+DATASET: Dataset_14 | DOMAIN: HR-Dokumente | STRUCTURE: structured | VARIANT: 2 | POLICY: minimal | MODE: ner | POSTPROCESSING: on
+MODE ner      | TP=1 FP=0 FN=1 | P=1.000 R=0.500 F1=0.667
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - STRASSE        23:39 [gold] 'Bahnhofstraße 17' ctx='takt\nMaria Hoffmann\n▮Bahnhofstraße 17▮\n48143 Münster\nmaria'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 0

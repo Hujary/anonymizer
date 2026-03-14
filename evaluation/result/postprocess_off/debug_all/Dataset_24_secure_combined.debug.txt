@@ -1,0 +1,10 @@
+DATASET: Dataset_24 | DOMAIN: Verträge | STRUCTURE: unstructured | VARIANT: 2 | POLICY: secure | MODE: combined | POSTPROCESSING: off
+MODE combined | TP=13 FP=2 FN=3 | P=0.867 R=0.812 F1=0.839
+----------------------------------------------------------------------
+NOT DETECTED (FN): 2
+  - PER            307:317 [gold] 'Herr Weber' ctx='rtrag geschlossen:\n\n▮Herr Weber▮ wird ab dem 01.06.2'
+  - LOC            3041:3050 [gold] 'Stuttgart' ctx='ublik Deutschland.\n\n▮Stuttgart▮, den 22.04.2025 von'
+NOT FULLY DETECTED (PARTIAL): 1
+  - ORG            gold 3071:3100 [gold] 'Hansen & Reuter Logistik GmbH' [pred:ner:3071:3086] 'Hansen & Reuter' gold_ctx=' den 22.04.2025 von ▮Hansen & Reuter Logistik GmbH▮ mit Jonas Weber' pred_ctx=' den 22.04.2025 von ▮Hansen & Reuter▮ Logistik GmbH mit J'
+UNEXPECTED (FP): 1
+  - ORG            0:14 [ner] 'ARBEITSVERTRAG' ctx='▮ARBEITSVERTRAG▮\n\nZwischen der Hanse'

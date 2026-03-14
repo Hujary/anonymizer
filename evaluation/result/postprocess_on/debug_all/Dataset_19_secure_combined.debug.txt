@@ -1,0 +1,9 @@
+DATASET: Dataset_19 | DOMAIN: Verträge | STRUCTURE: structured | VARIANT: 1 | POLICY: secure | MODE: combined | POSTPROCESSING: on
+MODE combined | TP=16 FP=2 FN=1 | P=0.889 R=0.941 F1=0.914
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - LOC            1505:1514 [gold] 'Stuttgart' ctx='eter ausgehändigt.\n\n▮Stuttgart▮, den 12.03.2025\n\n\n_'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 2
+  - ORG            991:1001 [ner] 'uberweisen' ctx=' folgendes Konto zu ▮uberweisen▮:\n\nIBAN: DE91 6005 0'
+  - ORG            1043:1054 [ner] 'SOLADEST600' ctx='1 2345 6789 01\nBIC: ▮SOLADEST600▮\n\n§ 4 Kaution\n\nDie K'

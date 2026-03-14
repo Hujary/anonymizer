@@ -1,0 +1,10 @@
+DATASET: Dataset_18 | DOMAIN: HR-Dokumente | STRUCTURE: unstructured | VARIANT: 2 | POLICY: secure | MODE: combined | POSTPROCESSING: off
+MODE combined | TP=12 FP=4 FN=1 | P=0.750 R=0.923 F1=0.828
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 1
+  - ORG            gold 270:287 [gold] 'AnalyticsPro GmbH' [pred:ner:270:282] 'AnalyticsPro' gold_ctx='018 bis 06/2023 bei ▮AnalyticsPro GmbH▮ als Data Scientist ' pred_ctx='018 bis 06/2023 bei ▮AnalyticsPro▮ GmbH als Data Scien'
+UNEXPECTED (FP): 3
+  - ORG            0:2 [ner] 'FW' ctx='▮FW▮: Bewerbung Position'
+  - ORG            341:365 [ner] 'Machine-Learning-Modelle' ctx='rt war ich u.a. für ▮Machine-Learning-Modelle▮ im Finanzbereich ve'
+  - PER            570:574 [ner] 'Evtl' ctx='72.000 € jährlich).\n▮Evtl▮. Referenz von Marku'

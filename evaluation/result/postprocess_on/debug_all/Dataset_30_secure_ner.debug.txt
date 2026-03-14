@@ -1,0 +1,8 @@
+DATASET: Dataset_30 | DOMAIN: Chats | STRUCTURE: unstructured | VARIANT: 2 | POLICY: secure | MODE: ner | POSTPROCESSING: on
+MODE ner      | TP=15 FP=0 FN=2 | P=1.000 R=0.882 F1=0.938
+----------------------------------------------------------------------
+NOT DETECTED (FN): 2
+  - STRASSE        296:314 [gold] 'Speditionstraße 21' ctx='tandort Düsseldorf, ▮Speditionstraße 21▮.\n\n[09:15] Markus Ri'
+  - PER            1437:1446 [gold] 'Dr. König' ctx='ekt. Der Termin mit ▮Dr. König▮ ist am 10.06.2025 u'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 0

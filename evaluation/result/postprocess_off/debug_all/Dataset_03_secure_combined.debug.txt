@@ -1,0 +1,9 @@
+DATASET: Dataset_03 | DOMAIN: Supporttickets | STRUCTURE: regular | VARIANT: 1 | POLICY: secure | MODE: combined | POSTPROCESSING: off
+MODE combined | TP=5 FP=1 FN=2 | P=0.833 R=0.714 F1=0.769
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - ORG            313:330 [gold] 'Klein Handel GmbH' ctx='Daten:\nTobias Klein\n▮Klein Handel GmbH▮\ntobias.klein@klein-'
+NOT FULLY DETECTED (PARTIAL): 1
+  - PER            gold 300:312 [gold] 'Tobias Klein' [pred:ner:300:325] 'Tobias Klein
+Klein Handel' gold_ctx='gend.\n\nMeine Daten:\n▮Tobias Klein▮\nKlein Handel GmbH\nt' pred_ctx='gend.\n\nMeine Daten:\n▮Tobias Klein\nKlein Handel▮ GmbH\ntobias.klein@k'
+UNEXPECTED (FP): 0

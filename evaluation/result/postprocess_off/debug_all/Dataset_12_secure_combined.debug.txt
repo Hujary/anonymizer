@@ -1,0 +1,8 @@
+DATASET: Dataset_12 | DOMAIN: E-Mail | STRUCTURE: unstructured | VARIANT: 2 | POLICY: secure | MODE: combined | POSTPROCESSING: off
+MODE combined | TP=11 FP=1 FN=1 | P=0.917 R=0.917 F1=0.917
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - PER            698:703 [gold] 'Julia' ctx='emlich ungeduldig.\n\n▮Julia▮, InterLog GmbH'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 1
+  - LOC            323:326 [ner] 'Tel' ctx='lz@nordlogistik.de, ▮Tel▮ 040 99887766) melde'

@@ -170,10 +170,14 @@ def _format_label_report(
     *,
     policy: str,
     mode: str,
+    postprocess_enabled: bool,
     max_items_per_section: int,
 ) -> str:
     lines: List[str] = []
-    lines.append(f"LABEL REPORT | POLICY: {policy} | MODE: {mode}")
+    lines.append(
+        f"LABEL REPORT | POLICY: {policy} | MODE: {mode} | "
+        f"POSTPROCESSING: {'on' if postprocess_enabled else 'off'}"
+    )
     lines.append("-" * 80)
     lines.append("")
 
@@ -435,6 +439,216 @@ def _write_policy_csv_files(
     )
 
 
+def _run_variant(
+    *,
+    eval_root: Path,
+    result_root: Path,
+    dataset_names: List[str],
+    selected_modes: List[Tuple[str, Set[str]]],
+    selected_policies: List[str],
+    debug: bool,
+    show_tp: bool,
+    per_label: bool,
+    ctx: int,
+    max_lines: int,
+    label_report: bool,
+    label_report_max: int,
+    postprocess_enabled: bool,
+) -> None:
+    variant_name = "postprocess_on" if postprocess_enabled else "postprocess_off"
+    variant_root = result_root / variant_name
+    variant_root.mkdir(parents=True, exist_ok=True)
+
+    debug_dir = variant_root / "debug_all"
+
+    config.set("use_ner_postprocessing", postprocess_enabled)
+
+    for policy in selected_policies:
+        _apply_policy(policy)
+
+        policy_dir = variant_root / policy
+        labels_dir = policy_dir / "labels"
+        csv_dir = policy_dir / "csv"
+
+        policy_dir.mkdir(parents=True, exist_ok=True)
+        labels_dir.mkdir(parents=True, exist_ok=True)
+        csv_dir.mkdir(parents=True, exist_ok=True)
+
+        report_lines: List[str] = []
+        policy_dataset_rows: List[DatasetRunRow] = []
+        policy_label_rows: List[Dict[str, object]] = []
+
+        policy_global_agg: Dict[str, MetricAgg] = {
+            mode_name: MetricAgg()
+            for mode_name, _ in selected_modes
+        }
+
+        policy_label_hits_by_mode: Dict[str, Dict[str, Dict[str, List[str]]]] = {}
+        if label_report:
+            for mode_name, _ in selected_modes:
+                policy_label_hits_by_mode[mode_name] = defaultdict(
+                    lambda: {"TP": [], "PARTIAL": [], "FN": [], "FP": []}
+                )
+
+        for dataset_name in dataset_names:
+            meta = _dataset_meta(dataset_name)
+            text, gold_entities = _load_gold_entities(eval_root, dataset_name)
+
+            report_lines.append(f"DATASET: {dataset_name}")
+            report_lines.append(f"DOMAIN: {meta.domain}")
+            report_lines.append(f"STRUCTURE: {meta.structure}")
+            report_lines.append(f"POSTPROCESSING: {'on' if postprocess_enabled else 'off'}")
+            report_lines.append("")
+            report_lines.append(f"POLICY {policy}")
+
+            for mode_name, sources in selected_modes:
+                total, by_label, misses = _evaluate(
+                    text,
+                    gold_entities,
+                    mode=mode_name,
+                    mode_sources=set(sources),
+                    policy_name=policy,
+                    eval_root=eval_root,
+                )
+
+                policy_global_agg[mode_name].add(total)
+
+                policy_dataset_rows.append(
+                    DatasetRunRow(
+                        dataset=dataset_name,
+                        dataset_index=meta.dataset_index,
+                        domain=meta.domain,
+                        structure=meta.structure,
+                        variant=meta.variant,
+                        policy=policy,
+                        mode=mode_name,
+                        tp=total.tp,
+                        fp=total.fp,
+                        fn=total.fn,
+                        precision=total.precision(),
+                        recall=total.recall(),
+                        f1=total.f1(),
+                    )
+                )
+
+                report_lines.append(_format_short_summary(mode_name, total))
+
+                if per_label:
+                    report_lines.append("")
+                    report_lines.append(
+                        f"PER-LABEL ({policy} | {mode_name} | "
+                        f"{'postprocess_on' if postprocess_enabled else 'postprocess_off'})"
+                    )
+                    report_lines.extend(_format_per_label(by_label))
+                    report_lines.append("")
+
+                for label in sorted(by_label.keys()):
+                    counts = by_label[label]
+                    policy_label_rows.append(
+                        {
+                            "dataset": dataset_name,
+                            "dataset_index": meta.dataset_index,
+                            "domain": meta.domain,
+                            "structure": meta.structure,
+                            "variant": meta.variant,
+                            "policy": policy,
+                            "mode": mode_name,
+                            "label": label,
+                            "tp": counts.tp,
+                            "fp": counts.fp,
+                            "fn": counts.fn,
+                        }
+                    )
+
+                if label_report:
+                    bucket = policy_label_hits_by_mode[mode_name]
+                    for miss in misses:
+                        miss_label = str(miss.label or "").strip().upper() or "?"
+                        miss_kind = str(miss.kind or "").strip().upper()
+
+                        if miss_kind not in ("TP", "FN", "FP", "PARTIAL"):
+                            continue
+
+                        bucket[miss_label][miss_kind].append(_miss_line(dataset_name, miss))
+
+                if debug:
+                    debug_lines: List[str] = []
+                    debug_lines.append(
+                        f"DATASET: {dataset_name} | DOMAIN: {meta.domain} | STRUCTURE: {meta.structure} | "
+                        f"VARIANT: {meta.variant} | POLICY: {policy} | MODE: {mode_name} | "
+                        f"POSTPROCESSING: {'on' if postprocess_enabled else 'off'}"
+                    )
+                    debug_lines.append(_format_short_summary(mode_name, total))
+                    debug_lines.append("-" * 70)
+                    debug_lines.extend(
+                        _format_misses(
+                            text,
+                            misses,
+                            show_tp=show_tp,
+                            ctx_radius=max(0, int(ctx)),
+                            max_lines=max(1, int(max_lines)),
+                        )
+                    )
+                    debug_lines.append("")
+
+                    _write_text(
+                        debug_dir / f"{dataset_name}_{policy}_{mode_name}.debug.txt",
+                        "\n".join(debug_lines),
+                    )
+
+            report_lines.append("")
+            report_lines.append("=" * 70)
+            report_lines.append("")
+
+        if postprocess_enabled:
+            report_lines.append("GLOBAL SUMMARY (micro-averaged over all datasets)")
+        else:
+            report_lines.append("GLOBAL SUMMARY (micro-averaged over all datasets) (no Postprocessing)")
+
+        report_lines.append("-" * 70)
+
+        for mode_name, _ in selected_modes:
+            agg = policy_global_agg[mode_name]
+            report_lines.append(
+                f"POLICY {policy:8s} | MODE {mode_name:8s} | "
+                f"TP={agg.tp:4d} FP={agg.fp:4d} FN={agg.fn:4d} | "
+                f"P={agg.precision():.3f} R={agg.recall():.3f} F1={agg.f1():.3f}"
+            )
+
+        _write_text(policy_dir / "report.txt", "\n".join(report_lines))
+        print(f"Wrote: {policy_dir / 'report.txt'}")
+
+        if label_report:
+            for mode_name, _ in selected_modes:
+                label_report_text = _format_label_report(
+                    policy_label_hits_by_mode[mode_name],
+                    policy=policy,
+                    mode=mode_name,
+                    postprocess_enabled=postprocess_enabled,
+                    max_items_per_section=max(1, int(label_report_max)),
+                )
+                _write_text(labels_dir / f"{mode_name}.txt", label_report_text)
+                print(f"Wrote: {labels_dir / f'{mode_name}.txt'}")
+
+        _write_policy_csv_files(
+            csv_dir=csv_dir,
+            dataset_rows=policy_dataset_rows,
+            label_rows=policy_label_rows,
+        )
+        print(f"Wrote: {csv_dir / 'dataset.csv'}")
+        print(f"Wrote: {csv_dir / 'overall.csv'}")
+        print(f"Wrote: {csv_dir / 'domain.csv'}")
+        print(f"Wrote: {csv_dir / 'structure.csv'}")
+        print(f"Wrote: {csv_dir / 'domain_structure.csv'}")
+        print(f"Wrote: {csv_dir / 'label.csv'}")
+        print(f"Wrote: {csv_dir / 'domain_label.csv'}")
+        print(f"Wrote: {csv_dir / 'structure_label.csv'}")
+        print(f"Wrote: {csv_dir / 'domain_structure_label.csv'}")
+
+    if debug:
+        print(f"Wrote debug files: {debug_dir}")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--eval-root", default="evaluation")
@@ -444,7 +658,6 @@ def main() -> int:
     parser.add_argument("--ctx", type=int, default=20)
     parser.add_argument("--max-lines", type=int, default=200)
     parser.add_argument("--only", nargs="*", default=None, help="Run only these dataset basenames")
-    parser.add_argument("--no-ner-post", action="store_true", help="Disable NER postprocessing")
     parser.add_argument("--label-report", action="store_true", help="Write aggregated TP/PARTIAL/FN/FP label reports")
     parser.add_argument("--label-report-max", type=int, default=500)
     parser.add_argument(
@@ -460,6 +673,12 @@ def main() -> int:
         default=["regex", "ner", "combined"],
         choices=["regex", "ner", "combined"],
         help="Modes to evaluate",
+    )
+    parser.add_argument(
+        "--only-post",
+        choices=["on", "off"],
+        default=None,
+        help="Optional: run only one variant instead of both",
     )
     args = parser.parse_args()
 
@@ -484,186 +703,34 @@ def main() -> int:
     if not selected_policies:
         raise SystemExit("No policies selected.")
 
-    debug_dir = result_root / "debug_all"
     snapshot = _snapshot_config()
 
     try:
-        config.set("use_ner_postprocessing", False if args.no_ner_post else True)
+        run_variants: List[bool]
 
-        for policy in selected_policies:
-            _apply_policy(policy)
+        if args.only_post == "on":
+            run_variants = [True]
+        elif args.only_post == "off":
+            run_variants = [False]
+        else:
+            run_variants = [False, True]
 
-            policy_dir = result_root / policy
-            labels_dir = policy_dir / "labels"
-            csv_dir = policy_dir / "csv"
-
-            policy_dir.mkdir(parents=True, exist_ok=True)
-            labels_dir.mkdir(parents=True, exist_ok=True)
-            csv_dir.mkdir(parents=True, exist_ok=True)
-
-            report_lines: List[str] = []
-            policy_dataset_rows: List[DatasetRunRow] = []
-            policy_label_rows: List[Dict[str, object]] = []
-
-            policy_global_agg: Dict[str, MetricAgg] = {
-                mode_name: MetricAgg()
-                for mode_name, _ in selected_modes
-            }
-
-            policy_label_hits_by_mode: Dict[str, Dict[str, Dict[str, List[str]]]] = {}
-            if args.label_report:
-                for mode_name, _ in selected_modes:
-                    policy_label_hits_by_mode[mode_name] = defaultdict(
-                        lambda: {"TP": [], "PARTIAL": [], "FN": [], "FP": []}
-                    )
-
-            for dataset_name in dataset_names:
-                meta = _dataset_meta(dataset_name)
-                text, gold_entities = _load_gold_entities(eval_root, dataset_name)
-
-                report_lines.append(f"DATASET: {dataset_name}")
-                report_lines.append(f"DOMAIN: {meta.domain}")
-                report_lines.append(f"STRUCTURE: {meta.structure}")
-                report_lines.append("")
-                report_lines.append(f"POLICY {policy}")
-
-                for mode_name, sources in selected_modes:
-                    total, by_label, misses = _evaluate(
-                        text,
-                        gold_entities,
-                        mode=mode_name,
-                        mode_sources=set(sources),
-                        policy_name=policy,
-                        eval_root=eval_root,
-                    )
-
-                    policy_global_agg[mode_name].add(total)
-
-                    policy_dataset_rows.append(
-                        DatasetRunRow(
-                            dataset=dataset_name,
-                            dataset_index=meta.dataset_index,
-                            domain=meta.domain,
-                            structure=meta.structure,
-                            variant=meta.variant,
-                            policy=policy,
-                            mode=mode_name,
-                            tp=total.tp,
-                            fp=total.fp,
-                            fn=total.fn,
-                            precision=total.precision(),
-                            recall=total.recall(),
-                            f1=total.f1(),
-                        )
-                    )
-
-                    report_lines.append(_format_short_summary(mode_name, total))
-
-                    if args.per_label:
-                        report_lines.append("")
-                        report_lines.append(f"PER-LABEL ({policy} | {mode_name})")
-                        report_lines.extend(_format_per_label(by_label))
-                        report_lines.append("")
-
-                    for label in sorted(by_label.keys()):
-                        counts = by_label[label]
-                        policy_label_rows.append(
-                            {
-                                "dataset": dataset_name,
-                                "dataset_index": meta.dataset_index,
-                                "domain": meta.domain,
-                                "structure": meta.structure,
-                                "variant": meta.variant,
-                                "policy": policy,
-                                "mode": mode_name,
-                                "label": label,
-                                "tp": counts.tp,
-                                "fp": counts.fp,
-                                "fn": counts.fn,
-                            }
-                        )
-
-                    if args.label_report:
-                        bucket = policy_label_hits_by_mode[mode_name]
-                        for miss in misses:
-                            miss_label = str(miss.label or "").strip().upper() or "?"
-                            miss_kind = str(miss.kind or "").strip().upper()
-
-                            if miss_kind not in ("TP", "FN", "FP", "PARTIAL"):
-                                continue
-
-                            bucket[miss_label][miss_kind].append(_miss_line(dataset_name, miss))
-
-                    if args.debug:
-                        debug_lines: List[str] = []
-                        debug_lines.append(
-                            f"DATASET: {dataset_name} | DOMAIN: {meta.domain} | STRUCTURE: {meta.structure} | "
-                            f"VARIANT: {meta.variant} | POLICY: {policy} | MODE: {mode_name}"
-                        )
-                        debug_lines.append(_format_short_summary(mode_name, total))
-                        debug_lines.append("-" * 70)
-                        debug_lines.extend(
-                            _format_misses(
-                                text,
-                                misses,
-                                show_tp=bool(args.show_tp),
-                                ctx_radius=max(0, int(args.ctx)),
-                                max_lines=max(1, int(args.max_lines)),
-                            )
-                        )
-                        debug_lines.append("")
-
-                        _write_text(
-                            debug_dir / f"{dataset_name}_{policy}_{mode_name}.debug.txt",
-                            "\n".join(debug_lines),
-                        )
-
-                report_lines.append("")
-                report_lines.append("=" * 70)
-                report_lines.append("")
-
-            report_lines.append("GLOBAL SUMMARY (micro-averaged over all datasets)")
-            report_lines.append("-" * 70)
-
-            for mode_name, _ in selected_modes:
-                agg = policy_global_agg[mode_name]
-                report_lines.append(
-                    f"POLICY {policy:8s} | MODE {mode_name:8s} | "
-                    f"TP={agg.tp:4d} FP={agg.fp:4d} FN={agg.fn:4d} | "
-                    f"P={agg.precision():.3f} R={agg.recall():.3f} F1={agg.f1():.3f}"
-                )
-
-            _write_text(policy_dir / "report.txt", "\n".join(report_lines))
-            print(f"Wrote: {policy_dir / 'report.txt'}")
-
-            if args.label_report:
-                for mode_name, _ in selected_modes:
-                    label_report_text = _format_label_report(
-                        policy_label_hits_by_mode[mode_name],
-                        policy=policy,
-                        mode=mode_name,
-                        max_items_per_section=max(1, int(args.label_report_max)),
-                    )
-                    _write_text(labels_dir / f"{mode_name}.txt", label_report_text)
-                    print(f"Wrote: {labels_dir / f'{mode_name}.txt'}")
-
-            _write_policy_csv_files(
-                csv_dir=csv_dir,
-                dataset_rows=policy_dataset_rows,
-                label_rows=policy_label_rows,
+        for postprocess_enabled in run_variants:
+            _run_variant(
+                eval_root=eval_root,
+                result_root=result_root,
+                dataset_names=dataset_names,
+                selected_modes=selected_modes,
+                selected_policies=selected_policies,
+                debug=bool(args.debug),
+                show_tp=bool(args.show_tp),
+                per_label=bool(args.per_label),
+                ctx=int(args.ctx),
+                max_lines=int(args.max_lines),
+                label_report=bool(args.label_report),
+                label_report_max=int(args.label_report_max),
+                postprocess_enabled=postprocess_enabled,
             )
-            print(f"Wrote: {csv_dir / 'dataset.csv'}")
-            print(f"Wrote: {csv_dir / 'overall.csv'}")
-            print(f"Wrote: {csv_dir / 'domain.csv'}")
-            print(f"Wrote: {csv_dir / 'structure.csv'}")
-            print(f"Wrote: {csv_dir / 'domain_structure.csv'}")
-            print(f"Wrote: {csv_dir / 'label.csv'}")
-            print(f"Wrote: {csv_dir / 'domain_label.csv'}")
-            print(f"Wrote: {csv_dir / 'structure_label.csv'}")
-            print(f"Wrote: {csv_dir / 'domain_structure_label.csv'}")
-
-        if args.debug:
-            print(f"Wrote debug files: {debug_dir}")
 
     finally:
         _restore_config(snapshot)

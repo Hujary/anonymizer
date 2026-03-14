@@ -1,0 +1,12 @@
+DATASET: Dataset_21 | DOMAIN: Verträge | STRUCTURE: regular | VARIANT: 1 | POLICY: secure | MODE: ner | POSTPROCESSING: off
+MODE ner      | TP=8 FP=2 FN=5 | P=0.800 R=0.615 F1=0.696
+----------------------------------------------------------------------
+NOT DETECTED (FN): 4
+  - PER            206:217 [gold] 'Herr Berger' ctx='rtrag geschlossen:\n\n▮Herr Berger▮ verkauft an Frau Ho'
+  - LOC            1015:1024 [gold] 'Stuttgart' ctx='2025 in Stuttgart.\n\n▮Stuttgart▮, den 20.04.2025\n\n⸻\n'
+  - PER            1045:1057 [gold] 'Lukas Berger' ctx=' den 20.04.2025\n\n⸻\n\n▮Lukas Berger▮\n\n⸻\n\nNina Hofmann'
+  - PER            1062:1074 [gold] 'Nina Hofmann' ctx='⸻\n\nLukas Berger\n\n⸻\n\n▮Nina Hofmann▮'
+NOT FULLY DETECTED (PARTIAL): 1
+  - STRASSE        gold 128:146 [gold] 'Reinsburgstraße 62' [pred:ner:128:143] 'Reinsburgstraße' gold_ctx='nn, wohnhaft in der ▮Reinsburgstraße 62▮, 70178 Stuttgart, w' pred_ctx='nn, wohnhaft in der ▮Reinsburgstraße▮ 62, 70178 Stuttgart'
+UNEXPECTED (FP): 1
+  - ORG            304:320 [ner] 'M1 Pro Prozessor' ctx='l, Modell 2021, mit ▮M1 Pro Prozessor▮, 16 GB RAM und 512 '

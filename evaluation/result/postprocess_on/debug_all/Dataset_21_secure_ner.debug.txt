@@ -1,0 +1,13 @@
+DATASET: Dataset_21 | DOMAIN: Verträge | STRUCTURE: regular | VARIANT: 1 | POLICY: secure | MODE: ner | POSTPROCESSING: on
+MODE ner      | TP=7 FP=1 FN=6 | P=0.875 R=0.538 F1=0.667
+----------------------------------------------------------------------
+NOT DETECTED (FN): 6
+  - STRASSE        58:70 [gold] 'Talstraße 14' ctx='er, wohnhaft in der ▮Talstraße 14▮, 70190 Stuttgart, u'
+  - STRASSE        128:146 [gold] 'Reinsburgstraße 62' ctx='nn, wohnhaft in der ▮Reinsburgstraße 62▮, 70178 Stuttgart, w'
+  - PER            206:217 [gold] 'Herr Berger' ctx='rtrag geschlossen:\n\n▮Herr Berger▮ verkauft an Frau Ho'
+  - LOC            1015:1024 [gold] 'Stuttgart' ctx='2025 in Stuttgart.\n\n▮Stuttgart▮, den 20.04.2025\n\n⸻\n'
+  - PER            1045:1057 [gold] 'Lukas Berger' ctx=' den 20.04.2025\n\n⸻\n\n▮Lukas Berger▮\n\n⸻\n\nNina Hofmann'
+  - PER            1062:1074 [gold] 'Nina Hofmann' ctx='⸻\n\nLukas Berger\n\n⸻\n\n▮Nina Hofmann▮'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 1
+  - ORG            304:320 [ner] 'M1 Pro Prozessor' ctx='l, Modell 2021, mit ▮M1 Pro Prozessor▮, 16 GB RAM und 512 '

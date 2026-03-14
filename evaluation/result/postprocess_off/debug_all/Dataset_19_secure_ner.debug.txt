@@ -1,0 +1,19 @@
+DATASET: Dataset_19 | DOMAIN: Verträge | STRUCTURE: structured | VARIANT: 1 | POLICY: secure | MODE: ner | POSTPROCESSING: off
+MODE ner      | TP=7 FP=10 FN=4 | P=0.412 R=0.636 F1=0.500
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - LOC            1505:1514 [gold] 'Stuttgart' ctx='eter ausgehändigt.\n\n▮Stuttgart▮, den 12.03.2025\n\n\n_'
+NOT FULLY DETECTED (PARTIAL): 3
+  - STRASSE        gold 51:66 [gold] 'Uhlandstraße 19' [pred:ner:51:63] 'Uhlandstraße' gold_ctx='Frau Sabine Lehmann\n▮Uhlandstraße 19▮\n70182 Stuttgart\n\n- ' pred_ctx='Frau Sabine Lehmann\n▮Uhlandstraße▮ 19\n70182 Stuttgart\n'
+  - STRASSE        gold 138:151 [gold] 'Hegelstraße 7' [pred:ner:138:149] 'Hegelstraße' gold_ctx='Herrn Tobias Kruger\n▮Hegelstraße 7▮\n70174 Stuttgart\n\n- ' pred_ctx='Herrn Tobias Kruger\n▮Hegelstraße▮ 7\n70174 Stuttgart\n\n'
+  - STRASSE        gold 274:287 [gold] 'Hegelstraße 7' [pred:ner:268:285] 'Hause Hegelstraße' gold_ctx='hoss links\nim Hause ▮Hegelstraße 7▮, 70174 Stuttgart.\n\n' pred_ctx='ergeschoss links\nim ▮Hause Hegelstraße▮ 7, 70174 Stuttgart.'
+UNEXPECTED (FP): 7
+  - LOC            354:358 [ner] 'Flur' ctx='immern, Küche, Bad, ▮Flur▮,\nmit einer Wohnflac'
+  - LOC            454:464 [ner] 'Waschraums' ctx=' 4\nMitbenutzung des ▮Waschraums▮ im Untergeschoss.\n\n'
+  - LOC            528:541 [ner] '01.04.2025.
+
+' ctx='rhaltnis beginnt am ▮01.04.2025.\n\n▮Es wird auf unbestim'
+  - ORG            991:1001 [ner] 'uberweisen' ctx=' folgendes Konto zu ▮uberweisen▮:\n\nIBAN: DE91 6005 0'
+  - LOC            1010:1029 [ner] 'DE91 6005 0101 2345' ctx=' uberweisen:\n\nIBAN: ▮DE91 6005 0101 2345▮ 6789 01\nBIC: SOLADE'
+  - ORG            1043:1054 [ner] 'SOLADEST600' ctx='1 2345 6789 01\nBIC: ▮SOLADEST600▮\n\n§ 4 Kaution\n\nDie K'
+  - LOC            1105:1121 [ner] 'Monatskaltmieten' ctx='agt 2.670,00 EUR (3 ▮Monatskaltmieten▮).\nSie ist vor überg'

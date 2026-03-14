@@ -1,0 +1,10 @@
+DATASET: Dataset_26 | DOMAIN: Chats | STRUCTURE: structured | VARIANT: 2 | POLICY: secure | MODE: ner | POSTPROCESSING: off
+MODE ner      | TP=10 FP=4 FN=1 | P=0.714 R=0.909 F1=0.800
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 1
+  - ORG            gold 37:55 [gold] 'TechSolutions GmbH' [pred:ner:37:50] 'TechSolutions' gold_ctx='ation 2025\nMandant: ▮TechSolutions GmbH▮\nProjektleitung: And' pred_ctx='ation 2025\nMandant: ▮TechSolutions▮ GmbH\nProjektleitung'
+UNEXPECTED (FP): 3
+  - PER            398:408 [ner] 'Testimport' ctx='nd Ansprechpartner. ▮Testimport▮ läuft auf Server er'
+  - ORG            481:492 [ner] 'IT-Security' ctx='0:07] Daniel Meier (▮IT-Security▮):\nBitte darauf acht'
+  - ORG            738:745 [ner] 'Go-Live' ctx=' Kühn:\nDeadline für ▮Go-Live▮ bleibt der 30.06.20'

@@ -1,0 +1,11 @@
+DATASET: Dataset_28 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 2 | POLICY: secure | MODE: combined | POSTPROCESSING: off
+MODE combined | TP=22 FP=5 FN=2 | P=0.815 R=0.917 F1=0.863
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 2
+  - ORG            gold 62:87 [gold] 'Helion Manufacturing GmbH' [pred:ner:62:82] 'Helion Manufacturing' gold_ctx='-recht\nUnternehmen: ▮Helion Manufacturing GmbH▮\nDatum: 04.06.2025\n\n' pred_ctx='-recht\nUnternehmen: ▮Helion Manufacturing▮ GmbH\nDatum: 04.06.2'
+  - PER            gold 607:620 [gold] 'Miriam Scholz' [pred:ner:607:623] 'Miriam Scholz:#-' gold_ctx='ist 77134.\n\n[13:12] ▮Miriam Scholz▮:#-\nGut. Gehalt aktu' pred_ctx='ist 77134.\n\n[13:12] ▮Miriam Scholz:#-▮\nGut. Gehalt aktuell'
+UNEXPECTED (FP): 3
+  - PER            212:226 [ner] 'Eintrittsdatum' ctx='iel Fischer prüfen. ▮Eintrittsdatum▮ war der 01.03.2022,'
+  - PLZ            591:596 [regex] '77134' ctx=' Personalnummer ist ▮77134▮.\n\n[13:12] Miriam Sc'
+  - LOC            736:742 [ner] 'Daniel' ctx=' Klein:\nAdresse von ▮Daniel▮ ist noch Rosenstraß'

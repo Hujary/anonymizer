@@ -1,0 +1,10 @@
+DATASET: Dataset_25 | DOMAIN: Chats | STRUCTURE: structured | VARIANT: 1 | POLICY: secure | MODE: combined | POSTPROCESSING: on
+MODE combined | TP=14 FP=3 FN=1 | P=0.824 R=0.933 F1=0.875
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - PER            404:415 [gold] 'Herr Vogel' ctx='r (IT-Support):\nHall▮o Herr Voge▮l, haben Sie Ihr Pas'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 3
+  - ORG            32:49 [ner] 'Internes Helpdesk' ctx='D-2025-0731\nSystem: ▮Internes Helpdesk▮\nStandort: Stuttgart'
+  - ORG            70:88 [ner] 'Betroffenes System' ctx='Standort: Stuttgart\n▮Betroffenes System▮: VPN-Gateway vpn01.'
+  - ORG            852:862 [ner] 'MFA-Resync' ctx=' Passwort-Reset und ▮MFA-Resync▮ durchgeführt. Ticke'

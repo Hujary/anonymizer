@@ -1,0 +1,9 @@
+DATASET: Dataset_21 | DOMAIN: Verträge | STRUCTURE: regular | VARIANT: 1 | POLICY: minimal | MODE: combined | POSTPROCESSING: off
+MODE combined | TP=5 FP=0 FN=3 | P=1.000 R=0.625 F1=0.769
+----------------------------------------------------------------------
+NOT DETECTED (FN): 3
+  - PER            206:217 [gold] 'Herr Berger' ctx='rtrag geschlossen:\n\n▮Herr Berger▮ verkauft an Frau Ho'
+  - PER            1045:1057 [gold] 'Lukas Berger' ctx=' den 20.04.2025\n\n⸻\n\n▮Lukas Berger▮\n\n⸻\n\nNina Hofmann'
+  - PER            1062:1074 [gold] 'Nina Hofmann' ctx='⸻\n\nLukas Berger\n\n⸻\n\n▮Nina Hofmann▮'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 0

@@ -1,0 +1,11 @@
+DATASET: Dataset_21 | DOMAIN: Verträge | STRUCTURE: regular | VARIANT: 1 | POLICY: minimal | MODE: ner | POSTPROCESSING: on
+MODE ner      | TP=3 FP=0 FN=5 | P=1.000 R=0.375 F1=0.545
+----------------------------------------------------------------------
+NOT DETECTED (FN): 5
+  - STRASSE        58:70 [gold] 'Talstraße 14' ctx='er, wohnhaft in der ▮Talstraße 14▮, 70190 Stuttgart, u'
+  - STRASSE        128:146 [gold] 'Reinsburgstraße 62' ctx='nn, wohnhaft in der ▮Reinsburgstraße 62▮, 70178 Stuttgart, w'
+  - PER            206:217 [gold] 'Herr Berger' ctx='rtrag geschlossen:\n\n▮Herr Berger▮ verkauft an Frau Ho'
+  - PER            1045:1057 [gold] 'Lukas Berger' ctx=' den 20.04.2025\n\n⸻\n\n▮Lukas Berger▮\n\n⸻\n\nNina Hofmann'
+  - PER            1062:1074 [gold] 'Nina Hofmann' ctx='⸻\n\nLukas Berger\n\n⸻\n\n▮Nina Hofmann▮'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 0

@@ -1,0 +1,10 @@
+DATASET: Dataset_23 | DOMAIN: Verträge | STRUCTURE: unstructured | VARIANT: 1 | POLICY: secure | MODE: ner | POSTPROCESSING: on
+MODE ner      | TP=7 FP=1 FN=3 | P=0.875 R=0.700 F1=0.778
+----------------------------------------------------------------------
+NOT DETECTED (FN): 3
+  - STRASSE        55:69 [gold] 'Königstraße 45' ctx='nn IT-Systeme GmbH, ▮Königstraße 45▮, 70173 Stuttgart, –'
+  - STRASSE        142:160 [gold] 'Rotebühlstraße 112' ctx='au Laura Schneider, ▮Rotebühlstraße 112▮, 70178 Stuttgart, –'
+  - LOC            2725:2734 [gold] 'Stuttgart' ctx='ublik Deutschland.\n\n▮Stuttgart▮, den 18.03.2025 von'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 1
+  - PER            142:156 [ner] 'Rotebühlstraße' ctx='au Laura Schneider, ▮Rotebühlstraße▮ 112, 70178 Stuttgar'

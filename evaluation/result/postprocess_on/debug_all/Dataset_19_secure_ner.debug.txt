@@ -1,0 +1,13 @@
+DATASET: Dataset_19 | DOMAIN: Verträge | STRUCTURE: structured | VARIANT: 1 | POLICY: secure | MODE: ner | POSTPROCESSING: on
+MODE ner      | TP=7 FP=3 FN=4 | P=0.700 R=0.636 F1=0.667
+----------------------------------------------------------------------
+NOT DETECTED (FN): 4
+  - STRASSE        51:66 [gold] 'Uhlandstraße 19' ctx='Frau Sabine Lehmann\n▮Uhlandstraße 19▮\n70182 Stuttgart\n\n- '
+  - STRASSE        138:151 [gold] 'Hegelstraße 7' ctx='Herrn Tobias Kruger\n▮Hegelstraße 7▮\n70174 Stuttgart\n\n- '
+  - STRASSE        274:287 [gold] 'Hegelstraße 7' ctx='hoss links\nim Hause ▮Hegelstraße 7▮, 70174 Stuttgart.\n\n'
+  - LOC            1505:1514 [gold] 'Stuttgart' ctx='eter ausgehändigt.\n\n▮Stuttgart▮, den 12.03.2025\n\n\n_'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 3
+  - ORG            991:1001 [ner] 'uberweisen' ctx=' folgendes Konto zu ▮uberweisen▮:\n\nIBAN: DE91 6005 0'
+  - LOC            1010:1029 [ner] 'DE91 6005 0101 2345' ctx=' uberweisen:\n\nIBAN: ▮DE91 6005 0101 2345▮ 6789 01\nBIC: SOLADE'
+  - ORG            1043:1054 [ner] 'SOLADEST600' ctx='1 2345 6789 01\nBIC: ▮SOLADEST600▮\n\n§ 4 Kaution\n\nDie K'
