@@ -1,14 +1,7 @@
 DATASET: Dataset_28 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 2 | POLICY: minimal | MODE: ner
-MODE ner      | TP=6 FP=1 FN=1 | P=0.857 R=0.857 F1=0.857
+MODE ner      | TP=12 FP=0 FN=1 | P=1.000 R=0.923 F1=0.960
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
-  - STRASSE        750:763 [gold] 'Rosenstraße 8' ctx='e von Daniel ist noc▮h Rosenstraße▮ 8, 70182 Stuttgart '
-NOT FULLY DETECTED (PARTIAL): 6
-  - PER            gold 607:620 [gold] 'Miriam Scholz' [pred:ner:607:623] 'Miriam Scholz:#-' gold_ctx='ist 77134.\n\n[13:12] ▮Miriam Scholz▮:#-\nGut. Gehalt aktu' pred_ctx='ist 77134.\n\n[13:12] ▮Miriam Scholz:#-▮\nGut. Gehalt aktuell'
-  - PER            gold 708:720 [gold] 'Robert Klein' [pred:ner:710:722] 'Robert Klein' gold_ctx='e wäre 4102.\n\n[13:14▮] Robert Kle▮in:\nAdresse von Dani' pred_ctx='wäre 4102.\n\n[13:14] ▮Robert Klein▮:\nAdresse von Daniel'
-  - PER            gold 838:851 [gold] 'Miriam Scholz' [pred:ner:840:853] 'Miriam Scholz' gold_ctx='tualisieren.\n\n[13:16▮] Miriam Scho▮lz:\nBitte außerdem p' pred_ctx='alisieren.\n\n[13:16] ▮Miriam Scholz▮:\nBitte außerdem prü'
-  - PER            gold 945:957 [gold] 'Robert Klein' [pred:ner:947:959] 'Robert Klein' gold_ctx='aktuell ist.\n\n[13:18▮] Robert Kle▮in:\nIch stimme das m' pred_ctx='tuell ist.\n\n[13:18] ▮Robert Klein▮:\nIch stimme das mit'
-  - PER            gold 995:1008 [gold] 'Sabine Köhler' [pred:ner:997:1010] 'Sabine Köhler' gold_ctx=' mit dem Betriebsrat▮ (Sabine Köhl▮er) ab und melde mic' pred_ctx='it dem Betriebsrat (▮Sabine Köhler▮) ab und melde mich.'
-  - PER            gold 1038:1051 [gold] 'Miriam Scholz' [pred:ner:1040:1053] 'Miriam Scholz' gold_ctx=' melde mich.\n\n[13:21▮] Miriam Scho▮lz:\nDanke. Ziel ist ' pred_ctx='elde mich.\n\n[13:21] ▮Miriam Scholz▮:\nDanke. Ziel ist Ve'
-UNEXPECTED (FP): 1
-  - PER            212:226 [ner] 'Eintrittsdatum' ctx='iel Fischer prüfen. ▮Eintrittsdatum▮ war der 01.03.2022,'
+  - STRASSE        752:765 [gold] 'Rosenstraße 8' ctx='von Daniel ist noch ▮Rosenstraße 8▮, 70182 Stuttgart hi'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 0

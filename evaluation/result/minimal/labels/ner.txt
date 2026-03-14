@@ -3,7 +3,7 @@ LABEL REPORT | POLICY: minimal | MODE: ner
 
 PER
 --------------------------------------------------------------------------------
-ERKANNT (TP): 98
+ERKANNT (TP): 103
   - Dataset_01 71:81 [ner] 'Max Berger'
   - Dataset_02 84:96 [ner] 'Laura Schmid'
   - Dataset_03 657:663 [ner] 'Tobias'
@@ -36,9 +36,9 @@ ERKANNT (TP): 98
   - Dataset_20 243:254 [ner] 'Julia Maier'
   - Dataset_21 28:40 [ner] 'Lukas Berger'
   - Dataset_21 98:110 [ner] 'Nina Hofmann'
+  - Dataset_21 235:242 [ner] 'Hofmann'
   - Dataset_22 27:44 [ner] 'Katharina Schmitt'
   - Dataset_22 106:117 [ner] 'Daniel Roth'
-  - Dataset_22 232:242 [ner] 'Herrn Roth'
   - Dataset_23 125:140 [ner] 'Laura Schneider'
   - Dataset_23 2784:2799 [ner] 'Laura Schneider'
   - Dataset_24 133:146 [ner] 'Markus Hansen'
@@ -65,7 +65,6 @@ ERKANNT (TP): 98
   - Dataset_27 117:128 [ner] 'Anna Keller'
   - Dataset_27 345:360 [ner] 'Lukas Reinhardt'
   - Dataset_27 459:475 [ner] 'Michael Bergmann'
-  - Dataset_27 487:498 [ner] 'M. Bergmann'
   - Dataset_27 509:520 [ner] 'Anna Keller'
   - Dataset_27 633:644 [ner] 'Sophie Lang'
   - Dataset_27 780:795 [ner] 'Lukas Reinhardt'
@@ -78,6 +77,12 @@ ERKANNT (TP): 98
   - Dataset_28 296:308 [ner] 'Robert Klein'
   - Dataset_28 359:372 [ner] 'Miriam Scholz'
   - Dataset_28 483:495 [ner] 'Robert Klein'
+  - Dataset_28 607:620 [ner] 'Miriam Scholz'
+  - Dataset_28 710:722 [ner] 'Robert Klein'
+  - Dataset_28 840:853 [ner] 'Miriam Scholz'
+  - Dataset_28 947:959 [ner] 'Robert Klein'
+  - Dataset_28 997:1010 [ner] 'Sabine Köhler'
+  - Dataset_28 1040:1053 [ner] 'Miriam Scholz'
   - Dataset_29 81:92 [ner] 'Laura Weber'
   - Dataset_29 353:366 [ner] 'Martin Keller'
   - Dataset_29 429:440 [ner] 'Laura Weber'
@@ -103,23 +108,15 @@ ERKANNT (TP): 98
   - Dataset_30 1277:1290 [ner] 'Markus Ritter'
   - Dataset_30 1398:1411 [ner] 'Jana Hoffmann'
 
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 14
-  - Dataset_06 gold:334:340 [gold] 'Daniel' <- pred:ner:334:347 'Daniel Krüger'
-  - Dataset_21 gold:34:40 [gold] 'Berger' <- pred:ner:28:40 'Lukas Berger'
-  - Dataset_21 gold:230:242 [gold] 'Frau Hofmann' <- pred:ner:235:242 'Hofmann'
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 6
+  - Dataset_22 gold:113:117 [gold] 'Roth' <- pred:ner:106:117 'Daniel Roth'
   - Dataset_22 gold:207:219 [gold] 'Frau Schmitt' <- pred:ner:212:219 'Schmitt'
   - Dataset_24 gold:191:196 [gold] 'Weber' <- pred:ner:185:196 'Jonas Weber'
   - Dataset_25 gold:140:145 [gold] 'Vogel' <- pred:ner:133:145 'Markus Vogel'
-  - Dataset_28 gold:607:620 [gold] 'Miriam Scholz' <- pred:ner:607:623 'Miriam Scholz:#-'
-  - Dataset_28 gold:708:720 [gold] 'Robert Klein' <- pred:ner:710:722 'Robert Klein'
-  - Dataset_28 gold:838:851 [gold] 'Miriam Scholz' <- pred:ner:840:853 'Miriam Scholz'
-  - Dataset_28 gold:945:957 [gold] 'Robert Klein' <- pred:ner:947:959 'Robert Klein'
-  - Dataset_28 gold:995:1008 [gold] 'Sabine Köhler' <- pred:ner:997:1010 'Sabine Köhler'
-  - Dataset_28 gold:1038:1051 [gold] 'Miriam Scholz' <- pred:ner:1040:1053 'Miriam Scholz'
   - Dataset_30 gold:522:546 [gold] 'Herrn Dr. Matthias König' <- pred:ner:532:546 'Matthias König'
   - Dataset_30 gold:541:546 [gold] 'König' <- pred:ner:532:546 'Matthias König'
 
-NICHT ERKANNT (FN): 12
+NICHT ERKANNT (FN): 14
   - Dataset_03 300:312 [gold] 'Tobias Klein'
   - Dataset_07 141:152 [gold] 'Frau Berger'
   - Dataset_09 562:568 [gold] 'Sabine'
@@ -128,27 +125,29 @@ NICHT ERKANNT (FN): 12
   - Dataset_11 596:600 [gold] 'Lisa'
   - Dataset_12 698:703 [gold] 'Julia'
   - Dataset_17 21:34 [gold] 'Thomas Berger'
+  - Dataset_21 206:217 [gold] 'Herr Berger'
   - Dataset_21 1045:1057 [gold] 'Lukas Berger'
   - Dataset_21 1062:1074 [gold] 'Nina Hofmann'
   - Dataset_22 997:1014 [gold] 'Katharina Schmitt'
   - Dataset_22 1019:1030 [gold] 'Daniel Roth'
+  - Dataset_27 487:498 [gold] 'M. Bergmann'
 
-UNERWARTET (FP): 8
+UNERWARTET (FP): 6
   - Dataset_11 94:96 [ner] 'Re'
   - Dataset_11 528:531 [ner] 'Tel'
   - Dataset_18 570:574 [ner] 'Evtl'
   - Dataset_23 142:156 [ner] 'Rotebühlstraße'
   - Dataset_26 398:408 [ner] 'Testimport'
-  - Dataset_27 0:23 [ner] 'Exportierter Teams-Chat'
-  - Dataset_28 212:226 [ner] 'Eintrittsdatum'
   - Dataset_29 473:486 [ner] 'Leopoldstraße'
 
 
 STRASSE
 --------------------------------------------------------------------------------
-ERKANNT (TP): 16
+ERKANNT (TP): 18
+  - Dataset_15 213:224 [ner] 'Lindenweg 8'
   - Dataset_19 51:66 [ner] 'Uhlandstraße 19'
   - Dataset_19 138:151 [ner] 'Hegelstraße 7'
+  - Dataset_19 274:287 [ner] 'Hegelstraße 7'
   - Dataset_20 53:67 [ner] 'Konigstraße 11'
   - Dataset_20 164:182 [ner] 'Tubinger Straße 42'
   - Dataset_20 383:397 [ner] 'Konigstraße 11'
@@ -169,9 +168,7 @@ NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 NICHT ERKANNT (FN): 4
   - Dataset_14 23:39 [gold] 'Bahnhofstraße 17'
   - Dataset_23 142:160 [gold] 'Rotebühlstraße 112'
-  - Dataset_28 750:763 [gold] 'Rosenstraße 8'
+  - Dataset_28 752:765 [gold] 'Rosenstraße 8'
   - Dataset_29 473:489 [gold] 'Leopoldstraße 23'
 
-UNERWARTET (FP): 2
-  - Dataset_15 213:224 [ner] 'Lindenweg 8'
-  - Dataset_19 274:287 [ner] 'Hegelstraße 7'
+UNERWARTET (FP): 0

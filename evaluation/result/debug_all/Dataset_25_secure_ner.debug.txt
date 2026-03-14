@@ -1,5 +1,5 @@
 DATASET: Dataset_25 | DOMAIN: Chats | STRUCTURE: structured | VARIANT: 1 | POLICY: secure | MODE: ner
-MODE ner      | TP=10 FP=2 FN=0 | P=0.833 R=1.000 F1=0.909
+MODE ner      | TP=10 FP=3 FN=1 | P=0.769 R=0.909 F1=0.833
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 1

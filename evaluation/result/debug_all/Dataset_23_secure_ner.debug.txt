@@ -1,5 +1,5 @@
 DATASET: Dataset_23 | DOMAIN: Verträge | STRUCTURE: unstructured | VARIANT: 1 | POLICY: secure | MODE: ner
-MODE ner      | TP=6 FP=3 FN=2 | P=0.667 R=0.750 F1=0.706
+MODE ner      | TP=6 FP=4 FN=3 | P=0.600 R=0.667 F1=0.632
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 2
   - STRASSE        142:160 [gold] 'Rotebühlstraße 112' ctx='au Laura Schneider, ▮Rotebühlstraße 112▮, 70178 Stuttgart, –'

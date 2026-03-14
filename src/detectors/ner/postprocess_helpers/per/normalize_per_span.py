@@ -12,7 +12,7 @@ def cleanup_outer_whitespace(text: str, start: int, end: int) -> tuple[int, int]
 
 
 def cleanup_trailing_punctuation(text: str, start: int, end: int) -> tuple[int, int]:
-    trailing_chars = " \t\r\n,.;:!?)]}\"'`"
+    trailing_chars = " \t\r\n,.;:!?)]}\"'`#-_/\\|~+="
 
     while end > start and text[end - 1] in trailing_chars:
         end -= 1

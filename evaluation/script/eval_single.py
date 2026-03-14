@@ -618,6 +618,13 @@ def _evaluate(
 
         if best_partial_pred is not None and best_partial_gold is not None:
             partial_pred_keys.add(best_partial_pred.key())
+
+            counts_total.fp += 1
+            counts_total.fn += 1
+
+            lbl_counts.fp += 1
+            lbl_counts.fn += 1
+
             misses.append(
                 Miss(
                     kind="PARTIAL",

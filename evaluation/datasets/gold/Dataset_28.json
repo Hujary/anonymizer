@@ -132,8 +132,8 @@
       "expected_sources": [
         "ner"
       ],
-      "start": 708,
-      "end": 720,
+      "start": 710,
+      "end": 722,
       "text": "Robert Klein"
     },
     {
@@ -141,8 +141,8 @@
       "expected_sources": [
         "ner", "regex"
       ],
-      "start": 750,
-      "end": 763,
+      "start": 752,
+      "end": 765,
       "text": "Rosenstraße 8"
     },
     {
@@ -150,8 +150,8 @@
       "expected_sources": [
         "regex"
       ],
-      "start": 765,
-      "end": 770,
+      "start": 767,
+      "end": 772,
       "text": "70182"
     },
     {
@@ -168,8 +168,8 @@
       "expected_sources": [
         "ner"
       ],
-      "start": 838,
-      "end": 851,
+      "start": 840,
+      "end": 853,
       "text": "Miriam Scholz"
     },
     {
@@ -177,8 +177,8 @@
       "expected_sources": [
         "regex"
       ],
-      "start": 905,
-      "end": 917,
+      "start": 907,
+      "end": 919,
       "text": "0172 5566778"
     },
     {
@@ -186,8 +186,8 @@
       "expected_sources": [
         "ner"
       ],
-      "start": 945,
-      "end": 957,
+      "start": 947,
+      "end": 959,
       "text": "Robert Klein"
     },
     {
@@ -195,8 +195,8 @@
       "expected_sources": [
         "ner"
       ],
-      "start": 995,
-      "end": 1008,
+      "start": 997,
+      "end": 1010,
       "text": "Sabine Köhler"
     },
     {
@@ -204,8 +204,8 @@
       "expected_sources": [
         "ner"
       ],
-      "start": 1038,
-      "end": 1051,
+      "start": 1040,
+      "end": 1053,
       "text": "Miriam Scholz"
     },
     {

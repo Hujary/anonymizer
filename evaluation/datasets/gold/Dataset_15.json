@@ -38,7 +38,7 @@
       "text": "Nürnberg"
     },
     {
-      "label": "LOC",
+      "label": "STRASSE",
       "expected_sources": [
         "ner", "regex"
       ],

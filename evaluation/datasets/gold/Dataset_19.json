@@ -104,7 +104,7 @@
       "text": "Stuttgart"
     },
     {
-      "label": "LOC",
+      "label": "STRASSE",
       "expected_sources": [
         "ner", "regex"
       ],

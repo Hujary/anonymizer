@@ -1,12 +1,10 @@
 DATASET: Dataset_19 | DOMAIN: Verträge | STRUCTURE: structured | VARIANT: 1 | POLICY: secure | MODE: combined
-MODE combined | TP=15 FP=6 FN=2 | P=0.714 R=0.882 F1=0.789
+MODE combined | TP=16 FP=5 FN=1 | P=0.762 R=0.941 F1=0.842
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 2
-  - LOC            274:287 [gold] 'Hegelstraße 7' ctx='hoss links\nim Hause ▮Hegelstraße 7▮, 70174 Stuttgart.\n\n'
+NOT DETECTED (FN): 1
   - LOC            1505:1514 [gold] 'Stuttgart' ctx='eter ausgehändigt.\n\n▮Stuttgart▮, den 12.03.2025\n\n\n_'
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 6
-  - STRASSE        274:287 [regex] 'Hegelstraße 7' ctx='hoss links\nim Hause ▮Hegelstraße 7▮, 70174 Stuttgart.\n\n'
+UNEXPECTED (FP): 5
   - LOC            354:358 [ner] 'Flur' ctx='immern, Küche, Bad, ▮Flur▮,\nmit einer Wohnflac'
   - LOC            454:464 [ner] 'Waschraums' ctx=' 4\nMitbenutzung des ▮Waschraums▮ im Untergeschoss.\n\n'
   - ORG            991:1001 [ner] 'uberweisen' ctx=' folgendes Konto zu ▮uberweisen▮:\n\nIBAN: DE91 6005 0'

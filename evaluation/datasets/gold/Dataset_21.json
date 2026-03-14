@@ -105,49 +105,37 @@
     },
     {
       "label": "PER",
-      "expected_sources": [
-        "ner"
-      ],
+      "expected_sources": ["ner"],
       "alternatives": [
         {
           "start": 206,
           "end": 217,
           "text": "Herr Berger",
-          "expected_sources": [
-            "ner"
-          ]
+          "expected_sources": ["ner"]
         },
         {
-          "start": 34,
-          "end": 40,
+          "start": 211,
+          "end": 217,
           "text": "Berger",
-          "expected_sources": [
-            "ner"
-          ]
+          "expected_sources": ["ner"]
         }
       ]
     },
     {
       "label": "PER",
-      "expected_sources": [
-        "ner"
-      ],
+      "expected_sources": ["ner"],
       "alternatives": [
         {
           "start": 230,
           "end": 242,
           "text": "Frau Hofmann",
-          "expected_sources": [
-            "ner"
-          ]
+          "expected_sources": ["ner"]
         },
         {
-          "start": 103,
-          "end": 110,
+          "start": 235,
+          "end": 242,
           "text": "Hofmann",
-          "expected_sources": [
-            "ner"
-          ]
+          "expected_sources": ["ner"]
         }
       ]
     },

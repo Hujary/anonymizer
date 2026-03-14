@@ -162,7 +162,7 @@ UNERWARTET (FP): 0
 
 PLZ
 --------------------------------------------------------------------------------
-ERKANNT (TP): 20
+ERKANNT (TP): 21
   - Dataset_13 85:90 [regex] '60313'
   - Dataset_14 40:45 [regex] '48143'
   - Dataset_15 226:231 [regex] '90402'
@@ -183,9 +183,9 @@ ERKANNT (TP): 20
   - Dataset_24 80:85 [regex] '70469'
   - Dataset_24 218:223 [regex] '70188'
   - Dataset_27 417:422 [regex] '20457'
+  - Dataset_28 767:772 [regex] '70182'
 
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 1
-  - Dataset_28 gold:765:770 [gold] '70182' <- pred:regex:767:772 '70182'
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
 NICHT ERKANNT (FN): 0
 
@@ -195,10 +195,12 @@ UNERWARTET (FP): 1
 
 STRASSE
 --------------------------------------------------------------------------------
-ERKANNT (TP): 18
+ERKANNT (TP): 21
   - Dataset_14 23:39 [regex] 'Bahnhofstraße 17'
+  - Dataset_15 213:224 [regex] 'Lindenweg 8'
   - Dataset_19 51:66 [regex] 'Uhlandstraße 19'
   - Dataset_19 138:151 [regex] 'Hegelstraße 7'
+  - Dataset_19 274:287 [regex] 'Hegelstraße 7'
   - Dataset_20 53:67 [regex] 'Konigstraße 11'
   - Dataset_20 383:397 [regex] 'Konigstraße 11'
   - Dataset_21 58:70 [regex] 'Talstraße 14'
@@ -212,23 +214,21 @@ ERKANNT (TP): 18
   - Dataset_25 341:359 [regex] 'Tübinger Straße 54'
   - Dataset_27 401:415 [regex] 'Hafenstraße 12'
   - Dataset_28 267:285 [regex] 'Industriestraße 45'
+  - Dataset_28 752:765 [regex] 'Rosenstraße 8'
   - Dataset_29 473:489 [regex] 'Leopoldstraße 23'
   - Dataset_30 296:314 [regex] 'Speditionstraße 21'
 
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 1
-  - Dataset_28 gold:750:763 [gold] 'Rosenstraße 8' <- pred:regex:752:765 'Rosenstraße 8'
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
 NICHT ERKANNT (FN): 1
   - Dataset_20 164:182 [gold] 'Tubinger Straße 42'
 
-UNERWARTET (FP): 2
-  - Dataset_15 213:224 [regex] 'Lindenweg 8'
-  - Dataset_19 274:287 [regex] 'Hegelstraße 7'
+UNERWARTET (FP): 0
 
 
 TELEFON
 --------------------------------------------------------------------------------
-ERKANNT (TP): 19
+ERKANNT (TP): 20
   - Dataset_01 157:173 [regex] '+49 711 99887766'
   - Dataset_02 168:183 [regex] '+49 711 4567890'
   - Dataset_03 365:376 [regex] '0751 987654'
@@ -248,9 +248,9 @@ ERKANNT (TP): 19
   - Dataset_17 115:128 [regex] '0160 44556677'
   - Dataset_18 471:484 [regex] '0151 66778899'
   - Dataset_25 185:197 [regex] '0711 4587321'
+  - Dataset_28 907:919 [regex] '0172 5566778'
 
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 1
-  - Dataset_28 gold:905:917 [gold] '0172 5566778' <- pred:regex:907:919 '0172 5566778'
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
 NICHT ERKANNT (FN): 0
 

@@ -1,8 +1,6 @@
 DATASET: Dataset_28 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 2 | POLICY: minimal | MODE: regex
-MODE regex    | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+MODE regex    | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 2
-  - STRASSE        gold 750:763 [gold] 'Rosenstraße 8' [pred:regex:752:765] 'Rosenstraße 8' gold_ctx='e von Daniel ist noc▮h Rosenstraße▮ 8, 70182 Stuttgart ' pred_ctx='von Daniel ist noch ▮Rosenstraße 8▮, 70182 Stuttgart hi'
-  - TELEFON        gold 905:917 [gold] '0172 5566778' [pred:regex:907:919] '0172 5566778' gold_ctx='private Telefonnumme▮r 0172 55667▮78 noch aktuell ist.' pred_ctx='ivate Telefonnummer ▮0172 5566778▮ noch aktuell ist.\n\n'
+NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

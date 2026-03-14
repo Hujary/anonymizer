@@ -1,5 +1,5 @@
 DATASET: Dataset_24 | DOMAIN: Verträge | STRUCTURE: unstructured | VARIANT: 2 | POLICY: secure | MODE: ner
-MODE ner      | TP=8 FP=2 FN=1 | P=0.800 R=0.889 F1=0.842
+MODE ner      | TP=8 FP=4 FN=3 | P=0.667 R=0.727 F1=0.696
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
   - LOC            3041:3050 [gold] 'Stuttgart' ctx='ublik Deutschland.\n\n▮Stuttgart▮, den 22.04.2025 von'

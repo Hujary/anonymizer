@@ -1,5 +1,5 @@
 DATASET: Dataset_24 | DOMAIN: Verträge | STRUCTURE: unstructured | VARIANT: 2 | POLICY: minimal | MODE: ner
-MODE ner      | TP=5 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+MODE ner      | TP=5 FP=1 FN=1 | P=0.833 R=0.833 F1=0.833
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 1

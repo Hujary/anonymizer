@@ -1,5 +1,5 @@
 DATASET: Dataset_30 | DOMAIN: Chats | STRUCTURE: unstructured | VARIANT: 2 | POLICY: secure | MODE: combined
-MODE combined | TP=18 FP=3 FN=1 | P=0.857 R=0.947 F1=0.900
+MODE combined | TP=18 FP=5 FN=3 | P=0.783 R=0.857 F1=0.818
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1
   - ORG            839:852 [gold] 'TransLog GmbH' ctx='ster, unter anderem ▮TransLog GmbH▮.\n\n[09:23] Jana Hoff'
