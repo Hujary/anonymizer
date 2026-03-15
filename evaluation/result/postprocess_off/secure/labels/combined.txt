@@ -236,7 +236,7 @@ UNERWARTET (FP): 16
 
 ORG
 --------------------------------------------------------------------------------
-ERKANNT (TP): 31
+ERKANNT (TP): 30
   - Dataset_01 89:109 [ner] 'Berger Logistik GmbH'
   - Dataset_07 614:626 [ner] 'AlphaCore AG'
   - Dataset_09 303:319 [ner] 'MediConnect GmbH'
@@ -266,10 +266,9 @@ ERKANNT (TP): 31
   - Dataset_27 67:89 [ner] 'NordCom Vertriebs GmbH'
   - Dataset_29 43:53 [ner] 'Spintex AG'
   - Dataset_29 281:293 [ner] 'Meyer Bau AG'
-  - Dataset_30 839:852 [ner] 'TransLog GmbH'
   - Dataset_30 1105:1113 [ner] 'TransLog'
 
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 12
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 13
   - Dataset_02 gold:104:122 [gold] 'Kramer & Sohn GmbH' <- pred:ner:104:117 'Kramer & Sohn'
   - Dataset_04 gold:346:361 [gold] 'Franke Bau GmbH' <- pred:ner:346:369 'Franke Bau GmbH\nTelefon'
   - Dataset_05 gold:264:285 [gold] 'PixelForge Media GmbH' <- pred:ner:264:280 'PixelForge Media'
@@ -282,6 +281,7 @@ NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 12
   - Dataset_26 gold:37:55 [gold] 'TechSolutions GmbH' <- pred:ner:37:50 'TechSolutions'
   - Dataset_27 gold:244:265 [gold] 'Bergmann Industrie AG' <- pred:ner:244:262 'Bergmann Industrie'
   - Dataset_28 gold:62:87 [gold] 'Helion Manufacturing GmbH' <- pred:ner:62:82 'Helion Manufacturing'
+  - Dataset_30 gold:839:852 [gold] 'TransLog GmbH' <- pred:ner:839:855 'TransLog GmbH.\n\n'
 
 NICHT ERKANNT (FN): 9
   - Dataset_02 222:233 [gold] 'Kramer-Sued'

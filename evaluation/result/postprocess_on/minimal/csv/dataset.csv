@@ -63,8 +63,8 @@ Dataset_21,21,Verträge,regular,1,minimal,regex,2,0,0,1.000000,1.000000,1.000000
 Dataset_21,21,Verträge,regular,1,minimal,ner,3,0,5,1.000000,0.375000,0.545455
 Dataset_21,21,Verträge,regular,1,minimal,combined,5,0,3,1.000000,0.625000,0.769231
 Dataset_22,22,Verträge,regular,2,minimal,regex,2,0,0,1.000000,1.000000,1.000000
-Dataset_22,22,Verträge,regular,2,minimal,ner,3,0,5,1.000000,0.375000,0.545455
-Dataset_22,22,Verträge,regular,2,minimal,combined,5,0,3,1.000000,0.625000,0.769231
+Dataset_22,22,Verträge,regular,2,minimal,ner,4,0,4,1.000000,0.500000,0.666667
+Dataset_22,22,Verträge,regular,2,minimal,combined,6,0,2,1.000000,0.750000,0.857143
 Dataset_23,23,Verträge,unstructured,1,minimal,regex,2,0,0,1.000000,1.000000,1.000000
 Dataset_23,23,Verträge,unstructured,1,minimal,ner,2,1,2,0.666667,0.500000,0.571429
 Dataset_23,23,Verträge,unstructured,1,minimal,combined,4,0,0,1.000000,1.000000,1.000000

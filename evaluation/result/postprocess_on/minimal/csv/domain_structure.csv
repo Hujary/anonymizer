@@ -11,7 +11,7 @@ minimal,combined,HR-Dokumente,unstructured,7,0,1,1.000000,0.875000,0.933333
 minimal,combined,Supporttickets,regular,7,0,1,1.000000,0.875000,0.933333
 minimal,combined,Supporttickets,structured,6,0,0,1.000000,1.000000,1.000000
 minimal,combined,Supporttickets,unstructured,8,0,0,1.000000,1.000000,1.000000
-minimal,combined,Verträge,regular,10,0,6,1.000000,0.625000,0.769231
+minimal,combined,Verträge,regular,11,0,5,1.000000,0.687500,0.814815
 minimal,combined,Verträge,structured,12,0,1,1.000000,0.923077,0.960000
 minimal,combined,Verträge,unstructured,9,0,1,1.000000,0.900000,0.947368
 minimal,ner,Chats,regular,21,0,4,1.000000,0.840000,0.913043
@@ -26,7 +26,7 @@ minimal,ner,HR-Dokumente,unstructured,2,0,1,1.000000,0.666667,0.800000
 minimal,ner,Supporttickets,regular,3,0,1,1.000000,0.750000,0.857143
 minimal,ner,Supporttickets,structured,2,0,0,1.000000,1.000000,1.000000
 minimal,ner,Supporttickets,unstructured,4,0,0,1.000000,1.000000,1.000000
-minimal,ner,Verträge,regular,6,0,10,1.000000,0.375000,0.545455
+minimal,ner,Verträge,regular,7,0,9,1.000000,0.437500,0.608696
 minimal,ner,Verträge,structured,6,0,6,1.000000,0.500000,0.666667
 minimal,ner,Verträge,unstructured,5,1,5,0.833333,0.500000,0.625000
 minimal,regex,Chats,regular,8,0,0,1.000000,1.000000,1.000000

@@ -37,15 +37,6 @@ _PER_DIRECT_REJECT_SPANS = {
     "arbeitsvertrag",
 }
 
-_PER_TITLE_TOKENS = {
-    "herr",
-    "herrn",
-    "frau",
-    "dr",
-    "prof",
-    "professor",
-}
-
 
 def _normalize_token(value: str) -> str:
     return value.strip().lower().strip(",.;:(){}[]\"'`„“‚‘-–—#_/\\|~+=")
@@ -106,14 +97,6 @@ def _bad_suffix(tokens: list[str]) -> bool:
     return last in PER_BAD_SUFFIX_TOKENS
 
 
-def _contains_title_token(tokens: list[str]) -> bool:
-    for token in tokens:
-        normalized = _normalize_token(token)
-        if normalized in _PER_TITLE_TOKENS:
-            return True
-    return False
-
-
 def _token_shape_valid(tokens: list[str]) -> bool:
     for token in tokens:
         parts = token.split("-")
@@ -161,10 +144,7 @@ def is_valid_person_span(span: str) -> bool:
     if not tokens:
         return False
 
-    if len(tokens) > 2:
-        return False
-
-    if _contains_title_token(tokens):
+    if len(tokens) > 4:
         return False
 
     if _bad_suffix(tokens):

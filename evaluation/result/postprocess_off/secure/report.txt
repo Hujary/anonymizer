@@ -353,13 +353,13 @@ POSTPROCESSING: off
 
 POLICY secure
 MODE regex    | TP=6 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=15 FP=4 FN=2 | P=0.789 R=0.882 F1=0.833
-MODE combined | TP=21 FP=3 FN=1 | P=0.875 R=0.955 F1=0.913
+MODE ner      | TP=14 FP=5 FN=3 | P=0.737 R=0.824 F1=0.778
+MODE combined | TP=20 FP=4 FN=2 | P=0.833 R=0.909 F1=0.870
 
 ======================================================================
 
 GLOBAL SUMMARY (micro-averaged over all datasets) (no Postprocessing)
 ----------------------------------------------------------------------
 POLICY secure   | MODE regex    | TP= 188 FP=   1 FN=   1 | P=0.995 R=0.995 F1=0.995
-POLICY secure   | MODE ner      | TP= 171 FP= 104 FN=  72 | P=0.622 R=0.704 F1=0.660
-POLICY secure   | MODE combined | TP= 357 FP=  66 FN=  53 | P=0.844 R=0.871 F1=0.857
+POLICY secure   | MODE ner      | TP= 170 FP= 105 FN=  73 | P=0.618 R=0.700 F1=0.656
+POLICY secure   | MODE combined | TP= 356 FP=  67 FN=  54 | P=0.842 R=0.868 F1=0.855

@@ -30,6 +30,11 @@ _ORG_SUFFIX_CHAIN_RE = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+_MISC_PER_TITLE_RE = re.compile(
+    r"(?<![A-Za-zÄÖÜäöüß])(Herr|Herrn|Frau)(?=\s+[A-ZÄÖÜ])",
+    re.IGNORECASE,
+)
+
 
 def _strip_outer_whitespace(text: str, start: int, end: int) -> tuple[int, int]:
     while start < end and text[start].isspace():
@@ -50,12 +55,12 @@ def _find_last_org_suffix_match(span: str) -> re.Match[str] | None:
     return matches[-1]
 
 
-def _looks_like_org_misc(text: str, start: int, end: int) -> tuple[bool, int, int]:
+def _looks_like_org_misc(text: str, start: int, end: int) -> bool:
     start, end = _strip_outer_whitespace(text, start, end)
 
     if start >= end:
         print("[MISC->ORG] DROP: leer nach outer whitespace")
-        return False, start, end
+        return False
 
     raw_span = text[start:end]
     print(f"[MISC->ORG] CHECK raw_span={raw_span!r} start={start} end={end}")
@@ -64,52 +69,60 @@ def _looks_like_org_misc(text: str, start: int, end: int) -> tuple[bool, int, in
 
     if suffix_match is None:
         print("[MISC->ORG] DROP: kein ORG-Suffix gefunden")
-        return False, start, end
+        return False
 
-    suffix_text = suffix_match.group("suffix_chain")
-    suffix_start = suffix_match.start("suffix_chain")
     suffix_end = suffix_match.end("suffix_chain")
-
-    print(
-        f"[MISC->ORG] SUFFIX gefunden: suffix={suffix_text!r} "
-        f"suffix_start={suffix_start} suffix_end={suffix_end}"
-    )
-
     candidate_raw = raw_span[:suffix_end]
-    print(f"[MISC->ORG] CANDIDATE raw bis suffix={candidate_raw!r}")
 
     if "\n" in candidate_raw or "\r" in candidate_raw:
         print("[MISC->ORG] DROP: Zeilenumbruch innerhalb Kandidat")
-        return False, start, end
+        return False
 
     new_end = start + suffix_end
     new_start, new_end = _strip_outer_whitespace(text, start, new_end)
 
     if new_start >= new_end:
         print("[MISC->ORG] DROP: leer nach finalem trim")
-        return False, new_start, new_end
+        return False
 
     candidate = text[new_start:new_end]
-    print(
-        f"[MISC->ORG] FINAL candidate={candidate!r} "
-        f"new_start={new_start} new_end={new_end}"
-    )
-
     valid = is_valid_org_span(candidate)
     print(f"[MISC->ORG] VALIDATE candidate={candidate!r} valid={valid}")
 
     if not valid:
         print("[MISC->ORG] DROP: Validator hat verworfen")
-        return False, new_start, new_end
+        return False
 
     print("[MISC->ORG] KEEP: MISC wird zu ORG umklassifiziert")
-    return True, new_start, new_end
+    return True
+
+
+def _looks_like_person_misc(text: str, start: int, end: int) -> bool:
+    start, end = _strip_outer_whitespace(text, start, end)
+
+    if start >= end:
+        print("[MISC->PER] DROP: leer nach outer whitespace")
+        return False
+
+    raw_span = text[start:end]
+    print(f"[MISC->PER] CHECK raw_span={raw_span!r} start={start} end={end}")
+
+    if "\n" in raw_span or "\r" in raw_span:
+        print("[MISC->PER] DROP: Zeilenumbruch im Kandidat")
+        return False
+
+    if _MISC_PER_TITLE_RE.search(raw_span) is None:
+        print("[MISC->PER] DROP: keine Anrede gefunden")
+        return False
+
+    print("[MISC->PER] KEEP: MISC wird zu PER umklassifiziert")
+    return True
 
 
 def refine_misc_labels(text: str, hits: List[Treffer]) -> List[Treffer]:
     out: List[Treffer] = []
 
-    print("\n==================== MISC -> ORG REFINER ====================")
+    print("\n==================== MISC REFINER ====================")
 
     for h in hits:
         label = str(h.label).strip().upper()
@@ -120,32 +133,46 @@ def refine_misc_labels(text: str, hits: List[Treffer]) -> List[Treffer]:
 
         misc_text = text[h.start:h.ende]
         print(
-            f"[MISC->ORG] INPUT label=MISC start={h.start} end={h.ende} "
+            f"[MISC] INPUT label=MISC start={h.start} end={h.ende} "
             f"text={misc_text!r}"
         )
 
-        is_org, new_start, new_end = _looks_like_org_misc(text, h.start, h.ende)
-
-        if is_org:
-            converted_text = text[new_start:new_end]
+        if _looks_like_org_misc(text, h.start, h.ende):
             print(
-                f"[MISC->ORG] OUTPUT label=ORG start={new_start} end={new_end} "
-                f"text={converted_text!r}"
+                f"[MISC->ORG] OUTPUT label=ORG start={h.start} end={h.ende} "
+                f"text={misc_text!r}"
             )
-
             out.append(
                 Treffer(
-                    new_start,
-                    new_end,
+                    h.start,
+                    h.ende,
                     "ORG",
                     h.source,
                     from_regex=h.from_regex,
                     from_ner=h.from_ner,
                 )
             )
-        else:
-            print("[MISC->ORG] OUTPUT verworfen")
+            continue
 
-    print("=============================================================\n")
+        if _looks_like_person_misc(text, h.start, h.ende):
+            print(
+                f"[MISC->PER] OUTPUT label=PER start={h.start} end={h.ende} "
+                f"text={misc_text!r}"
+            )
+            out.append(
+                Treffer(
+                    h.start,
+                    h.ende,
+                    "PER",
+                    h.source,
+                    from_regex=h.from_regex,
+                    from_ner=h.from_ner,
+                )
+            )
+            continue
+
+        print("[MISC] OUTPUT verworfen")
+
+    print("======================================================\n")
 
     return out

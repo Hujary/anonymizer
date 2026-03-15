@@ -6,4 +6,5 @@ NOT FULLY DETECTED (PARTIAL): 1
   - ORG            gold 595:610 [gold] 'Innoventis GmbH' [pred:ner:595:605] 'Innoventis' gold_ctx='  \nProjektleitung  \n▮Innoventis GmbH▮' pred_ctx='  \nProjektleitung  \n▮Innoventis▮ GmbH'
 UNEXPECTED (FP): 2
   - ORG            43:65 [ner] 'service@urbanenergy.de' ctx='oventis-gmbh.de\nAn: ▮service@urbanenergy.de▮\nDatum: 05.03.2024\nB'
-  - ORG            391:419 [ner] 'michael.roth@innoventis-gmbh' ctx='hael Roth  \nE-Mail: ▮michael.roth@innoventis-gmbh▮.de  \nTelefon: +49 1'
+  - ORG            391:432 [ner] 'michael.roth@innoventis-gmbh.de  
+Telefon' ctx='hael Roth  \nE-Mail: ▮michael.roth@innoventis-gmbh.de  \nTelefon▮: +49 151 66778899  '

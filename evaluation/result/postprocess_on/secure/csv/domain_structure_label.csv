@@ -87,7 +87,7 @@ secure,combined,Supporttickets,unstructured,URL,2,0,0,1.000000,1.000000,1.000000
 secure,combined,Verträge,regular,DATUM,4,0,0,1.000000,1.000000,1.000000
 secure,combined,Verträge,regular,LOC,6,0,2,1.000000,0.750000,0.857143
 secure,combined,Verträge,regular,ORG,1,1,0,0.500000,1.000000,0.666667
-secure,combined,Verträge,regular,PER,6,0,6,1.000000,0.500000,0.666667
+secure,combined,Verträge,regular,PER,7,0,5,1.000000,0.583333,0.736842
 secure,combined,Verträge,regular,PLZ,4,0,0,1.000000,1.000000,1.000000
 secure,combined,Verträge,regular,STRASSE,4,0,0,1.000000,1.000000,1.000000
 secure,combined,Verträge,structured,DATUM,4,0,0,1.000000,1.000000,1.000000
@@ -141,7 +141,7 @@ secure,ner,Supporttickets,unstructured,ORG,2,0,0,1.000000,1.000000,1.000000
 secure,ner,Supporttickets,unstructured,PER,4,0,0,1.000000,1.000000,1.000000
 secure,ner,Verträge,regular,LOC,6,0,2,1.000000,0.750000,0.857143
 secure,ner,Verträge,regular,ORG,1,1,0,0.500000,1.000000,0.666667
-secure,ner,Verträge,regular,PER,6,0,6,1.000000,0.500000,0.666667
+secure,ner,Verträge,regular,PER,7,0,5,1.000000,0.583333,0.736842
 secure,ner,Verträge,regular,STRASSE,0,0,4,0.000000,0.000000,0.000000
 secure,ner,Verträge,structured,LOC,5,2,4,0.714286,0.555556,0.625000
 secure,ner,Verträge,structured,ORG,0,2,4,0.000000,0.000000,0.000000

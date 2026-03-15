@@ -20,7 +20,7 @@ secure,combined,Chats,unstructured,DATUM,6,0,0,1.000000,1.000000,1.000000
 secure,combined,Chats,unstructured,E_MAIL,2,0,0,1.000000,1.000000,1.000000
 secure,combined,Chats,unstructured,IP_ADRESSE,1,0,0,1.000000,1.000000,1.000000
 secure,combined,Chats,unstructured,LOC,2,3,0,0.400000,1.000000,0.571429
-secure,combined,Chats,unstructured,ORG,4,3,0,0.571429,1.000000,0.727273
+secure,combined,Chats,unstructured,ORG,3,4,1,0.428571,0.750000,0.545455
 secure,combined,Chats,unstructured,PER,25,1,1,0.961538,0.961538,0.961538
 secure,combined,Chats,unstructured,STRASSE,2,0,0,1.000000,1.000000,1.000000
 secure,combined,Chats,unstructured,URL,2,0,0,1.000000,1.000000,1.000000
@@ -116,7 +116,7 @@ secure,ner,Chats,structured,ORG,0,6,1,0.000000,0.000000,0.000000
 secure,ner,Chats,structured,PER,17,1,1,0.944444,0.944444,0.944444
 secure,ner,Chats,structured,STRASSE,0,1,1,0.000000,0.000000,0.000000
 secure,ner,Chats,unstructured,LOC,2,3,0,0.400000,1.000000,0.571429
-secure,ner,Chats,unstructured,ORG,4,3,0,0.571429,1.000000,0.727273
+secure,ner,Chats,unstructured,ORG,3,4,1,0.428571,0.750000,0.545455
 secure,ner,Chats,unstructured,PER,25,2,1,0.925926,0.961538,0.943396
 secure,ner,Chats,unstructured,STRASSE,0,1,2,0.000000,0.000000,0.000000
 secure,ner,E-Mail,regular,LOC,0,2,0,0.000000,0.000000,0.000000

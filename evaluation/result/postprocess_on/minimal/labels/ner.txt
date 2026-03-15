@@ -3,7 +3,7 @@ LABEL REPORT | POLICY: minimal | MODE: ner | POSTPROCESSING: on
 
 PER
 --------------------------------------------------------------------------------
-ERKANNT (TP): 104
+ERKANNT (TP): 105
   - Dataset_01 71:81 [ner] 'Max Berger'
   - Dataset_02 84:96 [ner] 'Laura Schmid'
   - Dataset_03 657:663 [ner] 'Tobias'
@@ -40,6 +40,7 @@ ERKANNT (TP): 104
   - Dataset_22 27:44 [ner] 'Katharina Schmitt'
   - Dataset_22 106:117 [ner] 'Daniel Roth'
   - Dataset_22 212:219 [ner] 'Schmitt'
+  - Dataset_22 238:242 [ner] 'Roth'
   - Dataset_23 125:140 [ner] 'Laura Schneider'
   - Dataset_23 2784:2799 [ner] 'Laura Schneider'
   - Dataset_24 133:146 [ner] 'Markus Hansen'
@@ -111,7 +112,7 @@ ERKANNT (TP): 104
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
-NICHT ERKANNT (FN): 18
+NICHT ERKANNT (FN): 17
   - Dataset_03 300:312 [gold] 'Tobias Klein'
   - Dataset_07 141:152 [gold] 'Frau Berger'
   - Dataset_09 562:568 [gold] 'Sabine'
@@ -123,7 +124,6 @@ NICHT ERKANNT (FN): 18
   - Dataset_21 206:217 [gold] 'Herr Berger'
   - Dataset_21 1045:1057 [gold] 'Lukas Berger'
   - Dataset_21 1062:1074 [gold] 'Nina Hofmann'
-  - Dataset_22 232:242 [gold] 'Herrn Roth'
   - Dataset_22 997:1014 [gold] 'Katharina Schmitt'
   - Dataset_22 1019:1030 [gold] 'Daniel Roth'
   - Dataset_24 307:317 [gold] 'Herr Weber'

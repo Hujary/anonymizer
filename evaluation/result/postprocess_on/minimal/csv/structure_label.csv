@@ -1,6 +1,6 @@
 policy,mode,structure,label,tp,fp,fn,precision,recall,f1
 minimal,combined,regular,E_MAIL,14,0,0,1.000000,1.000000,1.000000
-minimal,combined,regular,PER,34,0,10,1.000000,0.772727,0.871795
+minimal,combined,regular,PER,35,0,9,1.000000,0.795455,0.886076
 minimal,combined,regular,STRASSE,8,0,0,1.000000,1.000000,1.000000
 minimal,combined,regular,TELEFON,7,0,0,1.000000,1.000000,1.000000
 minimal,combined,structured,E_MAIL,12,0,0,1.000000,1.000000,1.000000
@@ -14,7 +14,7 @@ minimal,combined,unstructured,IP_ADRESSE,1,0,0,1.000000,1.000000,1.000000
 minimal,combined,unstructured,PER,39,0,6,1.000000,0.866667,0.928571
 minimal,combined,unstructured,STRASSE,6,0,0,1.000000,1.000000,1.000000
 minimal,combined,unstructured,TELEFON,6,0,0,1.000000,1.000000,1.000000
-minimal,ner,regular,PER,34,0,10,1.000000,0.772727,0.871795
+minimal,ner,regular,PER,35,0,9,1.000000,0.795455,0.886076
 minimal,ner,regular,STRASSE,0,0,8,0.000000,0.000000,0.000000
 minimal,ner,structured,PER,31,0,2,1.000000,0.939394,0.968750
 minimal,ner,structured,STRASSE,0,0,8,0.000000,0.000000,0.000000

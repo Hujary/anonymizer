@@ -42,7 +42,7 @@ minimal,combined,Supporttickets,structured,TELEFON,2,0,0,1.000000,1.000000,1.000
 minimal,combined,Supporttickets,unstructured,E_MAIL,2,0,0,1.000000,1.000000,1.000000
 minimal,combined,Supporttickets,unstructured,PER,4,0,0,1.000000,1.000000,1.000000
 minimal,combined,Supporttickets,unstructured,TELEFON,2,0,0,1.000000,1.000000,1.000000
-minimal,combined,Verträge,regular,PER,6,0,6,1.000000,0.500000,0.666667
+minimal,combined,Verträge,regular,PER,7,0,5,1.000000,0.583333,0.736842
 minimal,combined,Verträge,regular,STRASSE,4,0,0,1.000000,1.000000,1.000000
 minimal,combined,Verträge,structured,IBAN,1,0,0,1.000000,1.000000,1.000000
 minimal,combined,Verträge,structured,PER,6,0,0,1.000000,1.000000,1.000000
@@ -66,7 +66,7 @@ minimal,ner,HR-Dokumente,unstructured,PER,2,0,1,1.000000,0.666667,0.800000
 minimal,ner,Supporttickets,regular,PER,3,0,1,1.000000,0.750000,0.857143
 minimal,ner,Supporttickets,structured,PER,2,0,0,1.000000,1.000000,1.000000
 minimal,ner,Supporttickets,unstructured,PER,4,0,0,1.000000,1.000000,1.000000
-minimal,ner,Verträge,regular,PER,6,0,6,1.000000,0.500000,0.666667
+minimal,ner,Verträge,regular,PER,7,0,5,1.000000,0.583333,0.736842
 minimal,ner,Verträge,regular,STRASSE,0,0,4,0.000000,0.000000,0.000000
 minimal,ner,Verträge,structured,PER,6,0,0,1.000000,1.000000,1.000000
 minimal,ner,Verträge,structured,STRASSE,0,0,6,0.000000,0.000000,0.000000

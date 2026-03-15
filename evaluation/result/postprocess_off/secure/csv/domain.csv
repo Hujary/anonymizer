@@ -1,10 +1,10 @@
 policy,mode,domain,tp,fp,fn,precision,recall,f1
-secure,combined,Chats,113,23,6,0.830882,0.949580,0.886275
+secure,combined,Chats,112,24,7,0.823529,0.941176,0.878431
 secure,combined,E-Mail,58,6,9,0.906250,0.865672,0.885496
 secure,combined,HR-Dokumente,72,11,10,0.867470,0.878049,0.872727
 secure,combined,Supporttickets,36,13,7,0.734694,0.837209,0.782609
 secure,combined,Verträge,78,13,21,0.857143,0.787879,0.821053
-secure,ner,Chats,75,29,12,0.721154,0.862069,0.785340
+secure,ner,Chats,74,30,13,0.711538,0.850575,0.774869
 secure,ner,E-Mail,16,15,9,0.516129,0.640000,0.571429
 secure,ner,HR-Dokumente,31,14,11,0.688889,0.738095,0.712644
 secure,ner,Supporttickets,10,18,7,0.357143,0.588235,0.444444
