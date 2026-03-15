@@ -101,6 +101,18 @@ PER_BAD_TOKENS: Final[Set[str]] = {
     "vorlage",
     "zusammenfassung",
     "zusatz",
+    "zwischenupdate",
+    "immatrikuliert",
+    "supporttickets",
+    "evaluationsdatensätze",
+    "precision",
+    "recall",
+    "readme",
+    "regex",
+    "string",
+    "char-offsets",
+    "char",
+    "offsets",
 
     # -------------------------------------------------------------------------
     # Höflichkeits- und Kommunikationsfloskeln

@@ -3,11 +3,21 @@ from __future__ import annotations
 import re
 
 
-_PER_TITLE_PREFIX_RE = re.compile(
+_PER_LEFT_PREFIX_RE = re.compile(
     r"""
-    ^.*?
+    ^\s*
     (?:
-        Herr|Herrn|Frau
+        Guten\s+Tag
+        |Hallo
+        |Hi
+        |Hey
+        |Moin
+        |Servus
+        |Liebe
+        |Lieber
+        |Herr
+        |Herrn
+        |Frau
     )
     \s+
     """,
@@ -34,11 +44,18 @@ def cleanup_trailing_punctuation(text: str, start: int, end: int) -> tuple[int, 
     return start, end
 
 
-def cut_left_to_person_name(span: str) -> tuple[int, str]:
-    match = _PER_TITLE_PREFIX_RE.match(span)
+def cut_left_person_prefix(span: str) -> tuple[int, str]:
+    current = span
+    total_offset = 0
 
-    if match is None:
-        return 0, span
+    while True:
+        match = _PER_LEFT_PREFIX_RE.match(current)
 
-    offset = match.end()
-    return offset, span[offset:]
+        if match is None:
+            break
+
+        offset = match.end()
+        total_offset += offset
+        current = current[offset:]
+
+    return total_offset, current

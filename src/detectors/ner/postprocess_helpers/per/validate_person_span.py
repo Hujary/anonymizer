@@ -35,6 +35,7 @@ _PER_DIRECT_REJECT_SPANS = {
     "datum",
     "vertrag",
     "arbeitsvertrag",
+    "zwischenupdate",
 }
 
 
@@ -112,6 +113,17 @@ def _token_shape_valid(tokens: list[str]) -> bool:
     return True
 
 
+def _has_internal_uppercase(token: str) -> bool:
+    if len(token) <= 1:
+        return False
+
+    for ch in token[1:]:
+        if ch.isupper():
+            return True
+
+    return False
+
+
 def is_valid_person_span(span: str) -> bool:
     value = span.strip()
 
@@ -146,6 +158,12 @@ def is_valid_person_span(span: str) -> bool:
 
     if len(tokens) > 4:
         return False
+
+    if len(tokens) == 1:
+        token = tokens[0]
+
+        if _has_internal_uppercase(token):
+            return False
 
     if _bad_suffix(tokens):
         return False
