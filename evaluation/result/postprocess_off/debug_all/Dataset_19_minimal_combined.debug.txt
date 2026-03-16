@@ -1,4 +1,5 @@
 DATASET: Dataset_19 | DOMAIN: Verträge | STRUCTURE: structured | VARIANT: 1 | POLICY: minimal | MODE: combined | POSTPROCESSING: off
+RUNTIME | samples=5 | mean=44.247 ms | min=44.047 ms | max=44.387 ms
 MODE combined | TP=8 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0

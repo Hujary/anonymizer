@@ -1,4 +1,5 @@
 DATASET: Dataset_05 | DOMAIN: Supporttickets | STRUCTURE: unstructured | VARIANT: 1 | POLICY: secure | MODE: regex | POSTPROCESSING: on
+RUNTIME | samples=5 | mean=5.383 ms | min=0.533 ms | max=15.494 ms
 MODE regex    | TP=5 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0

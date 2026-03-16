@@ -1,4 +1,5 @@
 DATASET: Dataset_08 | DOMAIN: E-Mail | STRUCTURE: structured | VARIANT: 2 | POLICY: minimal | MODE: ner | POSTPROCESSING: on
+RUNTIME | samples=5 | mean=14.084 ms | min=13.989 ms | max=14.261 ms
 MODE ner      | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0

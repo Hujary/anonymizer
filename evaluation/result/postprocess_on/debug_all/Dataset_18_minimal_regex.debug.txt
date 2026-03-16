@@ -1,4 +1,5 @@
 DATASET: Dataset_18 | DOMAIN: HR-Dokumente | STRUCTURE: unstructured | VARIANT: 2 | POLICY: minimal | MODE: regex | POSTPROCESSING: on
+RUNTIME | samples=5 | mean=0.293 ms | min=0.270 ms | max=0.334 ms
 MODE regex    | TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0

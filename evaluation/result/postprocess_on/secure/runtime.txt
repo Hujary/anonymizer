@@ -1,0 +1,35 @@
+RUNTIME REPORT
+================================================================================
+POLICY: secure
+POSTPROCESSING: on
+DATASETS: 30
+RUNTIME RUNS PER TEXT: 5
+MEASUREMENT: pure execution time of erkenne(text)
+WARM-UP: one untimed warm-up run per text and mode
+
+CORPUS PROFILE
+--------------------------------------------------------------------------------
+TOTAL CHARACTERS: 29845
+AVERAGE TEXT LENGTH: 994.8 characters
+POLICY-RELEVANT GOLD ENTITIES: 410
+LABEL DISTRIBUTION: DATUM=72, E_MAIL=39, IBAN=2, IP_ADRESSE=2, LOC=46, ORG=53, PER=122, PLZ=21, STRASSE=22, TELEFON=20, URL=11
+
+MODE-SPECIFIC ENTITY PROFILE
+--------------------------------------------------------------------------------
+MODE regex    | entities= 189 | labels=DATUM=72, E_MAIL=39, IBAN=2, IP_ADRESSE=2, PLZ=21, STRASSE=22, TELEFON=20, URL=11
+MODE ner      | entities= 243 | labels=LOC=46, ORG=53, PER=122, STRASSE=22
+MODE combined | entities= 410 | labels=DATUM=72, E_MAIL=39, IBAN=2, IP_ADRESSE=2, LOC=46, ORG=53, PER=122, PLZ=21, STRASSE=22, TELEFON=20, URL=11
+
+RUNTIME SUMMARY
+--------------------------------------------------------------------------------
+MODE regex    | samples= 150 | mean=   0.741 ms | median=   0.471 ms | min=   0.344 ms | max=  15.494 ms | std=   1.355 ms
+MODE ner      | samples= 150 | mean=  24.190 ms | median=  19.849 ms | min=  12.948 ms | max=  54.165 ms | std=  11.345 ms
+MODE combined | samples= 150 | mean=  24.773 ms | median=  19.669 ms | min=  13.288 ms | max=  60.818 ms | std=  11.865 ms
+
+COMBINED MODE (relevant for interactive usage)
+--------------------------------------------------------------------------------
+AVERAGE PROCESSING TIME: 24.773 ms
+MEDIAN PROCESSING TIME: 19.669 ms
+MINIMUM PROCESSING TIME: 13.288 ms
+MAXIMUM PROCESSING TIME: 60.818 ms
+STANDARD DEVIATION: 11.865 ms

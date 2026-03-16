@@ -1,4 +1,5 @@
 DATASET: Dataset_04 | DOMAIN: Supporttickets | STRUCTURE: regular | VARIANT: 2 | POLICY: minimal | MODE: regex | POSTPROCESSING: on
+RUNTIME | samples=5 | mean=0.257 ms | min=0.253 ms | max=0.262 ms
 MODE regex    | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
