@@ -20,11 +20,11 @@ LABEL_DISTRIBUTION: E_MAIL=39, IBAN=2, IP_ADRESSE=2, PER=122, STRASSE=22, TELEFO
 RUNTIME SUMMARY
 --------------------------------------------------------------------------------
 samples : 150
-mean_ms : 25.383
-median_ms : 21.108
-min_ms : 13.981
-max_ms : 56.852
-stdev_ms : 11.517
+mean_ms : 24.268
+median_ms : 19.992
+min_ms : 13.118
+max_ms : 54.983
+stdev_ms : 11.038
 
 
 POLICY: secure
@@ -41,8 +41,8 @@ LABEL_DISTRIBUTION: DATUM=72, E_MAIL=39, IBAN=2, IP_ADRESSE=2, LOC=46, ORG=53, P
 RUNTIME SUMMARY
 --------------------------------------------------------------------------------
 samples : 150
-mean_ms : 25.778
-median_ms : 20.530
-min_ms : 13.999
-max_ms : 58.634
-stdev_ms : 12.046
+mean_ms : 24.175
+median_ms : 19.205
+min_ms : 13.128
+max_ms : 55.882
+stdev_ms : 11.529
