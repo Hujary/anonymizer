@@ -1,6 +1,6 @@
 policy,mode,structure,label,tp,fp,fn,precision,recall,f1
 minimal,combined,regular,E_MAIL,14,0,0,1.000000,1.000000,1.000000
-minimal,combined,regular,PER,35,0,9,1.000000,0.795455,0.886076
+minimal,combined,regular,PER,36,0,8,1.000000,0.818182,0.900000
 minimal,combined,regular,STRASSE,8,0,0,1.000000,1.000000,1.000000
 minimal,combined,regular,TELEFON,7,0,0,1.000000,1.000000,1.000000
 minimal,combined,structured,E_MAIL,12,0,0,1.000000,1.000000,1.000000
@@ -11,14 +11,14 @@ minimal,combined,structured,STRASSE,7,0,1,1.000000,0.875000,0.933333
 minimal,combined,structured,TELEFON,7,0,0,1.000000,1.000000,1.000000
 minimal,combined,unstructured,E_MAIL,13,0,0,1.000000,1.000000,1.000000
 minimal,combined,unstructured,IP_ADRESSE,1,0,0,1.000000,1.000000,1.000000
-minimal,combined,unstructured,PER,39,0,6,1.000000,0.866667,0.928571
+minimal,combined,unstructured,PER,40,0,5,1.000000,0.888889,0.941176
 minimal,combined,unstructured,STRASSE,6,0,0,1.000000,1.000000,1.000000
 minimal,combined,unstructured,TELEFON,6,0,0,1.000000,1.000000,1.000000
-minimal,ner,regular,PER,35,0,9,1.000000,0.795455,0.886076
+minimal,ner,regular,PER,36,0,8,1.000000,0.818182,0.900000
 minimal,ner,regular,STRASSE,0,0,8,0.000000,0.000000,0.000000
 minimal,ner,structured,PER,31,0,2,1.000000,0.939394,0.968750
 minimal,ner,structured,STRASSE,0,0,8,0.000000,0.000000,0.000000
-minimal,ner,unstructured,PER,39,2,6,0.951220,0.866667,0.906977
+minimal,ner,unstructured,PER,40,2,5,0.952381,0.888889,0.919540
 minimal,ner,unstructured,STRASSE,0,0,6,0.000000,0.000000,0.000000
 minimal,regex,regular,E_MAIL,14,0,0,1.000000,1.000000,1.000000
 minimal,regex,regular,STRASSE,8,0,0,1.000000,1.000000,1.000000

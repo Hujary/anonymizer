@@ -9,11 +9,11 @@ minimal,combined,E-Mail,IBAN,1,0,0,1.000000,1.000000,1.000000
 minimal,combined,E-Mail,PER,8,0,6,1.000000,0.571429,0.727273
 minimal,combined,E-Mail,TELEFON,6,0,0,1.000000,1.000000,1.000000
 minimal,combined,HR-Dokumente,E_MAIL,7,0,0,1.000000,1.000000,1.000000
-minimal,combined,HR-Dokumente,PER,7,0,1,1.000000,0.875000,0.933333
+minimal,combined,HR-Dokumente,PER,8,0,0,1.000000,1.000000,1.000000
 minimal,combined,HR-Dokumente,STRASSE,2,0,0,1.000000,1.000000,1.000000
 minimal,combined,HR-Dokumente,TELEFON,6,0,0,1.000000,1.000000,1.000000
 minimal,combined,Supporttickets,E_MAIL,6,0,0,1.000000,1.000000,1.000000
-minimal,combined,Supporttickets,PER,9,0,1,1.000000,0.900000,0.947368
+minimal,combined,Supporttickets,PER,10,0,0,1.000000,1.000000,1.000000
 minimal,combined,Supporttickets,TELEFON,6,0,0,1.000000,1.000000,1.000000
 minimal,combined,Verträge,IBAN,1,0,0,1.000000,1.000000,1.000000
 minimal,combined,Verträge,PER,18,0,6,1.000000,0.750000,0.857143
@@ -21,9 +21,9 @@ minimal,combined,Verträge,STRASSE,13,0,1,1.000000,0.928571,0.962963
 minimal,ner,Chats,PER,63,1,3,0.984375,0.954545,0.969231
 minimal,ner,Chats,STRASSE,0,0,6,0.000000,0.000000,0.000000
 minimal,ner,E-Mail,PER,8,0,6,1.000000,0.571429,0.727273
-minimal,ner,HR-Dokumente,PER,7,0,1,1.000000,0.875000,0.933333
+minimal,ner,HR-Dokumente,PER,8,0,0,1.000000,1.000000,1.000000
 minimal,ner,HR-Dokumente,STRASSE,0,0,2,0.000000,0.000000,0.000000
-minimal,ner,Supporttickets,PER,9,0,1,1.000000,0.900000,0.947368
+minimal,ner,Supporttickets,PER,10,0,0,1.000000,1.000000,1.000000
 minimal,ner,Verträge,PER,18,1,6,0.947368,0.750000,0.837209
 minimal,ner,Verträge,STRASSE,0,0,14,0.000000,0.000000,0.000000
 minimal,regex,Chats,E_MAIL,8,0,0,1.000000,1.000000,1.000000

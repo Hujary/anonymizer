@@ -3,9 +3,10 @@ LABEL REPORT | POLICY: minimal | MODE: ner | POSTPROCESSING: on
 
 PER
 --------------------------------------------------------------------------------
-ERKANNT (TP): 105
+ERKANNT (TP): 107
   - Dataset_01 71:81 [ner] 'Max Berger'
   - Dataset_02 84:96 [ner] 'Laura Schmid'
+  - Dataset_03 300:312 [ner] 'Tobias Klein'
   - Dataset_03 657:663 [ner] 'Tobias'
   - Dataset_04 326:338 [ner] 'Simon Franke'
   - Dataset_04 654:659 [ner] 'Simon'
@@ -26,6 +27,7 @@ ERKANNT (TP): 105
   - Dataset_15 12:23 [ner] 'Lukas Meier'
   - Dataset_15 157:168 [ner] 'Lukas Meier'
   - Dataset_16 9:20 [ner] 'Sarah Klein'
+  - Dataset_17 21:34 [ner] 'Thomas Berger'
   - Dataset_18 136:152 [ner] 'Katharina Sommer'
   - Dataset_18 589:601 [ner] 'Markus Klein'
   - Dataset_19 36:50 [ner] 'Sabine Lehmann'
@@ -112,15 +114,13 @@ ERKANNT (TP): 105
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
-NICHT ERKANNT (FN): 17
-  - Dataset_03 300:312 [gold] 'Tobias Klein'
+NICHT ERKANNT (FN): 15
   - Dataset_07 141:152 [gold] 'Frau Berger'
   - Dataset_09 562:568 [gold] 'Sabine'
   - Dataset_10 561:567 [gold] 'Thomas'
   - Dataset_11 469:481 [gold] 'Markus Weber'
   - Dataset_11 596:600 [gold] 'Lisa'
   - Dataset_12 698:703 [gold] 'Julia'
-  - Dataset_17 21:34 [gold] 'Thomas Berger'
   - Dataset_21 206:217 [gold] 'Herr Berger'
   - Dataset_21 1045:1057 [gold] 'Lukas Berger'
   - Dataset_21 1062:1074 [gold] 'Nina Hofmann'

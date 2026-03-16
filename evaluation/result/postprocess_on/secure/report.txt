@@ -29,8 +29,8 @@ POSTPROCESSING: on
 
 POLICY secure
 MODE regex    | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=1 FP=0 FN=2 | P=1.000 R=0.333 F1=0.500
-MODE combined | TP=5 FP=0 FN=2 | P=1.000 R=0.714 F1=0.833
+MODE ner      | TP=2 FP=0 FN=1 | P=1.000 R=0.667 F1=0.800
+MODE combined | TP=6 FP=0 FN=1 | P=1.000 R=0.857 F1=0.923
 
 ======================================================================
 
@@ -197,8 +197,8 @@ POSTPROCESSING: on
 
 POLICY secure
 MODE regex    | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=4 FP=0 FN=2 | P=1.000 R=0.667 F1=0.800
-MODE combined | TP=8 FP=0 FN=2 | P=1.000 R=0.800 F1=0.889
+MODE ner      | TP=5 FP=0 FN=1 | P=1.000 R=0.833 F1=0.909
+MODE combined | TP=9 FP=0 FN=1 | P=1.000 R=0.900 F1=0.947
 
 ======================================================================
 
@@ -361,5 +361,5 @@ MODE combined | TP=21 FP=0 FN=1 | P=1.000 R=0.955 F1=0.977
 GLOBAL SUMMARY (micro-averaged over all datasets)
 ----------------------------------------------------------------------
 POLICY secure   | MODE regex    | TP= 188 FP=   1 FN=   1 | P=0.995 R=0.995 F1=0.995
-POLICY secure   | MODE ner      | TP= 181 FP=  21 FN=  62 | P=0.896 R=0.745 F1=0.813
-POLICY secure   | MODE combined | TP= 369 FP=  16 FN=  41 | P=0.958 R=0.900 F1=0.928
+POLICY secure   | MODE ner      | TP= 183 FP=  21 FN=  60 | P=0.897 R=0.753 F1=0.819
+POLICY secure   | MODE combined | TP= 371 FP=  16 FN=  39 | P=0.959 R=0.905 F1=0.931

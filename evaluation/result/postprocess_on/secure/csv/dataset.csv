@@ -6,8 +6,8 @@ Dataset_02,2,Supporttickets,structured,2,secure,regex,5,0,0,1.000000,1.000000,1.
 Dataset_02,2,Supporttickets,structured,2,secure,ner,2,0,1,1.000000,0.666667,0.800000
 Dataset_02,2,Supporttickets,structured,2,secure,combined,7,0,1,1.000000,0.875000,0.933333
 Dataset_03,3,Supporttickets,regular,1,secure,regex,4,0,0,1.000000,1.000000,1.000000
-Dataset_03,3,Supporttickets,regular,1,secure,ner,1,0,2,1.000000,0.333333,0.500000
-Dataset_03,3,Supporttickets,regular,1,secure,combined,5,0,2,1.000000,0.714286,0.833333
+Dataset_03,3,Supporttickets,regular,1,secure,ner,2,0,1,1.000000,0.666667,0.800000
+Dataset_03,3,Supporttickets,regular,1,secure,combined,6,0,1,1.000000,0.857143,0.923077
 Dataset_04,4,Supporttickets,regular,2,secure,regex,3,0,0,1.000000,1.000000,1.000000
 Dataset_04,4,Supporttickets,regular,2,secure,ner,3,0,0,1.000000,1.000000,1.000000
 Dataset_04,4,Supporttickets,regular,2,secure,combined,6,0,0,1.000000,1.000000,1.000000
@@ -48,8 +48,8 @@ Dataset_16,16,HR-Dokumente,regular,2,secure,regex,6,0,0,1.000000,1.000000,1.0000
 Dataset_16,16,HR-Dokumente,regular,2,secure,ner,6,0,0,1.000000,1.000000,1.000000
 Dataset_16,16,HR-Dokumente,regular,2,secure,combined,12,0,0,1.000000,1.000000,1.000000
 Dataset_17,17,HR-Dokumente,unstructured,1,secure,regex,4,0,0,1.000000,1.000000,1.000000
-Dataset_17,17,HR-Dokumente,unstructured,1,secure,ner,4,0,2,1.000000,0.666667,0.800000
-Dataset_17,17,HR-Dokumente,unstructured,1,secure,combined,8,0,2,1.000000,0.800000,0.888889
+Dataset_17,17,HR-Dokumente,unstructured,1,secure,ner,5,0,1,1.000000,0.833333,0.909091
+Dataset_17,17,HR-Dokumente,unstructured,1,secure,combined,9,0,1,1.000000,0.900000,0.947368
 Dataset_18,18,HR-Dokumente,unstructured,2,secure,regex,7,0,0,1.000000,1.000000,1.000000
 Dataset_18,18,HR-Dokumente,unstructured,2,secure,ner,6,1,0,0.857143,1.000000,0.923077
 Dataset_18,18,HR-Dokumente,unstructured,2,secure,combined,13,1,0,0.928571,1.000000,0.962963

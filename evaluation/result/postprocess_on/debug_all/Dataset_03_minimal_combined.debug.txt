@@ -1,7 +1,6 @@
 DATASET: Dataset_03 | DOMAIN: Supporttickets | STRUCTURE: regular | VARIANT: 1 | POLICY: minimal | MODE: combined | POSTPROCESSING: on
-MODE combined | TP=3 FP=0 FN=1 | P=1.000 R=0.750 F1=0.857
+MODE combined | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - PER            300:312 [gold] 'Tobias Klein' ctx='gend.\n\nMeine Daten:\n▮Tobias Klein▮\nKlein Handel GmbH\nt'
+NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

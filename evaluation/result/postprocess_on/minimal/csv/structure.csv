@@ -1,10 +1,10 @@
 policy,mode,structure,tp,fp,fn,precision,recall,f1
-minimal,combined,regular,64,0,9,1.000000,0.876712,0.934307
+minimal,combined,regular,65,0,8,1.000000,0.890411,0.942029
 minimal,combined,structured,60,0,3,1.000000,0.952381,0.975610
-minimal,combined,unstructured,65,0,6,1.000000,0.915493,0.955882
-minimal,ner,regular,35,0,17,1.000000,0.673077,0.804598
+minimal,combined,unstructured,66,0,5,1.000000,0.929577,0.963504
+minimal,ner,regular,36,0,16,1.000000,0.692308,0.818182
 minimal,ner,structured,31,0,10,1.000000,0.756098,0.861111
-minimal,ner,unstructured,39,2,12,0.951220,0.764706,0.847826
+minimal,ner,unstructured,40,2,11,0.952381,0.784314,0.860215
 minimal,regex,regular,29,0,0,1.000000,1.000000,1.000000
 minimal,regex,structured,29,0,1,1.000000,0.966667,0.983051
 minimal,regex,unstructured,26,0,0,1.000000,1.000000,1.000000

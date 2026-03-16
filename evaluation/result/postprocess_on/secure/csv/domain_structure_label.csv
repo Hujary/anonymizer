@@ -63,13 +63,13 @@ secure,combined,HR-Dokumente,unstructured,DATUM,5,0,0,1.000000,1.000000,1.000000
 secure,combined,HR-Dokumente,unstructured,E_MAIL,3,0,0,1.000000,1.000000,1.000000
 secure,combined,HR-Dokumente,unstructured,LOC,2,0,0,1.000000,1.000000,1.000000
 secure,combined,HR-Dokumente,unstructured,ORG,6,1,1,0.857143,0.857143,0.857143
-secure,combined,HR-Dokumente,unstructured,PER,2,0,1,1.000000,0.666667,0.800000
+secure,combined,HR-Dokumente,unstructured,PER,3,0,0,1.000000,1.000000,1.000000
 secure,combined,HR-Dokumente,unstructured,PLZ,1,0,0,1.000000,1.000000,1.000000
 secure,combined,HR-Dokumente,unstructured,TELEFON,2,0,0,1.000000,1.000000,1.000000
 secure,combined,Supporttickets,regular,DATUM,2,0,0,1.000000,1.000000,1.000000
 secure,combined,Supporttickets,regular,E_MAIL,2,0,0,1.000000,1.000000,1.000000
 secure,combined,Supporttickets,regular,ORG,1,0,1,1.000000,0.500000,0.666667
-secure,combined,Supporttickets,regular,PER,3,0,1,1.000000,0.750000,0.857143
+secure,combined,Supporttickets,regular,PER,4,0,0,1.000000,1.000000,1.000000
 secure,combined,Supporttickets,regular,TELEFON,2,0,0,1.000000,1.000000,1.000000
 secure,combined,Supporttickets,regular,URL,1,0,0,1.000000,1.000000,1.000000
 secure,combined,Supporttickets,structured,DATUM,3,0,0,1.000000,1.000000,1.000000
@@ -132,9 +132,9 @@ secure,ner,HR-Dokumente,structured,PER,2,0,0,1.000000,1.000000,1.000000
 secure,ner,HR-Dokumente,structured,STRASSE,0,0,1,0.000000,0.000000,0.000000
 secure,ner,HR-Dokumente,unstructured,LOC,2,0,0,1.000000,1.000000,1.000000
 secure,ner,HR-Dokumente,unstructured,ORG,6,1,1,0.857143,0.857143,0.857143
-secure,ner,HR-Dokumente,unstructured,PER,2,0,1,1.000000,0.666667,0.800000
+secure,ner,HR-Dokumente,unstructured,PER,3,0,0,1.000000,1.000000,1.000000
 secure,ner,Supporttickets,regular,ORG,1,0,1,1.000000,0.500000,0.666667
-secure,ner,Supporttickets,regular,PER,3,0,1,1.000000,0.750000,0.857143
+secure,ner,Supporttickets,regular,PER,4,0,0,1.000000,1.000000,1.000000
 secure,ner,Supporttickets,structured,ORG,2,0,1,1.000000,0.666667,0.800000
 secure,ner,Supporttickets,structured,PER,2,0,0,1.000000,1.000000,1.000000
 secure,ner,Supporttickets,unstructured,ORG,2,0,0,1.000000,1.000000,1.000000

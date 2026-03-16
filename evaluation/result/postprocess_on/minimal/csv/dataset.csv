@@ -6,8 +6,8 @@ Dataset_02,2,Supporttickets,structured,2,minimal,regex,2,0,0,1.000000,1.000000,1
 Dataset_02,2,Supporttickets,structured,2,minimal,ner,1,0,0,1.000000,1.000000,1.000000
 Dataset_02,2,Supporttickets,structured,2,minimal,combined,3,0,0,1.000000,1.000000,1.000000
 Dataset_03,3,Supporttickets,regular,1,minimal,regex,2,0,0,1.000000,1.000000,1.000000
-Dataset_03,3,Supporttickets,regular,1,minimal,ner,1,0,1,1.000000,0.500000,0.666667
-Dataset_03,3,Supporttickets,regular,1,minimal,combined,3,0,1,1.000000,0.750000,0.857143
+Dataset_03,3,Supporttickets,regular,1,minimal,ner,2,0,0,1.000000,1.000000,1.000000
+Dataset_03,3,Supporttickets,regular,1,minimal,combined,4,0,0,1.000000,1.000000,1.000000
 Dataset_04,4,Supporttickets,regular,2,minimal,regex,2,0,0,1.000000,1.000000,1.000000
 Dataset_04,4,Supporttickets,regular,2,minimal,ner,2,0,0,1.000000,1.000000,1.000000
 Dataset_04,4,Supporttickets,regular,2,minimal,combined,4,0,0,1.000000,1.000000,1.000000
@@ -48,8 +48,8 @@ Dataset_16,16,HR-Dokumente,regular,2,minimal,regex,2,0,0,1.000000,1.000000,1.000
 Dataset_16,16,HR-Dokumente,regular,2,minimal,ner,1,0,0,1.000000,1.000000,1.000000
 Dataset_16,16,HR-Dokumente,regular,2,minimal,combined,3,0,0,1.000000,1.000000,1.000000
 Dataset_17,17,HR-Dokumente,unstructured,1,minimal,regex,2,0,0,1.000000,1.000000,1.000000
-Dataset_17,17,HR-Dokumente,unstructured,1,minimal,ner,0,0,1,0.000000,0.000000,0.000000
-Dataset_17,17,HR-Dokumente,unstructured,1,minimal,combined,2,0,1,1.000000,0.666667,0.800000
+Dataset_17,17,HR-Dokumente,unstructured,1,minimal,ner,1,0,0,1.000000,1.000000,1.000000
+Dataset_17,17,HR-Dokumente,unstructured,1,minimal,combined,3,0,0,1.000000,1.000000,1.000000
 Dataset_18,18,HR-Dokumente,unstructured,2,minimal,regex,3,0,0,1.000000,1.000000,1.000000
 Dataset_18,18,HR-Dokumente,unstructured,2,minimal,ner,2,0,0,1.000000,1.000000,1.000000
 Dataset_18,18,HR-Dokumente,unstructured,2,minimal,combined,5,0,0,1.000000,1.000000,1.000000

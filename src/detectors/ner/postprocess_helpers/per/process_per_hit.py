@@ -5,6 +5,7 @@ from core.typen import Treffer
 from .normalize_per_span import cleanup_outer_whitespace
 from .normalize_per_span import cleanup_trailing_punctuation
 from .normalize_per_span import cut_left_person_prefix
+from .normalize_per_span import cut_right_person_suffix
 from .validate_person_span import is_valid_person_span
 
 
@@ -18,9 +19,22 @@ def process_per_hit(text: str, hit: Treffer) -> Treffer | None:
 
     raw_span = text[start:end]
 
-    offset, _ = cut_left_person_prefix(raw_span)
-    if offset > 0:
-        start += offset
+    left_offset, _ = cut_left_person_prefix(raw_span)
+    if left_offset > 0:
+        start += left_offset
+
+    start, end = cleanup_outer_whitespace(text, start, end)
+    start, end = cleanup_trailing_punctuation(text, start, end)
+    start, end = cleanup_outer_whitespace(text, start, end)
+
+    if start >= end:
+        return None
+
+    raw_span = text[start:end]
+
+    right_end, _ = cut_right_person_suffix(raw_span)
+    if right_end < len(raw_span):
+        end = start + right_end
 
     start, end = cleanup_outer_whitespace(text, start, end)
     start, end = cleanup_trailing_punctuation(text, start, end)

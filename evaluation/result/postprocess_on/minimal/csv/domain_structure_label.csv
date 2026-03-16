@@ -31,10 +31,10 @@ minimal,combined,HR-Dokumente,structured,PER,2,0,0,1.000000,1.000000,1.000000
 minimal,combined,HR-Dokumente,structured,STRASSE,1,0,0,1.000000,1.000000,1.000000
 minimal,combined,HR-Dokumente,structured,TELEFON,2,0,0,1.000000,1.000000,1.000000
 minimal,combined,HR-Dokumente,unstructured,E_MAIL,3,0,0,1.000000,1.000000,1.000000
-minimal,combined,HR-Dokumente,unstructured,PER,2,0,1,1.000000,0.666667,0.800000
+minimal,combined,HR-Dokumente,unstructured,PER,3,0,0,1.000000,1.000000,1.000000
 minimal,combined,HR-Dokumente,unstructured,TELEFON,2,0,0,1.000000,1.000000,1.000000
 minimal,combined,Supporttickets,regular,E_MAIL,2,0,0,1.000000,1.000000,1.000000
-minimal,combined,Supporttickets,regular,PER,3,0,1,1.000000,0.750000,0.857143
+minimal,combined,Supporttickets,regular,PER,4,0,0,1.000000,1.000000,1.000000
 minimal,combined,Supporttickets,regular,TELEFON,2,0,0,1.000000,1.000000,1.000000
 minimal,combined,Supporttickets,structured,E_MAIL,2,0,0,1.000000,1.000000,1.000000
 minimal,combined,Supporttickets,structured,PER,2,0,0,1.000000,1.000000,1.000000
@@ -62,8 +62,8 @@ minimal,ner,HR-Dokumente,regular,PER,3,0,0,1.000000,1.000000,1.000000
 minimal,ner,HR-Dokumente,regular,STRASSE,0,0,1,0.000000,0.000000,0.000000
 minimal,ner,HR-Dokumente,structured,PER,2,0,0,1.000000,1.000000,1.000000
 minimal,ner,HR-Dokumente,structured,STRASSE,0,0,1,0.000000,0.000000,0.000000
-minimal,ner,HR-Dokumente,unstructured,PER,2,0,1,1.000000,0.666667,0.800000
-minimal,ner,Supporttickets,regular,PER,3,0,1,1.000000,0.750000,0.857143
+minimal,ner,HR-Dokumente,unstructured,PER,3,0,0,1.000000,1.000000,1.000000
+minimal,ner,Supporttickets,regular,PER,4,0,0,1.000000,1.000000,1.000000
 minimal,ner,Supporttickets,structured,PER,2,0,0,1.000000,1.000000,1.000000
 minimal,ner,Supporttickets,unstructured,PER,4,0,0,1.000000,1.000000,1.000000
 minimal,ner,Verträge,regular,PER,7,0,5,1.000000,0.583333,0.736842

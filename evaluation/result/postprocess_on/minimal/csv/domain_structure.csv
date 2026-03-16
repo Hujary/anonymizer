@@ -7,8 +7,8 @@ minimal,combined,E-Mail,structured,13,0,1,1.000000,0.928571,0.962963
 minimal,combined,E-Mail,unstructured,11,0,3,1.000000,0.785714,0.880000
 minimal,combined,HR-Dokumente,regular,8,0,0,1.000000,1.000000,1.000000
 minimal,combined,HR-Dokumente,structured,7,0,0,1.000000,1.000000,1.000000
-minimal,combined,HR-Dokumente,unstructured,7,0,1,1.000000,0.875000,0.933333
-minimal,combined,Supporttickets,regular,7,0,1,1.000000,0.875000,0.933333
+minimal,combined,HR-Dokumente,unstructured,8,0,0,1.000000,1.000000,1.000000
+minimal,combined,Supporttickets,regular,8,0,0,1.000000,1.000000,1.000000
 minimal,combined,Supporttickets,structured,6,0,0,1.000000,1.000000,1.000000
 minimal,combined,Supporttickets,unstructured,8,0,0,1.000000,1.000000,1.000000
 minimal,combined,Verträge,regular,11,0,5,1.000000,0.687500,0.814815
@@ -22,8 +22,8 @@ minimal,ner,E-Mail,structured,4,0,1,1.000000,0.800000,0.888889
 minimal,ner,E-Mail,unstructured,3,0,3,1.000000,0.500000,0.666667
 minimal,ner,HR-Dokumente,regular,3,0,1,1.000000,0.750000,0.857143
 minimal,ner,HR-Dokumente,structured,2,0,1,1.000000,0.666667,0.800000
-minimal,ner,HR-Dokumente,unstructured,2,0,1,1.000000,0.666667,0.800000
-minimal,ner,Supporttickets,regular,3,0,1,1.000000,0.750000,0.857143
+minimal,ner,HR-Dokumente,unstructured,3,0,0,1.000000,1.000000,1.000000
+minimal,ner,Supporttickets,regular,4,0,0,1.000000,1.000000,1.000000
 minimal,ner,Supporttickets,structured,2,0,0,1.000000,1.000000,1.000000
 minimal,ner,Supporttickets,unstructured,4,0,0,1.000000,1.000000,1.000000
 minimal,ner,Verträge,regular,7,0,9,1.000000,0.437500,0.608696
