@@ -1,8 +1,0 @@
-DATASET: Dataset_27 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 1 | POLICY: minimal | MODE: ner | POSTPROCESSING: off
-MODE ner      | TP=11 FP=2 FN=1 | P=0.846 R=0.917 F1=0.880
-----------------------------------------------------------------------
-NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 1
-  - STRASSE        gold 401:415 [gold] 'Hafenstraße 12' [pred:ner:401:412] 'Hafenstraße' gold_ctx='Adresse ist jeweils ▮Hafenstraße 12▮, 20457 Hamburg. Ans' pred_ctx='Adresse ist jeweils ▮Hafenstraße▮ 12, 20457 Hamburg. '
-UNEXPECTED (FP): 1
-  - PER            0:23 [ner] 'Exportierter Teams-Chat' ctx='▮Exportierter Teams-Chat▮\nProjekt: CRM-Datenb'

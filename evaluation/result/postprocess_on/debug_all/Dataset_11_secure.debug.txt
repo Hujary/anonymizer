@@ -1,0 +1,10 @@
+DATASET: Dataset_11 | DOMAIN: E-Mail | STRUCTURE: unstructured | VARIANT: 1 | POLICY: secure | POSTPROCESSING: on
+TP=10 FP=0 FN=4 | P=1.000 R=0.714 F1=0.833
+----------------------------------------------------------------------
+NOT DETECTED (FN): 4
+  - ORG            107:115 [gold] 'BlueWave' ctx='treff: Re: Budget / ▮BlueWave▮\n\nHi,\n\nalso ich vers'
+  - ORG            257:276 [gold] 'BlueWave Media GmbH' ctx='ndsätzlich ok, ABER ▮BlueWave Media GmbH▮ will noch eine Anpa'
+  - PER            469:481 [gold] 'Markus Weber' ctx=' freigeben müssen.\n\n▮Markus Weber▮ – kannst du bitte d'
+  - PER            596:600 [gold] 'Lisa' ctx='st mit dem Launch.\n\n▮Lisa▮, CreativeHub GmbH'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 0

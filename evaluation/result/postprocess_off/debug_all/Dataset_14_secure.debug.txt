@@ -1,0 +1,15 @@
+DATASET: Dataset_14 | DOMAIN: HR-Dokumente | STRUCTURE: structured | VARIANT: 2 | POLICY: secure | POSTPROCESSING: off
+TP=12 FP=2 FN=3 | P=0.857 R=0.800 F1=0.828
+----------------------------------------------------------------------
+NOT DETECTED (FN): 3
+  - LOC            46:53 [gold] 'Münster' ctx='nhofstraße 17\n48143 ▮Münster▮\nmaria.hoffmann@emai'
+  - LOC            287:294 [gold] 'Münster' ctx='hFlow Solutions AG, ▮Münster▮\n\nVerantwortlich für'
+  - LOC            464:472 [gold] 'Dortmund' ctx='/2022)\nCoreIT GmbH, ▮Dortmund▮\n\nAkademischer Hinte'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 2
+  - ORG            287:296 [ner] 'Münster
+
+' ctx='hFlow Solutions AG, ▮Münster\n\n▮Verantwortlich für:\n'
+  - ORG            464:486 [ner] 'Dortmund
+
+Akademischer' ctx='/2022)\nCoreIT GmbH, ▮Dortmund\n\nAkademischer▮ Hintergrund\nM.Sc. W'

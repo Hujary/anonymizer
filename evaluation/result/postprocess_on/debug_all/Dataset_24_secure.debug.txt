@@ -1,0 +1,8 @@
+DATASET: Dataset_24 | DOMAIN: Verträge | STRUCTURE: unstructured | VARIANT: 2 | POLICY: secure | POSTPROCESSING: on
+TP=14 FP=0 FN=2 | P=1.000 R=0.875 F1=0.933
+----------------------------------------------------------------------
+NOT DETECTED (FN): 2
+  - PER            307:317 [gold] 'Herr Weber' ctx='rtrag geschlossen:\n\n▮Herr Weber▮ wird ab dem 01.06.2'
+  - LOC            3041:3050 [gold] 'Stuttgart' ctx='ublik Deutschland.\n\n▮Stuttgart▮, den 22.04.2025 von'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 0

@@ -1,0 +1,8 @@
+DATASET: Dataset_15 | DOMAIN: HR-Dokumente | STRUCTURE: regular | VARIANT: 1 | POLICY: secure | POSTPROCESSING: on
+TP=15 FP=1 FN=1 | P=0.938 R=0.938 F1=0.938
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - ORG            530:579 [gold] 'Friedrich-Alexander-Universität Erlangen-Nürnberg' ctx='ormatik (2013–2018)\n▮Friedrich-Alexander-Universität Erlangen-Nürnberg▮\n\nKenntnisse:\nJava, '
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 1
+  - LOC            593:597 [ner] 'Java' ctx='rnberg\n\nKenntnisse:\n▮Java▮, Spring Boot, REST,'

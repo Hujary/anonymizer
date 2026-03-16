@@ -1,4 +1,4 @@
-LABEL REPORT | POLICY: minimal | MODE: combined | POSTPROCESSING: off
+LABEL REPORT | POLICY: minimal | POSTPROCESSING: off
 --------------------------------------------------------------------------------
 
 E_MAIL

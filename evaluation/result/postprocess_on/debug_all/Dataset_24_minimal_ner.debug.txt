@@ -1,9 +1,0 @@
-DATASET: Dataset_24 | DOMAIN: Verträge | STRUCTURE: unstructured | VARIANT: 2 | POLICY: minimal | MODE: ner | POSTPROCESSING: on
-MODE ner      | TP=3 FP=0 FN=3 | P=1.000 R=0.500 F1=0.667
-----------------------------------------------------------------------
-NOT DETECTED (FN): 3
-  - STRASSE        60:78 [gold] 'Industriestraße 18' ctx='uter Logistik GmbH, ▮Industriestraße 18▮, 70469 Stuttgart, v'
-  - STRASSE        198:216 [gold] 'Schönbühlstraße 27' ctx=' Herrn Jonas Weber, ▮Schönbühlstraße 27▮, 70188 Stuttgart – '
-  - PER            307:317 [gold] 'Herr Weber' ctx='rtrag geschlossen:\n\n▮Herr Weber▮ wird ab dem 01.06.2'
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0

@@ -1,6 +1,0 @@
-DATASET: Dataset_16 | DOMAIN: HR-Dokumente | STRUCTURE: regular | VARIANT: 2 | POLICY: minimal | MODE: ner | POSTPROCESSING: on
-MODE ner      | TP=1 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-----------------------------------------------------------------------
-NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0

@@ -4,9 +4,7 @@ STRUCTURE: structured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=1 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE combined | TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -16,9 +14,7 @@ STRUCTURE: structured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=1 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE combined | TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -28,9 +24,7 @@ STRUCTURE: regular
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE combined | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -40,9 +34,7 @@ STRUCTURE: regular
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE combined | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -52,9 +44,7 @@ STRUCTURE: unstructured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE combined | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -64,9 +54,7 @@ STRUCTURE: unstructured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE combined | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -76,9 +64,7 @@ STRUCTURE: structured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=5 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=2 FP=0 FN=1 | P=1.000 R=0.667 F1=0.800
-MODE combined | TP=7 FP=0 FN=1 | P=1.000 R=0.875 F1=0.933
+TP=7 FP=0 FN=1 | P=1.000 R=0.875 F1=0.933
 
 ======================================================================
 
@@ -88,9 +74,7 @@ STRUCTURE: structured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE combined | TP=6 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=6 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -100,9 +84,7 @@ STRUCTURE: regular
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=0 FP=0 FN=1 | P=0.000 R=0.000 F1=0.000
-MODE combined | TP=4 FP=0 FN=1 | P=1.000 R=0.800 F1=0.889
+TP=4 FP=0 FN=1 | P=1.000 R=0.800 F1=0.889
 
 ======================================================================
 
@@ -112,9 +94,7 @@ STRUCTURE: regular
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=1 FP=0 FN=1 | P=1.000 R=0.500 F1=0.667
-MODE combined | TP=5 FP=0 FN=1 | P=1.000 R=0.833 F1=0.909
+TP=5 FP=0 FN=1 | P=1.000 R=0.833 F1=0.909
 
 ======================================================================
 
@@ -124,9 +104,7 @@ STRUCTURE: unstructured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=2 FP=0 FN=2 | P=1.000 R=0.500 F1=0.667
-MODE combined | TP=6 FP=0 FN=2 | P=1.000 R=0.750 F1=0.857
+TP=6 FP=0 FN=2 | P=1.000 R=0.750 F1=0.857
 
 ======================================================================
 
@@ -136,9 +114,7 @@ STRUCTURE: unstructured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=1 FP=0 FN=1 | P=1.000 R=0.500 F1=0.667
-MODE combined | TP=5 FP=0 FN=1 | P=1.000 R=0.833 F1=0.909
+TP=5 FP=0 FN=1 | P=1.000 R=0.833 F1=0.909
 
 ======================================================================
 
@@ -148,9 +124,7 @@ STRUCTURE: structured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=1 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE combined | TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -160,9 +134,7 @@ STRUCTURE: structured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=1 FP=0 FN=1 | P=1.000 R=0.500 F1=0.667
-MODE combined | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -172,9 +144,7 @@ STRUCTURE: regular
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=2 FP=0 FN=1 | P=1.000 R=0.667 F1=0.800
-MODE combined | TP=5 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=5 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -184,9 +154,7 @@ STRUCTURE: regular
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=1 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE combined | TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -196,9 +164,7 @@ STRUCTURE: unstructured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=1 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE combined | TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -208,9 +174,7 @@ STRUCTURE: unstructured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE combined | TP=5 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=5 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -220,9 +184,7 @@ STRUCTURE: structured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=4 FP=0 FN=3 | P=1.000 R=0.571 F1=0.727
-MODE combined | TP=8 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=8 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -232,9 +194,7 @@ STRUCTURE: structured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=2 FP=0 FN=1 | P=1.000 R=0.667 F1=0.800
-MODE ner      | TP=2 FP=0 FN=3 | P=1.000 R=0.400 F1=0.571
-MODE combined | TP=4 FP=0 FN=1 | P=1.000 R=0.800 F1=0.889
+TP=4 FP=0 FN=1 | P=1.000 R=0.800 F1=0.889
 
 ======================================================================
 
@@ -244,9 +204,7 @@ STRUCTURE: regular
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=3 FP=0 FN=5 | P=1.000 R=0.375 F1=0.545
-MODE combined | TP=5 FP=0 FN=3 | P=1.000 R=0.625 F1=0.769
+TP=5 FP=0 FN=3 | P=1.000 R=0.625 F1=0.769
 
 ======================================================================
 
@@ -256,9 +214,7 @@ STRUCTURE: regular
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=4 FP=0 FN=4 | P=1.000 R=0.500 F1=0.667
-MODE combined | TP=6 FP=0 FN=2 | P=1.000 R=0.750 F1=0.857
+TP=6 FP=0 FN=2 | P=1.000 R=0.750 F1=0.857
 
 ======================================================================
 
@@ -268,9 +224,7 @@ STRUCTURE: unstructured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=2 FP=1 FN=2 | P=0.667 R=0.500 F1=0.571
-MODE combined | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -280,9 +234,7 @@ STRUCTURE: unstructured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=3 FP=0 FN=3 | P=1.000 R=0.500 F1=0.667
-MODE combined | TP=5 FP=0 FN=1 | P=1.000 R=0.833 F1=0.909
+TP=5 FP=0 FN=1 | P=1.000 R=0.833 F1=0.909
 
 ======================================================================
 
@@ -292,9 +244,7 @@ STRUCTURE: structured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=7 FP=0 FN=2 | P=1.000 R=0.778 F1=0.875
-MODE combined | TP=11 FP=0 FN=1 | P=1.000 R=0.917 F1=0.957
+TP=11 FP=0 FN=1 | P=1.000 R=0.917 F1=0.957
 
 ======================================================================
 
@@ -304,9 +254,7 @@ STRUCTURE: structured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=1 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=10 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE combined | TP=11 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=11 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -316,9 +264,7 @@ STRUCTURE: regular
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=10 FP=0 FN=2 | P=1.000 R=0.833 F1=0.909
-MODE combined | TP=14 FP=0 FN=1 | P=1.000 R=0.933 F1=0.966
+TP=14 FP=0 FN=1 | P=1.000 R=0.933 F1=0.966
 
 ======================================================================
 
@@ -328,9 +274,7 @@ STRUCTURE: regular
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=11 FP=0 FN=2 | P=1.000 R=0.846 F1=0.917
-MODE combined | TP=15 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=15 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -340,9 +284,7 @@ STRUCTURE: unstructured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=13 FP=1 FN=1 | P=0.929 R=0.929 F1=0.929
-MODE combined | TP=16 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=16 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -352,14 +294,10 @@ STRUCTURE: unstructured
 POSTPROCESSING: on
 
 POLICY minimal
-MODE regex    | TP=2 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-MODE ner      | TP=12 FP=0 FN=2 | P=1.000 R=0.857 F1=0.923
-MODE combined | TP=14 FP=0 FN=1 | P=1.000 R=0.933 F1=0.966
+TP=14 FP=0 FN=1 | P=1.000 R=0.933 F1=0.966
 
 ======================================================================
 
 GLOBAL SUMMARY (micro-averaged over all datasets)
 ----------------------------------------------------------------------
-POLICY minimal  | MODE regex    | TP=  84 FP=   0 FN=   1 | P=1.000 R=0.988 F1=0.994
-POLICY minimal  | MODE ner      | TP= 107 FP=   2 FN=  37 | P=0.982 R=0.743 F1=0.846
-POLICY minimal  | MODE combined | TP= 191 FP=   0 FN=  16 | P=1.000 R=0.923 F1=0.960
+POLICY minimal  | TP= 191 FP=   0 FN=  16 | P=1.000 R=0.923 F1=0.960

@@ -1,9 +1,0 @@
-DATASET: Dataset_13 | DOMAIN: HR-Dokumente | STRUCTURE: structured | VARIANT: 1 | POLICY: secure | MODE: ner | POSTPROCESSING: on
-MODE ner      | TP=5 FP=1 FN=2 | P=0.833 R=0.714 F1=0.769
-----------------------------------------------------------------------
-NOT DETECTED (FN): 2
-  - LOC            244:253 [gold] 'Frankfurt' ctx='t\nDataSystems GmbH, ▮Frankfurt▮\n\n• Beratung im Bere'
-  - ORG            486:518 [gold] 'Technische Universität Darmstadt' ctx='17\nB.Sc. Informatik\n▮Technische Universität Darmstadt▮\n\nFachkenntnisse\nClo'
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
-  - LOC            277:292 [ner] 'Cloud-Migration' ctx='Beratung im Bereich ▮Cloud-Migration▮\n• Implementierung v'

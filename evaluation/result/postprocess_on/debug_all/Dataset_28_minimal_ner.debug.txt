@@ -1,8 +1,0 @@
-DATASET: Dataset_28 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 2 | POLICY: minimal | MODE: ner | POSTPROCESSING: on
-MODE ner      | TP=11 FP=0 FN=2 | P=1.000 R=0.846 F1=0.917
-----------------------------------------------------------------------
-NOT DETECTED (FN): 2
-  - STRASSE        267:285 [gold] 'Industriestraße 45' ctx='Standort Stuttgart, ▮Industriestraße 45▮.\n\n[13:07] Robert Kl'
-  - STRASSE        752:765 [gold] 'Rosenstraße 8' ctx='von Daniel ist noch ▮Rosenstraße 8▮, 70182 Stuttgart hi'
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0

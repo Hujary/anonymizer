@@ -8,7 +8,7 @@ import time
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Tuple
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SRC_DIR = REPO_ROOT / "src"
@@ -22,7 +22,6 @@ if str(EVAL_DIR) not in sys.path:
     sys.path.insert(0, str(EVAL_DIR))
 
 from core import config
-
 from evaluation.script.eval_single import (
     EvalCounts,
     Miss,
@@ -32,7 +31,7 @@ from evaluation.script.eval_single import (
     _format_misses,
     _format_per_label,
     _parse_gold,
-    _policy_labels_for_mode,
+    _policy_labels,
     _read_json,
     _read_text,
     _resolve_paths,
@@ -53,12 +52,6 @@ STRUCTURES: List[str] = [
     "structured",
     "regular",
     "unstructured",
-]
-
-MODES: List[Tuple[str, Set[str]]] = [
-    ("regex", {"regex"}),
-    ("ner", {"ner"}),
-    ("combined", {"regex", "ner"}),
 ]
 
 
@@ -105,7 +98,6 @@ class DatasetRunRow:
     structure: str
     variant: int
     policy: str
-    mode: str
     tp: int
     fp: int
     fn: int
@@ -172,13 +164,12 @@ def _format_label_report(
     label_hits: Dict[str, Dict[str, List[str]]],
     *,
     policy: str,
-    mode: str,
     postprocess_enabled: bool,
     max_items_per_section: int,
 ) -> str:
     lines: List[str] = []
     lines.append(
-        f"LABEL REPORT | POLICY: {policy} | MODE: {mode} | "
+        f"LABEL REPORT | POLICY: {policy} | "
         f"POSTPROCESSING: {'on' if postprocess_enabled else 'off'}"
     )
     lines.append("-" * 80)
@@ -214,9 +205,8 @@ def _format_label_report(
     return "\n".join(lines).rstrip() + "\n"
 
 
-def _format_short_summary(mode: str, total: EvalCounts) -> str:
+def _format_short_summary(total: EvalCounts) -> str:
     return (
-        f"MODE {mode:8s} | "
         f"TP={total.tp} FP={total.fp} FN={total.fn} | "
         f"P={total.precision():.3f} R={total.recall():.3f} F1={total.f1():.3f}"
     )
@@ -267,7 +257,6 @@ def _aggregate_rows(
             "structure": row.structure,
             "variant": row.variant,
             "policy": row.policy,
-            "mode": row.mode,
         }
 
         key = tuple(row_dict[key_name] for key_name in group_keys)
@@ -342,7 +331,6 @@ def _build_dataset_csv_rows(rows: List[DatasetRunRow]) -> List[Dict[str, object]
                 "structure": row.structure,
                 "variant": row.variant,
                 "policy": row.policy,
-                "mode": row.mode,
                 "tp": row.tp,
                 "fp": row.fp,
                 "fn": row.fn,
@@ -372,7 +360,6 @@ def _write_policy_csv_files(
             "structure",
             "variant",
             "policy",
-            "mode",
             "tp",
             "fp",
             "fn",
@@ -382,63 +369,63 @@ def _write_policy_csv_files(
         ],
     )
 
-    overall_rows = _aggregate_rows(dataset_rows, ["policy", "mode"])
+    overall_rows = _aggregate_rows(dataset_rows, ["policy"])
     _write_csv(
         csv_dir / "overall.csv",
         overall_rows,
-        ["policy", "mode", "tp", "fp", "fn", "precision", "recall", "f1"],
+        ["policy", "tp", "fp", "fn", "precision", "recall", "f1"],
     )
 
-    domain_rows = _aggregate_rows(dataset_rows, ["policy", "mode", "domain"])
+    domain_rows = _aggregate_rows(dataset_rows, ["policy", "domain"])
     _write_csv(
         csv_dir / "domain.csv",
         domain_rows,
-        ["policy", "mode", "domain", "tp", "fp", "fn", "precision", "recall", "f1"],
+        ["policy", "domain", "tp", "fp", "fn", "precision", "recall", "f1"],
     )
 
-    structure_rows = _aggregate_rows(dataset_rows, ["policy", "mode", "structure"])
+    structure_rows = _aggregate_rows(dataset_rows, ["policy", "structure"])
     _write_csv(
         csv_dir / "structure.csv",
         structure_rows,
-        ["policy", "mode", "structure", "tp", "fp", "fn", "precision", "recall", "f1"],
+        ["policy", "structure", "tp", "fp", "fn", "precision", "recall", "f1"],
     )
 
-    domain_structure_rows = _aggregate_rows(dataset_rows, ["policy", "mode", "domain", "structure"])
+    domain_structure_rows = _aggregate_rows(dataset_rows, ["policy", "domain", "structure"])
     _write_csv(
         csv_dir / "domain_structure.csv",
         domain_structure_rows,
-        ["policy", "mode", "domain", "structure", "tp", "fp", "fn", "precision", "recall", "f1"],
+        ["policy", "domain", "structure", "tp", "fp", "fn", "precision", "recall", "f1"],
     )
 
-    label_overall_rows = _aggregate_label_rows(label_rows, ["policy", "mode", "label"])
+    label_overall_rows = _aggregate_label_rows(label_rows, ["policy", "label"])
     _write_csv(
         csv_dir / "label.csv",
         label_overall_rows,
-        ["policy", "mode", "label", "tp", "fp", "fn", "precision", "recall", "f1"],
+        ["policy", "label", "tp", "fp", "fn", "precision", "recall", "f1"],
     )
 
-    label_domain_rows = _aggregate_label_rows(label_rows, ["policy", "mode", "domain", "label"])
+    label_domain_rows = _aggregate_label_rows(label_rows, ["policy", "domain", "label"])
     _write_csv(
         csv_dir / "domain_label.csv",
         label_domain_rows,
-        ["policy", "mode", "domain", "label", "tp", "fp", "fn", "precision", "recall", "f1"],
+        ["policy", "domain", "label", "tp", "fp", "fn", "precision", "recall", "f1"],
     )
 
-    label_structure_rows = _aggregate_label_rows(label_rows, ["policy", "mode", "structure", "label"])
+    label_structure_rows = _aggregate_label_rows(label_rows, ["policy", "structure", "label"])
     _write_csv(
         csv_dir / "structure_label.csv",
         label_structure_rows,
-        ["policy", "mode", "structure", "label", "tp", "fp", "fn", "precision", "recall", "f1"],
+        ["policy", "structure", "label", "tp", "fp", "fn", "precision", "recall", "f1"],
     )
 
     label_domain_structure_rows = _aggregate_label_rows(
         label_rows,
-        ["policy", "mode", "domain", "structure", "label"],
+        ["policy", "domain", "structure", "label"],
     )
     _write_csv(
         csv_dir / "domain_structure_label.csv",
         label_domain_structure_rows,
-        ["policy", "mode", "domain", "structure", "label", "tp", "fp", "fn", "precision", "recall", "f1"],
+        ["policy", "domain", "structure", "label", "tp", "fp", "fn", "precision", "recall", "f1"],
     )
 
 
@@ -448,7 +435,7 @@ def _compute_policy_gold_stats(
     dataset_cache: Dict[str, Tuple[str, List[object]]],
     policy: str,
 ) -> Dict[str, object]:
-    allowed_labels = _policy_labels_for_mode(policy, "combined")
+    allowed_labels = _policy_labels(policy)
 
     total_texts = 0
     total_chars = 0
@@ -487,21 +474,24 @@ def _measure_runtime_ms(
     *,
     text: str,
     gold_entities: List[object],
-    mode: str,
-    sources: Set[str],
     policy: str,
     eval_root: Path,
     samples: int,
 ) -> List[float]:
     values: List[float] = []
 
+    _evaluate(
+        text,
+        gold_entities,
+        policy_name=policy,
+        eval_root=eval_root,
+    )
+
     for _ in range(max(1, int(samples))):
         t0 = time.perf_counter()
         _evaluate(
             text,
             gold_entities,
-            mode=mode,
-            mode_sources=set(sources),
             policy_name=policy,
             eval_root=eval_root,
         )
@@ -515,16 +505,19 @@ def _format_times_report(
     *,
     dataset_names: List[str],
     dataset_cache: Dict[str, Tuple[str, List[object]]],
-    selected_modes: List[Tuple[str, Set[str]]],
     selected_policies: List[str],
     eval_root: Path,
     runtime_samples: int,
+    postprocess_enabled: bool,
 ) -> str:
     lines: List[str] = []
-    lines.append("RUNTIME SUMMARY")
+    lines.append("RUNTIME REPORT")
     lines.append("=" * 80)
+    lines.append(f"POSTPROCESSING: {'on' if postprocess_enabled else 'off'}")
     lines.append(f"DATASETS: {len(dataset_names)}")
-    lines.append(f"RUNTIME_SAMPLES_PER_DATASET: {runtime_samples}")
+    lines.append(f"RUNTIME RUNS PER TEXT: {runtime_samples}")
+    lines.append("MEASUREMENT: pure execution time of erkenne(text) in combined operation")
+    lines.append("WARM-UP: one untimed warm-up run per text")
     lines.append("")
 
     for policy in selected_policies:
@@ -536,63 +529,53 @@ def _format_times_report(
             policy=policy,
         )
 
+        all_runtime_values: List[float] = []
+
+        for dataset_name in dataset_names:
+            text, gold_entities = dataset_cache[dataset_name]
+            values = _measure_runtime_ms(
+                text=text,
+                gold_entities=gold_entities,
+                policy=policy,
+                eval_root=eval_root,
+                samples=runtime_samples,
+            )
+            all_runtime_values.extend(values)
+
+        mean_ms = statistics.mean(all_runtime_values) if all_runtime_values else 0.0
+        median_ms = statistics.median(all_runtime_values) if all_runtime_values else 0.0
+        min_ms = min(all_runtime_values) if all_runtime_values else 0.0
+        max_ms = max(all_runtime_values) if all_runtime_values else 0.0
+        stdev_ms = statistics.pstdev(all_runtime_values) if len(all_runtime_values) > 1 else 0.0
+
         lines.append(f"POLICY: {policy}")
         lines.append("-" * 80)
         lines.append(f"TEXT_COUNT: {policy_stats['texts']}")
         lines.append(f"TOTAL_TEXT_CHARS: {policy_stats['chars']}")
-        lines.append(f"TOTAL_RELEVANT_GOLD_PII: {policy_stats['relevant_gold']}")
+        avg_len = (policy_stats["chars"] / policy_stats["texts"]) if policy_stats["texts"] else 0.0
+        lines.append(f"AVERAGE_TEXT_LENGTH: {avg_len:.1f} characters")
+        lines.append(f"POLICY_RELEVANT_GOLD_ENTITIES: {policy_stats['relevant_gold']}")
         lines.append(f"NER_LABELS: {policy_stats['ner_labels']}")
         lines.append(f"REGEX_LABELS: {policy_stats['regex_labels']}")
         lines.append(f"ALLOWED_LABELS_COMBINED: {policy_stats['allowed_labels']}")
-        lines.append("LABEL_DISTRIBUTION:")
-
         label_counts = policy_stats["label_counts"]
+
         if label_counts:
-            for label in sorted(label_counts.keys()):
-                lines.append(f"  {label:14s} {label_counts[label]}")
+            label_dist = ", ".join(f"{label}={label_counts[label]}" for label in sorted(label_counts.keys()))
         else:
-            lines.append("  none")
+            label_dist = "none"
 
+        lines.append(f"LABEL_DISTRIBUTION: {label_dist}")
         lines.append("")
-
-        for mode_name, sources in selected_modes:
-            all_runtime_values: List[float] = []
-
-            for dataset_name in dataset_names:
-                text, gold_entities = dataset_cache[dataset_name]
-                values = _measure_runtime_ms(
-                    text=text,
-                    gold_entities=gold_entities,
-                    mode=mode_name,
-                    sources=sources,
-                    policy=policy,
-                    eval_root=eval_root,
-                    samples=runtime_samples,
-                )
-                all_runtime_values.extend(values)
-
-            if all_runtime_values:
-                mean_ms = statistics.mean(all_runtime_values)
-                median_ms = statistics.median(all_runtime_values)
-                min_ms = min(all_runtime_values)
-                max_ms = max(all_runtime_values)
-                stdev_ms = statistics.pstdev(all_runtime_values) if len(all_runtime_values) > 1 else 0.0
-            else:
-                mean_ms = 0.0
-                median_ms = 0.0
-                min_ms = 0.0
-                max_ms = 0.0
-                stdev_ms = 0.0
-
-            lines.append(f"MODE: {mode_name}")
-            lines.append(f"  total_measurements : {len(all_runtime_values)}")
-            lines.append(f"  mean_ms            : {mean_ms:.3f}")
-            lines.append(f"  median_ms          : {median_ms:.3f}")
-            lines.append(f"  min_ms             : {min_ms:.3f}")
-            lines.append(f"  max_ms             : {max_ms:.3f}")
-            lines.append(f"  stdev_ms           : {stdev_ms:.3f}")
-            lines.append("")
-
+        lines.append("RUNTIME SUMMARY")
+        lines.append("-" * 80)
+        lines.append(f"samples : {len(all_runtime_values)}")
+        lines.append(f"mean_ms : {mean_ms:.3f}")
+        lines.append(f"median_ms : {median_ms:.3f}")
+        lines.append(f"min_ms : {min_ms:.3f}")
+        lines.append(f"max_ms : {max_ms:.3f}")
+        lines.append(f"stdev_ms : {stdev_ms:.3f}")
+        lines.append("")
         lines.append("")
 
     return "\n".join(lines).rstrip() + "\n"
@@ -603,7 +586,6 @@ def _run_variant(
     eval_root: Path,
     result_root: Path,
     dataset_names: List[str],
-    selected_modes: List[Tuple[str, Set[str]]],
     selected_policies: List[str],
     debug: bool,
     show_tp: bool,
@@ -642,17 +624,11 @@ def _run_variant(
         policy_dataset_rows: List[DatasetRunRow] = []
         policy_label_rows: List[Dict[str, object]] = []
 
-        policy_global_agg: Dict[str, MetricAgg] = {
-            mode_name: MetricAgg()
-            for mode_name, _ in selected_modes
-        }
+        policy_global_agg = MetricAgg()
 
-        policy_label_hits_by_mode: Dict[str, Dict[str, Dict[str, List[str]]]] = {}
+        policy_label_hits: Dict[str, Dict[str, List[str]]] = {}
         if label_report:
-            for mode_name, _ in selected_modes:
-                policy_label_hits_by_mode[mode_name] = defaultdict(
-                    lambda: {"TP": [], "PARTIAL": [], "FN": [], "FP": []}
-                )
+            policy_label_hits = defaultdict(lambda: {"TP": [], "PARTIAL": [], "FN": [], "FP": []})
 
         for dataset_name in dataset_names:
             meta = _dataset_meta(dataset_name)
@@ -665,100 +641,94 @@ def _run_variant(
             report_lines.append("")
             report_lines.append(f"POLICY {policy}")
 
-            for mode_name, sources in selected_modes:
-                total, by_label, misses = _evaluate(
-                    text,
-                    gold_entities,
-                    mode=mode_name,
-                    mode_sources=set(sources),
-                    policy_name=policy,
-                    eval_root=eval_root,
+            total, by_label, misses = _evaluate(
+                text,
+                gold_entities,
+                policy_name=policy,
+                eval_root=eval_root,
+            )
+
+            policy_global_agg.add(total)
+
+            policy_dataset_rows.append(
+                DatasetRunRow(
+                    dataset=dataset_name,
+                    dataset_index=meta.dataset_index,
+                    domain=meta.domain,
+                    structure=meta.structure,
+                    variant=meta.variant,
+                    policy=policy,
+                    tp=total.tp,
+                    fp=total.fp,
+                    fn=total.fn,
+                    precision=total.precision(),
+                    recall=total.recall(),
+                    f1=total.f1(),
+                )
+            )
+
+            report_lines.append(_format_short_summary(total))
+
+            if per_label:
+                report_lines.append("")
+                report_lines.append(
+                    f"PER-LABEL ({policy} | "
+                    f"{'postprocess_on' if postprocess_enabled else 'postprocess_off'})"
+                )
+                report_lines.extend(_format_per_label(by_label))
+                report_lines.append("")
+
+            for label in sorted(by_label.keys()):
+                counts = by_label[label]
+                policy_label_rows.append(
+                    {
+                        "dataset": dataset_name,
+                        "dataset_index": meta.dataset_index,
+                        "domain": meta.domain,
+                        "structure": meta.structure,
+                        "variant": meta.variant,
+                        "policy": policy,
+                        "label": label,
+                        "tp": counts.tp,
+                        "fp": counts.fp,
+                        "fn": counts.fn,
+                    }
                 )
 
-                policy_global_agg[mode_name].add(total)
+            if label_report:
+                for miss in misses:
+                    miss_label = str(miss.label or "").strip().upper() or "?"
+                    miss_kind = str(miss.kind or "").strip().upper()
 
-                policy_dataset_rows.append(
-                    DatasetRunRow(
-                        dataset=dataset_name,
-                        dataset_index=meta.dataset_index,
-                        domain=meta.domain,
-                        structure=meta.structure,
-                        variant=meta.variant,
-                        policy=policy,
-                        mode=mode_name,
-                        tp=total.tp,
-                        fp=total.fp,
-                        fn=total.fn,
-                        precision=total.precision(),
-                        recall=total.recall(),
-                        f1=total.f1(),
+                    if miss_kind not in ("TP", "FN", "FP", "PARTIAL"):
+                        continue
+
+                    policy_label_hits[miss_label][miss_kind].append(_miss_line(dataset_name, miss))
+
+            if debug:
+                debug_lines: List[str] = []
+                debug_lines.append(
+                    f"DATASET: {dataset_name} | DOMAIN: {meta.domain} | STRUCTURE: {meta.structure} | "
+                    f"VARIANT: {meta.variant} | POLICY: {policy} | "
+                    f"POSTPROCESSING: {'on' if postprocess_enabled else 'off'}"
+                )
+                debug_lines.append(_format_short_summary(total))
+                debug_lines.append("-" * 70)
+                debug_lines.extend(
+                    _format_misses(
+                        text,
+                        misses,
+                        show_tp=show_tp,
+                        ctx_radius=max(0, int(ctx)),
+                        max_lines=max(1, int(max_lines)),
                     )
                 )
+                debug_lines.append("")
 
-                report_lines.append(_format_short_summary(mode_name, total))
-
-                if per_label:
-                    report_lines.append("")
-                    report_lines.append(
-                        f"PER-LABEL ({policy} | {mode_name} | "
-                        f"{'postprocess_on' if postprocess_enabled else 'postprocess_off'})"
-                    )
-                    report_lines.extend(_format_per_label(by_label))
-                    report_lines.append("")
-
-                for label in sorted(by_label.keys()):
-                    counts = by_label[label]
-                    policy_label_rows.append(
-                        {
-                            "dataset": dataset_name,
-                            "dataset_index": meta.dataset_index,
-                            "domain": meta.domain,
-                            "structure": meta.structure,
-                            "variant": meta.variant,
-                            "policy": policy,
-                            "mode": mode_name,
-                            "label": label,
-                            "tp": counts.tp,
-                            "fp": counts.fp,
-                            "fn": counts.fn,
-                        }
-                    )
-
-                if label_report:
-                    bucket = policy_label_hits_by_mode[mode_name]
-                    for miss in misses:
-                        miss_label = str(miss.label or "").strip().upper() or "?"
-                        miss_kind = str(miss.kind or "").strip().upper()
-
-                        if miss_kind not in ("TP", "FN", "FP", "PARTIAL"):
-                            continue
-
-                        bucket[miss_label][miss_kind].append(_miss_line(dataset_name, miss))
-
-                if debug:
-                    debug_lines: List[str] = []
-                    debug_lines.append(
-                        f"DATASET: {dataset_name} | DOMAIN: {meta.domain} | STRUCTURE: {meta.structure} | "
-                        f"VARIANT: {meta.variant} | POLICY: {policy} | MODE: {mode_name} | "
-                        f"POSTPROCESSING: {'on' if postprocess_enabled else 'off'}"
-                    )
-                    debug_lines.append(_format_short_summary(mode_name, total))
-                    debug_lines.append("-" * 70)
-                    debug_lines.extend(
-                        _format_misses(
-                            text,
-                            misses,
-                            show_tp=show_tp,
-                            ctx_radius=max(0, int(ctx)),
-                            max_lines=max(1, int(max_lines)),
-                        )
-                    )
-                    debug_lines.append("")
-
-                    _write_text(
-                        debug_dir / f"{dataset_name}_{policy}_{mode_name}.debug.txt",
-                        "\n".join(debug_lines),
-                    )
+                _write_text(
+                    debug_dir / f"{dataset_name}_{policy}.debug.txt",
+                    "\n".join(debug_lines),
+                )
 
             report_lines.append("")
             report_lines.append("=" * 70)
@@ -770,29 +740,24 @@ def _run_variant(
             report_lines.append("GLOBAL SUMMARY (micro-averaged over all datasets) (no Postprocessing)")
 
         report_lines.append("-" * 70)
-
-        for mode_name, _ in selected_modes:
-            agg = policy_global_agg[mode_name]
-            report_lines.append(
-                f"POLICY {policy:8s} | MODE {mode_name:8s} | "
-                f"TP={agg.tp:4d} FP={agg.fp:4d} FN={agg.fn:4d} | "
-                f"P={agg.precision():.3f} R={agg.recall():.3f} F1={agg.f1():.3f}"
-            )
+        report_lines.append(
+            f"POLICY {policy:8s} | "
+            f"TP={policy_global_agg.tp:4d} FP={policy_global_agg.fp:4d} FN={policy_global_agg.fn:4d} | "
+            f"P={policy_global_agg.precision():.3f} R={policy_global_agg.recall():.3f} F1={policy_global_agg.f1():.3f}"
+        )
 
         _write_text(policy_dir / "report.txt", "\n".join(report_lines))
         print(f"Wrote: {policy_dir / 'report.txt'}")
 
         if label_report:
-            for mode_name, _ in selected_modes:
-                label_report_text = _format_label_report(
-                    policy_label_hits_by_mode[mode_name],
-                    policy=policy,
-                    mode=mode_name,
-                    postprocess_enabled=postprocess_enabled,
-                    max_items_per_section=max(1, int(label_report_max)),
-                )
-                _write_text(labels_dir / f"{mode_name}.txt", label_report_text)
-                print(f"Wrote: {labels_dir / f'{mode_name}.txt'}")
+            label_report_text = _format_label_report(
+                policy_label_hits,
+                policy=policy,
+                postprocess_enabled=postprocess_enabled,
+                max_items_per_section=max(1, int(label_report_max)),
+            )
+            _write_text(labels_dir / "combined.txt", label_report_text)
+            print(f"Wrote: {labels_dir / 'combined.txt'}")
 
         _write_policy_csv_files(
             csv_dir=csv_dir,
@@ -812,10 +777,10 @@ def _run_variant(
     times_report = _format_times_report(
         dataset_names=dataset_names,
         dataset_cache=dataset_cache,
-        selected_modes=selected_modes,
         selected_policies=selected_policies,
         eval_root=eval_root,
         runtime_samples=runtime_samples,
+        postprocess_enabled=postprocess_enabled,
     )
     _write_text(variant_root / "times.txt", times_report)
     print(f"Wrote: {variant_root / 'times.txt'}")
@@ -844,13 +809,6 @@ def main() -> int:
         help="Policies to evaluate",
     )
     parser.add_argument(
-        "--modes",
-        nargs="*",
-        default=["regex", "ner", "combined"],
-        choices=["regex", "ner", "combined"],
-        help="Modes to evaluate",
-    )
-    parser.add_argument(
         "--only-post",
         choices=["on", "off"],
         default=None,
@@ -870,10 +828,6 @@ def main() -> int:
 
     if not dataset_names:
         raise SystemExit("No datasets found (no gold json files).")
-
-    selected_modes = [mode_tuple for mode_tuple in MODES if mode_tuple[0] in set(args.modes)]
-    if not selected_modes:
-        raise SystemExit("No modes selected.")
 
     selected_policies = [policy for policy in args.policies if policy in POLICY_SPECS]
     if not selected_policies:
@@ -896,7 +850,6 @@ def main() -> int:
                 eval_root=eval_root,
                 result_root=result_root,
                 dataset_names=dataset_names,
-                selected_modes=selected_modes,
                 selected_policies=selected_policies,
                 debug=bool(args.debug),
                 show_tp=bool(args.show_tp),

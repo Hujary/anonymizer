@@ -1,0 +1,8 @@
+DATASET: Dataset_07 | DOMAIN: E-Mail | STRUCTURE: structured | VARIANT: 1 | POLICY: secure | POSTPROCESSING: off
+TP=11 FP=1 FN=2 | P=0.917 R=0.846 F1=0.880
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - PER            141:152 [gold] 'Frau Berger' ctx='-0311\n\nSehr geehrte ▮Frau Berger▮,\n\nbezugnehmend auf '
+NOT FULLY DETECTED (PARTIAL): 1
+  - ORG            gold 422:434 [gold] 'AlphaCore AG' [pred:ner:422:431] 'AlphaCore' gold_ctx='XXX  \nKontoinhaber: ▮AlphaCore AG▮  \n\nBei Rückfragen s' pred_ctx='XXX  \nKontoinhaber: ▮AlphaCore▮ AG  \n\nBei Rückfrage'
+UNEXPECTED (FP): 0

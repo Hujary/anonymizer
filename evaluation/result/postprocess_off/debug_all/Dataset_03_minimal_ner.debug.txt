@@ -1,8 +1,0 @@
-DATASET: Dataset_03 | DOMAIN: Supporttickets | STRUCTURE: regular | VARIANT: 1 | POLICY: minimal | MODE: ner | POSTPROCESSING: off
-MODE ner      | TP=1 FP=1 FN=1 | P=0.500 R=0.500 F1=0.500
-----------------------------------------------------------------------
-NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 1
-  - PER            gold 300:312 [gold] 'Tobias Klein' [pred:ner:300:325] 'Tobias Klein
-Klein Handel' gold_ctx='gend.\n\nMeine Daten:\n▮Tobias Klein▮\nKlein Handel GmbH\nt' pred_ctx='gend.\n\nMeine Daten:\n▮Tobias Klein\nKlein Handel▮ GmbH\ntobias.klein@k'
-UNEXPECTED (FP): 0

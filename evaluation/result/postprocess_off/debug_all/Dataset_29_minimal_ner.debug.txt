@@ -1,8 +1,0 @@
-DATASET: Dataset_29 | DOMAIN: Chats | STRUCTURE: unstructured | VARIANT: 1 | POLICY: minimal | MODE: ner | POSTPROCESSING: off
-MODE ner      | TP=13 FP=1 FN=1 | P=0.929 R=0.929 F1=0.929
-----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - STRASSE        473:489 [gold] 'Leopoldstraße 23' ctx='derlassung München, ▮Leopoldstraße 23▮. Ich bin im interne'
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
-  - PER            473:486 [ner] 'Leopoldstraße' ctx='derlassung München, ▮Leopoldstraße▮ 23. Ich bin im inte'

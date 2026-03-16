@@ -1,0 +1,8 @@
+DATASET: Dataset_27 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 1 | POLICY: secure | POSTPROCESSING: on
+TP=20 FP=1 FN=1 | P=0.952 R=0.952 F1=0.952
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - PER            487:498 [gold] 'M. Bergmann' ctx='Bergmann und einmal ▮M. Bergmann▮.\n\n[10:18] Anna Kell'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 1
+  - ORG            33:53 [ner] 'CRM-Datenbereinigung' ctx='Teams-Chat\nProjekt: ▮CRM-Datenbereinigung▮\nUnternehmen: NordCo'

@@ -1,9 +1,0 @@
-DATASET: Dataset_27 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 1 | POLICY: secure | MODE: ner | POSTPROCESSING: on
-MODE ner      | TP=13 FP=1 FN=2 | P=0.929 R=0.867 F1=0.897
-----------------------------------------------------------------------
-NOT DETECTED (FN): 2
-  - STRASSE        401:415 [gold] 'Hafenstraße 12' ctx='Adresse ist jeweils ▮Hafenstraße 12▮, 20457 Hamburg. Ans'
-  - PER            487:498 [gold] 'M. Bergmann' ctx='Bergmann und einmal ▮M. Bergmann▮.\n\n[10:18] Anna Kell'
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
-  - ORG            33:53 [ner] 'CRM-Datenbereinigung' ctx='Teams-Chat\nProjekt: ▮CRM-Datenbereinigung▮\nUnternehmen: NordCo'

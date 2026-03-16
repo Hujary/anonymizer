@@ -1,4 +1,4 @@
-LABEL REPORT | POLICY: secure | MODE: combined | POSTPROCESSING: off
+LABEL REPORT | POLICY: secure | POSTPROCESSING: off
 --------------------------------------------------------------------------------
 
 DATUM

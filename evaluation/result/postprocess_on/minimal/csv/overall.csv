@@ -1,4 +1,2 @@
-policy,mode,tp,fp,fn,precision,recall,f1
-minimal,combined,191,0,16,1.000000,0.922705,0.959799
-minimal,ner,107,2,37,0.981651,0.743056,0.845850
-minimal,regex,84,0,1,1.000000,0.988235,0.994083
+policy,tp,fp,fn,precision,recall,f1
+minimal,191,0,16,1.000000,0.922705,0.959799

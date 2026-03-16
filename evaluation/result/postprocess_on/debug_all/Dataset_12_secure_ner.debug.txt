@@ -1,8 +1,0 @@
-DATASET: Dataset_12 | DOMAIN: E-Mail | STRUCTURE: unstructured | VARIANT: 2 | POLICY: secure | MODE: ner | POSTPROCESSING: on
-MODE ner      | TP=3 FP=1 FN=1 | P=0.750 R=0.750 F1=0.750
-----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - PER            698:703 [gold] 'Julia' ctx='emlich ungeduldig.\n\n▮Julia▮, InterLog GmbH'
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
-  - ORG            5:17 [ner] 'julia.krause' ctx='Von: ▮julia.krause▮@interlog.de\nAn: it-'

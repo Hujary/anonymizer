@@ -1,7 +1,0 @@
-DATASET: Dataset_09 | DOMAIN: E-Mail | STRUCTURE: regular | VARIANT: 1 | POLICY: minimal | MODE: combined | POSTPROCESSING: off
-MODE combined | TP=4 FP=0 FN=1 | P=1.000 R=0.800 F1=0.889
-----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - PER            562:568 [gold] 'Sabine' ctx='blem gibt?\n\nDanke  \n▮Sabine▮'
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0

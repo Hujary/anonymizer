@@ -1,6 +1,0 @@
-DATASET: Dataset_13 | DOMAIN: HR-Dokumente | STRUCTURE: structured | VARIANT: 1 | POLICY: secure | MODE: regex | POSTPROCESSING: off
-MODE regex    | TP=9 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
-----------------------------------------------------------------------
-NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0

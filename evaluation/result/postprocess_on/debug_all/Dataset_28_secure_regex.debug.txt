@@ -1,7 +1,0 @@
-DATASET: Dataset_28 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 2 | POLICY: secure | MODE: regex | POSTPROCESSING: on
-MODE regex    | TP=9 FP=1 FN=0 | P=0.900 R=1.000 F1=0.947
-----------------------------------------------------------------------
-NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
-  - PLZ            591:596 [regex] '77134' ctx=' Personalnummer ist ▮77134▮.\n\n[13:12] Miriam Sc'
