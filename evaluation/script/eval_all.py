@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import argparse
 import csv
+import statistics
 import sys
+import time
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
@@ -20,6 +22,7 @@ if str(EVAL_DIR) not in sys.path:
     sys.path.insert(0, str(EVAL_DIR))
 
 from core import config
+from pipeline.anonymisieren import erkenne
 
 from evaluation.script.eval_single import (
     EvalCounts,
@@ -30,10 +33,12 @@ from evaluation.script.eval_single import (
     _format_misses,
     _format_per_label,
     _parse_gold,
+    _policy_labels_for_mode,
     _read_json,
     _read_text,
     _resolve_paths,
     _restore_config,
+    _set_config_for_mode,
     _snapshot_config,
 )
 
@@ -109,6 +114,45 @@ class DatasetRunRow:
     precision: float
     recall: float
     f1: float
+
+
+@dataclass
+class RuntimeAgg:
+    samples_ms: List[float]
+
+    def __init__(self) -> None:
+        self.samples_ms = []
+
+    def add_many(self, values: List[float]) -> None:
+        self.samples_ms.extend(values)
+
+    def count(self) -> int:
+        return len(self.samples_ms)
+
+    def mean(self) -> float:
+        if not self.samples_ms:
+            return 0.0
+        return sum(self.samples_ms) / len(self.samples_ms)
+
+    def median(self) -> float:
+        if not self.samples_ms:
+            return 0.0
+        return float(statistics.median(self.samples_ms))
+
+    def minimum(self) -> float:
+        if not self.samples_ms:
+            return 0.0
+        return min(self.samples_ms)
+
+    def maximum(self) -> float:
+        if not self.samples_ms:
+            return 0.0
+        return max(self.samples_ms)
+
+    def stddev(self) -> float:
+        if len(self.samples_ms) < 2:
+            return 0.0
+        return float(statistics.pstdev(self.samples_ms))
 
 
 def _discover_datasets(eval_root: Path) -> List[str]:
@@ -439,6 +483,187 @@ def _write_policy_csv_files(
     )
 
 
+def _entity_matches_policy(acceptable_labels: Set[str], allowed_labels: Set[str]) -> bool:
+    if not allowed_labels:
+        return False
+    return bool(acceptable_labels.intersection(allowed_labels))
+
+
+def _entity_matches_mode(expected_sources: Set[str], mode_sources: Set[str]) -> bool:
+    if not expected_sources:
+        return True
+    return bool(expected_sources.intersection(mode_sources))
+
+
+def _format_counter(counter: Dict[str, int]) -> str:
+    if not counter:
+        return "-"
+    parts: List[str] = []
+    for key in sorted(counter.keys()):
+        parts.append(f"{key}={counter[key]}")
+    return ", ".join(parts)
+
+
+def _build_runtime_profile(
+    *,
+    eval_root: Path,
+    dataset_names: List[str],
+    policy: str,
+    selected_modes: List[Tuple[str, Set[str]]],
+) -> Dict[str, object]:
+    total_chars = 0
+    policy_entity_count = 0
+    policy_label_counter: Dict[str, int] = defaultdict(int)
+
+    mode_entity_counts: Dict[str, int] = {mode_name: 0 for mode_name, _ in selected_modes}
+    mode_label_counters: Dict[str, Dict[str, int]] = {
+        mode_name: defaultdict(int) for mode_name, _ in selected_modes
+    }
+
+    allowed_combined = _policy_labels_for_mode(policy, "combined")
+
+    for dataset_name in dataset_names:
+        text, gold_entities = _load_gold_entities(eval_root, dataset_name)
+        total_chars += len(text)
+
+        for entity in gold_entities:
+            acceptable_labels = set(getattr(entity, "acceptable_labels", set()) or set())
+            primary_label = str(getattr(entity, "primary_label", "") or "").strip().upper()
+            expected_sources = set(getattr(entity, "expected_sources", set()) or set())
+
+            if _entity_matches_policy(acceptable_labels, allowed_combined):
+                policy_entity_count += 1
+                if primary_label:
+                    policy_label_counter[primary_label] += 1
+
+            for mode_name, mode_sources in selected_modes:
+                allowed_mode_labels = _policy_labels_for_mode(policy, mode_name)
+
+                if not _entity_matches_policy(acceptable_labels, allowed_mode_labels):
+                    continue
+
+                if not _entity_matches_mode(expected_sources, mode_sources):
+                    continue
+
+                mode_entity_counts[mode_name] += 1
+                if primary_label:
+                    mode_label_counters[mode_name][primary_label] += 1
+
+    avg_chars = (total_chars / len(dataset_names)) if dataset_names else 0.0
+
+    return {
+        "dataset_count": len(dataset_names),
+        "total_chars": total_chars,
+        "avg_chars": avg_chars,
+        "policy_entity_count": policy_entity_count,
+        "policy_label_counter": dict(policy_label_counter),
+        "mode_entity_counts": mode_entity_counts,
+        "mode_label_counters": {k: dict(v) for k, v in mode_label_counters.items()},
+    }
+
+
+def _measure_runtime_ms(text: str, *, mode: str, runs: int) -> List[float]:
+    _set_config_for_mode(mode)
+
+    try:
+        erkenne(text)
+    except Exception:
+        return []
+
+    samples: List[float] = []
+    n = max(1, int(runs))
+
+    for _ in range(n):
+        t0 = time.perf_counter()
+        erkenne(text)
+        t1 = time.perf_counter()
+        samples.append((t1 - t0) * 1000.0)
+
+    return samples
+
+
+def _format_runtime_line(mode_name: str, agg: RuntimeAgg) -> str:
+    return (
+        f"MODE {mode_name:8s} | "
+        f"samples={agg.count():4d} | "
+        f"mean={agg.mean():8.3f} ms | "
+        f"median={agg.median():8.3f} ms | "
+        f"min={agg.minimum():8.3f} ms | "
+        f"max={agg.maximum():8.3f} ms | "
+        f"std={agg.stddev():8.3f} ms"
+    )
+
+
+def _build_runtime_report(
+    *,
+    policy: str,
+    postprocess_enabled: bool,
+    runtime_runs: int,
+    profile: Dict[str, object],
+    runtime_aggs: Dict[str, RuntimeAgg],
+) -> str:
+    lines: List[str] = []
+
+    dataset_count = int(profile.get("dataset_count", 0))
+    total_chars = int(profile.get("total_chars", 0))
+    avg_chars = float(profile.get("avg_chars", 0.0))
+    policy_entity_count = int(profile.get("policy_entity_count", 0))
+    policy_label_counter = dict(profile.get("policy_label_counter", {}) or {})
+    mode_entity_counts = dict(profile.get("mode_entity_counts", {}) or {})
+    mode_label_counters = dict(profile.get("mode_label_counters", {}) or {})
+
+    lines.append("RUNTIME REPORT")
+    lines.append("=" * 80)
+    lines.append(f"POLICY: {policy}")
+    lines.append(f"POSTPROCESSING: {'on' if postprocess_enabled else 'off'}")
+    lines.append(f"DATASETS: {dataset_count}")
+    lines.append(f"RUNTIME RUNS PER TEXT: {max(1, int(runtime_runs))}")
+    lines.append("MEASUREMENT: pure execution time of erkenne(text)")
+    lines.append("WARM-UP: one untimed warm-up run per text and mode")
+    lines.append("")
+
+    lines.append("CORPUS PROFILE")
+    lines.append("-" * 80)
+    lines.append(f"TOTAL CHARACTERS: {total_chars}")
+    lines.append(f"AVERAGE TEXT LENGTH: {avg_chars:.1f} characters")
+    lines.append(f"POLICY-RELEVANT GOLD ENTITIES: {policy_entity_count}")
+    lines.append(f"LABEL DISTRIBUTION: {_format_counter(policy_label_counter)}")
+    lines.append("")
+
+    lines.append("MODE-SPECIFIC ENTITY PROFILE")
+    lines.append("-" * 80)
+    for mode_name in ("regex", "ner", "combined"):
+        if mode_name not in runtime_aggs:
+            continue
+        entity_count = int(mode_entity_counts.get(mode_name, 0))
+        label_counter = dict(mode_label_counters.get(mode_name, {}) or {})
+        lines.append(
+            f"MODE {mode_name:8s} | entities={entity_count:4d} | "
+            f"labels={_format_counter(label_counter)}"
+        )
+    lines.append("")
+
+    lines.append("RUNTIME SUMMARY")
+    lines.append("-" * 80)
+    for mode_name in ("regex", "ner", "combined"):
+        if mode_name not in runtime_aggs:
+            continue
+        lines.append(_format_runtime_line(mode_name, runtime_aggs[mode_name]))
+    lines.append("")
+
+    if "combined" in runtime_aggs:
+        combined = runtime_aggs["combined"]
+        lines.append("COMBINED MODE (relevant for interactive usage)")
+        lines.append("-" * 80)
+        lines.append(f"AVERAGE PROCESSING TIME: {combined.mean():.3f} ms")
+        lines.append(f"MEDIAN PROCESSING TIME: {combined.median():.3f} ms")
+        lines.append(f"MINIMUM PROCESSING TIME: {combined.minimum():.3f} ms")
+        lines.append(f"MAXIMUM PROCESSING TIME: {combined.maximum():.3f} ms")
+        lines.append(f"STANDARD DEVIATION: {combined.stddev():.3f} ms")
+
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def _run_variant(
     *,
     eval_root: Path,
@@ -454,6 +679,7 @@ def _run_variant(
     label_report: bool,
     label_report_max: int,
     postprocess_enabled: bool,
+    runtime_runs: int,
 ) -> None:
     variant_name = "postprocess_on" if postprocess_enabled else "postprocess_off"
     variant_root = result_root / variant_name
@@ -483,6 +709,18 @@ def _run_variant(
             for mode_name, _ in selected_modes
         }
 
+        runtime_aggs: Dict[str, RuntimeAgg] = {
+            mode_name: RuntimeAgg()
+            for mode_name, _ in selected_modes
+        }
+
+        runtime_profile = _build_runtime_profile(
+            eval_root=eval_root,
+            dataset_names=dataset_names,
+            policy=policy,
+            selected_modes=selected_modes,
+        )
+
         policy_label_hits_by_mode: Dict[str, Dict[str, Dict[str, List[str]]]] = {}
         if label_report:
             for mode_name, _ in selected_modes:
@@ -502,6 +740,13 @@ def _run_variant(
             report_lines.append(f"POLICY {policy}")
 
             for mode_name, sources in selected_modes:
+                runtime_samples = _measure_runtime_ms(
+                    text,
+                    mode=mode_name,
+                    runs=runtime_runs,
+                )
+                runtime_aggs[mode_name].add_many(runtime_samples)
+
                 total, by_label, misses = _evaluate(
                     text,
                     gold_entities,
@@ -578,6 +823,15 @@ def _run_variant(
                         f"VARIANT: {meta.variant} | POLICY: {policy} | MODE: {mode_name} | "
                         f"POSTPROCESSING: {'on' if postprocess_enabled else 'off'}"
                     )
+
+                    if runtime_samples:
+                        debug_lines.append(
+                            f"RUNTIME | samples={len(runtime_samples)} | "
+                            f"mean={sum(runtime_samples) / len(runtime_samples):.3f} ms | "
+                            f"min={min(runtime_samples):.3f} ms | "
+                            f"max={max(runtime_samples):.3f} ms"
+                        )
+
                     debug_lines.append(_format_short_summary(mode_name, total))
                     debug_lines.append("-" * 70)
                     debug_lines.extend(
@@ -617,6 +871,16 @@ def _run_variant(
 
         _write_text(policy_dir / "report.txt", "\n".join(report_lines))
         print(f"Wrote: {policy_dir / 'report.txt'}")
+
+        runtime_report_text = _build_runtime_report(
+            policy=policy,
+            postprocess_enabled=postprocess_enabled,
+            runtime_runs=runtime_runs,
+            profile=runtime_profile,
+            runtime_aggs=runtime_aggs,
+        )
+        _write_text(policy_dir / "runtime.txt", runtime_report_text)
+        print(f"Wrote: {policy_dir / 'runtime.txt'}")
 
         if label_report:
             for mode_name, _ in selected_modes:
@@ -660,6 +924,7 @@ def main() -> int:
     parser.add_argument("--only", nargs="*", default=None, help="Run only these dataset basenames")
     parser.add_argument("--label-report", action="store_true", help="Write aggregated TP/PARTIAL/FN/FP label reports")
     parser.add_argument("--label-report-max", type=int, default=500)
+    parser.add_argument("--runtime-runs", type=int, default=5, help="Untimed warm-up + n timed runs per text and mode")
     parser.add_argument(
         "--policies",
         nargs="*",
@@ -730,6 +995,7 @@ def main() -> int:
                 label_report=bool(args.label_report),
                 label_report_max=int(args.label_report_max),
                 postprocess_enabled=postprocess_enabled,
+                runtime_runs=int(args.runtime_runs),
             )
 
     finally:
