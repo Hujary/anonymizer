@@ -11,24 +11,6 @@ from detectors.regex import finde_regex
 from detectors.custom.manual_dict import finde_manual_tokens
 
 
-def _norm_labels(xs: object) -> List[str]:
-    if not isinstance(xs, (list, tuple)):
-        return []
-    out: List[str] = []
-    for x in xs:
-        s = str(x).strip().upper()
-        if s:
-            out.append(s)
-    seen = set()
-    uniq: List[str] = []
-    for s in out:
-        if s in seen:
-            continue
-        seen.add(s)
-        uniq.append(s)
-    return uniq
-
-
 def _resolve_spacy_model_name() -> Optional[str]:
     model = config.get("spacy_model", None)
     if isinstance(model, str) and model.strip():
