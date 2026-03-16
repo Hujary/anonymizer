@@ -1,5 +1,4 @@
 DATASET: Dataset_28 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 2 | POLICY: secure | MODE: regex | POSTPROCESSING: on
-RUNTIME | samples=5 | mean=0.648 ms | min=0.614 ms | max=0.693 ms
 MODE regex    | TP=9 FP=1 FN=0 | P=0.900 R=1.000 F1=0.947
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0

@@ -1,5 +1,4 @@
 DATASET: Dataset_13 | DOMAIN: HR-Dokumente | STRUCTURE: structured | VARIANT: 1 | POLICY: minimal | MODE: ner | POSTPROCESSING: on
-RUNTIME | samples=5 | mean=15.859 ms | min=15.812 ms | max=15.947 ms
 MODE ner      | TP=1 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0

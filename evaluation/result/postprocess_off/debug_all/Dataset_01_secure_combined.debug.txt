@@ -1,5 +1,4 @@
 DATASET: Dataset_01 | DOMAIN: Supporttickets | STRUCTURE: structured | VARIANT: 1 | POLICY: secure | MODE: combined | POSTPROCESSING: off
-RUNTIME | samples=5 | mean=14.106 ms | min=13.902 ms | max=14.554 ms
 MODE combined | TP=6 FP=1 FN=0 | P=0.857 R=1.000 F1=0.923
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0

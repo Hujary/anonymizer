@@ -1,5 +1,4 @@
 DATASET: Dataset_08 | DOMAIN: E-Mail | STRUCTURE: structured | VARIANT: 2 | POLICY: secure | MODE: regex | POSTPROCESSING: off
-RUNTIME | samples=5 | mean=0.377 ms | min=0.373 ms | max=0.385 ms
 MODE regex    | TP=6 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0

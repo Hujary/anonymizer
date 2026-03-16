@@ -1,5 +1,4 @@
 DATASET: Dataset_18 | DOMAIN: HR-Dokumente | STRUCTURE: unstructured | VARIANT: 2 | POLICY: secure | MODE: combined | POSTPROCESSING: off
-RUNTIME | samples=5 | mean=17.025 ms | min=16.906 ms | max=17.214 ms
 MODE combined | TP=12 FP=4 FN=1 | P=0.750 R=0.923 F1=0.828
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0

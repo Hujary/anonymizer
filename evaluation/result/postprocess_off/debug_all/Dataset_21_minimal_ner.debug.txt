@@ -1,5 +1,4 @@
 DATASET: Dataset_21 | DOMAIN: Verträge | STRUCTURE: regular | VARIANT: 1 | POLICY: minimal | MODE: ner | POSTPROCESSING: off
-RUNTIME | samples=5 | mean=25.140 ms | min=25.025 ms | max=25.306 ms
 MODE ner      | TP=4 FP=1 FN=4 | P=0.800 R=0.500 F1=0.615
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 3

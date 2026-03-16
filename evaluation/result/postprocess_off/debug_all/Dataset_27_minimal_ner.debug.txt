@@ -1,5 +1,4 @@
 DATASET: Dataset_27 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 1 | POLICY: minimal | MODE: ner | POSTPROCESSING: off
-RUNTIME | samples=5 | mean=31.713 ms | min=31.601 ms | max=31.811 ms
 MODE ner      | TP=11 FP=2 FN=1 | P=0.846 R=0.917 F1=0.880
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0

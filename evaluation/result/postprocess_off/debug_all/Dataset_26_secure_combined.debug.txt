@@ -1,5 +1,4 @@
 DATASET: Dataset_26 | DOMAIN: Chats | STRUCTURE: structured | VARIANT: 2 | POLICY: secure | MODE: combined | POSTPROCESSING: off
-RUNTIME | samples=5 | mean=24.975 ms | min=24.927 ms | max=25.018 ms
 MODE combined | TP=13 FP=4 FN=1 | P=0.765 R=0.929 F1=0.839
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0

@@ -1,5 +1,4 @@
 DATASET: Dataset_20 | DOMAIN: Verträge | STRUCTURE: structured | VARIANT: 2 | POLICY: minimal | MODE: regex | POSTPROCESSING: off
-RUNTIME | samples=5 | mean=0.487 ms | min=0.460 ms | max=0.579 ms
 MODE regex    | TP=2 FP=0 FN=1 | P=1.000 R=0.667 F1=0.800
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1

@@ -1,5 +1,4 @@
 DATASET: Dataset_07 | DOMAIN: E-Mail | STRUCTURE: structured | VARIANT: 1 | POLICY: minimal | MODE: combined | POSTPROCESSING: on
-RUNTIME | samples=5 | mean=15.571 ms | min=15.494 ms | max=15.639 ms
 MODE combined | TP=7 FP=0 FN=1 | P=1.000 R=0.875 F1=0.933
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 1

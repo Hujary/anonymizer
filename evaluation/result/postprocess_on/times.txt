@@ -1,0 +1,90 @@
+RUNTIME SUMMARY
+================================================================================
+DATASETS: 30
+RUNTIME_SAMPLES_PER_DATASET: 5
+
+POLICY: minimal
+--------------------------------------------------------------------------------
+TEXT_COUNT: 30
+TOTAL_TEXT_CHARS: 29845
+TOTAL_RELEVANT_GOLD_PII: 207
+NER_LABELS: ['PER', 'STRASSE']
+REGEX_LABELS: ['E_MAIL', 'TELEFON', 'IBAN', 'IP_ADRESSE', 'STRASSE']
+ALLOWED_LABELS_COMBINED: ['E_MAIL', 'IBAN', 'IP_ADRESSE', 'PER', 'STRASSE', 'TELEFON']
+LABEL_DISTRIBUTION:
+  E_MAIL         39
+  IBAN           2
+  IP_ADRESSE     2
+  PER            122
+  STRASSE        22
+  TELEFON        20
+
+MODE: regex
+  total_measurements : 150
+  mean_ms            : 0.925
+  median_ms          : 0.827
+  min_ms             : 0.619
+  max_ms             : 1.922
+  stdev_ms           : 0.296
+
+MODE: ner
+  total_measurements : 150
+  mean_ms            : 24.980
+  median_ms          : 20.045
+  min_ms             : 13.331
+  max_ms             : 62.883
+  stdev_ms           : 11.868
+
+MODE: combined
+  total_measurements : 150
+  mean_ms            : 25.093
+  median_ms          : 20.417
+  min_ms             : 13.800
+  max_ms             : 58.304
+  stdev_ms           : 11.505
+
+
+POLICY: secure
+--------------------------------------------------------------------------------
+TEXT_COUNT: 30
+TOTAL_TEXT_CHARS: 29845
+TOTAL_RELEVANT_GOLD_PII: 410
+NER_LABELS: ['PER', 'ORG', 'LOC', 'STRASSE']
+REGEX_LABELS: ['DATUM', 'E_MAIL', 'IBAN', 'IP_ADRESSE', 'PLZ', 'STRASSE', 'TELEFON', 'URL']
+ALLOWED_LABELS_COMBINED: ['DATUM', 'E_MAIL', 'IBAN', 'IP_ADRESSE', 'LOC', 'ORG', 'PER', 'PLZ', 'STRASSE', 'TELEFON', 'URL']
+LABEL_DISTRIBUTION:
+  DATUM          72
+  E_MAIL         39
+  IBAN           2
+  IP_ADRESSE     2
+  LOC            46
+  ORG            53
+  PER            122
+  PLZ            21
+  STRASSE        22
+  TELEFON        20
+  URL            11
+
+MODE: regex
+  total_measurements : 150
+  mean_ms            : 1.352
+  median_ms          : 1.154
+  min_ms             : 0.870
+  max_ms             : 3.141
+  stdev_ms           : 0.523
+
+MODE: ner
+  total_measurements : 150
+  mean_ms            : 25.032
+  median_ms          : 20.654
+  min_ms             : 13.523
+  max_ms             : 56.514
+  stdev_ms           : 11.430
+
+MODE: combined
+  total_measurements : 150
+  mean_ms            : 25.553
+  median_ms          : 20.772
+  min_ms             : 13.943
+  max_ms             : 57.847
+  stdev_ms           : 11.710

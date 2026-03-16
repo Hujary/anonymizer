@@ -1,5 +1,4 @@
 DATASET: Dataset_20 | DOMAIN: Verträge | STRUCTURE: structured | VARIANT: 2 | POLICY: secure | MODE: ner | POSTPROCESSING: off
-RUNTIME | samples=5 | mean=42.460 ms | min=42.366 ms | max=42.577 ms
 MODE ner      | TP=4 FP=6 FN=10 | P=0.400 R=0.286 F1=0.333
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 7
