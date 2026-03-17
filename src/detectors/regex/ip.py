@@ -17,20 +17,6 @@ _IPV4_RE = re.compile(
 
 
 def finde_ip(text: str) -> Iterable[Tuple[int, int, str]]:
-    """
-    Regex-basierte Erkennung von IPv4-Adressen.
-
-    Erkannt werden:
-      - IPv4 im Bereich 0.0.0.0 bis 255.255.255.255
-
-    Nicht erkannt (absichtlich hier):
-      - IPv6
-      - IPs als Teil längerer Token mit zusätzlichen Ziffern drumherum
-
-    Rückgabe:
-      (start_index, end_index, "IP_ADRESSE")
-    """
-
     trailing = ".,;:!?)]}\"'"
 
     for m in _IPV4_RE.finditer(text):

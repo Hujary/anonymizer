@@ -3,22 +3,6 @@ from typing import Iterable, Tuple
 
 
 def finde_url(text: str) -> Iterable[Tuple[int, int, str]]:
-    """
-    Regex-basierte Erkennung einfacher URL-Formate.
-
-    Erkannt werden:
-      - http://...
-      - https://...
-      - www....
-      - FQDN / Hostnames mit Punkt (z. B. server.domain.de, erp-test01.techsolutions.local)
-
-    Nicht erkannt (absichtlich hier):
-      - IP-Adressen
-
-    Rückgabe:
-      (start_index, end_index, "URL")
-    """
-
     rx = re.compile(
         r"""
         # ----------------------------
