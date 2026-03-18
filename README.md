@@ -52,11 +52,11 @@ python evaluation/script/gold_validator.py \
 python evaluation/script/eval_all.py --debug --label-report
 ```
 
-### Validierung ohne NER Post Processing:
-```bash
-python evaluation/script/eval_all.py --debug --no-ner-post
-```
 
+### Zeitmessungsscript ausführen
+```bash
+python evaluation/script/eval_runtime_only.py
+```
 ---
 
 ## SCREENSHOTS - ANLEITUNG

@@ -2,8 +2,8 @@ RUNTIME REPORT
 ================================================================================
 POSTPROCESSING: off
 DATASETS: 30
-RUNTIME RUNS PER TEXT: 5
-MEASUREMENT: pure execution time of erkenne(text) in combined operation
+RUNTIME RUNS PER TEXT: 20
+MEASUREMENT: pure execution time of erkenne(text)
 WARM-UP: one untimed warm-up run per text
 
 POLICY: minimal
@@ -19,13 +19,12 @@ LABEL_DISTRIBUTION: E_MAIL=39, IBAN=2, IP_ADRESSE=2, PER=122, STRASSE=22, TELEFO
 
 RUNTIME SUMMARY
 --------------------------------------------------------------------------------
-samples : 150
-mean_ms : 25.140
-median_ms : 19.838
-min_ms : 13.474
-max_ms : 64.535
-stdev_ms : 12.069
-
+samples : 600
+mean_ms : 23.742
+median_ms : 19.173
+min_ms : 11.936
+max_ms : 91.617
+stdev_ms : 11.910
 
 POLICY: secure
 --------------------------------------------------------------------------------
@@ -40,9 +39,9 @@ LABEL_DISTRIBUTION: DATUM=72, E_MAIL=39, IBAN=2, IP_ADRESSE=2, LOC=46, ORG=53, P
 
 RUNTIME SUMMARY
 --------------------------------------------------------------------------------
-samples : 150
-mean_ms : 25.395
-median_ms : 20.171
-min_ms : 13.660
-max_ms : 61.346
-stdev_ms : 12.172
+samples : 600
+mean_ms : 23.086
+median_ms : 18.584
+min_ms : 12.079
+max_ms : 54.385
+stdev_ms : 11.191
