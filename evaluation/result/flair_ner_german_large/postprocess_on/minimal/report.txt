@@ -1,0 +1,363 @@
+DATASET: Dataset_01
+DOMAIN: Supporttickets
+STRUCTURE: structured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_02
+DOMAIN: Supporttickets
+STRUCTURE: structured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_03
+DOMAIN: Supporttickets
+STRUCTURE: regular
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_04
+DOMAIN: Supporttickets
+STRUCTURE: regular
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_05
+DOMAIN: Supporttickets
+STRUCTURE: unstructured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_06
+DOMAIN: Supporttickets
+STRUCTURE: unstructured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_07
+DOMAIN: E-Mail
+STRUCTURE: structured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=8 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_08
+DOMAIN: E-Mail
+STRUCTURE: structured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=6 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_09
+DOMAIN: E-Mail
+STRUCTURE: regular
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=5 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_10
+DOMAIN: E-Mail
+STRUCTURE: regular
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=6 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_11
+DOMAIN: E-Mail
+STRUCTURE: unstructured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=8 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_12
+DOMAIN: E-Mail
+STRUCTURE: unstructured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=6 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_13
+DOMAIN: HR-Dokumente
+STRUCTURE: structured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_14
+DOMAIN: HR-Dokumente
+STRUCTURE: structured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_15
+DOMAIN: HR-Dokumente
+STRUCTURE: regular
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=5 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_16
+DOMAIN: HR-Dokumente
+STRUCTURE: regular
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_17
+DOMAIN: HR-Dokumente
+STRUCTURE: unstructured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=3 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_18
+DOMAIN: HR-Dokumente
+STRUCTURE: unstructured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=5 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_19
+DOMAIN: Verträge
+STRUCTURE: structured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=8 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_20
+DOMAIN: Verträge
+STRUCTURE: structured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=4 FP=0 FN=1 | P=1.000 R=0.800 F1=0.889
+
+======================================================================
+
+DATASET: Dataset_21
+DOMAIN: Verträge
+STRUCTURE: regular
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=8 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_22
+DOMAIN: Verträge
+STRUCTURE: regular
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=8 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_23
+DOMAIN: Verträge
+STRUCTURE: unstructured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=4 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_24
+DOMAIN: Verträge
+STRUCTURE: unstructured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=6 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_25
+DOMAIN: Chats
+STRUCTURE: structured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=11 FP=1 FN=1 | P=0.917 R=0.917 F1=0.917
+
+======================================================================
+
+DATASET: Dataset_26
+DOMAIN: Chats
+STRUCTURE: structured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=11 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_27
+DOMAIN: Chats
+STRUCTURE: regular
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=14 FP=0 FN=1 | P=1.000 R=0.933 F1=0.966
+
+======================================================================
+
+DATASET: Dataset_28
+DOMAIN: Chats
+STRUCTURE: regular
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=15 FP=1 FN=0 | P=0.938 R=1.000 F1=0.968
+
+======================================================================
+
+DATASET: Dataset_29
+DOMAIN: Chats
+STRUCTURE: unstructured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=16 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+DATASET: Dataset_30
+DOMAIN: Chats
+STRUCTURE: unstructured
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+POLICY minimal
+TP=15 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+
+======================================================================
+
+GLOBAL SUMMARY (micro-averaged over all datasets)
+----------------------------------------------------------------------
+POLICY minimal  | TP= 204 FP=   2 FN=   3 | P=0.990 R=0.986 F1=0.988

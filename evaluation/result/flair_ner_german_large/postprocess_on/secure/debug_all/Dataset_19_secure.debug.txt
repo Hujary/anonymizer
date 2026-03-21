@@ -1,0 +1,7 @@
+DATASET: Dataset_19 | DOMAIN: Verträge | STRUCTURE: structured | VARIANT: 1 | POLICY: secure | NER_BACKEND: flair | NER_MODEL: flair/ner-german-large | POSTPROCESSING: on
+TP=17 FP=1 FN=0 | P=0.944 R=1.000 F1=0.971
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 1
+  - ORG            1043:1054 [ner] 'SOLADEST600' ctx='1 2345 6789 01\nBIC: ▮SOLADEST600▮\n\n§ 4 Kaution\n\nDie K'

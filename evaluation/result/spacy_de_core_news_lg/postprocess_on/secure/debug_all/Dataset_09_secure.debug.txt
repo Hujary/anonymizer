@@ -1,0 +1,7 @@
+DATASET: Dataset_09 | DOMAIN: E-Mail | STRUCTURE: regular | VARIANT: 1 | POLICY: secure | NER_BACKEND: spacy | NER_MODEL: de_core_news_lg | POSTPROCESSING: on
+TP=7 FP=0 FN=1 | P=1.000 R=0.875 F1=0.933
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - PER            562:568 [gold] 'Sabine' ctx='blem gibt?\n\nDanke  \n▮Sabine▮'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 0

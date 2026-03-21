@@ -1,9 +1,0 @@
-DATASET: Dataset_27 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 1 | POLICY: secure | POSTPROCESSING: off
-TP=20 FP=3 FN=1 | P=0.870 R=0.952 F1=0.909
-----------------------------------------------------------------------
-NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 1
-  - ORG            gold 244:265 [gold] 'Bergmann Industrie AG' [pred:ner:244:262] 'Bergmann Industrie' gold_ctx='inträge zum Kunden „▮Bergmann Industrie AG▮“ aufgefallen. Kunde' pred_ctx='inträge zum Kunden „▮Bergmann Industrie▮ AG“ aufgefallen. Ku'
-UNEXPECTED (FP): 2
-  - PER            0:23 [ner] 'Exportierter Teams-Chat' ctx='▮Exportierter Teams-Chat▮\nProjekt: CRM-Datenb'
-  - ORG            33:53 [ner] 'CRM-Datenbereinigung' ctx='Teams-Chat\nProjekt: ▮CRM-Datenbereinigung▮\nUnternehmen: NordCo'

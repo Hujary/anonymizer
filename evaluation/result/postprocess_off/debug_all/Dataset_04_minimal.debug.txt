@@ -1,7 +1,0 @@
-DATASET: Dataset_04 | DOMAIN: Supporttickets | STRUCTURE: regular | VARIANT: 2 | POLICY: minimal | POSTPROCESSING: off
-TP=4 FP=1 FN=0 | P=0.800 R=1.000 F1=0.889
-----------------------------------------------------------------------
-NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 1
-  - PER            198:206 [ner] 'SMS-Code' ctx='2FA-Abfrage und der ▮SMS-Code▮ kommt nicht an. Ich'

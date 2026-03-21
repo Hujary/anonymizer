@@ -1,7 +1,0 @@
-DATASET: Dataset_12 | DOMAIN: E-Mail | STRUCTURE: unstructured | VARIANT: 2 | POLICY: minimal | POSTPROCESSING: on
-TP=5 FP=0 FN=1 | P=1.000 R=0.833 F1=0.909
-----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - PER            698:703 [gold] 'Julia' ctx='emlich ungeduldig.\n\n▮Julia▮, InterLog GmbH'
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0

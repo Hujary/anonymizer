@@ -14,6 +14,7 @@ if str(SRC_DIR) not in sys.path:
 
 from core import config
 from pipeline.anonymisieren import erkenne
+from detectors.ner.model_manager import MODEL_MANAGER
 
 
 POLICY_SPECS: Dict[str, Dict[str, List[str]]] = {
@@ -25,6 +26,12 @@ POLICY_SPECS: Dict[str, Dict[str, List[str]]] = {
         "ner_labels": ["PER", "ORG", "LOC", "STRASSE"],
         "regex_labels": ["DATUM", "E_MAIL", "IBAN", "IP_ADRESSE", "PLZ", "STRASSE", "TELEFON", "URL"],
     },
+}
+
+
+DEFAULT_NER_MODELS: Dict[str, str] = {
+    "spacy": "de_core_news_lg",
+    "flair": "flair/ner-german-large",
 }
 
 
@@ -90,12 +97,12 @@ class Miss:
     pred_text: Optional[str] = None
 
 
-def _read_text(p: Path) -> str:
-    return p.read_text(encoding="utf-8")
+def _read_text(path: Path) -> str:
+    return path.read_text(encoding="utf-8")
 
 
-def _read_json(p: Path) -> Dict[str, Any]:
-    return json.loads(p.read_text(encoding="utf-8"))
+def _read_json(path: Path) -> Dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def _norm_source(s: Any) -> str:
@@ -153,6 +160,83 @@ def _policy_labels(policy_name: str) -> Set[str]:
     ner_labels = set(_normalize_label_list(spec.get("ner_labels", [])))
     regex_labels = set(_normalize_label_list(spec.get("regex_labels", [])))
     return ner_labels.union(regex_labels)
+
+
+def _snapshot_config() -> Dict[str, Any]:
+    return {
+        "flags": dict(config.get_flags() or {}),
+        "ner_labels": list(config.get("ner_labels", []) or []),
+        "regex_labels": list(config.get("regex_labels", []) or []),
+        "ner_backend": str(config.get("ner_backend", "spacy") or "spacy"),
+        "ner_model": str(config.get("ner_model", "") or ""),
+        "debug_mask": bool(config.get("debug_mask", False)),
+        "use_ner_postprocessing": config.get("use_ner_postprocessing", True),
+    }
+
+
+def _restore_config(snapshot: Dict[str, Any]) -> None:
+    flags = snapshot.get("flags", {}) or {}
+    config.set_flags(
+        use_regex=bool(flags.get("use_regex", True)),
+        use_ner=bool(flags.get("use_ner", True)),
+        debug_mask=bool(flags.get("debug_mask", False)),
+    )
+    config.set("ner_labels", snapshot.get("ner_labels", []) or [])
+    config.set("regex_labels", snapshot.get("regex_labels", []) or [])
+    config.set("debug_mask", bool(snapshot.get("debug_mask", False)))
+    config.set("use_ner_postprocessing", snapshot.get("use_ner_postprocessing", True))
+
+    snapshot_backend = str(snapshot.get("ner_backend", "spacy") or "spacy").strip().lower()
+    snapshot_model = str(snapshot.get("ner_model", "") or "").strip()
+
+    if not snapshot_model:
+        snapshot_model = DEFAULT_NER_MODELS.get(snapshot_backend, "de_core_news_lg")
+
+    MODEL_MANAGER.set_backend_and_model(snapshot_backend, snapshot_model)
+
+
+def _sanitize_model_name(value: str) -> str:
+    return (
+        str(value or "")
+        .strip()
+        .replace("/", "_")
+        .replace("\\", "_")
+        .replace(" ", "_")
+        .replace("-", "_")
+        .replace(".", "_")
+        .lower()
+    )
+
+
+def _result_model_slug() -> str:
+    backend = str(config.get("ner_backend", "spacy") or "spacy").strip().lower()
+    model = str(config.get("ner_model", "") or "").strip()
+
+    known = {
+        ("spacy", "de_core_news_lg"): "spacy_de_core_news_lg",
+        ("spacy", "de_core_news_md"): "spacy_de_core_news_md",
+        ("flair", "flair/ner-german-large"): "flair_ner_german_large",
+    }
+
+    if (backend, model) in known:
+        return known[(backend, model)]
+
+    if not model:
+        return backend
+
+    return f"{backend}_{_sanitize_model_name(model)}"
+
+
+def _set_runtime_ner_config(ner_backend: str, ner_model: str | None) -> None:
+    backend = str(ner_backend or "spacy").strip().lower()
+    if backend not in DEFAULT_NER_MODELS:
+        raise ValueError(f"Unsupported ner backend: {ner_backend}")
+
+    model = str(ner_model or "").strip()
+    if not model:
+        model = DEFAULT_NER_MODELS[backend]
+
+    MODEL_MANAGER.set_backend_and_model(backend, model)
 
 
 def _extract_spans(text: str) -> List[Span]:
@@ -300,31 +384,6 @@ def _gold_required_for_policy(g: GoldEntity, allowed_labels: Set[str]) -> bool:
     if not allowed_labels:
         return False
     return bool(g.acceptable_labels.intersection(allowed_labels))
-
-
-def _snapshot_config() -> Dict[str, Any]:
-    return {
-        "flags": dict(config.get_flags() or {}),
-        "ner_labels": list(config.get("ner_labels", []) or []),
-        "regex_labels": list(config.get("regex_labels", []) or []),
-        "spacy_model": config.get("spacy_model", ""),
-        "debug_mask": bool(config.get("debug_mask", False)),
-        "use_ner_postprocessing": config.get("use_ner_postprocessing", True),
-    }
-
-
-def _restore_config(snap: Dict[str, Any]) -> None:
-    flags = snap.get("flags", {}) or {}
-    config.set_flags(
-        use_regex=bool(flags.get("use_regex", True)),
-        use_ner=bool(flags.get("use_ner", True)),
-        debug_mask=bool(flags.get("debug_mask", False)),
-    )
-    config.set("ner_labels", snap.get("ner_labels", []) or [])
-    config.set("regex_labels", snap.get("regex_labels", []) or [])
-    config.set("spacy_model", snap.get("spacy_model", "") or "")
-    config.set("debug_mask", bool(snap.get("debug_mask", False)))
-    config.set("use_ner_postprocessing", snap.get("use_ner_postprocessing", True))
 
 
 def _ctx(text: str, start: int, end: int, radius: int) -> str:
@@ -777,21 +836,14 @@ def _format_misses(
     return lines
 
 
-def _resolve_paths(eval_root: Path, basename: str) -> Tuple[Path, Path, Path, Path]:
+def _resolve_paths(eval_root: Path, basename: str) -> Tuple[Path, Path]:
     datasets_dir = eval_root / "datasets"
     data_dir = datasets_dir / "data"
     gold_dir = datasets_dir / "gold"
 
-    result_dir = eval_root / "result"
-    result_dir.mkdir(parents=True, exist_ok=True)
-
     text_path = data_dir / f"{basename}.txt"
     gold_path = gold_dir / f"{basename}.json"
-
-    out_path = result_dir / f"{basename}_result.txt"
-    dbg_path = result_dir / f"{basename}_result.debug.txt"
-
-    return text_path, gold_path, out_path, dbg_path
+    return text_path, gold_path
 
 
 def _run_single_variant(
@@ -806,7 +858,7 @@ def _run_single_variant(
     max_lines: int,
     postprocess_enabled: bool,
 ) -> None:
-    text_path, gold_path, _, _ = _resolve_paths(eval_root, basename)
+    text_path, gold_path = _resolve_paths(eval_root, basename)
 
     if not text_path.exists():
         raise FileNotFoundError(f"Missing text file: {text_path}")
@@ -817,7 +869,14 @@ def _run_single_variant(
     gold = _read_json(gold_path)
     gold_entities = _parse_gold(gold)
 
-    variant_root = eval_root / "result" / ("postprocess_on" if postprocess_enabled else "postprocess_off")
+    model_slug = _result_model_slug()
+    variant_root = (
+        eval_root
+        / "result"
+        / model_slug
+        / ("postprocess_on" if postprocess_enabled else "postprocess_off")
+        / policy
+    )
     variant_root.mkdir(parents=True, exist_ok=True)
 
     out_path = variant_root / f"{basename}_result.txt"
@@ -839,6 +898,8 @@ def _run_single_variant(
     report_lines.append(f"DATASET: {basename}")
     report_lines.append(f"TEXT: {text_path}")
     report_lines.append(f"GOLD: {gold_path}")
+    report_lines.append(f"NER_BACKEND: {config.get('ner_backend', 'spacy')}")
+    report_lines.append(f"NER_MODEL: {config.get('ner_model', '')}")
     report_lines.append(f"POLICY: {policy}")
     report_lines.append(f"NER_LABELS: {config.get('ner_labels', [])}")
     report_lines.append(f"REGEX_LABELS: {config.get('regex_labels', [])}")
@@ -857,6 +918,8 @@ def _run_single_variant(
     if debug:
         debug_lines.append(
             f"DATASET: {basename} | POLICY: {policy} | "
+            f"NER_BACKEND: {config.get('ner_backend', 'spacy')} | "
+            f"NER_MODEL: {config.get('ner_model', '')} | "
             f"POSTPROCESSING: {'on' if postprocess_enabled else 'off'}"
         )
         debug_lines.append(_format_summary(total))
@@ -889,6 +952,8 @@ def main() -> int:
     ap.add_argument("--name", required=True, help="Basename like Dataset_01 (without extension)")
     ap.add_argument("--eval-root", default="evaluation")
     ap.add_argument("--policy", choices=sorted(POLICY_SPECS.keys()), default="secure")
+    ap.add_argument("--ner-backend", choices=["spacy", "flair"], default="spacy")
+    ap.add_argument("--ner-model", default=None)
     ap.add_argument("--debug", action="store_true")
     ap.add_argument("--show-tp", action="store_true")
     ap.add_argument("--per-label", action="store_true")
@@ -906,7 +971,7 @@ def main() -> int:
     snap = _snapshot_config()
 
     try:
-        run_variants: List[bool]
+        _set_runtime_ner_config(args.ner_backend, args.ner_model)
 
         if args.only_post == "on":
             run_variants = [True]

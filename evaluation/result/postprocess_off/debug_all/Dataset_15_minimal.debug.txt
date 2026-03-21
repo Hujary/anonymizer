@@ -1,9 +1,0 @@
-DATASET: Dataset_15 | DOMAIN: HR-Dokumente | STRUCTURE: regular | VARIANT: 1 | POLICY: minimal | POSTPROCESSING: off
-TP=4 FP=1 FN=1 | P=0.800 R=0.800 F1=0.800
-----------------------------------------------------------------------
-NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 1
-  - PER            gold 12:23 [gold] 'Lukas Meier' [pred:ner:12:25] 'Lukas Meier
-
-' gold_ctx='Bewerbung – ▮Lukas Meier▮\n\nSehr geehrte Damen' pred_ctx='Bewerbung – ▮Lukas Meier\n\n▮Sehr geehrte Damen u'
-UNEXPECTED (FP): 0

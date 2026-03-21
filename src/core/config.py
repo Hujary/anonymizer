@@ -24,8 +24,7 @@ _CONFIG_PATH = Path(__file__).resolve().parents[1] / "config.json"
 _DEFAULTS: Dict[str, Any] = {
     "use_regex": True,
     "use_ner": True,
-    "debug_mask": False,
-    "spacy_model": "de_core_news_lg",
+    "debug_mask": False
 }
 
 

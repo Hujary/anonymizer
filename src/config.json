@@ -2,7 +2,6 @@
   "use_regex": true,
   "use_ner": true,
   "debug_mask": false,
-  "spacy_model": "de_core_news_lg",
   "ner_backend": "flair",
   "ner_model": "flair/ner-german-large",
   "theme": "light",

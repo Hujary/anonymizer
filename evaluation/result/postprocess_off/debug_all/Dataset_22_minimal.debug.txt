@@ -1,8 +1,0 @@
-DATASET: Dataset_22 | DOMAIN: Verträge | STRUCTURE: regular | VARIANT: 2 | POLICY: minimal | POSTPROCESSING: off
-TP=6 FP=0 FN=2 | P=1.000 R=0.750 F1=0.857
-----------------------------------------------------------------------
-NOT DETECTED (FN): 2
-  - PER            997:1014 [gold] 'Katharina Schmitt' ctx=' den 05.05.2025\n\n⸻\n\n▮Katharina Schmitt▮\n\n⸻\n\nDaniel Roth'
-  - PER            1019:1030 [gold] 'Daniel Roth' ctx='tharina Schmitt\n\n⸻\n\n▮Daniel Roth▮'
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0

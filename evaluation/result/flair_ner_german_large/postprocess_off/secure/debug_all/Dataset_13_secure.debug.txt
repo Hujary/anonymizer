@@ -1,0 +1,7 @@
+DATASET: Dataset_13 | DOMAIN: HR-Dokumente | STRUCTURE: structured | VARIANT: 1 | POLICY: secure | NER_BACKEND: flair | NER_MODEL: flair/ner-german-large | POSTPROCESSING: off
+TP=16 FP=1 FN=0 | P=0.941 R=1.000 F1=0.970
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 1
+  - ORG            542:545 [ner] 'AWS' ctx='chkenntnisse\nCloud: ▮AWS▮, Azure\nSprachen: Py'

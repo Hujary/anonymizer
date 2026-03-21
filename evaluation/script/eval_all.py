@@ -2,9 +2,7 @@ from __future__ import annotations
 
 import argparse
 import csv
-import statistics
 import sys
-import time
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
@@ -31,14 +29,20 @@ from evaluation.script.eval_single import (
     _format_misses,
     _format_per_label,
     _parse_gold,
-    _policy_labels,
     _read_json,
     _read_text,
     _resolve_paths,
     _restore_config,
+    _result_model_slug,
+    _set_runtime_ner_config,
     _snapshot_config,
 )
 
+
+NER_VARIANTS: List[Tuple[str, str]] = [
+    ("spacy", "de_core_news_lg"),
+    ("flair", "flair/ner-german-large"),
+]
 
 DOMAINS: List[str] = [
     "Supporttickets",
@@ -114,7 +118,7 @@ def _discover_datasets(eval_root: Path) -> List[str]:
 
 
 def _load_gold_entities(eval_root: Path, name: str) -> Tuple[str, List[object]]:
-    text_path, gold_path, _, _ = _resolve_paths(eval_root, name)
+    text_path, gold_path = _resolve_paths(eval_root, name)
 
     if not text_path.exists():
         raise FileNotFoundError(f"Missing text file: {text_path}")
@@ -170,6 +174,8 @@ def _format_label_report(
     lines: List[str] = []
     lines.append(
         f"LABEL REPORT | POLICY: {policy} | "
+        f"NER_BACKEND: {config.get('ner_backend', 'spacy')} | "
+        f"NER_MODEL: {config.get('ner_model', '')} | "
         f"POSTPROCESSING: {'on' if postprocess_enabled else 'off'}"
     )
     lines.append("-" * 80)
@@ -429,158 +435,6 @@ def _write_policy_csv_files(
     )
 
 
-def _compute_policy_gold_stats(
-    *,
-    dataset_names: List[str],
-    dataset_cache: Dict[str, Tuple[str, List[object]]],
-    policy: str,
-) -> Dict[str, object]:
-    allowed_labels = _policy_labels(policy)
-
-    total_texts = 0
-    total_chars = 0
-    total_relevant_gold = 0
-    label_counts: Dict[str, int] = defaultdict(int)
-
-    for dataset_name in dataset_names:
-        text, gold_entities = dataset_cache[dataset_name]
-        total_texts += 1
-        total_chars += len(text)
-
-        for entity in gold_entities:
-            primary_label = str(getattr(entity, "primary_label", "") or "").strip().upper()
-            acceptable_labels = set(getattr(entity, "acceptable_labels", set()) or set())
-
-            if not acceptable_labels.intersection(allowed_labels):
-                continue
-
-            total_relevant_gold += 1
-
-            if primary_label:
-                label_counts[primary_label] += 1
-
-    return {
-        "texts": total_texts,
-        "chars": total_chars,
-        "relevant_gold": total_relevant_gold,
-        "label_counts": dict(label_counts),
-        "ner_labels": list(POLICY_SPECS[policy].get("ner_labels", [])),
-        "regex_labels": list(POLICY_SPECS[policy].get("regex_labels", [])),
-        "allowed_labels": sorted(allowed_labels),
-    }
-
-
-def _measure_runtime_ms(
-    *,
-    text: str,
-    gold_entities: List[object],
-    policy: str,
-    eval_root: Path,
-    samples: int,
-) -> List[float]:
-    values: List[float] = []
-
-    _evaluate(
-        text,
-        gold_entities,
-        policy_name=policy,
-        eval_root=eval_root,
-    )
-
-    for _ in range(max(1, int(samples))):
-        t0 = time.perf_counter()
-        _evaluate(
-            text,
-            gold_entities,
-            policy_name=policy,
-            eval_root=eval_root,
-        )
-        t1 = time.perf_counter()
-        values.append((t1 - t0) * 1000.0)
-
-    return values
-
-
-def _format_times_report(
-    *,
-    dataset_names: List[str],
-    dataset_cache: Dict[str, Tuple[str, List[object]]],
-    selected_policies: List[str],
-    eval_root: Path,
-    runtime_samples: int,
-    postprocess_enabled: bool,
-) -> str:
-    lines: List[str] = []
-    lines.append("RUNTIME REPORT")
-    lines.append("=" * 80)
-    lines.append(f"POSTPROCESSING: {'on' if postprocess_enabled else 'off'}")
-    lines.append(f"DATASETS: {len(dataset_names)}")
-    lines.append(f"RUNTIME RUNS PER TEXT: {runtime_samples}")
-    lines.append("MEASUREMENT: pure execution time of erkenne(text) in combined operation")
-    lines.append("WARM-UP: one untimed warm-up run per text")
-    lines.append("")
-
-    for policy in selected_policies:
-        _apply_policy(policy)
-
-        policy_stats = _compute_policy_gold_stats(
-            dataset_names=dataset_names,
-            dataset_cache=dataset_cache,
-            policy=policy,
-        )
-
-        all_runtime_values: List[float] = []
-
-        for dataset_name in dataset_names:
-            text, gold_entities = dataset_cache[dataset_name]
-            values = _measure_runtime_ms(
-                text=text,
-                gold_entities=gold_entities,
-                policy=policy,
-                eval_root=eval_root,
-                samples=runtime_samples,
-            )
-            all_runtime_values.extend(values)
-
-        mean_ms = statistics.mean(all_runtime_values) if all_runtime_values else 0.0
-        median_ms = statistics.median(all_runtime_values) if all_runtime_values else 0.0
-        min_ms = min(all_runtime_values) if all_runtime_values else 0.0
-        max_ms = max(all_runtime_values) if all_runtime_values else 0.0
-        stdev_ms = statistics.pstdev(all_runtime_values) if len(all_runtime_values) > 1 else 0.0
-
-        lines.append(f"POLICY: {policy}")
-        lines.append("-" * 80)
-        lines.append(f"TEXT_COUNT: {policy_stats['texts']}")
-        lines.append(f"TOTAL_TEXT_CHARS: {policy_stats['chars']}")
-        avg_len = (policy_stats["chars"] / policy_stats["texts"]) if policy_stats["texts"] else 0.0
-        lines.append(f"AVERAGE_TEXT_LENGTH: {avg_len:.1f} characters")
-        lines.append(f"POLICY_RELEVANT_GOLD_ENTITIES: {policy_stats['relevant_gold']}")
-        lines.append(f"NER_LABELS: {policy_stats['ner_labels']}")
-        lines.append(f"REGEX_LABELS: {policy_stats['regex_labels']}")
-        lines.append(f"ALLOWED_LABELS_COMBINED: {policy_stats['allowed_labels']}")
-        label_counts = policy_stats["label_counts"]
-
-        if label_counts:
-            label_dist = ", ".join(f"{label}={label_counts[label]}" for label in sorted(label_counts.keys()))
-        else:
-            label_dist = "none"
-
-        lines.append(f"LABEL_DISTRIBUTION: {label_dist}")
-        lines.append("")
-        lines.append("RUNTIME SUMMARY")
-        lines.append("-" * 80)
-        lines.append(f"samples : {len(all_runtime_values)}")
-        lines.append(f"mean_ms : {mean_ms:.3f}")
-        lines.append(f"median_ms : {median_ms:.3f}")
-        lines.append(f"min_ms : {min_ms:.3f}")
-        lines.append(f"max_ms : {max_ms:.3f}")
-        lines.append(f"stdev_ms : {stdev_ms:.3f}")
-        lines.append("")
-        lines.append("")
-
-    return "\n".join(lines).rstrip() + "\n"
-
-
 def _run_variant(
     *,
     eval_root: Path,
@@ -595,13 +449,10 @@ def _run_variant(
     label_report: bool,
     label_report_max: int,
     postprocess_enabled: bool,
-    runtime_samples: int,
 ) -> None:
-    variant_name = "postprocess_on" if postprocess_enabled else "postprocess_off"
-    variant_root = result_root / variant_name
+    model_slug = _result_model_slug()
+    variant_root = result_root / model_slug / ("postprocess_on" if postprocess_enabled else "postprocess_off")
     variant_root.mkdir(parents=True, exist_ok=True)
-
-    debug_dir = variant_root / "debug_all"
 
     config.set("use_ner_postprocessing", postprocess_enabled)
 
@@ -615,10 +466,13 @@ def _run_variant(
         policy_dir = variant_root / policy
         labels_dir = policy_dir / "labels"
         csv_dir = policy_dir / "csv"
+        debug_dir = policy_dir / "debug_all"
 
         policy_dir.mkdir(parents=True, exist_ok=True)
         labels_dir.mkdir(parents=True, exist_ok=True)
         csv_dir.mkdir(parents=True, exist_ok=True)
+        if debug:
+            debug_dir.mkdir(parents=True, exist_ok=True)
 
         report_lines: List[str] = []
         policy_dataset_rows: List[DatasetRunRow] = []
@@ -637,6 +491,8 @@ def _run_variant(
             report_lines.append(f"DATASET: {dataset_name}")
             report_lines.append(f"DOMAIN: {meta.domain}")
             report_lines.append(f"STRUCTURE: {meta.structure}")
+            report_lines.append(f"NER_BACKEND: {config.get('ner_backend', 'spacy')}")
+            report_lines.append(f"NER_MODEL: {config.get('ner_model', '')}")
             report_lines.append(f"POSTPROCESSING: {'on' if postprocess_enabled else 'off'}")
             report_lines.append("")
             report_lines.append(f"POLICY {policy}")
@@ -673,7 +529,9 @@ def _run_variant(
                 report_lines.append("")
                 report_lines.append(
                     f"PER-LABEL ({policy} | "
-                    f"{'postprocess_on' if postprocess_enabled else 'postprocess_off'})"
+                    f"{'postprocess_on' if postprocess_enabled else 'postprocess_off'} | "
+                    f"{config.get('ner_backend', 'spacy')} | "
+                    f"{config.get('ner_model', '')})"
                 )
                 report_lines.extend(_format_per_label(by_label))
                 report_lines.append("")
@@ -710,6 +568,8 @@ def _run_variant(
                 debug_lines.append(
                     f"DATASET: {dataset_name} | DOMAIN: {meta.domain} | STRUCTURE: {meta.structure} | "
                     f"VARIANT: {meta.variant} | POLICY: {policy} | "
+                    f"NER_BACKEND: {config.get('ner_backend', 'spacy')} | "
+                    f"NER_MODEL: {config.get('ner_model', '')} | "
                     f"POSTPROCESSING: {'on' if postprocess_enabled else 'off'}"
                 )
                 debug_lines.append(_format_short_summary(total))
@@ -774,19 +634,8 @@ def _run_variant(
         print(f"Wrote: {csv_dir / 'structure_label.csv'}")
         print(f"Wrote: {csv_dir / 'domain_structure_label.csv'}")
 
-    times_report = _format_times_report(
-        dataset_names=dataset_names,
-        dataset_cache=dataset_cache,
-        selected_policies=selected_policies,
-        eval_root=eval_root,
-        runtime_samples=runtime_samples,
-        postprocess_enabled=postprocess_enabled,
-    )
-    _write_text(variant_root / "times.txt", times_report)
-    print(f"Wrote: {variant_root / 'times.txt'}")
-
     if debug:
-        print(f"Wrote debug files: {debug_dir}")
+        print(f"Wrote debug files under: {variant_root}")
 
 
 def main() -> int:
@@ -800,7 +649,6 @@ def main() -> int:
     parser.add_argument("--only", nargs="*", default=None, help="Run only these dataset basenames")
     parser.add_argument("--label-report", action="store_true", help="Write aggregated TP/PARTIAL/FN/FP label reports")
     parser.add_argument("--label-report-max", type=int, default=500)
-    parser.add_argument("--runtime-samples", type=int, default=5)
     parser.add_argument(
         "--policies",
         nargs="*",
@@ -836,31 +684,31 @@ def main() -> int:
     snapshot = _snapshot_config()
 
     try:
-        run_variants: List[bool]
+        for ner_backend, ner_model in NER_VARIANTS:
+            _set_runtime_ner_config(ner_backend, ner_model)
 
-        if args.only_post == "on":
-            run_variants = [True]
-        elif args.only_post == "off":
-            run_variants = [False]
-        else:
-            run_variants = [False, True]
+            if args.only_post == "on":
+                run_variants = [True]
+            elif args.only_post == "off":
+                run_variants = [False]
+            else:
+                run_variants = [False, True]
 
-        for postprocess_enabled in run_variants:
-            _run_variant(
-                eval_root=eval_root,
-                result_root=result_root,
-                dataset_names=dataset_names,
-                selected_policies=selected_policies,
-                debug=bool(args.debug),
-                show_tp=bool(args.show_tp),
-                per_label=bool(args.per_label),
-                ctx=int(args.ctx),
-                max_lines=int(args.max_lines),
-                label_report=bool(args.label_report),
-                label_report_max=int(args.label_report_max),
-                postprocess_enabled=postprocess_enabled,
-                runtime_samples=max(1, int(args.runtime_samples)),
-            )
+            for postprocess_enabled in run_variants:
+                _run_variant(
+                    eval_root=eval_root,
+                    result_root=result_root,
+                    dataset_names=dataset_names,
+                    selected_policies=selected_policies,
+                    debug=bool(args.debug),
+                    show_tp=bool(args.show_tp),
+                    per_label=bool(args.per_label),
+                    ctx=int(args.ctx),
+                    max_lines=int(args.max_lines),
+                    label_report=bool(args.label_report),
+                    label_report_max=int(args.label_report_max),
+                    postprocess_enabled=postprocess_enabled,
+                )
 
     finally:
         _restore_config(snapshot)

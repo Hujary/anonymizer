@@ -1,8 +1,0 @@
-DATASET: Dataset_05 | DOMAIN: Supporttickets | STRUCTURE: unstructured | VARIANT: 1 | POLICY: secure | POSTPROCESSING: off
-TP=7 FP=2 FN=1 | P=0.778 R=0.875 F1=0.824
-----------------------------------------------------------------------
-NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 1
-  - ORG            gold 264:285 [gold] 'PixelForge Media GmbH' [pred:ner:264:280] 'PixelForge Media' gold_ctx=' unseren Zugang bei ▮PixelForge Media GmbH▮. Ich heiße Markus W' pred_ctx=' unseren Zugang bei ▮PixelForge Media▮ GmbH. Ich heiße Mar'
-UNEXPECTED (FP): 1
-  - ORG            735:737 [ner] 'MB' ctx='n PDFs mit ca. 8–10 ▮MB▮.\n\nKönnt ihr bitte p'

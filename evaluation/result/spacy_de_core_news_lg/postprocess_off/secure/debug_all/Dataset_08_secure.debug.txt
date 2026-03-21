@@ -1,0 +1,7 @@
+DATASET: Dataset_08 | DOMAIN: E-Mail | STRUCTURE: structured | VARIANT: 2 | POLICY: secure | NER_BACKEND: spacy | NER_MODEL: de_core_news_lg | POSTPROCESSING: off
+TP=9 FP=1 FN=1 | P=0.900 R=0.900 F1=0.900
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 1
+  - ORG            gold 595:610 [gold] 'Innoventis GmbH' [pred:ner:595:605] 'Innoventis' gold_ctx='  \nProjektleitung  \n▮Innoventis GmbH▮' pred_ctx='  \nProjektleitung  \n▮Innoventis▮ GmbH'
+UNEXPECTED (FP): 0

@@ -1,0 +1,7 @@
+DATASET: Dataset_18 | DOMAIN: HR-Dokumente | STRUCTURE: unstructured | VARIANT: 2 | POLICY: secure | NER_BACKEND: spacy | NER_MODEL: de_core_news_lg | POSTPROCESSING: on
+TP=13 FP=1 FN=0 | P=0.929 R=1.000 F1=0.963
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 1
+  - ORG            341:365 [ner] 'Machine-Learning-Modelle' ctx='rt war ich u.a. für ▮Machine-Learning-Modelle▮ im Finanzbereich ve'

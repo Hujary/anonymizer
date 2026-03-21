@@ -1,0 +1,16 @@
+policy,domain,structure,tp,fp,fn,precision,recall,f1
+secure,Chats,regular,45,2,0,0.957447,1.000000,0.978261
+secure,Chats,structured,28,3,1,0.903226,0.965517,0.933333
+secure,Chats,unstructured,45,1,0,0.978261,1.000000,0.989011
+secure,E-Mail,regular,18,0,0,1.000000,1.000000,1.000000
+secure,E-Mail,structured,22,1,1,0.956522,0.956522,0.956522
+secure,E-Mail,unstructured,26,0,0,1.000000,1.000000,1.000000
+secure,HR-Dokumente,regular,27,2,1,0.931034,0.964286,0.947368
+secure,HR-Dokumente,structured,30,2,1,0.937500,0.967742,0.952381
+secure,HR-Dokumente,unstructured,23,1,0,0.958333,1.000000,0.978723
+secure,Supporttickets,regular,13,0,0,1.000000,1.000000,1.000000
+secure,Supporttickets,structured,14,0,0,1.000000,1.000000,1.000000
+secure,Supporttickets,unstructured,16,0,0,1.000000,1.000000,1.000000
+secure,Verträge,regular,33,0,0,1.000000,1.000000,1.000000
+secure,Verträge,structured,35,2,1,0.945946,0.972222,0.958904
+secure,Verträge,unstructured,30,0,0,1.000000,1.000000,1.000000

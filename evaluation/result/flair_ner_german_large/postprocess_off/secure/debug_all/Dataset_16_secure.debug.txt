@@ -1,0 +1,8 @@
+DATASET: Dataset_16 | DOMAIN: HR-Dokumente | STRUCTURE: regular | VARIANT: 2 | POLICY: secure | NER_BACKEND: flair | NER_MODEL: flair/ner-german-large | POSTPROCESSING: off
+TP=11 FP=2 FN=1 | P=0.846 R=0.917 F1=0.880
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 1
+  - ORG            gold 423:439 [gold] 'Universität Köln' [pred:ner:435:439] 'Köln' gold_ctx='ationswissenschaft, ▮Universität Köln▮ (2017)\n\nWeitere Ken' pred_ctx='schaft, Universität ▮Köln▮ (2017)\n\nWeitere Ken'
+UNEXPECTED (FP): 1
+  - ORG            468:484 [ner] 'Google Analytics' ctx='Weitere Kenntnisse:\n▮Google Analytics▮, Jira, Scrum'

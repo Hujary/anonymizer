@@ -1,0 +1,16 @@
+policy,domain,structure,tp,fp,fn,precision,recall,f1
+minimal,Chats,regular,30,1,0,0.967742,1.000000,0.983607
+minimal,Chats,structured,22,1,1,0.956522,0.956522,0.956522
+minimal,Chats,unstructured,31,0,0,1.000000,1.000000,1.000000
+minimal,E-Mail,regular,11,0,0,1.000000,1.000000,1.000000
+minimal,E-Mail,structured,14,0,0,1.000000,1.000000,1.000000
+minimal,E-Mail,unstructured,14,0,0,1.000000,1.000000,1.000000
+minimal,HR-Dokumente,regular,8,0,0,1.000000,1.000000,1.000000
+minimal,HR-Dokumente,structured,7,0,0,1.000000,1.000000,1.000000
+minimal,HR-Dokumente,unstructured,8,0,0,1.000000,1.000000,1.000000
+minimal,Supporttickets,regular,8,0,0,1.000000,1.000000,1.000000
+minimal,Supporttickets,structured,6,0,0,1.000000,1.000000,1.000000
+minimal,Supporttickets,unstructured,8,0,0,1.000000,1.000000,1.000000
+minimal,Verträge,regular,16,0,0,1.000000,1.000000,1.000000
+minimal,Verträge,structured,12,1,1,0.923077,0.923077,0.923077
+minimal,Verträge,unstructured,10,0,0,1.000000,1.000000,1.000000

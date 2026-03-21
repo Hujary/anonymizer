@@ -3,12 +3,10 @@ from __future__ import annotations
 import argparse
 import json
 import statistics
-import subprocess
 import sys
 import time
-from collections import defaultdict
 from pathlib import Path
-from typing import Any, Dict, List, Set, Tuple
+from typing import Any, Dict, List, Tuple
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SRC_DIR = REPO_ROOT / "src"
@@ -36,6 +34,17 @@ POLICY_SPECS: Dict[str, Dict[str, List[str]]] = {
     },
 }
 
+MODEL_SPECS: Dict[str, Dict[str, str]] = {
+    "spacy": {
+        "ner_backend": "spacy",
+        "ner_model": "de_core_news_lg",
+    },
+    "flair": {
+        "ner_backend": "flair",
+        "ner_model": "flair/ner-german-large",
+    },
+}
+
 
 def _read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
@@ -49,18 +58,9 @@ def _norm_label(value: Any) -> str:
     return str(value or "").strip().upper()
 
 
-def _norm_source(value: Any) -> str:
-    x = str(value or "").strip().lower()
-    if x in ("ner", "regex", "dict", "manual"):
-        return x
-    if x == "dictionary":
-        return "dict"
-    return x or "?"
-
-
 def _normalize_label_list(values: List[str]) -> List[str]:
     out: List[str] = []
-    seen: Set[str] = set()
+    seen: set[str] = set()
 
     for value in values:
         label = _norm_label(value)
@@ -90,16 +90,15 @@ def _apply_policy(policy_name: str) -> None:
     )
 
 
-def _policy_labels(policy_name: str) -> Set[str]:
-    policy_key = str(policy_name or "").strip().lower()
+def _set_ner_runtime(model_key: str) -> None:
+    key = str(model_key or "").strip().lower()
 
-    if policy_key not in POLICY_SPECS:
-        raise ValueError(f"Unknown policy: {policy_name}")
+    if key not in MODEL_SPECS:
+        raise ValueError(f"Unknown model key: {model_key}")
 
-    spec = POLICY_SPECS[policy_key]
-    ner_labels = set(_normalize_label_list(spec.get("ner_labels", [])))
-    regex_labels = set(_normalize_label_list(spec.get("regex_labels", [])))
-    return ner_labels.union(regex_labels)
+    spec = MODEL_SPECS[key]
+    config.set("ner_backend", spec["ner_backend"])
+    config.set("ner_model", spec["ner_model"])
 
 
 def _snapshot_config() -> Dict[str, Any]:
@@ -107,7 +106,8 @@ def _snapshot_config() -> Dict[str, Any]:
         "flags": dict(config.get_flags() or {}),
         "ner_labels": list(config.get("ner_labels", []) or []),
         "regex_labels": list(config.get("regex_labels", []) or []),
-        "spacy_model": config.get("spacy_model", ""),
+        "ner_backend": str(config.get("ner_backend", "spacy") or "spacy"),
+        "ner_model": str(config.get("ner_model", "") or ""),
         "debug_mask": bool(config.get("debug_mask", False)),
         "use_ner_postprocessing": config.get("use_ner_postprocessing", True),
     }
@@ -122,19 +122,10 @@ def _restore_config(snapshot: Dict[str, Any]) -> None:
     )
     config.set("ner_labels", snapshot.get("ner_labels", []) or [])
     config.set("regex_labels", snapshot.get("regex_labels", []) or [])
-    config.set("spacy_model", snapshot.get("spacy_model", "") or "")
+    config.set("ner_backend", str(snapshot.get("ner_backend", "spacy") or "spacy"))
+    config.set("ner_model", str(snapshot.get("ner_model", "") or ""))
     config.set("debug_mask", bool(snapshot.get("debug_mask", False)))
     config.set("use_ner_postprocessing", snapshot.get("use_ner_postprocessing", True))
-
-
-def _resolve_paths(eval_root: Path, basename: str) -> Tuple[Path, Path]:
-    datasets_dir = eval_root / "datasets"
-    data_dir = datasets_dir / "data"
-    gold_dir = datasets_dir / "gold"
-
-    text_path = data_dir / f"{basename}.txt"
-    gold_path = gold_dir / f"{basename}.json"
-    return text_path, gold_path
 
 
 def _discover_datasets(eval_root: Path) -> List[str]:
@@ -144,112 +135,8 @@ def _discover_datasets(eval_root: Path) -> List[str]:
     return [p.stem for p in sorted(gold_dir.glob("*.json"))]
 
 
-def _parse_gold(gold: Dict[str, Any]) -> List[Dict[str, Any]]:
-    entities = gold.get("entities")
-    if not isinstance(entities, list):
-        raise ValueError("gold.json: field 'entities' must be a list")
-
-    out: List[Dict[str, Any]] = []
-
-    for entity in entities:
-        if not isinstance(entity, dict):
-            continue
-
-        raw_label = entity.get("label")
-
-        labels_ordered: List[str] = []
-        if isinstance(raw_label, list):
-            for item in raw_label:
-                label = _norm_label(item)
-                if label and label not in labels_ordered:
-                    labels_ordered.append(label)
-        else:
-            label = _norm_label(raw_label)
-            if label:
-                labels_ordered.append(label)
-
-        if not labels_ordered:
-            continue
-
-        expected_sources_raw = entity.get("expected_sources", [])
-        if not isinstance(expected_sources_raw, list):
-            expected_sources_raw = []
-        expected_sources = {_norm_source(x) for x in expected_sources_raw if str(x).strip()}
-
-        out.append(
-            {
-                "primary_label": labels_ordered[0],
-                "acceptable_labels": set(labels_ordered),
-                "expected_sources": expected_sources,
-            }
-        )
-
-    return out
-
-
-def _load_dataset_cache(eval_root: Path, dataset_names: List[str]) -> Dict[str, Tuple[str, List[Dict[str, Any]]]]:
-    cache: Dict[str, Tuple[str, List[Dict[str, Any]]]] = {}
-
-    for dataset_name in dataset_names:
-        text_path, gold_path = _resolve_paths(eval_root, dataset_name)
-
-        if not text_path.exists():
-            raise FileNotFoundError(f"Missing text file: {text_path}")
-        if not gold_path.exists():
-            raise FileNotFoundError(f"Missing gold file: {gold_path}")
-
-        text = _read_text(text_path)
-        gold = _read_json(gold_path)
-        gold_entities = _parse_gold(gold)
-        cache[dataset_name] = (text, gold_entities)
-
-    return cache
-
-
-def _compute_policy_gold_stats(
-    *,
-    dataset_names: List[str],
-    dataset_cache: Dict[str, Tuple[str, List[Dict[str, Any]]]],
-    policy: str,
-) -> Dict[str, Any]:
-    allowed_labels = _policy_labels(policy)
-
-    total_texts = 0
-    total_chars = 0
-    total_relevant_gold = 0
-    label_counts: Dict[str, int] = defaultdict(int)
-
-    for dataset_name in dataset_names:
-        text, gold_entities = dataset_cache[dataset_name]
-        total_texts += 1
-        total_chars += len(text)
-
-        for entity in gold_entities:
-            primary_label = str(entity.get("primary_label", "") or "").strip().upper()
-            acceptable_labels = set(entity.get("acceptable_labels", set()) or set())
-
-            if not acceptable_labels.intersection(allowed_labels):
-                continue
-
-            total_relevant_gold += 1
-
-            if primary_label:
-                label_counts[primary_label] += 1
-
-    return {
-        "texts": total_texts,
-        "chars": total_chars,
-        "relevant_gold": total_relevant_gold,
-        "label_counts": dict(label_counts),
-        "ner_labels": list(POLICY_SPECS[policy].get("ner_labels", [])),
-        "regex_labels": list(POLICY_SPECS[policy].get("regex_labels", [])),
-        "allowed_labels": sorted(allowed_labels),
-    }
-
-
-def _write_text(path: Path, value: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(value.rstrip() + "\n", encoding="utf-8")
+def _resolve_text_path(eval_root: Path, basename: str) -> Path:
+    return eval_root / "datasets" / "data" / f"{basename}.txt"
 
 
 def _is_hit_like(obj: Any) -> bool:
@@ -318,17 +205,46 @@ def _extract_hits_count(value: Any) -> int:
     return 0
 
 
+def _dataset_meta(dataset_name: str) -> Tuple[str, str]:
+    try:
+        index = int(dataset_name.split("_")[-1])
+    except Exception:
+        return "Unknown", "unknown"
+
+    domains = [
+        "Supporttickets",
+        "E-Mail",
+        "HR-Dokumente",
+        "Verträge",
+        "Chats",
+    ]
+
+    domain_idx = (index - 1) // 6
+    within = (index - 1) % 6
+
+    domain = domains[domain_idx] if 0 <= domain_idx < len(domains) else "Unknown"
+
+    if within in (0, 1):
+        structure = "structured"
+    elif within in (2, 3):
+        structure = "regular"
+    else:
+        structure = "unstructured"
+
+    return domain, structure
+
+
 def _measure_erkenne_runtime_ms(
     *,
     text: str,
-    samples: int,
+    runs: int,
 ) -> Tuple[List[float], int]:
     values: List[float] = []
 
     warmup_result = erkenne(text)
     last_count = _extract_hits_count(warmup_result)
 
-    for _ in range(max(1, int(samples))):
+    for _ in range(max(1, int(runs))):
         t0 = time.perf_counter_ns()
         result = erkenne(text)
         t1 = time.perf_counter_ns()
@@ -339,262 +255,220 @@ def _measure_erkenne_runtime_ms(
     return values, last_count
 
 
-def _build_worker_report(
-    *,
-    dataset_names: List[str],
-    dataset_cache: Dict[str, Tuple[str, List[Dict[str, Any]]]],
-    policy: str,
-    runtime_samples: int,
-    postprocess_enabled: bool,
+def _format_dataset_runtime_line(
+    dataset_name: str,
+    domain: str,
+    structure: str,
+    char_count: int,
+    hit_count: int,
+    values_ms: List[float],
 ) -> str:
-    policy_stats = _compute_policy_gold_stats(
-        dataset_names=dataset_names,
-        dataset_cache=dataset_cache,
-        policy=policy,
+    mean_ms = statistics.mean(values_ms) if values_ms else 0.0
+    median_ms = statistics.median(values_ms) if values_ms else 0.0
+    min_ms = min(values_ms) if values_ms else 0.0
+    max_ms = max(values_ms) if values_ms else 0.0
+    delta_ms = max_ms - min_ms
+    stdev_ms = statistics.pstdev(values_ms) if len(values_ms) > 1 else 0.0
+    mean_ms_per_label = (mean_ms / hit_count) if hit_count else 0.0
+
+    return (
+        f"{dataset_name:<12} | "
+        f"{domain:<13} | "
+        f"{structure:<12} | "
+        f"chars={char_count:>5} | "
+        f"labels={hit_count:>3} | "
+        f"mean_ms={mean_ms:>8.3f} | "
+        f"median_ms={median_ms:>8.3f} | "
+        f"min_ms={min_ms:>8.3f} | "
+        f"max_ms={max_ms:>8.3f} | "
+        f"delta_ms={delta_ms:>8.3f} | "
+        f"stdev_ms={stdev_ms:>8.3f} | "
+        f"ms_per_label={mean_ms_per_label:>7.3f}"
     )
 
-    all_runtime_values: List[float] = []
-    total_resolved_labels = 0
 
-    for dataset_name in dataset_names:
-        text, _ = dataset_cache[dataset_name]
-        values, hit_count = _measure_erkenne_runtime_ms(
-            text=text,
-            samples=runtime_samples,
-        )
-        all_runtime_values.extend(values)
-        total_resolved_labels += hit_count
+def _format_global_runtime_summary(
+    *,
+    all_values_ms: List[float],
+    per_dataset_means_ms: List[float],
+    dataset_count: int,
+    total_chars: int,
+    total_hits: int,
+    runs_per_dataset: int,
+) -> str:
+    mean_all = statistics.mean(all_values_ms) if all_values_ms else 0.0
+    median_all = statistics.median(all_values_ms) if all_values_ms else 0.0
+    min_all = min(all_values_ms) if all_values_ms else 0.0
+    max_all = max(all_values_ms) if all_values_ms else 0.0
+    delta_all = max_all - min_all
+    stdev_all = statistics.pstdev(all_values_ms) if len(all_values_ms) > 1 else 0.0
 
-    mean_ms = statistics.mean(all_runtime_values) if all_runtime_values else 0.0
-    median_ms = statistics.median(all_runtime_values) if all_runtime_values else 0.0
-    min_ms = min(all_runtime_values) if all_runtime_values else 0.0
-    max_ms = max(all_runtime_values) if all_runtime_values else 0.0
-    stdev_ms = statistics.pstdev(all_runtime_values) if len(all_runtime_values) > 1 else 0.0
+    mean_dataset_mean = statistics.mean(per_dataset_means_ms) if per_dataset_means_ms else 0.0
+    median_dataset_mean = statistics.median(per_dataset_means_ms) if per_dataset_means_ms else 0.0
+    min_dataset_mean = min(per_dataset_means_ms) if per_dataset_means_ms else 0.0
+    max_dataset_mean = max(per_dataset_means_ms) if per_dataset_means_ms else 0.0
+    delta_dataset_mean = max_dataset_mean - min_dataset_mean
+    stdev_dataset_mean = statistics.pstdev(per_dataset_means_ms) if len(per_dataset_means_ms) > 1 else 0.0
 
-    total_runtime_ms = sum(all_runtime_values)
-    total_resolved_labels_across_all_runs = total_resolved_labels * max(1, int(runtime_samples))
+    total_runtime_ms = sum(all_values_ms)
+    total_processed_labels_across_runs = total_hits * runs_per_dataset
     average_runtime_per_resolved_label_ms = (
-        total_runtime_ms / total_resolved_labels_across_all_runs
-        if total_resolved_labels_across_all_runs
+        total_runtime_ms / total_processed_labels_across_runs
+        if total_processed_labels_across_runs
         else 0.0
     )
 
-    label_counts = policy_stats["label_counts"]
-    if label_counts:
-        label_dist = ", ".join(f"{label}={label_counts[label]}" for label in sorted(label_counts.keys()))
-    else:
-        label_dist = "none"
-
-    lines: List[str] = []
-    lines.append(f"POLICY: {policy}")
-    lines.append("-" * 80)
-    lines.append(f"TEXT_COUNT: {policy_stats['texts']}")
-    lines.append(f"TOTAL_TEXT_CHARS: {policy_stats['chars']}")
-    avg_len = (policy_stats["chars"] / policy_stats["texts"]) if policy_stats["texts"] else 0.0
-    lines.append(f"AVERAGE_TEXT_LENGTH: {avg_len:.1f} characters")
-    lines.append(f"POLICY_RELEVANT_GOLD_ENTITIES: {policy_stats['relevant_gold']}")
-    lines.append(f"NER_LABELS: {policy_stats['ner_labels']}")
-    lines.append(f"REGEX_LABELS: {policy_stats['regex_labels']}")
-    lines.append(f"ALLOWED_LABELS_COMBINED: {policy_stats['allowed_labels']}")
-    lines.append(f"LABEL_DISTRIBUTION: {label_dist}")
-    lines.append("")
-    lines.append("RUNTIME SUMMARY")
-    lines.append("-" * 80)
-    lines.append(f"samples : {len(all_runtime_values)}")
-    lines.append(f"mean_ms : {mean_ms:.3f}")
-    lines.append(f"median_ms : {median_ms:.3f}")
-    lines.append(f"min_ms : {min_ms:.3f}")
-    lines.append(f"max_ms : {max_ms:.3f}")
-    lines.append(f"stdev_ms : {stdev_ms:.3f}")
-    lines.append("")
-    lines.append("LABEL-NORMALIZED RUNTIME")
-    lines.append("-" * 80)
-    lines.append(f"estimated_total_runtime_ms : {total_runtime_ms:.3f}")
-    lines.append(f"resolved_labels_across_all_datasets : {total_resolved_labels}")
-    lines.append(f"resolved_labels_across_all_runs : {total_resolved_labels_across_all_runs}")
-    lines.append(f"average_runtime_per_resolved_label_ms : {average_runtime_per_resolved_label_ms:.3f}")
-    lines.append("")
-    lines.append("")
-
-    return "\n".join(lines).rstrip() + "\n"
-
-
-def _run_worker(
-    *,
-    eval_root: Path,
-    dataset_names: List[str],
-    policy: str,
-    postprocess_enabled: bool,
-    runtime_samples: int,
-) -> int:
-    snapshot = _snapshot_config()
-
-    try:
-        config.set("use_ner_postprocessing", postprocess_enabled)
-        _apply_policy(policy)
-
-        dataset_cache = _load_dataset_cache(eval_root, dataset_names)
-
-        report = _build_worker_report(
-            dataset_names=dataset_names,
-            dataset_cache=dataset_cache,
-            policy=policy,
-            runtime_samples=runtime_samples,
-            postprocess_enabled=postprocess_enabled,
-        )
-
-        sys.stdout.write(report)
-        sys.stdout.flush()
-        return 0
-    finally:
-        _restore_config(snapshot)
-
-
-def _run_subprocess_worker(
-    *,
-    script_path: Path,
-    eval_root: Path,
-    dataset_names: List[str],
-    policy: str,
-    postprocess_enabled: bool,
-    runtime_samples: int,
-) -> str:
-    cmd = [
-        sys.executable,
-        str(script_path),
-        "--worker",
-        "--eval-root",
-        str(eval_root),
-        "--policy",
-        policy,
-        "--postprocess",
-        "on" if postprocess_enabled else "off",
-        "--runtime-samples",
-        str(runtime_samples),
+    lines = [
+        "",
+        "GLOBAL RUNTIME SUMMARY",
+        "======================================================================",
+        f"datasets={dataset_count}",
+        f"runs_per_dataset={runs_per_dataset}",
+        f"total_runs={len(all_values_ms)}",
+        f"total_chars={total_chars}",
+        f"total_resolved_labels={total_hits}",
+        "",
+        "ALL RUNS",
+        f"mean_ms={mean_all:.3f}",
+        f"median_ms={median_all:.3f}",
+        f"min_ms={min_all:.3f}",
+        f"max_ms={max_all:.3f}",
+        f"delta_ms={delta_all:.3f}",
+        f"stdev_ms={stdev_all:.3f}",
+        "",
+        "PER-DATASET MEAN RUNTIMES",
+        f"mean_ms={mean_dataset_mean:.3f}",
+        f"median_ms={median_dataset_mean:.3f}",
+        f"min_ms={min_dataset_mean:.3f}",
+        f"max_ms={max_dataset_mean:.3f}",
+        f"delta_ms={delta_dataset_mean:.3f}",
+        f"stdev_ms={stdev_dataset_mean:.3f}",
+        "",
+        "LABEL-NORMALIZED RUNTIME",
+        f"estimated_total_runtime_ms={total_runtime_ms:.3f}",
+        f"resolved_labels_across_all_datasets={total_hits}",
+        f"resolved_labels_across_all_runs={total_processed_labels_across_runs}",
+        f"average_runtime_per_resolved_label_ms={average_runtime_per_resolved_label_ms:.3f}",
+        "",
     ]
-
-    if dataset_names:
-        cmd.append("--only")
-        cmd.extend(dataset_names)
-
-    result = subprocess.run(
-        cmd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-        cwd=str(REPO_ROOT),
-        check=False,
-    )
-
-    if result.returncode != 0:
-        stderr = (result.stderr or "").strip()
-        stdout = (result.stdout or "").strip()
-        message_parts: List[str] = [
-            f"Worker failed for policy={policy}, postprocess={'on' if postprocess_enabled else 'off'}",
-        ]
-        if stdout:
-            message_parts.append(f"STDOUT:\n{stdout}")
-        if stderr:
-            message_parts.append(f"STDERR:\n{stderr}")
-        raise RuntimeError("\n\n".join(message_parts))
-
-    return result.stdout
+    return "\n".join(lines)
 
 
-def _build_main_report_prefix(
+def _run_model_benchmark(
     *,
-    dataset_count: int,
-    runtime_samples: int,
-    postprocess_enabled: bool,
-) -> str:
-    lines: List[str] = []
-    lines.append("RUNTIME REPORT")
-    lines.append("=" * 80)
-    lines.append(f"POSTPROCESSING: {'on' if postprocess_enabled else 'off'}")
-    lines.append(f"DATASETS: {dataset_count}")
-    lines.append(f"RUNTIME RUNS PER TEXT: {runtime_samples}")
-    lines.append("MEASUREMENT: pure execution time of erkenne(text)")
-    lines.append("WARM-UP: one untimed warm-up run per text")
-    lines.append("")
-    return "\n".join(lines) + "\n"
-
-
-def _run_main(
-    *,
-    script_path: Path,
     eval_root: Path,
     result_root: Path,
     dataset_names: List[str],
-    selected_policies: List[str],
-    runtime_samples: int,
-    only_post: str | None,
-) -> int:
-    if only_post == "on":
-        run_variants = [True]
-    elif only_post == "off":
-        run_variants = [False]
-    else:
-        run_variants = [False, True]
+    model_key: str,
+    runs: int,
+) -> Path:
+    model_spec = MODEL_SPECS[model_key]
 
-    for postprocess_enabled in run_variants:
-        variant_name = "postprocess_on" if postprocess_enabled else "postprocess_off"
-        variant_root = result_root / variant_name
-        variant_root.mkdir(parents=True, exist_ok=True)
+    _set_ner_runtime(model_key)
+    _apply_policy("secure")
+    config.set("use_ner_postprocessing", True)
 
-        report_parts: List[str] = [
-            _build_main_report_prefix(
-                dataset_count=len(dataset_names),
-                runtime_samples=runtime_samples,
-                postprocess_enabled=postprocess_enabled,
-            ).rstrip()
-        ]
+    model_result_dir = result_root / "runtime_secure_postprocess_on"
+    model_result_dir.mkdir(parents=True, exist_ok=True)
 
-        for policy in selected_policies:
-            worker_output = _run_subprocess_worker(
-                script_path=script_path,
-                eval_root=eval_root,
-                dataset_names=dataset_names,
-                policy=policy,
-                postprocess_enabled=postprocess_enabled,
-                runtime_samples=runtime_samples,
-            ).rstrip()
+    output_path = model_result_dir / f"{model_key}_times.txt"
 
-            report_parts.append(worker_output)
+    lines: List[str] = [
+        "RUNTIME REPORT",
+        "======================================================================",
+        f"policy=secure",
+        f"postprocessing=on",
+        f"ner_backend={model_spec['ner_backend']}",
+        f"ner_model={model_spec['ner_model']}",
+        f"runs_per_dataset={max(1, int(runs))}",
+        "measurement=pure execution time of erkenne(text)",
+        "warmup=one untimed warm-up run per text",
+        "",
+        "DATASET      | DOMAIN        | STRUCTURE    | CHARS | LABELS |  MEAN_MS | MEDIAN_MS |   MIN_MS |   MAX_MS | DELTA_MS | STDEV_MS | MS_PER_LABEL",
+        "-----------------------------------------------------------------------------------------------------------------------------------------------------",
+    ]
 
-        final_report = "\n\n".join(part for part in report_parts if part).rstrip() + "\n"
-        target_path = variant_root / "times.txt"
-        _write_text(target_path, final_report)
-        print(f"Wrote: {target_path}")
+    all_values_ms: List[float] = []
+    per_dataset_means_ms: List[float] = []
+    total_chars = 0
+    total_hits = 0
 
-    return 0
+    for idx, dataset_name in enumerate(dataset_names, start=1):
+        text_path = _resolve_text_path(eval_root, dataset_name)
+
+        if not text_path.exists():
+            raise FileNotFoundError(f"Missing text file: {text_path}")
+
+        text = _read_text(text_path)
+        domain, structure = _dataset_meta(dataset_name)
+
+        values_ms, hit_count = _measure_erkenne_runtime_ms(
+            text=text,
+            runs=max(1, int(runs)),
+        )
+
+        total_chars += len(text)
+        total_hits += hit_count
+        all_values_ms.extend(values_ms)
+        per_dataset_means_ms.append(statistics.mean(values_ms) if values_ms else 0.0)
+
+        lines.append(
+            _format_dataset_runtime_line(
+                dataset_name=dataset_name,
+                domain=domain,
+                structure=structure,
+                char_count=len(text),
+                hit_count=hit_count,
+                values_ms=values_ms,
+            )
+        )
+
+        print(f"[{model_key}] [{idx:02d}/{len(dataset_names):02d}] {dataset_name} fertig")
+
+    lines.append(
+        _format_global_runtime_summary(
+            all_values_ms=all_values_ms,
+            per_dataset_means_ms=per_dataset_means_ms,
+            dataset_count=len(dataset_names),
+            total_chars=total_chars,
+            total_hits=total_hits,
+            runs_per_dataset=max(1, int(runs)),
+        )
+    )
+
+    output_path.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
+    print(f"Wrote: {output_path}")
+    return output_path
+
+
+def _build_combined_summary(result_paths: List[Path], output_path: Path) -> None:
+    sections: List[str] = []
+
+    for path in result_paths:
+        content = path.read_text(encoding="utf-8").rstrip()
+        sections.append(content)
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("\n\n".join(sections).rstrip() + "\n", encoding="utf-8")
+    print(f"Wrote: {output_path}")
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--eval-root", default="evaluation")
-    parser.add_argument("--runtime-samples", type=int, default=5)
-    parser.add_argument(
-        "--policies",
-        nargs="*",
-        default=["minimal", "secure"],
-        choices=sorted(POLICY_SPECS.keys()),
-        help="Policies to benchmark",
-    )
-    parser.add_argument(
-        "--only-post",
-        choices=["on", "off"],
-        default=None,
-        help="Optional: run only one variant instead of both",
-    )
+    parser.add_argument("--runs", type=int, default=5)
     parser.add_argument("--only", nargs="*", default=None, help="Run only these dataset basenames")
-    parser.add_argument("--worker", action="store_true")
-    parser.add_argument("--policy", choices=sorted(POLICY_SPECS.keys()), default=None)
-    parser.add_argument("--postprocess", choices=["on", "off"], default=None)
+    parser.add_argument(
+        "--models",
+        nargs="*",
+        default=["spacy", "flair"],
+        choices=sorted(MODEL_SPECS.keys()),
+        help="NER models/backends to benchmark",
+    )
     args = parser.parse_args()
 
     eval_root = Path(args.eval_root)
     result_root = eval_root / "result"
-    result_root.mkdir(parents=True, exist_ok=True)
 
     dataset_names = _discover_datasets(eval_root)
     if args.only:
@@ -604,33 +478,36 @@ def main() -> int:
     if not dataset_names:
         raise SystemExit("No datasets found (no gold json files).")
 
-    if args.worker:
-        if not args.policy:
-            raise SystemExit("--worker requires --policy")
-        if not args.postprocess:
-            raise SystemExit("--worker requires --postprocess")
+    selected_models = [m for m in args.models if m in MODEL_SPECS]
+    if not selected_models:
+        raise SystemExit("No models selected.")
 
-        return _run_worker(
-            eval_root=eval_root,
-            dataset_names=dataset_names,
-            policy=args.policy,
-            postprocess_enabled=(args.postprocess == "on"),
-            runtime_samples=max(1, int(args.runtime_samples)),
+    snapshot = _snapshot_config()
+
+    try:
+        result_paths: List[Path] = []
+
+        for model_key in selected_models:
+            result_path = _run_model_benchmark(
+                eval_root=eval_root,
+                result_root=result_root,
+                dataset_names=dataset_names,
+                model_key=model_key,
+                runs=max(1, int(args.runs)),
+            )
+            result_paths.append(result_path)
+
+        combined_path = (
+            result_root
+            / "runtime_secure_postprocess_on"
+            / "combined_runtime_report.txt"
         )
+        _build_combined_summary(result_paths, combined_path)
 
-    selected_policies = [policy for policy in args.policies if policy in POLICY_SPECS]
-    if not selected_policies:
-        raise SystemExit("No policies selected.")
+    finally:
+        _restore_config(snapshot)
 
-    return _run_main(
-        script_path=Path(__file__).resolve(),
-        eval_root=eval_root,
-        result_root=result_root,
-        dataset_names=dataset_names,
-        selected_policies=selected_policies,
-        runtime_samples=max(1, int(args.runtime_samples)),
-        only_post=args.only_post,
-    )
+    return 0
 
 
 if __name__ == "__main__":

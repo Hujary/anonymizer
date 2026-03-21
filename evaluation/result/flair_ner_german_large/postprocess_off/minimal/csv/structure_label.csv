@@ -1,0 +1,16 @@
+policy,structure,label,tp,fp,fn,precision,recall,f1
+minimal,regular,E_MAIL,14,0,0,1.000000,1.000000,1.000000
+minimal,regular,PER,44,1,0,0.977778,1.000000,0.988764
+minimal,regular,STRASSE,8,0,0,1.000000,1.000000,1.000000
+minimal,regular,TELEFON,7,0,0,1.000000,1.000000,1.000000
+minimal,structured,E_MAIL,12,0,0,1.000000,1.000000,1.000000
+minimal,structured,IBAN,2,0,0,1.000000,1.000000,1.000000
+minimal,structured,IP_ADRESSE,1,0,0,1.000000,1.000000,1.000000
+minimal,structured,PER,32,1,1,0.969697,0.969697,0.969697
+minimal,structured,STRASSE,7,1,1,0.875000,0.875000,0.875000
+minimal,structured,TELEFON,7,0,0,1.000000,1.000000,1.000000
+minimal,unstructured,E_MAIL,13,0,0,1.000000,1.000000,1.000000
+minimal,unstructured,IP_ADRESSE,1,0,0,1.000000,1.000000,1.000000
+minimal,unstructured,PER,45,0,0,1.000000,1.000000,1.000000
+minimal,unstructured,STRASSE,6,0,0,1.000000,1.000000,1.000000
+minimal,unstructured,TELEFON,6,0,0,1.000000,1.000000,1.000000

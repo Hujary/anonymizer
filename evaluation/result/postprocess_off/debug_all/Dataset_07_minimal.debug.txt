@@ -1,7 +1,0 @@
-DATASET: Dataset_07 | DOMAIN: E-Mail | STRUCTURE: structured | VARIANT: 1 | POLICY: minimal | POSTPROCESSING: off
-TP=7 FP=0 FN=1 | P=1.000 R=0.875 F1=0.933
-----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - PER            141:152 [gold] 'Frau Berger' ctx='-0311\n\nSehr geehrte ▮Frau Berger▮,\n\nbezugnehmend auf '
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0

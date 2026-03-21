@@ -1,0 +1,7 @@
+DATASET: Dataset_03 | DOMAIN: Supporttickets | STRUCTURE: regular | VARIANT: 1 | POLICY: secure | NER_BACKEND: spacy | NER_MODEL: de_core_news_lg | POSTPROCESSING: on
+TP=6 FP=0 FN=1 | P=1.000 R=0.857 F1=0.923
+----------------------------------------------------------------------
+NOT DETECTED (FN): 1
+  - ORG            313:330 [gold] 'Klein Handel GmbH' ctx='Daten:\nTobias Klein\n▮Klein Handel GmbH▮\ntobias.klein@klein-'
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 0

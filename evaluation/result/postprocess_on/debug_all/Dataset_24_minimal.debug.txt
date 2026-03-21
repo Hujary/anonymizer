@@ -1,7 +1,0 @@
-DATASET: Dataset_24 | DOMAIN: Verträge | STRUCTURE: unstructured | VARIANT: 2 | POLICY: minimal | POSTPROCESSING: on
-TP=5 FP=0 FN=1 | P=1.000 R=0.833 F1=0.909
-----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - PER            307:317 [gold] 'Herr Weber' ctx='rtrag geschlossen:\n\n▮Herr Weber▮ wird ab dem 01.06.2'
-NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0

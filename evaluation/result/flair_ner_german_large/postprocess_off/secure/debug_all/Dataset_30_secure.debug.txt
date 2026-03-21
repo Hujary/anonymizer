@@ -1,0 +1,7 @@
+DATASET: Dataset_30 | DOMAIN: Chats | STRUCTURE: unstructured | VARIANT: 2 | POLICY: secure | NER_BACKEND: flair | NER_MODEL: flair/ner-german-large | POSTPROCESSING: off
+TP=22 FP=1 FN=0 | P=0.957 R=1.000 F1=0.978
+----------------------------------------------------------------------
+NOT DETECTED (FN): 0
+NOT FULLY DETECTED (PARTIAL): 0
+UNEXPECTED (FP): 1
+  - ORG            28:44 [ner] 'IntraLog Systems' ctx='us Slack\nWorkspace: ▮IntraLog Systems▮\nChannel: #projekt-a'
