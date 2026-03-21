@@ -3,6 +3,8 @@
   "use_ner": true,
   "debug_mask": false,
   "spacy_model": "de_core_news_lg",
+  "ner_backend": "flair",
+  "ner_model": "flair/ner-german-large",
   "theme": "light",
   "lang": "de",
   "ner_labels": [
@@ -26,5 +28,5 @@
   "reversible_masking": true,
   "use_ner_postprocessing": true,
   "copy_ai_prompt_enabled": false,
-  "debug_ner_result": false
+  "debug_ner_result": true
 }

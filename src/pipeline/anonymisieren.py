@@ -11,27 +11,60 @@ from detectors.regex import finde_regex
 from detectors.custom.manual_dict import finde_manual_tokens
 
 
-def _resolve_spacy_model_name() -> Optional[str]:
-    model = config.get("spacy_model", None)
+def _resolve_ner_backend() -> str:
+    backend = config.get("ner_backend", "spacy")
+    if isinstance(backend, str):
+        backend = backend.strip().lower()
+    else:
+        backend = "spacy"
+
+    if backend not in ("spacy", "flair"):
+        return "spacy"
+
+    return backend
+
+
+def _resolve_ner_model_name() -> Optional[str]:
+    model = config.get("ner_model", None)
     if isinstance(model, str) and model.strip():
         return model.strip()
     return None
 
 
-def _is_ner_runtime_available() -> bool:
+def _is_spacy_model_available(model_name: str) -> bool:
     try:
         from spacy.util import is_package
     except Exception:
-        return False
-
-    model_name = _resolve_spacy_model_name()
-    if not model_name:
         return False
 
     try:
         return bool(is_package(model_name))
     except Exception:
         return False
+
+
+def _is_flair_available() -> bool:
+    try:
+        import importlib.util
+        return importlib.util.find_spec("flair") is not None
+    except Exception:
+        return False
+
+
+def _is_ner_runtime_available() -> bool:
+    backend = _resolve_ner_backend()
+    model_name = _resolve_ner_model_name()
+
+    if not model_name:
+        return False
+
+    if backend == "spacy":
+        return _is_spacy_model_available(model_name)
+
+    if backend == "flair":
+        return _is_flair_available()
+
+    return False
 
 
 def _run_ner(text: str) -> List[Treffer]:
@@ -52,7 +85,11 @@ def _overlaps_any(a: Treffer, hits: List[Treffer]) -> bool:
     return any(a.überschneidet(h) for h in hits)
 
 
-def _flagge_quellen(merged: List[Treffer], regex_hits: List[Treffer], ner_hits: List[Treffer]) -> List[Treffer]:
+def _flagge_quellen(
+    merged: List[Treffer],
+    regex_hits: List[Treffer],
+    ner_hits: List[Treffer],
+) -> List[Treffer]:
     out: List[Treffer] = []
 
     for m in merged:

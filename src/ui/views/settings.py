@@ -1,9 +1,17 @@
 from __future__ import annotations
 
 import flet as ft
-from detectors.ner.ner_core import get_current_model, set_spacy_model
-from ui.style.translations import t
+
 from core import config
+from detectors.ner.model_manager import MODEL_MANAGER
+from detectors.ner.ner_core import (
+    get_current_backend,
+    get_current_model,
+    set_flair_model,
+    set_ner_backend,
+    set_spacy_model,
+)
+from ui.style.translations import t
 
 
 def view(
@@ -18,61 +26,75 @@ def view(
     if lang not in ("de", "en"):
         lang = "de"
 
-    model_map = {"fast": "de_core_news_md", "large": "de_core_news_lg"}
+    installed_spacy = MODEL_MANAGER.available_spacy_models()
+    installed_spacy_keys = [k for k, _ in installed_spacy]
 
-    def _installed_models() -> list[tuple[str, str]]:
-        try:
-            from spacy.util import is_package
-        except Exception:
-            return []
+    installed_flair = MODEL_MANAGER.available_flair_models()
+    installed_flair_keys = [k for k, _ in installed_flair]
 
-        out: list[tuple[str, str]] = []
-        fast = model_map["fast"]
-        large = model_map["large"]
+    backend_options_available = ["spacy"]
+    if MODEL_MANAGER.flair_available():
+        backend_options_available.append("flair")
 
-        try:
-            if is_package(fast):
-                out.append(("fast", fast))
-        except Exception:
-            pass
+    cfg_backend = str(config.get("ner_backend", "spacy") or "spacy").strip().lower()
+    runtime_backend = str(get_current_backend() or "").strip().lower()
+    current_backend = runtime_backend or cfg_backend
 
-        try:
-            if is_package(large):
-                out.append(("large", large))
-        except Exception:
-            pass
+    if current_backend not in backend_options_available:
+        current_backend = "spacy"
 
+    config.set("ner_backend", current_backend)
+
+    current_model_name = str(get_current_model() or config.get("ner_model", "") or "").strip()
+
+    if current_backend == "spacy":
+        if current_model_name not in installed_spacy_keys:
+            if installed_spacy_keys:
+                current_model_name = "de_core_news_lg" if "de_core_news_lg" in installed_spacy_keys else installed_spacy_keys[0]
+                config.set("ner_model", current_model_name)
+            else:
+                current_model_name = ""
+                config.set("ner_model", "")
+    else:
+        if current_model_name not in installed_flair_keys:
+            if installed_flair_keys:
+                current_model_name = installed_flair_keys[0]
+                config.set("ner_model", current_model_name)
+            else:
+                current_model_name = ""
+                config.set("ner_model", "")
+
+    def backend_options(for_lang: str) -> list[ft.dropdown.Option]:
+        labels = {
+            "de": {
+                "spacy": "spaCy",
+                "flair": "Flair",
+            },
+            "en": {
+                "spacy": "spaCy",
+                "flair": "Flair",
+            },
+        }
+
+        out: list[ft.dropdown.Option] = []
+        for key in backend_options_available:
+            out.append(ft.dropdown.Option(key=key, text=labels[for_lang][key]))
         return out
 
-    installed = _installed_models()
-    installed_keys = [k for k, _ in installed]
-
-    cfg_model = config.get("spacy_model", None)
-    cfg_model = cfg_model.strip() if isinstance(cfg_model, str) else ""
-    runtime_current_model = get_current_model()
-    runtime_current_model = str(runtime_current_model) if runtime_current_model else ""
-
-    current_model_name = runtime_current_model or cfg_model
-    if current_model_name in model_map.values():
-        current_key = "large" if current_model_name.endswith("_lg") else "fast"
-    else:
-        current_key = "large"
-
-    if installed_keys:
-        if current_key not in installed_keys:
-            current_key = installed_keys[0]
-        current_model = model_map[current_key]
-        config.set("spacy_model", current_model)
-    else:
-        config.set("spacy_model", "")
-
-    def ner_options(for_lang: str) -> list[ft.dropdown.Option]:
+    def ner_options(backend: str) -> list[ft.dropdown.Option]:
         opts: list[ft.dropdown.Option] = []
-        for key in installed_keys:
-            label = t(for_lang, "ner_model.fast") if key == "fast" else t(for_lang, "ner_model.large")
-            opts.append(ft.dropdown.Option(key=key, text=label))
+
+        if backend == "flair":
+            for key in installed_flair_keys:
+                opts.append(ft.dropdown.Option(key=key, text=key))
+            return opts
+
+        for key in installed_spacy_keys:
+            opts.append(ft.dropdown.Option(key=key, text=key))
+
         return opts
 
+    backend_ref = ft.Ref[ft.Dropdown]()
     model_ref = ft.Ref[ft.Dropdown]()
     lang_ref = ft.Ref[ft.Dropdown]()
 
@@ -136,7 +158,13 @@ def view(
     divider_color = theme.get("divider", theme.get("surface_muted"))
 
     saved_label = ft.Text(
-        f"{t(lang, 'loaded')}: {config.get('spacy_model', '') or '-'}",
+        f"{t(lang, 'loaded')}: {get_current_model() or '-'}",
+        size=12,
+        color=theme["text_secondary"],
+    )
+
+    backend_info_label = ft.Text(
+        f"Backend: {current_backend}",
         size=12,
         color=theme["text_secondary"],
     )
@@ -148,7 +176,7 @@ def view(
 
     def _persist_flags_and_labels():
         use_regex = bool(selected_rx)
-        use_ner = bool(selected_ner) and bool(installed_keys)
+        use_ner = bool(selected_ner)
         current_flags = config.get_flags()
         config.set_flags(
             use_regex=use_regex,
@@ -183,6 +211,136 @@ def view(
             on_change=handle_lang_change,
         )
 
+    def make_backend_dropdown(cur_lang: str, backend_value: str) -> ft.Dropdown:
+        dd = ft.Dropdown(
+            ref=backend_ref,
+            label="NER Backend",
+            options=backend_options(cur_lang),
+            value=backend_value,
+            width=220,
+        )
+
+        def on_backend_change(e: ft.ControlEvent):
+            new_backend = str(e.control.value or "spacy").strip().lower()
+
+            try:
+                effective_backend = set_ner_backend(new_backend)
+            except Exception as ex:
+                page.snack_bar = ft.SnackBar(
+                    ft.Text(
+                        f"NER-Backend konnte nicht gesetzt werden: {ex}"
+                        if cur_lang == "de"
+                        else f"Failed to set NER backend: {ex}"
+                    ),
+                    bgcolor=theme.get("danger", ft.Colors.RED),
+                )
+                page.snack_bar.open = True
+                page.update()
+                return
+
+            config.set("ner_backend", effective_backend)
+
+            if effective_backend == "spacy":
+                spacy_keys = [k for k, _ in MODEL_MANAGER.available_spacy_models()]
+                if spacy_keys:
+                    fallback_model = "de_core_news_lg" if "de_core_news_lg" in spacy_keys else spacy_keys[0]
+                    eff = set_spacy_model(fallback_model)
+                    config.set("ner_model", eff)
+                else:
+                    config.set("ner_model", "")
+            else:
+                flair_keys = [k for k, _ in MODEL_MANAGER.available_flair_models()]
+                if flair_keys:
+                    eff = set_flair_model(flair_keys[0])
+                    config.set("ner_model", eff)
+                else:
+                    config.set("ner_model", "")
+
+            model_control = make_model_dropdown(cur_lang, effective_backend)
+            model_host.content = ft.Column([model_control, backend_info_label, saved_label], spacing=6)
+            backend_info_label.value = f"Backend: {effective_backend}"
+            saved_label.value = f"{t(cur_lang, 'loaded')}: {get_current_model() or '-'}"
+            _persist_flags_and_labels()
+            _notify_saved("Gespeichert" if cur_lang == "de" else "Saved")
+            page.update()
+
+        dd.on_change = on_backend_change
+        return dd
+
+    def make_model_dropdown(cur_lang: str, backend_value: str) -> ft.Control:
+        options = ner_options(backend_value)
+
+        if not options:
+            message = (
+                "Kein passendes NER-Modell installiert"
+                if cur_lang == "de"
+                else "No matching NER model installed"
+            )
+            return ft.Container(
+                content=ft.Text(
+                    message,
+                    size=12,
+                    color=theme["text_secondary"],
+                ),
+                width=420,
+            )
+
+        current_value = str(config.get("ner_model", get_current_model()) or "").strip()
+        valid_keys = [opt.key for opt in options]
+
+        if current_value not in valid_keys:
+            current_value = valid_keys[0]
+            config.set("ner_model", current_value)
+
+        dd = ft.Dropdown(
+            ref=model_ref,
+            label="NER Modell" if cur_lang == "de" else "NER model",
+            options=options,
+            value=current_value,
+            width=420,
+        )
+
+        def on_model_change(e: ft.ControlEvent):
+            chosen = str(e.control.value or "").strip()
+            if not chosen:
+                return
+
+            try:
+                if backend_value == "flair":
+                    eff = set_flair_model(chosen)
+                else:
+                    eff = set_spacy_model(chosen)
+            except Exception as ex:
+                page.snack_bar = ft.SnackBar(
+                    ft.Text(
+                        f"NER-Modell konnte nicht geladen werden: {ex}"
+                        if cur_lang == "de"
+                        else f"Failed to load NER model: {ex}"
+                    ),
+                    bgcolor=theme.get("danger", ft.Colors.RED),
+                )
+                page.snack_bar.open = True
+                page.update()
+                return
+
+            config.set("ner_model", eff)
+            backend_info_label.value = f"Backend: {backend_value}"
+            saved_label.value = f"{t(cur_lang, 'loaded')}: {eff}"
+            _persist_flags_and_labels()
+            _notify_saved("Gespeichert" if cur_lang == "de" else "Saved")
+            page.update()
+
+        dd.on_change = on_model_change
+        return dd
+
+    model_control = make_model_dropdown(lang, current_backend)
+    model_host = ft.Container(
+        content=ft.Column([model_control, backend_info_label, saved_label], spacing=6),
+        width=420,
+    )
+    lang_host = ft.Container(content=make_lang_dropdown(lang), width=260)
+    backend_host = ft.Container(content=make_backend_dropdown(lang, current_backend), width=220)
+
     theme_switch = ft.Switch(label=t(lang, "dark_mode"), value=(theme_name == "dark"))
 
     def toggle_theme(_):
@@ -211,66 +369,6 @@ def view(
         _notify_saved("Gespeichert" if lang == "de" else "Saved")
 
     copy_ai_prompt_switch.on_change = toggle_copy_ai_prompt
-
-    def make_model_dropdown(cur_lang: str, value_key: str) -> ft.Control:
-        if not installed_keys:
-            return ft.Container(
-                content=ft.Text(
-                    "Kein spaCy-NER-Modell installiert (pip install de_core_news_md oder de_core_news_lg)"
-                    if cur_lang == "de"
-                    else "No spaCy NER model installed (pip install de_core_news_md or de_core_news_lg)",
-                    size=12,
-                    color=theme["text_secondary"],
-                ),
-                width=420,
-            )
-
-        dd = ft.Dropdown(
-            ref=model_ref,
-            label=t(cur_lang, "ner_model"),
-            options=ner_options(cur_lang),
-            value=value_key,
-            width=420,
-        )
-
-        def on_model_change(e: ft.ControlEvent):
-            key = e.control.value
-            if not key or key not in installed_keys:
-                return
-
-            target = model_map.get(key, model_map["large"])
-
-            try:
-                eff = set_spacy_model(target)
-            except Exception as ex:
-                page.snack_bar = ft.SnackBar(
-                    ft.Text(
-                        f"NER-Modell konnte nicht geladen werden: {ex}"
-                        if cur_lang == "de"
-                        else f"Failed to load NER model: {ex}"
-                    ),
-                    bgcolor=theme.get("danger", ft.Colors.RED),
-                )
-                page.snack_bar.open = True
-                page.update()
-                return
-
-            config.set("spacy_model", eff)
-            saved_label.value = f"{t(cur_lang, 'loaded')}: {eff}"
-            _persist_flags_and_labels()
-            _notify_saved("Gespeichert" if cur_lang == "de" else "Saved")
-            page.update()
-
-        dd.on_change = on_model_change
-        return dd
-
-    lang_host = ft.Container(content=make_lang_dropdown(lang), width=260)
-    model_control = make_model_dropdown(lang, current_key)
-
-    model_host = ft.Container(
-        content=ft.Column([model_control, saved_label], spacing=6),
-        width=420,
-    )
 
     ner_col_left = ft.Column(spacing=6)
     ner_col_right = ft.Column(spacing=6)
@@ -414,6 +512,8 @@ def view(
         ft.Row(
             [
                 lang_host,
+                ft.Container(width=20),
+                backend_host,
                 ft.Container(width=20),
                 model_host,
             ],
