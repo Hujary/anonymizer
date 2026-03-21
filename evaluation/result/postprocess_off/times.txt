@@ -20,11 +20,18 @@ LABEL_DISTRIBUTION: E_MAIL=39, IBAN=2, IP_ADRESSE=2, PER=122, STRASSE=22, TELEFO
 RUNTIME SUMMARY
 --------------------------------------------------------------------------------
 samples : 150
-mean_ms : 21.118
-median_ms : 17.049
-min_ms : 12.148
-max_ms : 44.088
-stdev_ms : 8.972
+mean_ms : 22.663
+median_ms : 17.990
+min_ms : 12.029
+max_ms : 53.142
+stdev_ms : 11.019
+
+LABEL-NORMALIZED RUNTIME
+--------------------------------------------------------------------------------
+estimated_total_runtime_ms : 3399.388
+resolved_labels_across_all_datasets : 202
+resolved_labels_across_all_runs : 1010
+average_runtime_per_resolved_label_ms : 3.366
 
 POLICY: secure
 --------------------------------------------------------------------------------
@@ -40,8 +47,15 @@ LABEL_DISTRIBUTION: DATUM=72, E_MAIL=39, IBAN=2, IP_ADRESSE=2, LOC=46, ORG=53, P
 RUNTIME SUMMARY
 --------------------------------------------------------------------------------
 samples : 150
-mean_ms : 21.609
-median_ms : 17.682
-min_ms : 12.593
-max_ms : 46.658
-stdev_ms : 9.031
+mean_ms : 23.769
+median_ms : 18.792
+min_ms : 12.510
+max_ms : 55.774
+stdev_ms : 11.497
+
+LABEL-NORMALIZED RUNTIME
+--------------------------------------------------------------------------------
+estimated_total_runtime_ms : 3565.407
+resolved_labels_across_all_datasets : 423
+resolved_labels_across_all_runs : 2115
+average_runtime_per_resolved_label_ms : 1.686

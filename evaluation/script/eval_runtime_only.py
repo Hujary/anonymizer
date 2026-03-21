@@ -252,22 +252,91 @@ def _write_text(path: Path, value: str) -> None:
     path.write_text(value.rstrip() + "\n", encoding="utf-8")
 
 
+def _is_hit_like(obj: Any) -> bool:
+    if obj is None:
+        return False
+
+    if isinstance(obj, dict):
+        return (
+            ("start" in obj and ("ende" in obj or "end" in obj) and "label" in obj)
+            or ("s" in obj and "e" in obj and "label" in obj)
+        )
+
+    return hasattr(obj, "start") and hasattr(obj, "label") and (hasattr(obj, "ende") or hasattr(obj, "end"))
+
+
+def _extract_hits_count(value: Any) -> int:
+    if value is None:
+        return 0
+
+    if isinstance(value, dict):
+        direct_keys = [
+            "hits",
+            "treffer",
+            "results",
+            "detections",
+            "entities",
+            "recognized",
+            "recognized_hits",
+            "resolved_hits",
+        ]
+        for key in direct_keys:
+            if key in value:
+                count = _extract_hits_count(value[key])
+                if count > 0:
+                    return count
+
+        best = 0
+        for sub_value in value.values():
+            best = max(best, _extract_hits_count(sub_value))
+        return best
+
+    if isinstance(value, (list, tuple)):
+        if not value:
+            return 0
+
+        if all(_is_hit_like(item) for item in value):
+            return len(value)
+
+        best = 0
+        for item in value:
+            best = max(best, _extract_hits_count(item))
+        return best
+
+    if hasattr(value, "hits"):
+        return _extract_hits_count(getattr(value, "hits"))
+
+    if hasattr(value, "treffer"):
+        return _extract_hits_count(getattr(value, "treffer"))
+
+    if hasattr(value, "results"):
+        return _extract_hits_count(getattr(value, "results"))
+
+    if hasattr(value, "detections"):
+        return _extract_hits_count(getattr(value, "detections"))
+
+    return 0
+
+
 def _measure_erkenne_runtime_ms(
     *,
     text: str,
     samples: int,
-) -> List[float]:
+) -> Tuple[List[float], int]:
     values: List[float] = []
 
-    erkenne(text)
+    warmup_result = erkenne(text)
+    last_count = _extract_hits_count(warmup_result)
 
     for _ in range(max(1, int(samples))):
         t0 = time.perf_counter_ns()
-        erkenne(text)
+        result = erkenne(text)
         t1 = time.perf_counter_ns()
-        values.append((t1 - t0) / 1_000_000.0)
 
-    return values
+        values.append((t1 - t0) / 1_000_000.0)
+        last_count = _extract_hits_count(result)
+
+    return values, last_count
 
 
 def _build_worker_report(
@@ -285,20 +354,30 @@ def _build_worker_report(
     )
 
     all_runtime_values: List[float] = []
+    total_resolved_labels = 0
 
     for dataset_name in dataset_names:
         text, _ = dataset_cache[dataset_name]
-        values = _measure_erkenne_runtime_ms(
+        values, hit_count = _measure_erkenne_runtime_ms(
             text=text,
             samples=runtime_samples,
         )
         all_runtime_values.extend(values)
+        total_resolved_labels += hit_count
 
     mean_ms = statistics.mean(all_runtime_values) if all_runtime_values else 0.0
     median_ms = statistics.median(all_runtime_values) if all_runtime_values else 0.0
     min_ms = min(all_runtime_values) if all_runtime_values else 0.0
     max_ms = max(all_runtime_values) if all_runtime_values else 0.0
     stdev_ms = statistics.pstdev(all_runtime_values) if len(all_runtime_values) > 1 else 0.0
+
+    total_runtime_ms = sum(all_runtime_values)
+    total_resolved_labels_across_all_runs = total_resolved_labels * max(1, int(runtime_samples))
+    average_runtime_per_resolved_label_ms = (
+        total_runtime_ms / total_resolved_labels_across_all_runs
+        if total_resolved_labels_across_all_runs
+        else 0.0
+    )
 
     label_counts = policy_stats["label_counts"]
     if label_counts:
@@ -327,6 +406,13 @@ def _build_worker_report(
     lines.append(f"min_ms : {min_ms:.3f}")
     lines.append(f"max_ms : {max_ms:.3f}")
     lines.append(f"stdev_ms : {stdev_ms:.3f}")
+    lines.append("")
+    lines.append("LABEL-NORMALIZED RUNTIME")
+    lines.append("-" * 80)
+    lines.append(f"estimated_total_runtime_ms : {total_runtime_ms:.3f}")
+    lines.append(f"resolved_labels_across_all_datasets : {total_resolved_labels}")
+    lines.append(f"resolved_labels_across_all_runs : {total_resolved_labels_across_all_runs}")
+    lines.append(f"average_runtime_per_resolved_label_ms : {average_runtime_per_resolved_label_ms:.3f}")
     lines.append("")
     lines.append("")
 
