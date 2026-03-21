@@ -1,7 +1,6 @@
 DATASET: Dataset_20 | DOMAIN: Verträge | STRUCTURE: structured | VARIANT: 2 | POLICY: secure | NER_BACKEND: flair | NER_MODEL: flair/ner-german-large | POSTPROCESSING: on
-TP=18 FP=0 FN=1 | P=1.000 R=0.947 F1=0.973
+TP=19 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - STRASSE        164:182 [gold] 'Tubinger Straße 42' ctx='\n\nUrban Coffee GmbH\n▮Tubinger Straße 42▮\n70178 Stuttgart\n\nve'
+NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

@@ -48,7 +48,7 @@ python evaluation/script/gold_validator.py \
   --write-gold
 ```
 
-### Validierung Test Script ausführen (Combined)
+### Validierung Test Script ausführen
 ```bash
 python evaluation/script/eval_all.py --debug --label-report
 ```

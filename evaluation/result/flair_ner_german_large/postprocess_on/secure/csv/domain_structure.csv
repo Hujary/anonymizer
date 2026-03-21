@@ -12,5 +12,5 @@ secure,Supporttickets,regular,13,0,0,1.000000,1.000000,1.000000
 secure,Supporttickets,structured,14,0,0,1.000000,1.000000,1.000000
 secure,Supporttickets,unstructured,16,0,0,1.000000,1.000000,1.000000
 secure,Verträge,regular,33,0,0,1.000000,1.000000,1.000000
-secure,Verträge,structured,35,1,1,0.972222,0.972222,0.972222
+secure,Verträge,structured,36,1,0,0.972973,1.000000,0.986301
 secure,Verträge,unstructured,30,0,0,1.000000,1.000000,1.000000

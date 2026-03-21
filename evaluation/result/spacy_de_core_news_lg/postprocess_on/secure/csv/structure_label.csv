@@ -16,7 +16,7 @@ secure,structured,LOC,9,2,8,0.818182,0.529412,0.642857
 secure,structured,ORG,11,8,6,0.578947,0.647059,0.611111
 secure,structured,PER,31,0,2,1.000000,0.939394,0.968750
 secure,structured,PLZ,8,0,0,1.000000,1.000000,1.000000
-secure,structured,STRASSE,7,0,1,1.000000,0.875000,0.933333
+secure,structured,STRASSE,8,0,0,1.000000,1.000000,1.000000
 secure,structured,TELEFON,7,0,0,1.000000,1.000000,1.000000
 secure,structured,URL,4,0,0,1.000000,1.000000,1.000000
 secure,unstructured,DATUM,25,0,0,1.000000,1.000000,1.000000

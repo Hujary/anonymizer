@@ -18,7 +18,7 @@ Dataset_16,16,HR-Dokumente,regular,2,minimal,3,0,0,1.000000,1.000000,1.000000
 Dataset_17,17,HR-Dokumente,unstructured,1,minimal,3,0,0,1.000000,1.000000,1.000000
 Dataset_18,18,HR-Dokumente,unstructured,2,minimal,5,0,0,1.000000,1.000000,1.000000
 Dataset_19,19,Verträge,structured,1,minimal,8,0,0,1.000000,1.000000,1.000000
-Dataset_20,20,Verträge,structured,2,minimal,4,0,1,1.000000,0.800000,0.888889
+Dataset_20,20,Verträge,structured,2,minimal,5,0,0,1.000000,1.000000,1.000000
 Dataset_21,21,Verträge,regular,1,minimal,5,0,3,1.000000,0.625000,0.769231
 Dataset_22,22,Verträge,regular,2,minimal,6,0,2,1.000000,0.750000,0.857143
 Dataset_23,23,Verträge,unstructured,1,minimal,4,0,0,1.000000,1.000000,1.000000

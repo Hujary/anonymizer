@@ -46,6 +46,6 @@ minimal,Verträge,regular,PER,7,0,5,1.000000,0.583333,0.736842
 minimal,Verträge,regular,STRASSE,4,0,0,1.000000,1.000000,1.000000
 minimal,Verträge,structured,IBAN,1,0,0,1.000000,1.000000,1.000000
 minimal,Verträge,structured,PER,6,0,0,1.000000,1.000000,1.000000
-minimal,Verträge,structured,STRASSE,5,0,1,1.000000,0.833333,0.909091
+minimal,Verträge,structured,STRASSE,6,0,0,1.000000,1.000000,1.000000
 minimal,Verträge,unstructured,PER,5,0,1,1.000000,0.833333,0.909091
 minimal,Verträge,unstructured,STRASSE,4,0,0,1.000000,1.000000,1.000000

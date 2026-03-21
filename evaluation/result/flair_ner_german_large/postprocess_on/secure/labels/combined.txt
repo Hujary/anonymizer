@@ -457,13 +457,14 @@ UNERWARTET (FP): 1
 
 STRASSE
 --------------------------------------------------------------------------------
-ERKANNT (TP): 21
+ERKANNT (TP): 22
   - Dataset_14 23:39 [regex] 'Bahnhofstraße 17'
   - Dataset_15 213:224 [regex] 'Lindenweg 8'
   - Dataset_19 51:66 [regex] 'Uhlandstraße 19'
   - Dataset_19 138:151 [regex] 'Hegelstraße 7'
   - Dataset_19 274:287 [regex] 'Hegelstraße 7'
   - Dataset_20 53:67 [regex] 'Konigstraße 11'
+  - Dataset_20 164:182 [ner] 'Tubinger Straße 42'
   - Dataset_20 383:397 [regex] 'Konigstraße 11'
   - Dataset_21 58:70 [regex] 'Talstraße 14'
   - Dataset_21 128:146 [regex] 'Reinsburgstraße 62'
@@ -482,8 +483,7 @@ ERKANNT (TP): 21
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
-NICHT ERKANNT (FN): 1
-  - Dataset_20 164:182 [gold] 'Tubinger Straße 42'
+NICHT ERKANNT (FN): 0
 
 UNERWARTET (FP): 0
 

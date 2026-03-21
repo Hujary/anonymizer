@@ -96,7 +96,7 @@ secure,Verträge,structured,LOC,9,0,0,1.000000,1.000000,1.000000
 secure,Verträge,structured,ORG,4,1,0,0.800000,1.000000,0.888889
 secure,Verträge,structured,PER,6,0,0,1.000000,1.000000,1.000000
 secure,Verträge,structured,PLZ,6,0,0,1.000000,1.000000,1.000000
-secure,Verträge,structured,STRASSE,5,0,1,1.000000,0.833333,0.909091
+secure,Verträge,structured,STRASSE,6,0,0,1.000000,1.000000,1.000000
 secure,Verträge,unstructured,DATUM,4,0,0,1.000000,1.000000,1.000000
 secure,Verträge,unstructured,LOC,8,0,0,1.000000,1.000000,1.000000
 secure,Verträge,unstructured,ORG,4,0,0,1.000000,1.000000,1.000000
