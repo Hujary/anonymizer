@@ -1,0 +1,9 @@
+RUNTIME COMPARISON
+======================================================================
+policy=secure
+postprocessing=on
+
+MODEL                    | BACKEND | MEAN_MS | MEDIAN_MS | MIN_MS | MAX_MS | STDEV_MS | MS_PER_LABEL | LABELS
+---------------------------------------------------------------------------------------------------------------
+de_core_news_lg          | spacy   |  24.784 |    20.264 | 13.332 | 55.763 |   11.581 |        1.921 |    387
+flair/ner-german-large   | flair   | 208.920 |   169.825 | 122.660 | 653.240 |  128.301 |       15.103 |    415

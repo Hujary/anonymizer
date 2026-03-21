@@ -9,40 +9,44 @@ from .postprocess_helpers.per.process_per_hit import process_per_hit
 from .postprocess_helpers.shared.remove_duplicate_hits import remove_duplicate_hits
 
 
-# Mapping der Label auf ihre jeweiligen Postprocessing-Funktionen
+# Mehrere Labels dürfen denselben Postprocessor verwenden.
+# LOC und STRASSE laufen bewusst beide durch dieselbe Logik,
+# weil dort entschieden wird, ob ein Treffer am Ende LOC oder STRASSE bleibt.
 _POSTPROCESSORS: Dict[str, Callable[[str, Treffer], Treffer | None]] = {
     "LOC": process_loc_hit,
+    "STRASSE": process_loc_hit,
     "PER": process_per_hit,
     "ORG": process_org_hit,
 }
 
 
 def postprocess_hits(text: str, hits: List[Treffer]) -> List[Treffer]:
-    # Führt für jeden Treffer das passende Postprocessing-Modul aus
     result: List[Treffer] = []
 
     for hit in hits:
+        # Label robust normieren, damit z. B. "loc" und "LOC" identisch behandelt werden.
         label = str(hit.label).strip().upper()
-
-        # Passenden Postprocessor anhand des Labels auswählen
         processor = _POSTPROCESSORS.get(label)
 
+        # Treffer ohne registrierten Processor werden ignoriert.
+        # Das ist absichtlich strikt: unbekannte Labels sollen nicht stillschweigend
+        # unverändert durchgeschleust werden.
         if processor is None:
             continue
 
-        # Treffer durch das jeweilige Modul verarbeiten
+        # Label-spezifisches Postprocessing ausführen.
         processed = processor(text, hit)
 
-        # Treffer verwerfen, wenn Postprocessor None zurückgibt
+        # None bedeutet: Treffer wurde bewusst verworfen.
         if processed is None:
             continue
 
         result.append(processed)
 
-    # Doppelte Treffer entfernen
+    # Durch Normalisierung / Erweiterung können Dubletten entstehen.
     result = remove_duplicate_hits(result)
 
-    # Treffer stabil nach Position sortieren
+    # Stabile Sortierung nach Textposition, damit Folgekomponenten deterministisch arbeiten.
     result.sort(key=lambda t: (t.start, t.ende, t.label))
 
     return result

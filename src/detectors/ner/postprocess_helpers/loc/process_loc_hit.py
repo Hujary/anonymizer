@@ -11,18 +11,21 @@ from .loc_blacklists import TECHNICAL_LOC_BLACKLIST
 from .loc_id_validator import is_invalid_loc_id
 
 
-# Token-Splitting für LOC-Spans (z.B. "Monitoring-Service")
+# Tokenisierung für Blacklist-Prüfungen.
+# Trennt u. a. "Monitoring-Service" in einzelne Bestandteile.
 _LOC_TOKEN_SPLIT_RE = re.compile(r"[\s\-_\/]+")
 
 
 def _normalize_blacklist_token(token: str) -> str:
-    # Normalisiert Tokens für Vergleich mit Blacklists
+    # Vergleichstokens vereinheitlichen:
+    # Leerzeichen entfernen, Kleinschreibung erzwingen, typische Randzeichen abschneiden.
     strip_chars = ",.;:(){}[]\"'`„“‚‘-–—"
     return token.strip().lower().strip(strip_chars)
 
 
 def _contains_technical_loc_term(span: str) -> bool:
-    # Prüft, ob der Span technische Begriffe enthält, die keine echten Orte sind
+    # Ein LOC-Span wird verworfen, wenn er technische / systemische Begriffe enthält,
+    # die mit hoher Wahrscheinlichkeit keine echten Orte sind.
     raw_parts = _LOC_TOKEN_SPLIT_RE.split(span)
 
     for raw in raw_parts:
@@ -38,49 +41,57 @@ def _contains_technical_loc_term(span: str) -> bool:
 
 
 def process_loc_hit(text: str, hit: Treffer) -> Treffer | None:
-    # Extrahiert zunächst den ursprünglichen Span
-    input_span = text[hit.start:hit.ende]
-
-    # Prüft, ob im Span eine Straße erkannt werden kann
+    # Bereits als STRASSE klassifizierte Treffer laufen ebenfalls hier hinein.
+    # In diesem Fall wird nur noch validiert bzw. die Hausnummer-Erweiterung geprüft.
     street_span = extract_street_span_from_loc(text, hit.start, hit.ende)
 
+    # Wenn aus dem Treffer eine Straße extrahiert werden kann,
+    # wird das Ergebnis explizit als STRASSE zurückgegeben.
+    # Dabei darf der Treffer auch über den ursprünglichen Span hinaus
+    # auf die direkt folgende Hausnummer erweitert werden.
     if street_span is not None:
         start, end = street_span
 
         return Treffer(
             start,
             end,
-            "LOC",
+            "STRASSE",
             hit.source,
             from_regex=hit.from_regex,
             from_ner=hit.from_ner,
         )
 
-    # Normalisiert den LOC-Span (z.B. Entfernen von Anhängen)
+    # Wenn keine Straße vorliegt, wird der Treffer als normaler LOC-Kandidat weiterbehandelt.
     normalized_loc = normalize_loc_span(text, hit)
 
+    # Unbrauchbare oder vollständig weggefallene Spans werden verworfen.
     if normalized_loc is None:
         return None
 
     span = text[normalized_loc.start:normalized_loc.ende].strip()
 
-    # Leere Spans verwerfen
+    # Leere Spans sind nach Normalisierung nicht mehr verwertbar.
     if not span:
         return None
 
-    # Technische Begriffe (z.B. "Login-Service") verwerfen
+    # Technische Begriffe wie Services, Systeme, IDs etc. sollen nicht als LOC durchgehen.
     if _contains_technical_loc_term(span):
         return None
 
-    # Code-/ID-artige Kennungen (z.B. "WL-2025") verwerfen
+    # Code- oder ID-artige Spans wie WL-2025 sollen ebenfalls nicht als LOC gelten.
     if is_invalid_loc_id(span):
         return None
 
-    # Plausibilitätsprüfung für Ortsnamen
-    plausible = is_plausible_loc_span(span)
-
-    if not plausible:
+    # Finale Plausibilitätsprüfung für echte Ortsangaben.
+    if not is_plausible_loc_span(span):
         return None
 
-    # Validierten Treffer zurückgeben
-    return normalized_loc
+    # Treffer bleibt ein normaler Orts-Treffer.
+    return Treffer(
+        normalized_loc.start,
+        normalized_loc.ende,
+        "LOC",
+        hit.source,
+        from_regex=hit.from_regex,
+        from_ner=hit.from_ner,
+    )

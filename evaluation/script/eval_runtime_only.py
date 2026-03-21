@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import json
 import statistics
 import sys
 import time
@@ -20,6 +19,7 @@ if str(EVAL_DIR) not in sys.path:
     sys.path.insert(0, str(EVAL_DIR))
 
 from core import config
+from detectors.ner.model_manager import MODEL_MANAGER
 from pipeline.anonymisieren import erkenne
 
 
@@ -38,20 +38,20 @@ MODEL_SPECS: Dict[str, Dict[str, str]] = {
     "spacy": {
         "ner_backend": "spacy",
         "ner_model": "de_core_news_lg",
+        "result_slug": "spacy_de_core_news_lg",
+        "display_name": "spaCy de_core_news_lg",
     },
     "flair": {
         "ner_backend": "flair",
         "ner_model": "flair/ner-german-large",
+        "result_slug": "flair_ner_german_large",
+        "display_name": "Flair flair/ner-german-large",
     },
 }
 
 
 def _read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
-
-
-def _read_json(path: Path) -> Dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def _norm_label(value: Any) -> str:
@@ -90,15 +90,18 @@ def _apply_policy(policy_name: str) -> None:
     )
 
 
-def _set_ner_runtime(model_key: str) -> None:
+def _set_ner_runtime(model_key: str) -> Tuple[str, str]:
     key = str(model_key or "").strip().lower()
 
     if key not in MODEL_SPECS:
         raise ValueError(f"Unknown model key: {model_key}")
 
     spec = MODEL_SPECS[key]
-    config.set("ner_backend", spec["ner_backend"])
-    config.set("ner_model", spec["ner_model"])
+    backend = spec["ner_backend"]
+    model = spec["ner_model"]
+
+    MODEL_MANAGER.set_backend_and_model(backend, model)
+    return backend, model
 
 
 def _snapshot_config() -> Dict[str, Any]:
@@ -122,10 +125,16 @@ def _restore_config(snapshot: Dict[str, Any]) -> None:
     )
     config.set("ner_labels", snapshot.get("ner_labels", []) or [])
     config.set("regex_labels", snapshot.get("regex_labels", []) or [])
-    config.set("ner_backend", str(snapshot.get("ner_backend", "spacy") or "spacy"))
-    config.set("ner_model", str(snapshot.get("ner_model", "") or ""))
     config.set("debug_mask", bool(snapshot.get("debug_mask", False)))
     config.set("use_ner_postprocessing", snapshot.get("use_ner_postprocessing", True))
+
+    snapshot_backend = str(snapshot.get("ner_backend", "spacy") or "spacy").strip().lower()
+    snapshot_model = str(snapshot.get("ner_model", "") or "").strip()
+
+    if not snapshot_model:
+        snapshot_model = "de_core_news_lg" if snapshot_backend == "spacy" else "flair/ner-german-large"
+
+    MODEL_MANAGER.set_backend_and_model(snapshot_backend, snapshot_model)
 
 
 def _discover_datasets(eval_root: Path) -> List[str]:
@@ -363,23 +372,29 @@ def _run_model_benchmark(
     runs: int,
 ) -> Path:
     model_spec = MODEL_SPECS[model_key]
+    backend, model = _set_ner_runtime(model_key)
 
-    _set_ner_runtime(model_key)
     _apply_policy("secure")
     config.set("use_ner_postprocessing", True)
 
-    model_result_dir = result_root / "runtime_secure_postprocess_on"
+    model_result_dir = (
+        result_root
+        / model_spec["result_slug"]
+        / "postprocess_on"
+        / "secure"
+        / "runtime"
+    )
     model_result_dir.mkdir(parents=True, exist_ok=True)
 
-    output_path = model_result_dir / f"{model_key}_times.txt"
+    output_path = model_result_dir / "times.txt"
 
     lines: List[str] = [
         "RUNTIME REPORT",
         "======================================================================",
-        f"policy=secure",
-        f"postprocessing=on",
-        f"ner_backend={model_spec['ner_backend']}",
-        f"ner_model={model_spec['ner_model']}",
+        "policy=secure",
+        "postprocessing=on",
+        f"ner_backend={backend}",
+        f"ner_model={model}",
         f"runs_per_dataset={max(1, int(runs))}",
         "measurement=pure execution time of erkenne(text)",
         "warmup=one untimed warm-up run per text",
@@ -441,7 +456,78 @@ def _run_model_benchmark(
     return output_path
 
 
-def _build_combined_summary(result_paths: List[Path], output_path: Path) -> None:
+def _extract_summary_metrics(report_path: Path) -> Dict[str, str]:
+    metrics: Dict[str, str] = {}
+    content = report_path.read_text(encoding="utf-8").splitlines()
+
+    wanted = {
+        "ner_backend",
+        "ner_model",
+        "mean_ms",
+        "median_ms",
+        "min_ms",
+        "max_ms",
+        "stdev_ms",
+        "average_runtime_per_resolved_label_ms",
+        "resolved_labels_across_all_datasets",
+        "resolved_labels_across_all_runs",
+        "estimated_total_runtime_ms",
+    }
+
+    for line in content:
+        if "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip()
+        if key in wanted and key not in metrics:
+            metrics[key] = value
+
+    return metrics
+
+
+def _build_combined_comparison(result_paths: List[Path], output_path: Path) -> None:
+    lines: List[str] = [
+        "RUNTIME COMPARISON",
+        "======================================================================",
+        "policy=secure",
+        "postprocessing=on",
+        "",
+        "MODEL                    | BACKEND | MEAN_MS | MEDIAN_MS | MIN_MS | MAX_MS | STDEV_MS | MS_PER_LABEL | LABELS",
+        "---------------------------------------------------------------------------------------------------------------",
+    ]
+
+    for path in result_paths:
+        metrics = _extract_summary_metrics(path)
+        model = metrics.get("ner_model", "-")
+        backend = metrics.get("ner_backend", "-")
+        mean_ms = metrics.get("mean_ms", "-")
+        median_ms = metrics.get("median_ms", "-")
+        min_ms = metrics.get("min_ms", "-")
+        max_ms = metrics.get("max_ms", "-")
+        stdev_ms = metrics.get("stdev_ms", "-")
+        ms_per_label = metrics.get("average_runtime_per_resolved_label_ms", "-")
+        labels = metrics.get("resolved_labels_across_all_datasets", "-")
+
+        lines.append(
+            f"{model:<24} | "
+            f"{backend:<7} | "
+            f"{mean_ms:>7} | "
+            f"{median_ms:>9} | "
+            f"{min_ms:>6} | "
+            f"{max_ms:>6} | "
+            f"{stdev_ms:>8} | "
+            f"{ms_per_label:>12} | "
+            f"{labels:>6}"
+        )
+
+    lines.append("")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
+    print(f"Wrote: {output_path}")
+
+
+def _build_combined_full_report(result_paths: List[Path], output_path: Path) -> None:
     sections: List[str] = []
 
     for path in result_paths:
@@ -497,12 +583,18 @@ def main() -> int:
             )
             result_paths.append(result_path)
 
-        combined_path = (
-            result_root
-            / "runtime_secure_postprocess_on"
-            / "combined_runtime_report.txt"
+        combined_root = result_root / "runtime_secure_postprocess_on"
+        combined_root.mkdir(parents=True, exist_ok=True)
+
+        _build_combined_full_report(
+            result_paths=result_paths,
+            output_path=combined_root / "combined_runtime_report.txt",
         )
-        _build_combined_summary(result_paths, combined_path)
+
+        _build_combined_comparison(
+            result_paths=result_paths,
+            output_path=combined_root / "comparison.txt",
+        )
 
     finally:
         _restore_config(snapshot)
