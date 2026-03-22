@@ -38,6 +38,19 @@ _PER_DIRECT_REJECT_SPANS = {
     "zwischenupdate",
 }
 
+_DOMAIN_SUFFIXES = {
+    ".de",
+    ".com",
+    ".net",
+    ".org",
+    ".info",
+    ".biz",
+    ".io",
+    ".eu",
+    ".co",
+    ".local",
+}
+
 
 def _normalize_token(value: str) -> str:
     return value.strip().lower().strip(",.;:(){}[]\"'`„“‚‘-–—#_/\\|~+=")
@@ -78,14 +91,20 @@ def _tokens_capitalized(tokens: list[str]) -> bool:
         return False
 
     for token in tokens:
-        parts = token.split("-")
+        hyphen_parts = token.split("-")
 
-        for part in parts:
-            if not part:
+        for hyphen_part in hyphen_parts:
+            if not hyphen_part:
                 return False
 
-            if not part[0].isupper():
-                return False
+            dot_parts = hyphen_part.split(".")
+
+            for dot_part in dot_parts:
+                if not dot_part:
+                    return False
+
+                if not dot_part[0].isupper():
+                    return False
 
     return True
 
@@ -98,16 +117,66 @@ def _bad_suffix(tokens: list[str]) -> bool:
     return last in PER_BAD_SUFFIX_TOKENS
 
 
+def _is_valid_dotted_person_token(token: str) -> bool:
+    value = token.strip()
+
+    if not value:
+        return False
+
+    if "@" in value:
+        return False
+
+    lower_value = value.lower()
+
+    if any(lower_value.endswith(suffix) for suffix in _DOMAIN_SUFFIXES):
+        return False
+
+    parts = value.split(".")
+
+    if "" in parts:
+        return False
+
+    if len(parts) < 2 or len(parts) > 3:
+        return False
+
+    for part in parts:
+        if not part.isalpha():
+            return False
+
+        if len(part) == 1:
+            continue
+
+        if len(part) < 2:
+            return False
+
+    return True
+
+
 def _token_shape_valid(tokens: list[str]) -> bool:
     for token in tokens:
-        parts = token.split("-")
+        hyphen_parts = token.split("-")
 
-        for part in parts:
-            if not part:
+        for hyphen_part in hyphen_parts:
+            if not hyphen_part:
                 return False
-            if len(part) < 2:
+
+            stripped = hyphen_part.strip()
+
+            if not stripped:
                 return False
-            if not part.isalpha():
+
+            if "." in stripped:
+                if not _is_valid_dotted_person_token(stripped):
+                    return False
+                continue
+
+            if len(stripped) == 1 and stripped.isalpha():
+                continue
+
+            if len(stripped) < 2:
+                return False
+
+            if not stripped.isalpha():
                 return False
 
     return True
@@ -162,7 +231,7 @@ def is_valid_person_span(span: str) -> bool:
     if len(tokens) == 1:
         token = tokens[0]
 
-        if _has_internal_uppercase(token):
+        if "." not in token and _has_internal_uppercase(token):
             return False
 
     if _bad_suffix(tokens):

@@ -1,2 +1,2 @@
 policy,tp,fp,fn,precision,recall,f1
-minimal,207,0,1,1.000000,0.995192,0.997590
+minimal,208,0,0,1.000000,1.000000,1.000000

@@ -1,6 +1,6 @@
 policy,domain,structure,label,tp,fp,fn,precision,recall,f1
 minimal,Chats,regular,E_MAIL,4,0,0,1.000000,1.000000,1.000000
-minimal,Chats,regular,PER,21,0,2,1.000000,0.913043,0.954545
+minimal,Chats,regular,PER,22,0,1,1.000000,0.956522,0.977778
 minimal,Chats,regular,STRASSE,3,0,0,1.000000,1.000000,1.000000
 minimal,Chats,regular,TELEFON,1,0,0,1.000000,1.000000,1.000000
 minimal,Chats,structured,E_MAIL,2,0,0,1.000000,1.000000,1.000000

@@ -1,0 +1,155 @@
+BA SUMMARY | POLICY: secure
+NER_BACKEND: spacy
+NER_MODEL: de_core_news_lg
+POSTPROCESSING: off
+
+GESAMTERGEBNIS (micro-aggregated)
+----------------------------------------------------------------------
+TP: 355
+FP: 68
+FN: 56
+Precision: 0.839
+Recall: 0.864
+F1: 0.851
+
+LABELERGEBNISSE
+----------------------------------------------------------------------
+DATUM        TP= 72 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+E_MAIL       TP= 39 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+IBAN         TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+IP_ADRESSE   TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+LOC          TP= 32 FP= 17 FN= 14 P=0.653 R=0.696 F1=0.674
+ORG          TP= 31 FP= 36 FN= 22 P=0.463 R=0.585 F1=0.517
+PER          TP=104 FP= 13 FN= 19 P=0.889 R=0.846 F1=0.867
+PLZ          TP= 21 FP=  1 FN=  0 P=0.955 R=1.000 F1=0.977
+STRASSE      TP= 21 FP=  1 FN=  1 P=0.955 R=0.955 F1=0.955
+TELEFON      TP= 20 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+URL          TP= 11 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+
+VERBLEIBENDE FEHLFÄLLE
+----------------------------------------------------------------------
+LOC
+  PARTIAL (1):
+    - Dataset_08 gold:307:319 [gold] 'München-West' <- pred:ner:297:319 'Solarpark München-West'
+  FN (13):
+    - Dataset_13 244:253 [gold] 'Frankfurt'
+    - Dataset_14 46:53 [gold] 'Münster'
+    - Dataset_14 287:294 [gold] 'Münster'
+    - Dataset_14 464:472 [gold] 'Dortmund'
+    - Dataset_16 91:95 [gold] 'Köln'
+    - Dataset_19 1505:1514 [gold] 'Stuttgart'
+    - Dataset_20 74:83 [gold] 'Stuttgart'
+    - Dataset_20 189:198 [gold] 'Stuttgart'
+    - Dataset_20 1450:1459 [gold] 'Stuttgart'
+    - Dataset_21 1015:1024 [gold] 'Stuttgart'
+    - Dataset_22 969:976 [gold] 'München'
+    - Dataset_23 2725:2734 [gold] 'Stuttgart'
+    - Dataset_24 3041:3050 [gold] 'Stuttgart'
+  FP (16):
+    - Dataset_02 492:504 [ner] 'Admin-Portal'
+    - Dataset_02 693:715 [ner] 'Beispiel-Bestellnummer'
+    - Dataset_06 746:760 [ner] 'Export-Service'
+    - Dataset_09 93:108 [ner] 'Patientenportal'
+    - Dataset_12 323:326 [ner] 'Tel'
+    - Dataset_13 277:292 [ner] 'Cloud-Migration'
+    - Dataset_15 593:597 [ner] 'Java'
+    - Dataset_19 354:358 [ner] 'Flur'
+    - Dataset_19 454:464 [ner] 'Waschraums'
+    - Dataset_19 1105:1121 [ner] 'Monatskaltmieten'
+    - Dataset_20 360:371 [ner] 'Ladenflache'
+    - Dataset_25 520:539 [ner] 'Self-Service-Portal'
+    - Dataset_28 736:742 [ner] 'Daniel'
+    - Dataset_29 141:160 [ner] 'Reporting-Dashboard'
+    - Dataset_29 866:880 [ner] 'Datenbank-Last'
+    - Dataset_30 641:648 [ner] 'WL-2025'
+
+ORG
+  PARTIAL (13):
+    - Dataset_02 gold:104:122 [gold] 'Kramer & Sohn GmbH' <- pred:ner:104:117 'Kramer & Sohn'
+    - Dataset_04 gold:346:361 [gold] 'Franke Bau GmbH' <- pred:ner:346:369 'Franke Bau GmbH\nTelefon'
+    - Dataset_05 gold:264:285 [gold] 'PixelForge Media GmbH' <- pred:ner:264:280 'PixelForge Media'
+    - Dataset_06 gold:294:318 [gold] 'CloudWare Solutions GmbH' <- pred:ner:294:319 'CloudWare Solutions GmbH.'
+    - Dataset_07 gold:422:434 [gold] 'AlphaCore AG' <- pred:ner:422:431 'AlphaCore'
+    - Dataset_08 gold:595:610 [gold] 'Innoventis GmbH' <- pred:ner:595:605 'Innoventis'
+    - Dataset_18 gold:270:287 [gold] 'AnalyticsPro GmbH' <- pred:ner:270:282 'AnalyticsPro'
+    - Dataset_23 gold:2755:2779 [gold] 'Bergmann IT-Systeme GmbH' <- pred:ner:2755:2763 'Bergmann'
+    - Dataset_24 gold:3071:3100 [gold] 'Hansen & Reuter Logistik GmbH' <- pred:ner:3071:3086 'Hansen & Reuter'
+    - Dataset_26 gold:37:55 [gold] 'TechSolutions GmbH' <- pred:ner:37:50 'TechSolutions'
+    - Dataset_27 gold:244:265 [gold] 'Bergmann Industrie AG' <- pred:ner:244:262 'Bergmann Industrie'
+    - Dataset_28 gold:62:87 [gold] 'Helion Manufacturing GmbH' <- pred:ner:62:82 'Helion Manufacturing'
+    - Dataset_30 gold:839:852 [gold] 'TransLog GmbH' <- pred:ner:839:855 'TransLog GmbH.\n\n'
+  FN (9):
+    - Dataset_02 222:233 [gold] 'Kramer-Sued'
+    - Dataset_03 313:330 [gold] 'Klein Handel GmbH'
+    - Dataset_11 107:115 [gold] 'BlueWave'
+    - Dataset_13 486:518 [gold] 'Technische Universität Darmstadt'
+    - Dataset_17 162:177 [gold] 'DeltaLogix GmbH'
+    - Dataset_20 30:52 [gold] 'Linden Immobilien GmbH'
+    - Dataset_20 146:163 [gold] 'Urban Coffee GmbH'
+    - Dataset_20 1507:1529 [gold] 'Linden Immobilien GmbH'
+    - Dataset_20 1560:1577 [gold] 'Urban Coffee GmbH'
+  FP (23):
+    - Dataset_02 901:915 [ner] 'Export-Service'
+    - Dataset_04 526:537 [ner] 'SMS-Gateway'
+    - Dataset_05 735:737 [ner] 'MB'
+    - Dataset_13 244:265 [ner] 'Frankfurt\n\n• Beratung'
+    - Dataset_14 287:296 [ner] 'Münster\n\n'
+    - Dataset_14 464:486 [ner] 'Dortmund\n\nAkademischer'
+    - Dataset_18 0:2 [ner] 'FW'
+    - Dataset_18 341:365 [ner] 'Machine-Learning-Modelle'
+    - Dataset_19 991:1001 [ner] 'uberweisen'
+    - Dataset_19 1043:1054 [ner] 'SOLADEST600'
+    - Dataset_20 0:18 [ner] 'GEWERBEMIETVERTRAG'
+    - Dataset_21 304:320 [ner] 'M1 Pro Prozessor'
+    - Dataset_23 0:14 [ner] 'ARBEITSVERTRAG'
+    - Dataset_24 0:14 [ner] 'ARBEITSVERTRAG'
+    - Dataset_25 32:49 [ner] 'Internes Helpdesk'
+    - Dataset_25 70:88 [ner] 'Betroffenes System'
+    - Dataset_25 852:862 [ner] 'MFA-Resync'
+    - Dataset_26 481:492 [ner] 'IT-Security'
+    - Dataset_26 738:745 [ner] 'Go-Live'
+    - Dataset_27 33:53 [ner] 'CRM-Datenbereinigung'
+    - Dataset_29 0:7 [ner] 'Channel'
+    - Dataset_29 941:951 [ner] 'Projekt-ID'
+    - Dataset_30 630:640 [ner] 'Projekt-ID'
+
+PER
+  PARTIAL (4):
+    - Dataset_03 gold:300:312 [gold] 'Tobias Klein' <- pred:ner:300:325 'Tobias Klein\nKlein Handel'
+    - Dataset_15 gold:12:23 [gold] 'Lukas Meier' <- pred:ner:12:25 'Lukas Meier\n\n'
+    - Dataset_17 gold:21:34 [gold] 'Thomas Berger' <- pred:ner:21:40 'Thomas Berger\n\nMail'
+    - Dataset_28 gold:607:620 [gold] 'Miriam Scholz' <- pred:ner:607:623 'Miriam Scholz:#-'
+  FN (15):
+    - Dataset_07 141:152 [gold] 'Frau Berger'
+    - Dataset_09 562:568 [gold] 'Sabine'
+    - Dataset_10 561:567 [gold] 'Thomas'
+    - Dataset_11 469:481 [gold] 'Markus Weber'
+    - Dataset_11 596:600 [gold] 'Lisa'
+    - Dataset_12 698:703 [gold] 'Julia'
+    - Dataset_21 206:217 [gold] 'Herr Berger'
+    - Dataset_21 1045:1057 [gold] 'Lukas Berger'
+    - Dataset_21 1062:1074 [gold] 'Nina Hofmann'
+    - Dataset_22 997:1014 [gold] 'Katharina Schmitt'
+    - Dataset_22 1019:1030 [gold] 'Daniel Roth'
+    - Dataset_24 307:317 [gold] 'Herr Weber'
+    - Dataset_25 406:416 [gold] 'Herr Vogel'
+    - Dataset_28 736:742 [gold] 'Daniel'
+    - Dataset_30 1437:1446 [gold] 'Dr. König'
+  FP (9):
+    - Dataset_01 9:21 [ner] 'Login-Fehler'
+    - Dataset_04 198:206 [ner] 'SMS-Code'
+    - Dataset_11 94:96 [ner] 'Re'
+    - Dataset_11 528:531 [ner] 'Tel'
+    - Dataset_18 570:574 [ner] 'Evtl'
+    - Dataset_26 398:408 [ner] 'Testimport'
+    - Dataset_27 0:23 [ner] 'Exportierter Teams-Chat'
+    - Dataset_28 212:226 [ner] 'Eintrittsdatum'
+    - Dataset_30 414:446 [ner] '\fileserver01\compliance\2025.\n\n'
+
+PLZ
+  FP (1):
+    - Dataset_28 591:596 [regex] '77134'
+
+STRASSE
+  PARTIAL (1):
+    - Dataset_20 gold:164:182 [gold] 'Tubinger Straße 42' <- pred:ner:164:179 'Tubinger Straße'

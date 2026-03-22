@@ -1,7 +1,6 @@
 DATASET: Dataset_27 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 1 | POLICY: minimal | NER_BACKEND: flair | NER_MODEL: flair/ner-german-large | POSTPROCESSING: on
-TP=14 FP=0 FN=1 | P=1.000 R=0.933 F1=0.966
+TP=15 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 1
-  - PER            487:498 [gold] 'M. Bergmann' ctx='Bergmann und einmal ▮M. Bergmann▮.\n\n[10:18] Anna Kell'
+NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

@@ -6,7 +6,7 @@ Dataset_04,4,Supporttickets,regular,2,secure,6,0,0,1.000000,1.000000,1.000000
 Dataset_05,5,Supporttickets,unstructured,1,secure,8,0,0,1.000000,1.000000,1.000000
 Dataset_06,6,Supporttickets,unstructured,2,secure,8,0,0,1.000000,1.000000,1.000000
 Dataset_07,7,E-Mail,structured,1,secure,13,0,0,1.000000,1.000000,1.000000
-Dataset_08,8,E-Mail,structured,2,secure,9,1,1,0.900000,0.900000,0.900000
+Dataset_08,8,E-Mail,structured,2,secure,10,0,0,1.000000,1.000000,1.000000
 Dataset_09,9,E-Mail,regular,1,secure,8,0,0,1.000000,1.000000,1.000000
 Dataset_10,10,E-Mail,regular,2,secure,10,0,0,1.000000,1.000000,1.000000
 Dataset_11,11,E-Mail,unstructured,1,secure,14,0,0,1.000000,1.000000,1.000000

@@ -33,9 +33,9 @@
       "expected_sources": [
         "ner"
       ],
-      "start": 297,
+      "start": 307,
       "end": 319,
-      "text": "Solarpark München-West"
+      "text": "München-West"
     },
     {
       "label": "PER",

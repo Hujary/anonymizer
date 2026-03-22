@@ -33,7 +33,7 @@ secure,E-Mail,regular,URL,1,0,0,1.000000,1.000000,1.000000
 secure,E-Mail,structured,DATUM,5,0,0,1.000000,1.000000,1.000000
 secure,E-Mail,structured,E_MAIL,6,0,0,1.000000,1.000000,1.000000
 secure,E-Mail,structured,IBAN,1,0,0,1.000000,1.000000,1.000000
-secure,E-Mail,structured,LOC,0,1,1,0.000000,0.000000,0.000000
+secure,E-Mail,structured,LOC,1,0,0,1.000000,1.000000,1.000000
 secure,E-Mail,structured,ORG,3,0,0,1.000000,1.000000,1.000000
 secure,E-Mail,structured,PER,5,0,0,1.000000,1.000000,1.000000
 secure,E-Mail,structured,TELEFON,2,0,0,1.000000,1.000000,1.000000

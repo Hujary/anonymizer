@@ -1,9 +1,9 @@
 policy,domain,structure,tp,fp,fn,precision,recall,f1
-secure,Chats,regular,45,1,1,0.978261,0.978261,0.978261
+secure,Chats,regular,46,1,0,0.978723,1.000000,0.989247
 secure,Chats,structured,29,2,0,0.935484,1.000000,0.966667
 secure,Chats,unstructured,45,1,0,0.978261,1.000000,0.989011
 secure,E-Mail,regular,18,0,0,1.000000,1.000000,1.000000
-secure,E-Mail,structured,22,1,1,0.956522,0.956522,0.956522
+secure,E-Mail,structured,23,0,0,1.000000,1.000000,1.000000
 secure,E-Mail,unstructured,26,0,0,1.000000,1.000000,1.000000
 secure,HR-Dokumente,regular,27,2,1,0.931034,0.964286,0.947368
 secure,HR-Dokumente,structured,30,2,1,0.937500,0.967742,0.952381

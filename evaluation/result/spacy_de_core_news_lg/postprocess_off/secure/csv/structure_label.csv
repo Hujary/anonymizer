@@ -12,7 +12,7 @@ secure,structured,DATUM,24,0,0,1.000000,1.000000,1.000000
 secure,structured,E_MAIL,12,0,0,1.000000,1.000000,1.000000
 secure,structured,IBAN,2,0,0,1.000000,1.000000,1.000000
 secure,structured,IP_ADRESSE,1,0,0,1.000000,1.000000,1.000000
-secure,structured,LOC,9,8,8,0.529412,0.529412,0.529412
+secure,structured,LOC,8,9,9,0.470588,0.470588,0.470588
 secure,structured,ORG,7,16,10,0.304348,0.411765,0.350000
 secure,structured,PER,31,2,2,0.939394,0.939394,0.939394
 secure,structured,PLZ,8,0,0,1.000000,1.000000,1.000000

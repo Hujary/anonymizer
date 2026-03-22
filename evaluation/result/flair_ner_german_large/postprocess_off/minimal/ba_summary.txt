@@ -1,0 +1,28 @@
+BA SUMMARY | POLICY: minimal
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: off
+
+GESAMTERGEBNIS (micro-aggregated)
+----------------------------------------------------------------------
+TP: 207
+FP: 1
+FN: 1
+Precision: 0.995
+Recall: 0.995
+F1: 0.995
+
+LABELERGEBNISSE
+----------------------------------------------------------------------
+E_MAIL       TP= 39 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+IBAN         TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+IP_ADRESSE   TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+PER          TP=123 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+STRASSE      TP= 21 FP=  1 FN=  1 P=0.955 R=0.955 F1=0.955
+TELEFON      TP= 20 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+
+VERBLEIBENDE FEHLFÄLLE
+----------------------------------------------------------------------
+STRASSE
+  PARTIAL (1):
+    - Dataset_20 gold:164:182 [gold] 'Tubinger Straße 42' <- pred:ner:164:179 'Tubinger Straße'

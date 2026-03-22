@@ -1,0 +1,26 @@
+BA SUMMARY | POLICY: minimal
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+GESAMTERGEBNIS (micro-aggregated)
+----------------------------------------------------------------------
+TP: 208
+FP: 0
+FN: 0
+Precision: 1.000
+Recall: 1.000
+F1: 1.000
+
+LABELERGEBNISSE
+----------------------------------------------------------------------
+E_MAIL       TP= 39 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+IBAN         TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+IP_ADRESSE   TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+PER          TP=123 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+STRASSE      TP= 22 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+TELEFON      TP= 20 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+
+VERBLEIBENDE FEHLFÄLLE
+----------------------------------------------------------------------
+Keine verbleibenden PARTIAL-, FN- oder FP-Fälle.

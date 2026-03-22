@@ -318,7 +318,7 @@ NER_MODEL: de_core_news_lg
 POSTPROCESSING: on
 
 POLICY minimal
-TP=14 FP=0 FN=1 | P=1.000 R=0.933 F1=0.966
+TP=15 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -360,4 +360,4 @@ TP=14 FP=0 FN=1 | P=1.000 R=0.933 F1=0.966
 
 GLOBAL SUMMARY (micro-averaged over all datasets)
 ----------------------------------------------------------------------
-POLICY minimal  | TP= 192 FP=   0 FN=  16 | P=1.000 R=0.923 F1=0.960
+POLICY minimal  | TP= 193 FP=   0 FN=  15 | P=1.000 R=0.928 F1=0.963

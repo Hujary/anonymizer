@@ -1,0 +1,42 @@
+BA SUMMARY | POLICY: minimal
+NER_BACKEND: spacy
+NER_MODEL: de_core_news_lg
+POSTPROCESSING: on
+
+GESAMTERGEBNIS (micro-aggregated)
+----------------------------------------------------------------------
+TP: 193
+FP: 0
+FN: 15
+Precision: 1.000
+Recall: 0.928
+F1: 0.963
+
+LABELERGEBNISSE
+----------------------------------------------------------------------
+E_MAIL       TP= 39 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+IBAN         TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+IP_ADRESSE   TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+PER          TP=108 FP=  0 FN= 15 P=1.000 R=0.878 F1=0.935
+STRASSE      TP= 22 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+TELEFON      TP= 20 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+
+VERBLEIBENDE FEHLFÄLLE
+----------------------------------------------------------------------
+PER
+  FN (15):
+    - Dataset_07 141:152 [gold] 'Frau Berger'
+    - Dataset_09 562:568 [gold] 'Sabine'
+    - Dataset_10 561:567 [gold] 'Thomas'
+    - Dataset_11 469:481 [gold] 'Markus Weber'
+    - Dataset_11 596:600 [gold] 'Lisa'
+    - Dataset_12 698:703 [gold] 'Julia'
+    - Dataset_21 206:217 [gold] 'Herr Berger'
+    - Dataset_21 1045:1057 [gold] 'Lukas Berger'
+    - Dataset_21 1062:1074 [gold] 'Nina Hofmann'
+    - Dataset_22 997:1014 [gold] 'Katharina Schmitt'
+    - Dataset_22 1019:1030 [gold] 'Daniel Roth'
+    - Dataset_24 307:317 [gold] 'Herr Weber'
+    - Dataset_25 406:416 [gold] 'Herr Vogel'
+    - Dataset_28 736:742 [gold] 'Daniel'
+    - Dataset_30 1437:1446 [gold] 'Dr. König'

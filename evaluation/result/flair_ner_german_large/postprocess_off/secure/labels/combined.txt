@@ -162,7 +162,8 @@ UNERWARTET (FP): 0
 
 LOC
 --------------------------------------------------------------------------------
-ERKANNT (TP): 45
+ERKANNT (TP): 46
+  - Dataset_08 307:319 [ner] 'München-West'
   - Dataset_13 91:108 [ner] 'Frankfurt am Main'
   - Dataset_13 244:253 [ner] 'Frankfurt'
   - Dataset_13 429:438 [ner] 'Wiesbaden'
@@ -209,8 +210,7 @@ ERKANNT (TP): 45
   - Dataset_29 464:471 [ner] 'München'
   - Dataset_30 284:294 [ner] 'Düsseldorf'
 
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 1
-  - Dataset_08 gold:297:319 [gold] 'Solarpark München-West' <- pred:ner:307:319 'München-West'
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
 NICHT ERKANNT (FN): 0
 

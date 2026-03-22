@@ -1,0 +1,50 @@
+BA SUMMARY | POLICY: secure
+NER_BACKEND: flair
+NER_MODEL: flair/ner-german-large
+POSTPROCESSING: on
+
+GESAMTERGEBNIS (micro-aggregated)
+----------------------------------------------------------------------
+TP: 409
+FP: 9
+FN: 2
+Precision: 0.978
+Recall: 0.995
+F1: 0.987
+
+LABELERGEBNISSE
+----------------------------------------------------------------------
+DATUM        TP= 72 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+E_MAIL       TP= 39 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+IBAN         TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+IP_ADRESSE   TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+LOC          TP= 46 FP=  2 FN=  0 P=0.958 R=1.000 F1=0.979
+ORG          TP= 51 FP=  6 FN=  2 P=0.895 R=0.962 F1=0.927
+PER          TP=123 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+PLZ          TP= 21 FP=  1 FN=  0 P=0.955 R=1.000 F1=0.977
+STRASSE      TP= 22 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+TELEFON      TP= 20 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+URL          TP= 11 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+
+VERBLEIBENDE FEHLFÄLLE
+----------------------------------------------------------------------
+LOC
+  FP (2):
+    - Dataset_14 546:553 [ner] 'Münster'
+    - Dataset_16 435:439 [ner] 'Köln'
+
+ORG
+  FN (2):
+    - Dataset_14 534:553 [gold] 'Universität Münster'
+    - Dataset_16 423:439 [gold] 'Universität Köln'
+  FP (6):
+    - Dataset_13 542:545 [ner] 'AWS'
+    - Dataset_16 468:484 [ner] 'Google Analytics'
+    - Dataset_19 1043:1054 [ner] 'SOLADEST600'
+    - Dataset_25 807:813 [ner] 'mvogel'
+    - Dataset_25 815:831 [ner] 'Active Directory'
+    - Dataset_30 28:44 [ner] 'IntraLog Systems'
+
+PLZ
+  FP (1):
+    - Dataset_28 591:596 [regex] '77134'

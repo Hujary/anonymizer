@@ -1,0 +1,61 @@
+BA SUMMARY | POLICY: minimal
+NER_BACKEND: spacy
+NER_MODEL: de_core_news_lg
+POSTPROCESSING: off
+
+GESAMTERGEBNIS (micro-aggregated)
+----------------------------------------------------------------------
+TP: 188
+FP: 14
+FN: 20
+Precision: 0.931
+Recall: 0.904
+F1: 0.917
+
+LABELERGEBNISSE
+----------------------------------------------------------------------
+E_MAIL       TP= 39 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+IBAN         TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+IP_ADRESSE   TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+PER          TP=104 FP= 13 FN= 19 P=0.889 R=0.846 F1=0.867
+STRASSE      TP= 21 FP=  1 FN=  1 P=0.955 R=0.955 F1=0.955
+TELEFON      TP= 20 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
+
+VERBLEIBENDE FEHLFÄLLE
+----------------------------------------------------------------------
+PER
+  PARTIAL (4):
+    - Dataset_03 gold:300:312 [gold] 'Tobias Klein' <- pred:ner:300:325 'Tobias Klein\nKlein Handel'
+    - Dataset_15 gold:12:23 [gold] 'Lukas Meier' <- pred:ner:12:25 'Lukas Meier\n\n'
+    - Dataset_17 gold:21:34 [gold] 'Thomas Berger' <- pred:ner:21:40 'Thomas Berger\n\nMail'
+    - Dataset_28 gold:607:620 [gold] 'Miriam Scholz' <- pred:ner:607:623 'Miriam Scholz:#-'
+  FN (15):
+    - Dataset_07 141:152 [gold] 'Frau Berger'
+    - Dataset_09 562:568 [gold] 'Sabine'
+    - Dataset_10 561:567 [gold] 'Thomas'
+    - Dataset_11 469:481 [gold] 'Markus Weber'
+    - Dataset_11 596:600 [gold] 'Lisa'
+    - Dataset_12 698:703 [gold] 'Julia'
+    - Dataset_21 206:217 [gold] 'Herr Berger'
+    - Dataset_21 1045:1057 [gold] 'Lukas Berger'
+    - Dataset_21 1062:1074 [gold] 'Nina Hofmann'
+    - Dataset_22 997:1014 [gold] 'Katharina Schmitt'
+    - Dataset_22 1019:1030 [gold] 'Daniel Roth'
+    - Dataset_24 307:317 [gold] 'Herr Weber'
+    - Dataset_25 406:416 [gold] 'Herr Vogel'
+    - Dataset_28 736:742 [gold] 'Daniel'
+    - Dataset_30 1437:1446 [gold] 'Dr. König'
+  FP (9):
+    - Dataset_01 9:21 [ner] 'Login-Fehler'
+    - Dataset_04 198:206 [ner] 'SMS-Code'
+    - Dataset_11 94:96 [ner] 'Re'
+    - Dataset_11 528:531 [ner] 'Tel'
+    - Dataset_18 570:574 [ner] 'Evtl'
+    - Dataset_26 398:408 [ner] 'Testimport'
+    - Dataset_27 0:23 [ner] 'Exportierter Teams-Chat'
+    - Dataset_28 212:226 [ner] 'Eintrittsdatum'
+    - Dataset_30 414:446 [ner] '\fileserver01\compliance\2025.\n\n'
+
+STRASSE
+  PARTIAL (1):
+    - Dataset_20 gold:164:182 [gold] 'Tubinger Straße 42' <- pred:ner:164:179 'Tubinger Straße'

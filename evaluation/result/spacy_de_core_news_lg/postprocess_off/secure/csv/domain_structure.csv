@@ -3,7 +3,7 @@ secure,Chats,regular,42,8,4,0.840000,0.913043,0.875000
 secure,Chats,structured,27,8,2,0.771429,0.931034,0.843750
 secure,Chats,unstructured,43,8,2,0.843137,0.955556,0.895833
 secure,E-Mail,regular,16,1,2,0.941176,0.888889,0.914286
-secure,E-Mail,structured,20,2,3,0.909091,0.869565,0.888889
+secure,E-Mail,structured,19,3,4,0.863636,0.826087,0.844444
 secure,E-Mail,unstructured,22,3,4,0.880000,0.846154,0.862745
 secure,HR-Dokumente,regular,26,2,2,0.928571,0.928571,0.928571
 secure,HR-Dokumente,structured,26,4,5,0.866667,0.838710,0.852459

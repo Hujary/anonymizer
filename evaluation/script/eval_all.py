@@ -435,6 +435,90 @@ def _write_policy_csv_files(
     )
 
 
+def _build_ba_summary(
+    *,
+    policy: str,
+    postprocess_enabled: bool,
+    global_agg: MetricAgg,
+    label_rows: List[Dict[str, object]],
+    label_hits: Dict[str, Dict[str, List[str]]],
+) -> str:
+    lines: List[str] = []
+
+    backend = str(config.get("ner_backend", "spacy"))
+    model = str(config.get("ner_model", ""))
+
+    lines.append(f"BA SUMMARY | POLICY: {policy}")
+    lines.append(f"NER_BACKEND: {backend}")
+    lines.append(f"NER_MODEL: {model}")
+    lines.append(f"POSTPROCESSING: {'on' if postprocess_enabled else 'off'}")
+    lines.append("")
+
+    lines.append("GESAMTERGEBNIS (micro-aggregated)")
+    lines.append("-" * 70)
+    lines.append(f"TP: {global_agg.tp}")
+    lines.append(f"FP: {global_agg.fp}")
+    lines.append(f"FN: {global_agg.fn}")
+    lines.append(f"Precision: {global_agg.precision():.3f}")
+    lines.append(f"Recall: {global_agg.recall():.3f}")
+    lines.append(f"F1: {global_agg.f1():.3f}")
+    lines.append("")
+
+    label_overall_rows = _aggregate_label_rows(label_rows, ["policy", "label"])
+
+    lines.append("LABELERGEBNISSE")
+    lines.append("-" * 70)
+    for row in label_overall_rows:
+        lines.append(
+            f"{str(row['label']):<12} "
+            f"TP={int(row['tp']):>3} "
+            f"FP={int(row['fp']):>3} "
+            f"FN={int(row['fn']):>3} "
+            f"P={float(row['precision']):.3f} "
+            f"R={float(row['recall']):.3f} "
+            f"F1={float(row['f1']):.3f}"
+        )
+    lines.append("")
+
+    lines.append("VERBLEIBENDE FEHLFÄLLE")
+    lines.append("-" * 70)
+
+    has_any_error = False
+    for label in sorted(label_hits.keys()):
+        partials = label_hits[label].get("PARTIAL", [])
+        fns = label_hits[label].get("FN", [])
+        fps = label_hits[label].get("FP", [])
+
+        if not partials and not fns and not fps:
+            continue
+
+        has_any_error = True
+        lines.append(label)
+
+        if partials:
+            lines.append(f"  PARTIAL ({len(partials)}):")
+            for item in partials:
+                lines.append(f"    - {item}")
+
+        if fns:
+            lines.append(f"  FN ({len(fns)}):")
+            for item in fns:
+                lines.append(f"    - {item}")
+
+        if fps:
+            lines.append(f"  FP ({len(fps)}):")
+            for item in fps:
+                lines.append(f"    - {item}")
+
+        lines.append("")
+
+    if not has_any_error:
+        lines.append("Keine verbleibenden PARTIAL-, FN- oder FP-Fälle.")
+        lines.append("")
+
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def _run_variant(
     *,
     eval_root: Path,
@@ -480,9 +564,9 @@ def _run_variant(
 
         policy_global_agg = MetricAgg()
 
-        policy_label_hits: Dict[str, Dict[str, List[str]]] = {}
-        if label_report:
-            policy_label_hits = defaultdict(lambda: {"TP": [], "PARTIAL": [], "FN": [], "FP": []})
+        policy_label_hits: Dict[str, Dict[str, List[str]]] = defaultdict(
+            lambda: {"TP": [], "PARTIAL": [], "FN": [], "FP": []}
+        )
 
         for dataset_name in dataset_names:
             meta = _dataset_meta(dataset_name)
@@ -553,15 +637,14 @@ def _run_variant(
                     }
                 )
 
-            if label_report:
-                for miss in misses:
-                    miss_label = str(miss.label or "").strip().upper() or "?"
-                    miss_kind = str(miss.kind or "").strip().upper()
+            for miss in misses:
+                miss_label = str(miss.label or "").strip().upper() or "?"
+                miss_kind = str(miss.kind or "").strip().upper()
 
-                    if miss_kind not in ("TP", "FN", "FP", "PARTIAL"):
-                        continue
+                if miss_kind not in ("TP", "FN", "FP", "PARTIAL"):
+                    continue
 
-                    policy_label_hits[miss_label][miss_kind].append(_miss_line(dataset_name, miss))
+                policy_label_hits[miss_label][miss_kind].append(_miss_line(dataset_name, miss))
 
             if debug:
                 debug_lines: List[str] = []
@@ -618,6 +701,16 @@ def _run_variant(
             )
             _write_text(labels_dir / "combined.txt", label_report_text)
             print(f"Wrote: {labels_dir / 'combined.txt'}")
+
+        ba_summary_text = _build_ba_summary(
+            policy=policy,
+            postprocess_enabled=postprocess_enabled,
+            global_agg=policy_global_agg,
+            label_rows=policy_label_rows,
+            label_hits=policy_label_hits,
+        )
+        _write_text(policy_dir / "ba_summary.txt", ba_summary_text)
+        print(f"Wrote: {policy_dir / 'ba_summary.txt'}")
 
         _write_policy_csv_files(
             csv_dir=csv_dir,
