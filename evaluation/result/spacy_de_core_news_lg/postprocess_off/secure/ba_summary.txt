@@ -5,12 +5,12 @@ POSTPROCESSING: off
 
 GESAMTERGEBNIS (micro-aggregated)
 ----------------------------------------------------------------------
-TP: 355
-FP: 68
+TP: 354
+FP: 69
 FN: 56
-Precision: 0.839
-Recall: 0.864
-F1: 0.851
+Precision: 0.837
+Recall: 0.863
+F1: 0.850
 
 LABELERGEBNISSE
 ----------------------------------------------------------------------
@@ -19,7 +19,7 @@ E_MAIL       TP= 39 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
 IBAN         TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
 IP_ADRESSE   TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
 LOC          TP= 32 FP= 17 FN= 14 P=0.653 R=0.696 F1=0.674
-ORG          TP= 31 FP= 36 FN= 22 P=0.463 R=0.585 F1=0.517
+ORG          TP= 30 FP= 37 FN= 22 P=0.448 R=0.577 F1=0.504
 PER          TP=104 FP= 13 FN= 19 P=0.889 R=0.846 F1=0.867
 PLZ          TP= 21 FP=  1 FN=  0 P=0.955 R=1.000 F1=0.977
 STRASSE      TP= 21 FP=  1 FN=  1 P=0.955 R=0.955 F1=0.955
@@ -88,7 +88,7 @@ ORG
     - Dataset_20 146:163 [gold] 'Urban Coffee GmbH'
     - Dataset_20 1507:1529 [gold] 'Linden Immobilien GmbH'
     - Dataset_20 1560:1577 [gold] 'Urban Coffee GmbH'
-  FP (23):
+  FP (24):
     - Dataset_02 901:915 [ner] 'Export-Service'
     - Dataset_04 526:537 [ner] 'SMS-Gateway'
     - Dataset_05 735:737 [ner] 'MB'
@@ -100,6 +100,7 @@ ORG
     - Dataset_19 991:1001 [ner] 'uberweisen'
     - Dataset_19 1043:1054 [ner] 'SOLADEST600'
     - Dataset_20 0:18 [ner] 'GEWERBEMIETVERTRAG'
+    - Dataset_21 260:265 [ner] 'Apple'
     - Dataset_21 304:320 [ner] 'M1 Pro Prozessor'
     - Dataset_23 0:14 [ner] 'ARBEITSVERTRAG'
     - Dataset_24 0:14 [ner] 'ARBEITSVERTRAG'

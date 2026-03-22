@@ -5,12 +5,12 @@ POSTPROCESSING: off
 
 GESAMTERGEBNIS (micro-aggregated)
 ----------------------------------------------------------------------
-TP: 408
-FP: 11
+TP: 407
+FP: 12
 FN: 3
-Precision: 0.974
+Precision: 0.971
 Recall: 0.993
-F1: 0.983
+F1: 0.982
 
 LABELERGEBNISSE
 ----------------------------------------------------------------------
@@ -19,7 +19,7 @@ E_MAIL       TP= 39 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
 IBAN         TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
 IP_ADRESSE   TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
 LOC          TP= 46 FP=  2 FN=  0 P=0.958 R=1.000 F1=0.979
-ORG          TP= 51 FP=  7 FN=  2 P=0.879 R=0.962 F1=0.919
+ORG          TP= 50 FP=  8 FN=  2 P=0.862 R=0.962 F1=0.909
 PER          TP=123 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
 PLZ          TP= 21 FP=  1 FN=  0 P=0.955 R=1.000 F1=0.977
 STRASSE      TP= 21 FP=  1 FN=  1 P=0.955 R=0.955 F1=0.955
@@ -37,11 +37,12 @@ ORG
   FN (2):
     - Dataset_14 534:553 [gold] 'Universität Münster'
     - Dataset_16 423:439 [gold] 'Universität Köln'
-  FP (7):
+  FP (8):
     - Dataset_13 542:545 [ner] 'AWS'
     - Dataset_16 468:484 [ner] 'Google Analytics'
     - Dataset_18 0:2 [ner] 'FW'
     - Dataset_19 1043:1054 [ner] 'SOLADEST600'
+    - Dataset_21 260:265 [ner] 'Apple'
     - Dataset_25 807:813 [ner] 'mvogel'
     - Dataset_25 815:831 [ner] 'Active Directory'
     - Dataset_30 28:44 [ner] 'IntraLog Systems'

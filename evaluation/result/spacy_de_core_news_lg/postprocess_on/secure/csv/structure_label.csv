@@ -2,7 +2,7 @@ policy,structure,label,tp,fp,fn,precision,recall,f1
 secure,regular,DATUM,23,0,0,1.000000,1.000000,1.000000
 secure,regular,E_MAIL,14,0,0,1.000000,1.000000,1.000000
 secure,regular,LOC,15,2,2,0.882353,0.882353,0.882353
-secure,regular,ORG,12,2,2,0.857143,0.857143,0.857143
+secure,regular,ORG,11,3,2,0.785714,0.846154,0.814815
 secure,regular,PER,37,0,8,1.000000,0.822222,0.902439
 secure,regular,PLZ,8,1,0,0.888889,1.000000,0.941176
 secure,regular,STRASSE,8,0,0,1.000000,1.000000,1.000000

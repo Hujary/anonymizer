@@ -223,7 +223,7 @@ UNERWARTET (FP): 4
 
 ORG
 --------------------------------------------------------------------------------
-ERKANNT (TP): 43
+ERKANNT (TP): 42
   - Dataset_01 89:109 [ner] 'Berger Logistik GmbH'
   - Dataset_02 104:122 [ner] 'Kramer & Sohn GmbH'
   - Dataset_04 346:361 [ner] 'Franke Bau GmbH'
@@ -254,7 +254,6 @@ ERKANNT (TP): 43
   - Dataset_18 270:287 [ner] 'AnalyticsPro GmbH'
   - Dataset_18 424:439 [ner] 'Universität Ulm'
   - Dataset_18 606:620 [ner] 'DataConsult AG'
-  - Dataset_21 260:265 [ner] 'Apple'
   - Dataset_23 29:53 [ner] 'Bergmann IT-Systeme GmbH'
   - Dataset_23 2755:2779 [ner] 'Bergmann IT-Systeme GmbH'
   - Dataset_24 29:58 [ner] 'Hansen & Reuter Logistik GmbH'
@@ -282,11 +281,12 @@ NICHT ERKANNT (FN): 10
   - Dataset_20 1507:1529 [gold] 'Linden Immobilien GmbH'
   - Dataset_20 1560:1577 [gold] 'Urban Coffee GmbH'
 
-UNERWARTET (FP): 11
+UNERWARTET (FP): 12
   - Dataset_14 287:294 [ner] 'Münster'
   - Dataset_18 341:365 [ner] 'Machine-Learning-Modelle'
   - Dataset_19 991:1001 [ner] 'uberweisen'
   - Dataset_19 1043:1054 [ner] 'SOLADEST600'
+  - Dataset_21 260:265 [ner] 'Apple'
   - Dataset_21 304:320 [ner] 'M1 Pro Prozessor'
   - Dataset_25 32:49 [ner] 'Internes Helpdesk'
   - Dataset_25 70:88 [ner] 'Betroffenes System'

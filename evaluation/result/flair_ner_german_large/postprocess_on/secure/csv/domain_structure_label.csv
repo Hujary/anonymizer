@@ -86,7 +86,7 @@ secure,Supporttickets,unstructured,TELEFON,2,0,0,1.000000,1.000000,1.000000
 secure,Supporttickets,unstructured,URL,2,0,0,1.000000,1.000000,1.000000
 secure,Verträge,regular,DATUM,4,0,0,1.000000,1.000000,1.000000
 secure,Verträge,regular,LOC,8,0,0,1.000000,1.000000,1.000000
-secure,Verträge,regular,ORG,1,0,0,1.000000,1.000000,1.000000
+secure,Verträge,regular,ORG,0,1,0,0.000000,0.000000,0.000000
 secure,Verträge,regular,PER,12,0,0,1.000000,1.000000,1.000000
 secure,Verträge,regular,PLZ,4,0,0,1.000000,1.000000,1.000000
 secure,Verträge,regular,STRASSE,4,0,0,1.000000,1.000000,1.000000

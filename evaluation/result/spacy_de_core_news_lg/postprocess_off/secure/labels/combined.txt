@@ -236,7 +236,7 @@ UNERWARTET (FP): 16
 
 ORG
 --------------------------------------------------------------------------------
-ERKANNT (TP): 30
+ERKANNT (TP): 29
   - Dataset_01 89:109 [ner] 'Berger Logistik GmbH'
   - Dataset_07 614:626 [ner] 'AlphaCore AG'
   - Dataset_09 303:319 [ner] 'MediConnect GmbH'
@@ -260,7 +260,6 @@ ERKANNT (TP): 30
   - Dataset_17 440:458 [ner] 'Hochschule Leipzig'
   - Dataset_18 424:439 [ner] 'Universität Ulm'
   - Dataset_18 606:620 [ner] 'DataConsult AG'
-  - Dataset_21 260:265 [ner] 'Apple'
   - Dataset_23 29:53 [ner] 'Bergmann IT-Systeme GmbH'
   - Dataset_24 29:58 [ner] 'Hansen & Reuter Logistik GmbH'
   - Dataset_27 67:89 [ner] 'NordCom Vertriebs GmbH'
@@ -294,7 +293,7 @@ NICHT ERKANNT (FN): 9
   - Dataset_20 1507:1529 [gold] 'Linden Immobilien GmbH'
   - Dataset_20 1560:1577 [gold] 'Urban Coffee GmbH'
 
-UNERWARTET (FP): 23
+UNERWARTET (FP): 24
   - Dataset_02 901:915 [ner] 'Export-Service'
   - Dataset_04 526:537 [ner] 'SMS-Gateway'
   - Dataset_05 735:737 [ner] 'MB'
@@ -306,6 +305,7 @@ UNERWARTET (FP): 23
   - Dataset_19 991:1001 [ner] 'uberweisen'
   - Dataset_19 1043:1054 [ner] 'SOLADEST600'
   - Dataset_20 0:18 [ner] 'GEWERBEMIETVERTRAG'
+  - Dataset_21 260:265 [ner] 'Apple'
   - Dataset_21 304:320 [ner] 'M1 Pro Prozessor'
   - Dataset_23 0:14 [ner] 'ARBEITSVERTRAG'
   - Dataset_24 0:14 [ner] 'ARBEITSVERTRAG'

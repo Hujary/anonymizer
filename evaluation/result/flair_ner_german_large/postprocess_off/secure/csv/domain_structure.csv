@@ -11,6 +11,6 @@ secure,HR-Dokumente,unstructured,23,1,0,0.958333,1.000000,0.978723
 secure,Supporttickets,regular,13,0,0,1.000000,1.000000,1.000000
 secure,Supporttickets,structured,14,0,0,1.000000,1.000000,1.000000
 secure,Supporttickets,unstructured,16,0,0,1.000000,1.000000,1.000000
-secure,Verträge,regular,33,0,0,1.000000,1.000000,1.000000
+secure,Verträge,regular,32,1,0,0.969697,1.000000,0.984615
 secure,Verträge,structured,35,2,1,0.945946,0.972222,0.958904
 secure,Verträge,unstructured,30,0,0,1.000000,1.000000,1.000000

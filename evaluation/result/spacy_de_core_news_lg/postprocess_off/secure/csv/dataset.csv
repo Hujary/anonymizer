@@ -19,7 +19,7 @@ Dataset_17,17,HR-Dokumente,unstructured,1,secure,8,1,2,0.888889,0.800000,0.84210
 Dataset_18,18,HR-Dokumente,unstructured,2,secure,12,4,1,0.750000,0.923077,0.827586
 Dataset_19,19,Verträge,structured,1,secure,16,5,1,0.761905,0.941176,0.842105
 Dataset_20,20,Verträge,structured,2,secure,11,3,8,0.785714,0.578947,0.666667
-Dataset_21,21,Verträge,regular,1,secure,13,1,4,0.928571,0.764706,0.838710
+Dataset_21,21,Verträge,regular,1,secure,12,2,4,0.857143,0.750000,0.800000
 Dataset_22,22,Verträge,regular,2,secure,13,0,3,1.000000,0.812500,0.896552
 Dataset_23,23,Verträge,unstructured,1,secure,12,2,2,0.857143,0.857143,0.857143
 Dataset_24,24,Verträge,unstructured,2,secure,13,2,3,0.866667,0.812500,0.838710

@@ -5,12 +5,12 @@ POSTPROCESSING: on
 
 GESAMTERGEBNIS (micro-aggregated)
 ----------------------------------------------------------------------
-TP: 373
-FP: 17
+TP: 372
+FP: 18
 FN: 38
-Precision: 0.956
-Recall: 0.908
-F1: 0.931
+Precision: 0.954
+Recall: 0.907
+F1: 0.930
 
 LABELERGEBNISSE
 ----------------------------------------------------------------------
@@ -19,7 +19,7 @@ E_MAIL       TP= 39 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
 IBAN         TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
 IP_ADRESSE   TP=  2 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
 LOC          TP= 33 FP=  5 FN= 13 P=0.868 R=0.717 F1=0.786
-ORG          TP= 43 FP= 11 FN= 10 P=0.796 R=0.811 F1=0.804
+ORG          TP= 42 FP= 12 FN= 10 P=0.778 R=0.808 F1=0.792
 PER          TP=108 FP=  0 FN= 15 P=1.000 R=0.878 F1=0.935
 PLZ          TP= 21 FP=  1 FN=  0 P=0.955 R=1.000 F1=0.977
 STRASSE      TP= 22 FP=  0 FN=  0 P=1.000 R=1.000 F1=1.000
@@ -62,11 +62,12 @@ ORG
     - Dataset_20 146:163 [gold] 'Urban Coffee GmbH'
     - Dataset_20 1507:1529 [gold] 'Linden Immobilien GmbH'
     - Dataset_20 1560:1577 [gold] 'Urban Coffee GmbH'
-  FP (11):
+  FP (12):
     - Dataset_14 287:294 [ner] 'Münster'
     - Dataset_18 341:365 [ner] 'Machine-Learning-Modelle'
     - Dataset_19 991:1001 [ner] 'uberweisen'
     - Dataset_19 1043:1054 [ner] 'SOLADEST600'
+    - Dataset_21 260:265 [ner] 'Apple'
     - Dataset_21 304:320 [ner] 'M1 Pro Prozessor'
     - Dataset_25 32:49 [ner] 'Internes Helpdesk'
     - Dataset_25 70:88 [ner] 'Betroffenes System'

@@ -1,6 +1,7 @@
 DATASET: Dataset_21 | DOMAIN: Verträge | STRUCTURE: regular | VARIANT: 1 | POLICY: secure | NER_BACKEND: flair | NER_MODEL: flair/ner-german-large | POSTPROCESSING: off
-TP=17 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=16 FP=1 FN=0 | P=0.941 R=1.000 F1=0.970
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 0
+UNEXPECTED (FP): 1
+  - ORG            260:265 [ner] 'Apple' ctx='nn sein gebrauchtes ▮Apple▮ MacBook Pro 14 Zoll'
