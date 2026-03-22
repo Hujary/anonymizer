@@ -5,7 +5,7 @@ minimal,Chats,regular,STRASSE,3,0,0,1.000000,1.000000,1.000000
 minimal,Chats,regular,TELEFON,1,0,0,1.000000,1.000000,1.000000
 minimal,Chats,structured,E_MAIL,2,0,0,1.000000,1.000000,1.000000
 minimal,Chats,structured,IP_ADRESSE,1,0,0,1.000000,1.000000,1.000000
-minimal,Chats,structured,PER,17,1,1,0.944444,0.944444,0.944444
+minimal,Chats,structured,PER,18,0,0,1.000000,1.000000,1.000000
 minimal,Chats,structured,STRASSE,1,0,0,1.000000,1.000000,1.000000
 minimal,Chats,structured,TELEFON,1,0,0,1.000000,1.000000,1.000000
 minimal,Chats,unstructured,E_MAIL,2,0,0,1.000000,1.000000,1.000000

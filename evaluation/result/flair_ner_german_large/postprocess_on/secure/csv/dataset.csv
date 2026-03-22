@@ -23,7 +23,7 @@ Dataset_21,21,Verträge,regular,1,secure,17,0,0,1.000000,1.000000,1.000000
 Dataset_22,22,Verträge,regular,2,secure,16,0,0,1.000000,1.000000,1.000000
 Dataset_23,23,Verträge,unstructured,1,secure,14,0,0,1.000000,1.000000,1.000000
 Dataset_24,24,Verträge,unstructured,2,secure,16,0,0,1.000000,1.000000,1.000000
-Dataset_25,25,Chats,structured,1,secure,14,3,1,0.823529,0.933333,0.875000
+Dataset_25,25,Chats,structured,1,secure,15,2,0,0.882353,1.000000,0.937500
 Dataset_26,26,Chats,structured,2,secure,14,0,0,1.000000,1.000000,1.000000
 Dataset_27,27,Chats,regular,1,secure,20,0,1,1.000000,0.952381,0.975610
 Dataset_28,28,Chats,regular,2,secure,24,2,0,0.923077,1.000000,0.960000

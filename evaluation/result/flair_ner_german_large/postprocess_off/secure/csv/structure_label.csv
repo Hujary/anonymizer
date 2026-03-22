@@ -14,7 +14,7 @@ secure,structured,IBAN,2,0,0,1.000000,1.000000,1.000000
 secure,structured,IP_ADRESSE,1,0,0,1.000000,1.000000,1.000000
 secure,structured,LOC,16,2,1,0.888889,0.941176,0.914286
 secure,structured,ORG,16,4,1,0.800000,0.941176,0.864865
-secure,structured,PER,32,1,1,0.969697,0.969697,0.969697
+secure,structured,PER,33,0,0,1.000000,1.000000,1.000000
 secure,structured,PLZ,8,0,0,1.000000,1.000000,1.000000
 secure,structured,STRASSE,7,1,1,0.875000,0.875000,0.875000
 secure,structured,TELEFON,7,0,0,1.000000,1.000000,1.000000

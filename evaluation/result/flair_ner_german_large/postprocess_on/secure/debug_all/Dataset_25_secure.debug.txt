@@ -1,9 +1,8 @@
 DATASET: Dataset_25 | DOMAIN: Chats | STRUCTURE: structured | VARIANT: 1 | POLICY: secure | NER_BACKEND: flair | NER_MODEL: flair/ner-german-large | POSTPROCESSING: on
-TP=14 FP=3 FN=1 | P=0.824 R=0.933 F1=0.875
+TP=15 FP=2 FN=0 | P=0.882 R=1.000 F1=0.938
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
-NOT FULLY DETECTED (PARTIAL): 1
-  - PER            gold 404:415 [gold] 'Herr Vogel' [pred:ner:411:416] 'Vogel' gold_ctx='r (IT-Support):\nHall▮o Herr Voge▮l, haben Sie Ihr Pas' pred_ctx='upport):\nHallo Herr ▮Vogel▮, haben Sie Ihr Pass'
+NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 2
   - ORG            807:813 [ner] 'mvogel' ctx='iere: Benutzerkonto ▮mvogel▮, Active Directory, '
   - ORG            815:831 [ner] 'Active Directory' ctx='nutzerkonto mvogel, ▮Active Directory▮, Passwort-Reset und'

@@ -12,7 +12,7 @@ secure,Chats,structured,E_MAIL,2,0,0,1.000000,1.000000,1.000000
 secure,Chats,structured,IP_ADRESSE,1,0,0,1.000000,1.000000,1.000000
 secure,Chats,structured,LOC,1,0,0,1.000000,1.000000,1.000000
 secure,Chats,structured,ORG,1,2,0,0.333333,1.000000,0.500000
-secure,Chats,structured,PER,17,1,1,0.944444,0.944444,0.944444
+secure,Chats,structured,PER,18,0,0,1.000000,1.000000,1.000000
 secure,Chats,structured,STRASSE,1,0,0,1.000000,1.000000,1.000000
 secure,Chats,structured,TELEFON,1,0,0,1.000000,1.000000,1.000000
 secure,Chats,structured,URL,2,0,0,1.000000,1.000000,1.000000

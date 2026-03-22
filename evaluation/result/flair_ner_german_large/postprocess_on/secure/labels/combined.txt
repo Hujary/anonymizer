@@ -290,7 +290,7 @@ UNERWARTET (FP): 6
 
 PER
 --------------------------------------------------------------------------------
-ERKANNT (TP): 120
+ERKANNT (TP): 121
   - Dataset_01 71:81 [ner] 'Max Berger'
   - Dataset_02 84:96 [ner] 'Laura Schmid'
   - Dataset_03 300:312 [ner] 'Tobias Klein'
@@ -349,6 +349,7 @@ ERKANNT (TP): 120
   - Dataset_24 3105:3116 [ner] 'Jonas Weber'
   - Dataset_25 133:145 [ner] 'Markus Vogel'
   - Dataset_25 370:385 [ner] 'Julia Schneider'
+  - Dataset_25 411:416 [ner] 'Vogel'
   - Dataset_25 469:481 [ner] 'Markus Vogel'
   - Dataset_25 550:565 [ner] 'Julia Schneider'
   - Dataset_25 700:712 [ner] 'Markus Vogel'
@@ -412,8 +413,7 @@ ERKANNT (TP): 120
   - Dataset_30 1398:1411 [ner] 'Jana Hoffmann'
   - Dataset_30 1441:1446 [ner] 'König'
 
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 1
-  - Dataset_25 gold:404:415 [gold] 'Herr Vogel' <- pred:ner:411:416 'Vogel'
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
 NICHT ERKANNT (FN): 1
   - Dataset_27 487:498 [gold] 'M. Bergmann'

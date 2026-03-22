@@ -1,7 +1,7 @@
 policy,domain,label,tp,fp,fn,precision,recall,f1
 minimal,Chats,E_MAIL,8,0,0,1.000000,1.000000,1.000000
 minimal,Chats,IP_ADRESSE,2,0,0,1.000000,1.000000,1.000000
-minimal,Chats,PER,64,2,2,0.969697,0.969697,0.969697
+minimal,Chats,PER,65,1,1,0.984848,0.984848,0.984848
 minimal,Chats,STRASSE,6,0,0,1.000000,1.000000,1.000000
 minimal,Chats,TELEFON,2,0,0,1.000000,1.000000,1.000000
 minimal,E-Mail,E_MAIL,18,0,0,1.000000,1.000000,1.000000

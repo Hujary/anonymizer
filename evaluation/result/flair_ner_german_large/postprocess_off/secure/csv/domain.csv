@@ -1,5 +1,5 @@
 policy,domain,tp,fp,fn,precision,recall,f1
-secure,Chats,118,6,1,0.951613,0.991597,0.971193
+secure,Chats,119,5,0,0.959677,1.000000,0.979424
 secure,E-Mail,66,1,1,0.985075,0.985075,0.985075
 secure,HR-Dokumente,80,5,2,0.941176,0.975610,0.958084
 secure,Supporttickets,43,0,0,1.000000,1.000000,1.000000
