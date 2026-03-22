@@ -30,7 +30,16 @@ POLICY_SPECS: Dict[str, Dict[str, List[str]]] = {
     },
     "secure": {
         "ner_labels": ["PER", "ORG", "LOC", "STRASSE"],
-        "regex_labels": ["DATUM", "E_MAIL", "IBAN", "IP_ADRESSE", "PLZ", "STRASSE", "TELEFON", "URL"],
+        "regex_labels": [
+            "DATUM",
+            "E_MAIL",
+            "IBAN",
+            "IP_ADRESSE",
+            "PLZ",
+            "STRASSE",
+            "TELEFON",
+            "URL",
+        ],
     },
 }
 
@@ -370,17 +379,20 @@ def _run_model_benchmark(
     dataset_names: List[str],
     model_key: str,
     runs: int,
+    postprocessing: bool,
 ) -> Path:
     model_spec = MODEL_SPECS[model_key]
     backend, model = _set_ner_runtime(model_key)
 
     _apply_policy("secure")
-    config.set("use_ner_postprocessing", True)
+    config.set("use_ner_postprocessing", postprocessing)
+
+    post_slug = "postprocess_on" if postprocessing else "postprocess_off"
 
     model_result_dir = (
         result_root
         / model_spec["result_slug"]
-        / "postprocess_on"
+        / post_slug
         / "secure"
         / "runtime"
     )
@@ -392,7 +404,7 @@ def _run_model_benchmark(
         "RUNTIME REPORT",
         "======================================================================",
         "policy=secure",
-        "postprocessing=on",
+        f"postprocessing={'on' if postprocessing else 'off'}",
         f"ner_backend={backend}",
         f"ner_model={model}",
         f"runs_per_dataset={max(1, int(runs))}",
@@ -438,7 +450,10 @@ def _run_model_benchmark(
             )
         )
 
-        print(f"[{model_key}] [{idx:02d}/{len(dataset_names):02d}] {dataset_name} fertig")
+        print(
+            f"[{model_key}] [postprocessing={'on' if postprocessing else 'off'}] "
+            f"[{idx:02d}/{len(dataset_names):02d}] {dataset_name} fertig"
+        )
 
     lines.append(
         _format_global_runtime_summary(
@@ -461,6 +476,7 @@ def _extract_summary_metrics(report_path: Path) -> Dict[str, str]:
     content = report_path.read_text(encoding="utf-8").splitlines()
 
     wanted = {
+        "postprocessing",
         "ner_backend",
         "ner_model",
         "mean_ms",
@@ -491,16 +507,16 @@ def _build_combined_comparison(result_paths: List[Path], output_path: Path) -> N
         "RUNTIME COMPARISON",
         "======================================================================",
         "policy=secure",
-        "postprocessing=on",
         "",
-        "MODEL                    | BACKEND | MEAN_MS | MEDIAN_MS | MIN_MS | MAX_MS | STDEV_MS | MS_PER_LABEL | LABELS",
-        "---------------------------------------------------------------------------------------------------------------",
+        "MODEL                    | BACKEND | POST | MEAN_MS | MEDIAN_MS | MIN_MS | MAX_MS | STDEV_MS | MS_PER_LABEL | LABELS",
+        "----------------------------------------------------------------------------------------------------------------------",
     ]
 
     for path in result_paths:
         metrics = _extract_summary_metrics(path)
         model = metrics.get("ner_model", "-")
         backend = metrics.get("ner_backend", "-")
+        postprocessing = metrics.get("postprocessing", "-")
         mean_ms = metrics.get("mean_ms", "-")
         median_ms = metrics.get("median_ms", "-")
         min_ms = metrics.get("min_ms", "-")
@@ -512,6 +528,7 @@ def _build_combined_comparison(result_paths: List[Path], output_path: Path) -> N
         lines.append(
             f"{model:<24} | "
             f"{backend:<7} | "
+            f"{postprocessing:<4} | "
             f"{mean_ms:>7} | "
             f"{median_ms:>9} | "
             f"{min_ms:>6} | "
@@ -551,6 +568,13 @@ def main() -> int:
         choices=sorted(MODEL_SPECS.keys()),
         help="NER models/backends to benchmark",
     )
+    parser.add_argument(
+        "--postprocessing",
+        nargs="*",
+        default=["off", "on"],
+        choices=["off", "on"],
+        help="Benchmark with postprocessing off and/or on",
+    )
     args = parser.parse_args()
 
     eval_root = Path(args.eval_root)
@@ -568,22 +592,35 @@ def main() -> int:
     if not selected_models:
         raise SystemExit("No models selected.")
 
+    selected_postprocessing = []
+    for value in args.postprocessing:
+        normalized = str(value).strip().lower()
+        if normalized == "on":
+            selected_postprocessing.append(True)
+        elif normalized == "off":
+            selected_postprocessing.append(False)
+
+    if not selected_postprocessing:
+        raise SystemExit("No postprocessing modes selected.")
+
     snapshot = _snapshot_config()
 
     try:
         result_paths: List[Path] = []
 
-        for model_key in selected_models:
-            result_path = _run_model_benchmark(
-                eval_root=eval_root,
-                result_root=result_root,
-                dataset_names=dataset_names,
-                model_key=model_key,
-                runs=max(1, int(args.runs)),
-            )
-            result_paths.append(result_path)
+        for postprocessing in selected_postprocessing:
+            for model_key in selected_models:
+                result_path = _run_model_benchmark(
+                    eval_root=eval_root,
+                    result_root=result_root,
+                    dataset_names=dataset_names,
+                    model_key=model_key,
+                    runs=max(1, int(args.runs)),
+                    postprocessing=postprocessing,
+                )
+                result_paths.append(result_path)
 
-        combined_root = result_root / "runtime_secure_postprocess_on"
+        combined_root = result_root / "runtime_secure_comparison"
         combined_root.mkdir(parents=True, exist_ok=True)
 
         _build_combined_full_report(

@@ -1,0 +1,72 @@
+RUNTIME REPORT
+======================================================================
+policy=secure
+postprocessing=off
+ner_backend=flair
+ner_model=flair/ner-german-large
+runs_per_dataset=5
+measurement=pure execution time of erkenne(text)
+warmup=one untimed warm-up run per text
+
+DATASET      | DOMAIN        | STRUCTURE    | CHARS | LABELS |  MEAN_MS | MEDIAN_MS |   MIN_MS |   MAX_MS | DELTA_MS | STDEV_MS | MS_PER_LABEL
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+Dataset_01   | Supporttickets | structured   | chars=  523 | labels=  6 | mean_ms= 126.146 | median_ms= 126.140 | min_ms= 124.704 | max_ms= 127.693 | delta_ms=   2.988 | stdev_ms=   0.977 | ms_per_label= 21.024
+Dataset_02   | Supporttickets | structured   | chars=  937 | labels=  8 | mean_ms= 195.494 | median_ms= 195.665 | min_ms= 194.472 | max_ms= 196.568 | delta_ms=   2.096 | stdev_ms=   0.700 | ms_per_label= 24.437
+Dataset_03   | Supporttickets | regular      | chars=  663 | labels=  7 | mean_ms= 142.912 | median_ms= 142.792 | min_ms= 142.579 | max_ms= 143.396 | delta_ms=   0.817 | stdev_ms=   0.289 | ms_per_label= 20.416
+Dataset_04   | Supporttickets | regular      | chars=  659 | labels=  6 | mean_ms= 144.117 | median_ms= 144.075 | min_ms= 143.577 | max_ms= 144.626 | delta_ms=   1.049 | stdev_ms=   0.356 | ms_per_label= 24.019
+Dataset_05   | Supporttickets | unstructured | chars=  818 | labels=  8 | mean_ms= 177.991 | median_ms= 176.187 | min_ms= 175.076 | max_ms= 186.380 | delta_ms=  11.304 | stdev_ms=   4.217 | ms_per_label= 22.249
+Dataset_06   | Supporttickets | unstructured | chars=  837 | labels=  8 | mean_ms= 177.575 | median_ms= 177.535 | min_ms= 177.179 | max_ms= 178.046 | delta_ms=   0.866 | stdev_ms=   0.276 | ms_per_label= 22.197
+Dataset_07   | E-Mail        | structured   | chars=  626 | labels= 13 | mean_ms= 144.889 | median_ms= 144.775 | min_ms= 144.412 | max_ms= 145.558 | delta_ms=   1.145 | stdev_ms=   0.446 | ms_per_label= 11.145
+Dataset_08   | E-Mail        | structured   | chars=  610 | labels= 10 | mean_ms= 127.180 | median_ms= 127.090 | min_ms= 126.677 | max_ms= 128.111 | delta_ms=   1.434 | stdev_ms=   0.493 | ms_per_label= 12.718
+Dataset_09   | E-Mail        | regular      | chars=  568 | labels=  8 | mean_ms= 128.407 | median_ms= 128.398 | min_ms= 128.223 | max_ms= 128.607 | delta_ms=   0.385 | stdev_ms=   0.122 | ms_per_label= 16.051
+Dataset_10   | E-Mail        | regular      | chars=  567 | labels= 10 | mean_ms= 127.588 | median_ms= 127.534 | min_ms= 127.354 | max_ms= 127.924 | delta_ms=   0.570 | stdev_ms=   0.188 | ms_per_label= 12.759
+Dataset_11   | E-Mail        | unstructured | chars=  618 | labels= 14 | mean_ms= 142.619 | median_ms= 142.632 | min_ms= 142.279 | max_ms= 143.079 | delta_ms=   0.800 | stdev_ms=   0.302 | ms_per_label= 10.187
+Dataset_12   | E-Mail        | unstructured | chars=  718 | labels= 12 | mean_ms= 159.179 | median_ms= 159.284 | min_ms= 158.667 | max_ms= 159.572 | delta_ms=   0.905 | stdev_ms=   0.312 | ms_per_label= 13.265
+Dataset_13   | HR-Dokumente  | structured   | chars=  575 | labels= 17 | mean_ms= 127.587 | median_ms= 127.704 | min_ms= 127.140 | max_ms= 127.857 | delta_ms=   0.718 | stdev_ms=   0.272 | ms_per_label=  7.505
+Dataset_14   | HR-Dokumente  | structured   | chars=  553 | labels= 15 | mean_ms= 123.563 | median_ms= 123.580 | min_ms= 123.327 | max_ms= 123.828 | delta_ms=   0.501 | stdev_ms=   0.205 | ms_per_label=  8.238
+Dataset_15   | HR-Dokumente  | regular      | chars=  624 | labels= 16 | mean_ms= 143.672 | median_ms= 143.488 | min_ms= 143.170 | max_ms= 144.255 | delta_ms=   1.085 | stdev_ms=   0.419 | ms_per_label=  8.979
+Dataset_16   | HR-Dokumente  | regular      | chars=  497 | labels= 13 | mean_ms= 123.281 | median_ms= 123.040 | min_ms= 122.824 | max_ms= 123.811 | delta_ms=   0.987 | stdev_ms=   0.414 | ms_per_label=  9.483
+Dataset_17   | HR-Dokumente  | unstructured | chars=  536 | labels= 10 | mean_ms= 124.469 | median_ms= 124.586 | min_ms= 124.163 | max_ms= 124.664 | delta_ms=   0.501 | stdev_ms=   0.206 | ms_per_label= 12.447
+Dataset_18   | HR-Dokumente  | unstructured | chars=  630 | labels= 14 | mean_ms= 146.327 | median_ms= 143.164 | min_ms= 142.295 | max_ms= 153.884 | delta_ms=  11.589 | stdev_ms=   4.649 | ms_per_label= 10.452
+Dataset_19   | Verträge      | structured   | chars= 1616 | labels= 18 | mean_ms= 280.271 | median_ms= 277.716 | min_ms= 276.946 | max_ms= 286.092 | delta_ms=   9.146 | stdev_ms=   3.649 | ms_per_label= 15.571
+Dataset_20   | Verträge      | structured   | chars= 1577 | labels= 19 | mean_ms= 273.400 | median_ms= 272.319 | min_ms= 270.721 | max_ms= 276.620 | delta_ms=   5.898 | stdev_ms=   2.644 | ms_per_label= 14.389
+Dataset_21   | Verträge      | regular      | chars= 1074 | labels= 17 | mean_ms= 198.452 | median_ms= 198.519 | min_ms= 198.040 | max_ms= 198.827 | delta_ms=   0.787 | stdev_ms=   0.281 | ms_per_label= 11.674
+Dataset_22   | Verträge      | regular      | chars= 1030 | labels= 16 | mean_ms= 196.001 | median_ms= 195.702 | min_ms= 194.995 | max_ms= 198.096 | delta_ms=   3.102 | stdev_ms=   1.102 | ms_per_label= 12.250
+Dataset_23   | Verträge      | unstructured | chars= 2799 | labels= 14 | mean_ms= 653.602 | median_ms= 653.183 | min_ms= 652.079 | max_ms= 655.723 | delta_ms=   3.644 | stdev_ms=   1.208 | ms_per_label= 46.686
+Dataset_24   | Verträge      | unstructured | chars= 3116 | labels= 16 | mean_ms= 650.525 | median_ms= 650.961 | min_ms= 647.924 | max_ms= 651.793 | delta_ms=   3.869 | stdev_ms=   1.357 | ms_per_label= 40.658
+Dataset_25   | Chats         | structured   | chars=  965 | labels= 17 | mean_ms= 200.686 | median_ms= 200.542 | min_ms= 200.095 | max_ms= 201.214 | delta_ms=   1.118 | stdev_ms=   0.406 | ms_per_label= 11.805
+Dataset_26   | Chats         | structured   | chars=  976 | labels= 14 | mean_ms= 215.673 | median_ms= 215.199 | min_ms= 214.463 | max_ms= 217.618 | delta_ms=   3.155 | stdev_ms=   1.142 | ms_per_label= 15.405
+Dataset_27   | Chats         | regular      | chars= 1268 | labels= 21 | mean_ms= 248.649 | median_ms= 248.783 | min_ms= 248.101 | max_ms= 249.007 | delta_ms=   0.906 | stdev_ms=   0.344 | ms_per_label= 11.840
+Dataset_28   | Chats         | regular      | chars= 1130 | labels= 26 | mean_ms= 219.201 | median_ms= 219.322 | min_ms= 218.358 | max_ms= 220.076 | delta_ms=   1.718 | stdev_ms=   0.563 | ms_per_label=  8.431
+Dataset_29   | Chats         | unstructured | chars= 1247 | labels= 23 | mean_ms= 250.107 | median_ms= 249.977 | min_ms= 249.241 | max_ms= 251.884 | delta_ms=   2.643 | stdev_ms=   0.963 | ms_per_label= 10.874
+Dataset_30   | Chats         | unstructured | chars= 1488 | labels= 23 | mean_ms= 289.831 | median_ms= 289.695 | min_ms= 289.118 | max_ms= 290.487 | delta_ms=   1.369 | stdev_ms=   0.493 | ms_per_label= 12.601
+
+GLOBAL RUNTIME SUMMARY
+======================================================================
+datasets=30
+runs_per_dataset=5
+total_runs=150
+total_chars=29845
+total_resolved_labels=419
+
+ALL RUNS
+mean_ms=208.646
+median_ms=167.324
+min_ms=122.824
+max_ms=655.723
+delta_ms=532.899
+stdev_ms=128.739
+
+PER-DATASET MEAN RUNTIMES
+mean_ms=208.646
+median_ms=168.377
+min_ms=123.281
+max_ms=653.602
+delta_ms=530.321
+stdev_ms=128.730
+
+LABEL-NORMALIZED RUNTIME
+estimated_total_runtime_ms=31296.954
+resolved_labels_across_all_datasets=419
+resolved_labels_across_all_runs=2095
+average_runtime_per_resolved_label_ms=14.939
