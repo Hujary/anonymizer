@@ -57,15 +57,11 @@
             "text": "MarketView AG"
         },
         {
-            "label": ["ORG", "LOC"],
+            "label": ["ORG"],
             "expected_sources": ["ner"],
             "alternatives": [
                 {
                     "text": "Universität Köln",
-                    "expected_sources": ["ner"]
-                },
-                {
-                    "text": "Köln",
                     "expected_sources": ["ner"]
                 }
             ]
