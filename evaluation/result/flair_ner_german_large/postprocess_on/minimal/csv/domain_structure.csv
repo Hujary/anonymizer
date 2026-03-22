@@ -1,5 +1,5 @@
 policy,domain,structure,tp,fp,fn,precision,recall,f1
-minimal,Chats,regular,29,1,1,0.966667,0.966667,0.966667
+minimal,Chats,regular,30,0,1,1.000000,0.967742,0.983607
 minimal,Chats,structured,23,0,0,1.000000,1.000000,1.000000
 minimal,Chats,unstructured,31,0,0,1.000000,1.000000,1.000000
 minimal,E-Mail,regular,11,0,0,1.000000,1.000000,1.000000

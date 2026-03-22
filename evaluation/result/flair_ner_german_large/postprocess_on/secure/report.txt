@@ -126,7 +126,7 @@ NER_MODEL: flair/ner-german-large
 POSTPROCESSING: on
 
 POLICY secure
-TP=13 FP=0 FN=1 | P=1.000 R=0.929 F1=0.963
+TP=14 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
 
 ======================================================================
 
@@ -330,7 +330,7 @@ NER_MODEL: flair/ner-german-large
 POSTPROCESSING: on
 
 POLICY secure
-TP=24 FP=2 FN=0 | P=0.923 R=1.000 F1=0.960
+TP=25 FP=1 FN=0 | P=0.962 R=1.000 F1=0.980
 
 ======================================================================
 
@@ -360,4 +360,4 @@ TP=22 FP=1 FN=0 | P=0.957 R=1.000 F1=0.978
 
 GLOBAL SUMMARY (micro-averaged over all datasets)
 ----------------------------------------------------------------------
-POLICY secure   | TP= 405 FP=  11 FN=   5 | P=0.974 R=0.988 F1=0.981
+POLICY secure   | TP= 407 FP=  10 FN=   4 | P=0.976 R=0.990 F1=0.983

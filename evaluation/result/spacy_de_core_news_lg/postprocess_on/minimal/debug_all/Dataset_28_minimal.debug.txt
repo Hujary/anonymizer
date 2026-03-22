@@ -1,6 +1,7 @@
 DATASET: Dataset_28 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 2 | POLICY: minimal | NER_BACKEND: spacy | NER_MODEL: de_core_news_lg | POSTPROCESSING: on
-TP=15 FP=0 FN=0 | P=1.000 R=1.000 F1=1.000
+TP=15 FP=0 FN=1 | P=1.000 R=0.938 F1=0.968
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 0
+NOT DETECTED (FN): 1
+  - PER            736:742 [gold] 'Daniel' ctx=' Klein:\nAdresse von ▮Daniel▮ ist noch Rosenstraß'
 NOT FULLY DETECTED (PARTIAL): 0
 UNEXPECTED (FP): 0

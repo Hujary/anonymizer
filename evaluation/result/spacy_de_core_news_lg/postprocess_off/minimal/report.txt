@@ -330,7 +330,7 @@ NER_MODEL: de_core_news_lg
 POSTPROCESSING: off
 
 POLICY minimal
-TP=14 FP=2 FN=1 | P=0.875 R=0.933 F1=0.903
+TP=14 FP=2 FN=2 | P=0.875 R=0.875 F1=0.875
 
 ======================================================================
 
@@ -360,4 +360,4 @@ TP=14 FP=1 FN=1 | P=0.933 R=0.933 F1=0.933
 
 GLOBAL SUMMARY (micro-averaged over all datasets) (no Postprocessing)
 ----------------------------------------------------------------------
-POLICY minimal  | TP= 188 FP=  14 FN=  19 | P=0.931 R=0.908 F1=0.919
+POLICY minimal  | TP= 188 FP=  14 FN=  20 | P=0.931 R=0.904 F1=0.917

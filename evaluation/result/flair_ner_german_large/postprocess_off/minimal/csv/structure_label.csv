@@ -1,6 +1,6 @@
 policy,structure,label,tp,fp,fn,precision,recall,f1
 minimal,regular,E_MAIL,14,0,0,1.000000,1.000000,1.000000
-minimal,regular,PER,44,1,0,0.977778,1.000000,0.988764
+minimal,regular,PER,45,0,0,1.000000,1.000000,1.000000
 minimal,regular,STRASSE,8,0,0,1.000000,1.000000,1.000000
 minimal,regular,TELEFON,7,0,0,1.000000,1.000000,1.000000
 minimal,structured,E_MAIL,12,0,0,1.000000,1.000000,1.000000

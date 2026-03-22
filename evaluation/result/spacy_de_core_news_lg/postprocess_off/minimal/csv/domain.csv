@@ -1,5 +1,5 @@
 policy,domain,tp,fp,fn,precision,recall,f1
-minimal,Chats,81,5,3,0.941860,0.964286,0.952941
+minimal,Chats,81,5,4,0.941860,0.952941,0.947368
 minimal,E-Mail,33,2,6,0.942857,0.846154,0.891892
 minimal,HR-Dokumente,21,3,2,0.875000,0.913043,0.893617
 minimal,Supporttickets,21,3,1,0.875000,0.954545,0.913043

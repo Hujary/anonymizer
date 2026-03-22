@@ -10,24 +10,14 @@ from .validate_org_span import is_valid_org_span
 
 
 def process_org_hit(text: str, hit: Treffer) -> Treffer | None:
-    # Führende und nachgestellte Whitespaces entfernen
     start, end = cleanup_outer_whitespace(text, hit.start, hit.ende)
 
     if start >= end:
         return None
 
-    # Falls rechts noch ein legales ORG-Suffix folgt,
-    # Span bis dorthin erweitern.
     start, end = extend_span_to_right_suffix(text, start, end)
-
-    # Falls der Span zu weit reicht, auf das letzte gültige
-    # Organisationssuffix zurückschneiden.
     start, end = cut_span_at_suffix(text, start, end)
-
-    # Satzzeichen am Ende nicht mitmaskieren
     start, end = cleanup_trailing_punctuation(text, start, end)
-
-    # Danach nochmal Whitespaces bereinigen
     start, end = cleanup_outer_whitespace(text, start, end)
 
     if start >= end:

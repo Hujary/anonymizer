@@ -102,8 +102,7 @@
     },
     {
       "label": [
-        "ORG",
-        "LOC"
+        "ORG"
       ],
       "expected_sources": [
         "ner"

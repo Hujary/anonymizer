@@ -1,4 +1,4 @@
 policy,structure,tp,fp,fn,precision,recall,f1
-secure,regular,125,5,12,0.961538,0.912409,0.936330
+secure,regular,125,5,13,0.961538,0.905797,0.932836
 secure,structured,117,10,16,0.921260,0.879699,0.900000
-secure,unstructured,130,1,10,0.992366,0.928571,0.959410
+secure,unstructured,131,1,9,0.992424,0.935714,0.963235

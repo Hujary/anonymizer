@@ -1,7 +1,8 @@
 DATASET: Dataset_28 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 2 | POLICY: secure | NER_BACKEND: spacy | NER_MODEL: de_core_news_lg | POSTPROCESSING: off
-TP=22 FP=5 FN=2 | P=0.815 R=0.917 F1=0.863
+TP=22 FP=5 FN=3 | P=0.815 R=0.880 F1=0.846
 ----------------------------------------------------------------------
-NOT DETECTED (FN): 0
+NOT DETECTED (FN): 1
+  - PER            736:742 [gold] 'Daniel' ctx=' Klein:\nAdresse von ▮Daniel▮ ist noch Rosenstraß'
 NOT FULLY DETECTED (PARTIAL): 2
   - ORG            gold 62:87 [gold] 'Helion Manufacturing GmbH' [pred:ner:62:82] 'Helion Manufacturing' gold_ctx='-recht\nUnternehmen: ▮Helion Manufacturing GmbH▮\nDatum: 04.06.2025\n\n' pred_ctx='-recht\nUnternehmen: ▮Helion Manufacturing▮ GmbH\nDatum: 04.06.2'
   - PER            gold 607:620 [gold] 'Miriam Scholz' [pred:ner:607:623] 'Miriam Scholz:#-' gold_ctx='ist 77134.\n\n[13:12] ▮Miriam Scholz▮:#-\nGut. Gehalt aktu' pred_ctx='ist 77134.\n\n[13:12] ▮Miriam Scholz:#-▮\nGut. Gehalt aktuell'

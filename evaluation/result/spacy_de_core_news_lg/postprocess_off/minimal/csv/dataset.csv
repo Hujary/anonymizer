@@ -26,6 +26,6 @@ Dataset_24,24,Verträge,unstructured,2,minimal,5,0,1,1.000000,0.833333,0.909091
 Dataset_25,25,Chats,structured,1,minimal,11,0,1,1.000000,0.916667,0.956522
 Dataset_26,26,Chats,structured,2,minimal,11,1,0,0.916667,1.000000,0.956522
 Dataset_27,27,Chats,regular,1,minimal,15,1,0,0.937500,1.000000,0.967742
-Dataset_28,28,Chats,regular,2,minimal,14,2,1,0.875000,0.933333,0.903226
+Dataset_28,28,Chats,regular,2,minimal,14,2,2,0.875000,0.875000,0.875000
 Dataset_29,29,Chats,unstructured,1,minimal,16,0,0,1.000000,1.000000,1.000000
 Dataset_30,30,Chats,unstructured,2,minimal,14,1,1,0.933333,0.933333,0.933333

@@ -223,7 +223,7 @@ UNERWARTET (FP): 4
 
 ORG
 --------------------------------------------------------------------------------
-ERKANNT (TP): 42
+ERKANNT (TP): 43
   - Dataset_01 89:109 [ner] 'Berger Logistik GmbH'
   - Dataset_02 104:122 [ner] 'Kramer & Sohn GmbH'
   - Dataset_04 346:361 [ner] 'Franke Bau GmbH'
@@ -234,6 +234,7 @@ ERKANNT (TP): 42
   - Dataset_08 595:610 [ner] 'Innoventis GmbH'
   - Dataset_09 303:319 [ner] 'MediConnect GmbH'
   - Dataset_10 290:304 [ner] 'LogiTrans GmbH'
+  - Dataset_11 257:276 [ner] 'BlueWave Media GmbH'
   - Dataset_11 602:618 [ner] 'CreativeHub GmbH'
   - Dataset_12 273:290 [ner] 'NordLogistik GmbH'
   - Dataset_12 705:718 [ner] 'InterLog GmbH'
@@ -269,11 +270,10 @@ ERKANNT (TP): 42
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
-NICHT ERKANNT (FN): 11
+NICHT ERKANNT (FN): 10
   - Dataset_02 222:233 [gold] 'Kramer-Sued'
   - Dataset_03 313:330 [gold] 'Klein Handel GmbH'
   - Dataset_11 107:115 [gold] 'BlueWave'
-  - Dataset_11 257:276 [gold] 'BlueWave Media GmbH'
   - Dataset_13 486:518 [gold] 'Technische Universität Darmstadt'
   - Dataset_15 530:579 [gold] 'Friedrich-Alexander-Universität Erlangen-Nürnberg'
   - Dataset_17 162:177 [gold] 'DeltaLogix GmbH'
@@ -409,7 +409,7 @@ ERKANNT (TP): 107
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
-NICHT ERKANNT (FN): 15
+NICHT ERKANNT (FN): 16
   - Dataset_07 141:152 [gold] 'Frau Berger'
   - Dataset_09 562:568 [gold] 'Sabine'
   - Dataset_10 561:567 [gold] 'Thomas'
@@ -424,6 +424,7 @@ NICHT ERKANNT (FN): 15
   - Dataset_24 307:317 [gold] 'Herr Weber'
   - Dataset_25 406:416 [gold] 'Herr Vogel'
   - Dataset_27 487:498 [gold] 'M. Bergmann'
+  - Dataset_28 736:742 [gold] 'Daniel'
   - Dataset_30 1437:1446 [gold] 'Dr. König'
 
 UNERWARTET (FP): 0

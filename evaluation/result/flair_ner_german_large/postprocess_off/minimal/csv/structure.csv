@@ -1,4 +1,4 @@
 policy,structure,tp,fp,fn,precision,recall,f1
-minimal,regular,73,1,0,0.986486,1.000000,0.993197
+minimal,regular,74,0,0,1.000000,1.000000,1.000000
 minimal,structured,62,1,1,0.984127,0.984127,0.984127
 minimal,unstructured,71,0,0,1.000000,1.000000,1.000000

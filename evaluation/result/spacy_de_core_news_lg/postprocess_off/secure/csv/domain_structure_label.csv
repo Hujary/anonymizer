@@ -3,7 +3,7 @@ secure,Chats,regular,DATUM,6,0,0,1.000000,1.000000,1.000000
 secure,Chats,regular,E_MAIL,4,0,0,1.000000,1.000000,1.000000
 secure,Chats,regular,LOC,4,1,0,0.800000,1.000000,0.888889
 secure,Chats,regular,ORG,1,3,2,0.250000,0.333333,0.285714
-secure,Chats,regular,PER,21,3,1,0.875000,0.954545,0.913043
+secure,Chats,regular,PER,21,3,2,0.875000,0.913043,0.893617
 secure,Chats,regular,PLZ,2,1,0,0.666667,1.000000,0.800000
 secure,Chats,regular,STRASSE,3,0,0,1.000000,1.000000,1.000000
 secure,Chats,regular,TELEFON,1,0,0,1.000000,1.000000,1.000000

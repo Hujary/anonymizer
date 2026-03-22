@@ -71,7 +71,7 @@ def _finde_ner_raw_spacy(text: str) -> List[Treffer]:
 
     if debug_enabled:
         print("\n==================== NER RAW ====================")
-        print(f"BACKEND: spacy")
+        print("BACKEND: spacy")
         print(f"MODEL: {MODEL_MANAGER.get_model()}")
         print(f"TEXT: {text!r}")
         print("-------------------------------------------------")
@@ -122,7 +122,7 @@ def _finde_ner_raw_flair(text: str) -> List[Treffer]:
 
     if debug_enabled:
         print("\n==================== NER RAW ====================")
-        print(f"BACKEND: flair")
+        print("BACKEND: flair")
         print(f"MODEL: {MODEL_MANAGER.get_model()}")
         print(f"TEXT: {text!r}")
         print("-------------------------------------------------")

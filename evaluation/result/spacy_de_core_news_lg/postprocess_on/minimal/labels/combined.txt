@@ -190,7 +190,7 @@ ERKANNT (TP): 107
 
 NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
-NICHT ERKANNT (FN): 15
+NICHT ERKANNT (FN): 16
   - Dataset_07 141:152 [gold] 'Frau Berger'
   - Dataset_09 562:568 [gold] 'Sabine'
   - Dataset_10 561:567 [gold] 'Thomas'
@@ -205,6 +205,7 @@ NICHT ERKANNT (FN): 15
   - Dataset_24 307:317 [gold] 'Herr Weber'
   - Dataset_25 406:416 [gold] 'Herr Vogel'
   - Dataset_27 487:498 [gold] 'M. Bergmann'
+  - Dataset_28 736:742 [gold] 'Daniel'
   - Dataset_30 1437:1446 [gold] 'Dr. König'
 
 UNERWARTET (FP): 0

@@ -1,8 +1,7 @@
 DATASET: Dataset_28 | DOMAIN: Chats | STRUCTURE: regular | VARIANT: 2 | POLICY: secure | NER_BACKEND: flair | NER_MODEL: flair/ner-german-large | POSTPROCESSING: on
-TP=24 FP=2 FN=0 | P=0.923 R=1.000 F1=0.960
+TP=25 FP=1 FN=0 | P=0.962 R=1.000 F1=0.980
 ----------------------------------------------------------------------
 NOT DETECTED (FN): 0
 NOT FULLY DETECTED (PARTIAL): 0
-UNEXPECTED (FP): 2
+UNEXPECTED (FP): 1
   - PLZ            591:596 [regex] '77134' ctx=' Personalnummer ist ▮77134▮.\n\n[13:12] Miriam Sc'
-  - PER            736:742 [ner] 'Daniel' ctx=' Klein:\nAdresse von ▮Daniel▮ ist noch Rosenstraß'

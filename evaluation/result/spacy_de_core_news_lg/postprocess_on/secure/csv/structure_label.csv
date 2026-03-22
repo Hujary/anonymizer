@@ -3,7 +3,7 @@ secure,regular,DATUM,23,0,0,1.000000,1.000000,1.000000
 secure,regular,E_MAIL,14,0,0,1.000000,1.000000,1.000000
 secure,regular,LOC,15,2,2,0.882353,0.882353,0.882353
 secure,regular,ORG,12,2,2,0.857143,0.857143,0.857143
-secure,regular,PER,36,0,8,1.000000,0.818182,0.900000
+secure,regular,PER,36,0,9,1.000000,0.800000,0.888889
 secure,regular,PLZ,8,1,0,0.888889,1.000000,0.941176
 secure,regular,STRASSE,8,0,0,1.000000,1.000000,1.000000
 secure,regular,TELEFON,7,0,0,1.000000,1.000000,1.000000
@@ -23,7 +23,7 @@ secure,unstructured,DATUM,25,0,0,1.000000,1.000000,1.000000
 secure,unstructured,E_MAIL,13,0,0,1.000000,1.000000,1.000000
 secure,unstructured,IP_ADRESSE,1,0,0,1.000000,1.000000,1.000000
 secure,unstructured,LOC,10,0,2,1.000000,0.833333,0.909091
-secure,unstructured,ORG,19,1,3,0.950000,0.863636,0.904762
+secure,unstructured,ORG,20,1,2,0.952381,0.909091,0.930233
 secure,unstructured,PER,40,0,5,1.000000,0.888889,0.941176
 secure,unstructured,PLZ,5,0,0,1.000000,1.000000,1.000000
 secure,unstructured,STRASSE,6,0,0,1.000000,1.000000,1.000000

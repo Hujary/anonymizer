@@ -330,7 +330,7 @@ NER_MODEL: de_core_news_lg
 POSTPROCESSING: off
 
 POLICY secure
-TP=22 FP=5 FN=2 | P=0.815 R=0.917 F1=0.863
+TP=22 FP=5 FN=3 | P=0.815 R=0.880 F1=0.846
 
 ======================================================================
 
@@ -360,4 +360,4 @@ TP=20 FP=4 FN=2 | P=0.833 R=0.909 F1=0.870
 
 GLOBAL SUMMARY (micro-averaged over all datasets) (no Postprocessing)
 ----------------------------------------------------------------------
-POLICY secure   | TP= 356 FP=  67 FN=  54 | P=0.842 R=0.868 F1=0.855
+POLICY secure   | TP= 356 FP=  67 FN=  55 | P=0.842 R=0.866 F1=0.854

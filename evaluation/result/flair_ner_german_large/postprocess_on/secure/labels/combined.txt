@@ -214,13 +214,14 @@ NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 1
 
 NICHT ERKANNT (FN): 0
 
-UNERWARTET (FP): 1
+UNERWARTET (FP): 2
   - Dataset_14 546:553 [ner] 'Münster'
+  - Dataset_16 435:439 [ner] 'Köln'
 
 
 ORG
 --------------------------------------------------------------------------------
-ERKANNT (TP): 50
+ERKANNT (TP): 51
   - Dataset_01 89:109 [ner] 'Berger Logistik GmbH'
   - Dataset_02 104:122 [ner] 'Kramer & Sohn GmbH'
   - Dataset_02 222:233 [ner] 'Kramer-Sued'
@@ -234,6 +235,7 @@ ERKANNT (TP): 50
   - Dataset_09 303:319 [ner] 'MediConnect GmbH'
   - Dataset_10 290:304 [ner] 'LogiTrans GmbH'
   - Dataset_11 107:115 [ner] 'BlueWave'
+  - Dataset_11 257:276 [ner] 'BlueWave Media GmbH'
   - Dataset_11 602:618 [ner] 'CreativeHub GmbH'
   - Dataset_12 273:290 [ner] 'NordLogistik GmbH'
   - Dataset_12 705:718 [ner] 'InterLog GmbH'
@@ -272,12 +274,11 @@ ERKANNT (TP): 50
   - Dataset_30 839:852 [ner] 'TransLog GmbH'
   - Dataset_30 1105:1113 [ner] 'TransLog'
 
-NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 1
-  - Dataset_16 gold:423:439 [gold] 'Universität Köln' <- pred:ner:435:439 'Köln'
+NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 
 NICHT ERKANNT (FN): 2
-  - Dataset_11 257:276 [gold] 'BlueWave Media GmbH'
   - Dataset_14 534:553 [gold] 'Universität Münster'
+  - Dataset_16 423:439 [gold] 'Universität Köln'
 
 UNERWARTET (FP): 6
   - Dataset_13 542:545 [ner] 'AWS'
@@ -290,7 +291,7 @@ UNERWARTET (FP): 6
 
 PER
 --------------------------------------------------------------------------------
-ERKANNT (TP): 121
+ERKANNT (TP): 122
   - Dataset_01 71:81 [ner] 'Max Berger'
   - Dataset_02 84:96 [ner] 'Laura Schmid'
   - Dataset_03 300:312 [ner] 'Tobias Klein'
@@ -382,6 +383,7 @@ ERKANNT (TP): 121
   - Dataset_28 483:495 [ner] 'Robert Klein'
   - Dataset_28 607:620 [ner] 'Miriam Scholz'
   - Dataset_28 710:722 [ner] 'Robert Klein'
+  - Dataset_28 736:742 [ner] 'Daniel'
   - Dataset_28 840:853 [ner] 'Miriam Scholz'
   - Dataset_28 947:959 [ner] 'Robert Klein'
   - Dataset_28 997:1010 [ner] 'Sabine Köhler'
@@ -418,8 +420,7 @@ NICHT VOLLSTÄNDIG ERKANNT (PARTIAL): 0
 NICHT ERKANNT (FN): 1
   - Dataset_27 487:498 [gold] 'M. Bergmann'
 
-UNERWARTET (FP): 1
-  - Dataset_28 736:742 [ner] 'Daniel'
+UNERWARTET (FP): 0
 
 
 PLZ

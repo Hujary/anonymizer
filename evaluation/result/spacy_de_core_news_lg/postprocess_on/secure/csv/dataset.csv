@@ -9,7 +9,7 @@ Dataset_07,7,E-Mail,structured,1,secure,12,0,1,1.000000,0.923077,0.960000
 Dataset_08,8,E-Mail,structured,2,secure,10,0,0,1.000000,1.000000,1.000000
 Dataset_09,9,E-Mail,regular,1,secure,7,0,1,1.000000,0.875000,0.933333
 Dataset_10,10,E-Mail,regular,2,secure,9,0,1,1.000000,0.900000,0.947368
-Dataset_11,11,E-Mail,unstructured,1,secure,10,0,4,1.000000,0.714286,0.833333
+Dataset_11,11,E-Mail,unstructured,1,secure,11,0,3,1.000000,0.785714,0.880000
 Dataset_12,12,E-Mail,unstructured,2,secure,11,0,1,1.000000,0.916667,0.956522
 Dataset_13,13,HR-Dokumente,structured,1,secure,14,1,2,0.933333,0.875000,0.903226
 Dataset_14,14,HR-Dokumente,structured,2,secure,12,1,3,0.923077,0.800000,0.857143
@@ -26,6 +26,6 @@ Dataset_24,24,Verträge,unstructured,2,secure,14,0,2,1.000000,0.875000,0.933333
 Dataset_25,25,Chats,structured,1,secure,14,3,1,0.823529,0.933333,0.875000
 Dataset_26,26,Chats,structured,2,secure,14,2,0,0.875000,1.000000,0.933333
 Dataset_27,27,Chats,regular,1,secure,20,1,1,0.952381,0.952381,0.952381
-Dataset_28,28,Chats,regular,2,secure,24,2,0,0.923077,1.000000,0.960000
+Dataset_28,28,Chats,regular,2,secure,24,2,1,0.923077,0.960000,0.941176
 Dataset_29,29,Chats,unstructured,1,secure,23,0,0,1.000000,1.000000,1.000000
 Dataset_30,30,Chats,unstructured,2,secure,21,0,1,1.000000,0.954545,0.976744

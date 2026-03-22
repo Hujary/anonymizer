@@ -3,7 +3,7 @@ secure,Chats,regular,DATUM,6,0,0,1.000000,1.000000,1.000000
 secure,Chats,regular,E_MAIL,4,0,0,1.000000,1.000000,1.000000
 secure,Chats,regular,LOC,4,0,0,1.000000,1.000000,1.000000
 secure,Chats,regular,ORG,3,0,0,1.000000,1.000000,1.000000
-secure,Chats,regular,PER,22,1,0,0.956522,1.000000,0.977778
+secure,Chats,regular,PER,23,0,0,1.000000,1.000000,1.000000
 secure,Chats,regular,PLZ,2,1,0,0.666667,1.000000,0.800000
 secure,Chats,regular,STRASSE,3,0,0,1.000000,1.000000,1.000000
 secure,Chats,regular,TELEFON,1,0,0,1.000000,1.000000,1.000000
@@ -45,8 +45,8 @@ secure,E-Mail,unstructured,TELEFON,2,0,0,1.000000,1.000000,1.000000
 secure,E-Mail,unstructured,URL,1,0,0,1.000000,1.000000,1.000000
 secure,HR-Dokumente,regular,DATUM,7,0,0,1.000000,1.000000,1.000000
 secure,HR-Dokumente,regular,E_MAIL,2,0,0,1.000000,1.000000,1.000000
-secure,HR-Dokumente,regular,LOC,5,0,0,1.000000,1.000000,1.000000
-secure,HR-Dokumente,regular,ORG,5,2,1,0.714286,0.833333,0.769231
+secure,HR-Dokumente,regular,LOC,5,1,0,0.833333,1.000000,0.909091
+secure,HR-Dokumente,regular,ORG,5,1,1,0.833333,0.833333,0.833333
 secure,HR-Dokumente,regular,PER,3,0,0,1.000000,1.000000,1.000000
 secure,HR-Dokumente,regular,PLZ,2,0,0,1.000000,1.000000,1.000000
 secure,HR-Dokumente,regular,STRASSE,1,0,0,1.000000,1.000000,1.000000
