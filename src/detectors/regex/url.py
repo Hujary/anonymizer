@@ -5,25 +5,12 @@ from typing import Iterable, Tuple
 def finde_url(text: str) -> Iterable[Tuple[int, int, str]]:
     rx = re.compile(
         r"""
-        # ----------------------------
-        # 1) http(s)://...
-        # ----------------------------
         \bhttps?://[^\s<>"']+
         |
-        # ----------------------------
-        # 2) www....
-        # ----------------------------
         \bwww\.[^\s<>"']+
         |
-        # ----------------------------
-        # 3) FQDN / Hostname
-        #    - mind. 2 Labels
-        #    - letztes Label (TLD) >= 2 Buchstaben ODER 'local'
-        #    - verhindert Kurzformen wie B.Sc / M.A / u.a / v3.4
-        # ----------------------------
         \b
         (?:
-            # Erstes/Host-Label: mindestens 2 Zeichen ODER enthält Ziffer/Hyphen (für vpn01, erp-test01)
             (?:
                 [a-z0-9][a-z0-9-]{0,61}[a-z0-9]
                 |
@@ -36,9 +23,9 @@ def finde_url(text: str) -> Iterable[Tuple[int, int, str]]:
             )+
             \.
             (?:
-                [a-z]{2,}     # echte TLDs wie de, com, io, ...
+                [a-z]{2,}
                 |
-                local         # interne FQDNs
+                local
             )
         )
         """,
