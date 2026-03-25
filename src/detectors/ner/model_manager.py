@@ -95,6 +95,24 @@ class NerModelManager:
         config.set("ner_model", resolved_model)
         return resolved_backend, resolved_model
 
+    def is_loaded(self, backend: str, model: str) -> bool:
+        resolved_backend = self._resolve_backend(backend)
+        resolved_model = self._resolve_model(resolved_backend, model)
+
+        with self._lock:
+            if resolved_backend == "flair":
+                return resolved_model in self._flair_cache
+            return resolved_model in self._spacy_cache
+
+    def is_current_model_loaded(self) -> bool:
+        with self._lock:
+            backend = self._current_backend
+            model = self._current_model
+
+            if backend == "flair":
+                return model in self._flair_cache
+            return model in self._spacy_cache
+
     def load(self) -> Any:
         backend = self.get_backend()
         model = self.get_model()

@@ -384,6 +384,8 @@ def view(page: ft.Page, theme: dict, store) -> ft.Control:
 
     busy_count = [0]
 
+    show_masking_phase_text = bool(config.get("show_masking_phase_text", True))
+
     progress_ring = ft.ProgressRing(
         width=14,
         height=14,
@@ -392,14 +394,38 @@ def view(page: ft.Page, theme: dict, store) -> ft.Control:
         color=accent,
     )
 
-    progress_host = ft.Container(
-        content=progress_ring,
-        width=16,
-        height=16,
-        alignment=ft.alignment.center,
-        margin=ft.margin.only(left=8),
+    phase_text = ft.Text(
+        "",
+        size=13,
+        color=theme["text_secondary"],
         visible=False,
     )
+
+    progress_host = ft.Row(
+        [
+            ft.Container(
+                content=progress_ring,
+                width=16,
+                height=16,
+                alignment=ft.alignment.center,
+            ),
+            phase_text,
+        ],
+        spacing=8,
+        visible=False,
+        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+    )
+
+    def _set_phase_text(value: str) -> None:
+        if not show_masking_phase_text:
+            phase_text.visible = False
+            phase_text.value = ""
+            page.update()
+            return
+
+        phase_text.value = value or ""
+        phase_text.visible = bool(value)
+        page.update()
 
     def _set_busy(is_busy: bool) -> None:
         if is_busy:
@@ -407,17 +433,26 @@ def view(page: ft.Page, theme: dict, store) -> ft.Control:
         else:
             busy_count[0] = max(0, busy_count[0] - 1)
 
-        v = busy_count[0] > 0
-        progress_ring.visible = v
-        progress_host.visible = v
+        visible = busy_count[0] > 0
+        progress_ring.visible = visible
+        progress_host.visible = visible
+
+        if not visible:
+            phase_text.value = ""
+            phase_text.visible = False
+
         page.update()
 
     ctx.on_masking_state = _set_busy
+    ctx.on_masking_phase = _set_phase_text
 
     def run_masking(_: ft.ControlEvent) -> None:
-        run_masking_internal(ctx, auto=False)
-        update_clear_icon()
-        page.update()
+        def _worker() -> None:
+            run_masking_internal(ctx, auto=False)
+            update_clear_icon()
+            page.update()
+
+        page.run_thread(_worker)
 
     def clear_both(_: ft.ControlEvent) -> None:
         ui_clear_both(ctx)

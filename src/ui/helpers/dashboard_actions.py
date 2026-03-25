@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Dict, Set
 import threading
+import traceback
 
 import flet as ft
 
@@ -443,6 +444,11 @@ def apply_current_edits(ctx: DashboardContext) -> None:
 
 
 def run_masking_internal(ctx: DashboardContext, auto: bool = False) -> None:
+    with ctx.masking_lock:
+        if ctx.masking_in_progress:
+            return
+        ctx.masking_in_progress = True
+
     if ctx.on_masking_state is not None:
         try:
             ctx.on_masking_state(True)
@@ -470,8 +476,11 @@ def run_masking_internal(ctx: DashboardContext, auto: bool = False) -> None:
                 text,
                 reversible=getattr(ctx.store, "reversible", True),
                 session_mgr=getattr(ctx.store, "session_mgr", None),
+                on_phase=getattr(ctx, "on_masking_phase", None),
             )
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             show_snack(ctx, f"Masking failed: {e}", "danger")
             return
 
@@ -498,6 +507,12 @@ def run_masking_internal(ctx: DashboardContext, auto: bool = False) -> None:
                     continue
                 merged_mapping[token] = value
 
+        if getattr(ctx, "on_masking_phase", None) is not None:
+            try:
+                ctx.on_masking_phase("Maskierung")
+            except Exception:
+                pass
+
         masked_text, used_mapping = mask_with_mapping(text, merged_mapping)
 
         ctx.output_field.value = masked_text
@@ -521,11 +536,20 @@ def run_masking_internal(ctx: DashboardContext, auto: bool = False) -> None:
         update_banner(ctx, used_mapping)
         ctx.page.update()
     finally:
+        if ctx.on_masking_phase is not None:
+            try:
+                ctx.on_masking_phase("")
+            except Exception:
+                pass
+
         if ctx.on_masking_state is not None:
             try:
                 ctx.on_masking_state(False)
             except Exception:
                 pass
+
+        with ctx.masking_lock:
+            ctx.masking_in_progress = False
 
 
 def _cancel_debounce(ctx: DashboardContext) -> None:
@@ -602,13 +626,21 @@ def handle_input_change(ctx: DashboardContext) -> None:
         _cancel_debounce(ctx)
         return
 
+    if ctx.masking_in_progress:
+        return
+
     _cancel_debounce(ctx)
 
     def _run() -> None:
-        try:
-            run_masking_internal(ctx, auto=True)
-        except Exception:
-            pass
+        def _worker() -> None:
+            try:
+                run_masking_internal(ctx, auto=True)
+            except Exception:
+                import traceback
+                traceback.print_exc()
+
+        if not ctx.masking_in_progress:
+            ctx.page.run_thread(_worker)
 
     timer = threading.Timer(AUTO_MASK_DEBOUNCE_SECONDS, _run)
     timer.daemon = True

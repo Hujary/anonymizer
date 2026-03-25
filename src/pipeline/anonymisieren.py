@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Optional, Tuple
+from typing import Callable, List, Optional, Tuple
 
 from core import config
 from core.einstellungen import MASKIERUNGEN as MASK
@@ -9,6 +9,9 @@ from core.zusammenführen import zusammenführen
 
 from detectors.regex import finde_regex
 from detectors.custom.manual_dict import finde_manual_tokens
+
+
+MaskingPhaseCallback = Callable[[str], None]
 
 
 def _resolve_ner_backend() -> str:
@@ -67,6 +70,16 @@ def _is_ner_runtime_available() -> bool:
     return False
 
 
+def _emit_phase(on_phase: Optional[MaskingPhaseCallback], value: str) -> None:
+    if on_phase is None:
+        return
+
+    try:
+        on_phase(value)
+    except Exception:
+        pass
+
+
 def _run_ner(text: str) -> List[Treffer]:
     try:
         from detectors.ner import finde_ner
@@ -120,7 +133,7 @@ def _apply_dict_priority(base_hits: List[Treffer], dict_hits: List[Treffer]) -> 
     return final_hits
 
 
-def erkenne(text: str) -> List[Treffer]:
+def erkenne(text: str, *, on_phase: Optional[MaskingPhaseCallback] = None) -> List[Treffer]:
     flags = config.get_flags()
 
     regex_treffer: List[Treffer] = []
@@ -134,8 +147,20 @@ def erkenne(text: str) -> List[Treffer]:
         ]
 
     if flags.get("use_ner", True) and _is_ner_runtime_available():
+        try:
+            from detectors.ner.model_manager import MODEL_MANAGER
+            ner_is_loaded = MODEL_MANAGER.is_current_model_loaded()
+        except Exception:
+            ner_is_loaded = True
+
+        if not ner_is_loaded:
+            _emit_phase(on_phase, "NER-Initialisierung")
+        else:
+            _emit_phase(on_phase, "Maskierung")
+
         ner_treffer = _run_ner(text)
     else:
+        _emit_phase(on_phase, "Maskierung")
         ner_treffer = []
 
     if flags.get("use_manual_dict", True):
@@ -187,7 +212,14 @@ def anwenden(text: str, treffer: List[Treffer], *, reversible: bool) -> str:
     return "".join(teile)
 
 
-def maskiere(text: str, *, reversible: bool = False) -> Tuple[str, List[Treffer]]:
-    t = erkenne(text)
+def maskiere(
+    text: str,
+    *,
+    reversible: bool = False,
+    on_phase: Optional[MaskingPhaseCallback] = None,
+) -> Tuple[str, List[Treffer]]:
+    t = erkenne(text, on_phase=on_phase)
+    _emit_phase(on_phase, "Maskierung")
     out = anwenden(text, t, reversible=reversible)
+    _emit_phase(on_phase, "")
     return out, t

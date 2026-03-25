@@ -10,7 +10,6 @@ import flet as ft
 AUTO_MASK_DEBOUNCE_SECONDS = 0.3
 
 
-# Zentrales Kontext-Objekt: bündelt Page/Theme/Store + Controls + lokaler UI-State.
 @dataclass
 class DashboardContext:
     page: ft.Page
@@ -42,16 +41,14 @@ class DashboardContext:
     sync_equal_height: Any
     update_placeholder: Any
 
-    # token -> originaler Wert
     token_vals: Dict[str, str] = field(default_factory=dict)
-    # stabile Reihenfolge für UI + Persistenz
     token_keys_order: List[str] = field(default_factory=list)
-
-    # Tokens, die im Inline-Edit-Modus sind
     editing_keys: set[str] = field(default_factory=set)
 
-    # Debounce-Timer für Auto-Mask
     debounce_timer: threading.Timer | None = None
 
-    # Optionaler Callback zum Sperren/Entsperren der UI während Maskierung
     on_masking_state: Optional[Callable[[bool], None]] = None
+    on_masking_phase: Optional[Callable[[str], None]] = None
+
+    masking_lock: threading.Lock = field(default_factory=threading.Lock)
+    masking_in_progress: bool = False
