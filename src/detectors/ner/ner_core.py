@@ -62,6 +62,27 @@ def _normalize_label(label: str) -> str:
     return mapping.get(raw, raw)
 
 
+def _get_allowed_labels_for_debug() -> List[str]:
+    labels = config.get("ner_labels", [])
+
+    if not isinstance(labels, list):
+        return []
+
+    normalized = []
+    seen = set()
+
+    for label in labels:
+        value = _normalize_label(str(label))
+        if not value:
+            continue
+        if value in seen:
+            continue
+        seen.add(value)
+        normalized.append(value)
+
+    return normalized
+
+
 def _finde_ner_raw_spacy(text: str) -> List[Treffer]:
     nlp = MODEL_MANAGER.load()
     doc = nlp(text)
@@ -185,7 +206,10 @@ def finde_ner(text: str) -> Iterable[Tuple[int, int, str]]:
     final_hits = clean_ner_hits(text, raw_hits)
 
     if _is_debug_enabled():
+        allowed_labels = _get_allowed_labels_for_debug()
+
         print("\n==================== NER FINAL ====================")
+        print(f"ALLOWED LABELS: {allowed_labels}")
 
         for h in final_hits:
             print(
