@@ -155,6 +155,20 @@ def view(
     selected_ner.intersection_update(set(NER_UI_TYPES))
     selected_rx.intersection_update(set(REGEX_TYPES))
 
+    postcode_ml_enabled = bool(config.get("use_postcode_ml_validator", True))
+    postcode_manual_threshold_enabled = bool(config.get("postcode_manual_threshold_enabled", False))
+
+    raw_postcode_manual_threshold = config.get("postcode_manual_threshold", 0.43)
+    try:
+        postcode_manual_threshold_value = float(raw_postcode_manual_threshold)
+    except Exception:
+        postcode_manual_threshold_value = 0.43
+
+    if postcode_manual_threshold_value < 0.0:
+        postcode_manual_threshold_value = 0.0
+    if postcode_manual_threshold_value > 1.0:
+        postcode_manual_threshold_value = 1.0
+
     divider_color = theme.get("divider", theme.get("surface_muted"))
 
     saved_label = ft.Text(
@@ -172,7 +186,9 @@ def view(
     def _prune_mapping():
         allowed = {x.upper() for x in (list(selected_rx) + list(selected_ner)) if isinstance(x, str) and x.strip()}
         if store is not None and hasattr(store, "session_mgr") and store.session_mgr is not None:
-            store.session_mgr.prune_active_mapping_by_allowed_labels(allowed)
+            prune_func = getattr(store.session_mgr, "prune_active_mapping_by_allowed_labels", None)
+            if callable(prune_func):
+                prune_func(allowed)
 
     def _persist_flags_and_labels():
         use_regex = bool(selected_rx)
@@ -186,6 +202,21 @@ def view(
         config.set("ner_labels", sorted(set(selected_ner).intersection(set(NER_UI_TYPES))))
         config.set("regex_labels", sorted(set(selected_rx).intersection(set(REGEX_TYPES))))
         _prune_mapping()
+
+    def _persist_postcode_ml_settings(
+        *,
+        enabled: bool,
+        manual_threshold_enabled: bool,
+        manual_threshold_value: float,
+    ) -> None:
+        if manual_threshold_value < 0.0:
+            manual_threshold_value = 0.0
+        if manual_threshold_value > 1.0:
+            manual_threshold_value = 1.0
+
+        config.set("use_postcode_ml_validator", bool(enabled))
+        config.set("postcode_manual_threshold_enabled", bool(manual_threshold_enabled))
+        config.set("postcode_manual_threshold", float(manual_threshold_value))
 
     def _notify_saved(msg: str):
         page.snack_bar = ft.SnackBar(ft.Text(msg), bgcolor=theme["success"])
@@ -369,6 +400,85 @@ def view(
         _notify_saved("Gespeichert" if lang == "de" else "Saved")
 
     copy_ai_prompt_switch.on_change = toggle_copy_ai_prompt
+
+    postcode_ml_switch = ft.Switch(
+        label=("PLZ-ML-Validierung aktivieren" if lang == "de" else "Enable postcode ML validation"),
+        value=postcode_ml_enabled,
+    )
+
+    postcode_manual_threshold_switch = ft.Switch(
+        label=("Manuellen PLZ-Threshold verwenden" if lang == "de" else "Use manual postcode threshold"),
+        value=postcode_manual_threshold_enabled,
+    )
+
+    postcode_threshold_field = ft.TextField(
+        label=("PLZ Threshold (0.0 - 1.0)" if lang == "de" else "Postcode threshold (0.0 - 1.0)"),
+        value=f"{postcode_manual_threshold_value:.2f}",
+        width=220,
+        disabled=not postcode_manual_threshold_enabled,
+    )
+
+    postcode_threshold_hint = ft.Text(
+        (
+            "Niedrigerer Threshold erhöht Trefferquote, aber auch False Positives."
+            if lang == "de"
+            else "Lower threshold increases recall, but also false positives."
+        ),
+        size=12,
+        color=theme["text_secondary"],
+    )
+
+    def _parse_postcode_threshold_from_ui() -> float:
+        raw = (postcode_threshold_field.value or "").strip().replace(",", ".")
+        try:
+            value = float(raw)
+        except Exception:
+            value = postcode_manual_threshold_value
+
+        if value < 0.0:
+            value = 0.0
+        if value > 1.0:
+            value = 1.0
+
+        postcode_threshold_field.value = f"{value:.2f}"
+        return value
+
+    def _save_postcode_ml_ui_settings() -> None:
+        value = _parse_postcode_threshold_from_ui()
+        _persist_postcode_ml_settings(
+            enabled=bool(postcode_ml_switch.value),
+            manual_threshold_enabled=bool(postcode_manual_threshold_switch.value),
+            manual_threshold_value=value,
+        )
+        _notify_saved("Gespeichert" if lang == "de" else "Saved")
+        page.update()
+
+    def toggle_postcode_ml(e: ft.ControlEvent) -> None:
+        _persist_postcode_ml_settings(
+            enabled=bool(e.control.value),
+            manual_threshold_enabled=bool(postcode_manual_threshold_switch.value),
+            manual_threshold_value=_parse_postcode_threshold_from_ui(),
+        )
+        _notify_saved("Gespeichert" if lang == "de" else "Saved")
+
+    def toggle_postcode_manual_threshold(e: ft.ControlEvent) -> None:
+        enabled = bool(e.control.value)
+        postcode_threshold_field.disabled = not enabled
+        _persist_postcode_ml_settings(
+            enabled=bool(postcode_ml_switch.value),
+            manual_threshold_enabled=enabled,
+            manual_threshold_value=_parse_postcode_threshold_from_ui(),
+        )
+        _notify_saved("Gespeichert" if lang == "de" else "Saved")
+        page.update()
+
+    def submit_postcode_threshold(_: ft.ControlEvent) -> None:
+        _save_postcode_ml_ui_settings()
+
+    postcode_ml_switch.on_change = toggle_postcode_ml
+    postcode_manual_threshold_switch.on_change = toggle_postcode_manual_threshold
+    postcode_threshold_field.on_submit = submit_postcode_threshold
+    postcode_threshold_field.on_blur = submit_postcode_threshold
 
     ner_col_left = ft.Column(spacing=6)
     ner_col_right = ft.Column(spacing=6)
@@ -555,6 +665,43 @@ def view(
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
         )
     )
+
+    sections.controls.append(ft.Container(height=16))
+    sections.controls.append(section_divider())
+    sections.controls.append(ft.Container(height=16))
+
+    sections.controls.append(
+        ft.Row(
+            [
+                ft.Text(
+                    "PLZ-Validierung" if lang == "de" else "Postcode validation",
+                    weight=ft.FontWeight.W_600,
+                    color=theme["text_secondary"],
+                ),
+                ft.Container(expand=True),
+            ],
+            vertical_alignment=ft.CrossAxisAlignment.CENTER,
+        )
+    )
+
+    sections.controls.append(ft.Container(height=10))
+
+    sections.controls.append(
+        ft.Row(
+            [
+                postcode_ml_switch,
+                ft.Container(width=32),
+                postcode_manual_threshold_switch,
+                ft.Container(width=32),
+                postcode_threshold_field,
+            ],
+            alignment=ft.MainAxisAlignment.START,
+            vertical_alignment=ft.CrossAxisAlignment.CENTER,
+        )
+    )
+
+    sections.controls.append(ft.Container(height=8))
+    sections.controls.append(postcode_threshold_hint)
 
     sections.controls.append(ft.Container(height=16))
     sections.controls.append(section_divider())

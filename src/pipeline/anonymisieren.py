@@ -9,6 +9,7 @@ from core.zusammenführen import zusammenführen
 
 from detectors.regex import finde_regex
 from detectors.custom.manual_dict import finde_manual_tokens
+from pipeline.validation import validate_regex_hits, filter_effective_hits_for_masking
 
 
 MaskingPhaseCallback = Callable[[str], None]
@@ -89,7 +90,7 @@ def _run_ner(text: str) -> List[Treffer]:
     hits: List[Treffer] = []
 
     for s, e, l in finde_ner(text):
-        hits.append(Treffer(s, e, l, "ner", from_ner=True))
+        hits.append(Treffer(s, e, l, "ner", from_ner=True, text=text[s:e]))
 
     return hits
 
@@ -142,9 +143,10 @@ def erkenne(text: str, *, on_phase: Optional[MaskingPhaseCallback] = None) -> Li
 
     if flags.get("use_regex", True):
         regex_treffer = [
-            Treffer(s, e, l, "regex", from_regex=True)
+            Treffer(s, e, l, "regex", from_regex=True, text=text[s:e])
             for s, e, l in finde_regex(text)
         ]
+        regex_treffer = validate_regex_hits(text, regex_treffer)
 
     if flags.get("use_ner", True) and _is_ner_runtime_available():
         try:
@@ -164,20 +166,68 @@ def erkenne(text: str, *, on_phase: Optional[MaskingPhaseCallback] = None) -> Li
         ner_treffer = []
 
     if flags.get("use_manual_dict", True):
-        dict_treffer = finde_manual_tokens(text)
+        dict_raw = finde_manual_tokens(text)
+        dict_treffer = [
+            Treffer(
+                h.start,
+                h.ende,
+                h.label,
+                getattr(h, "source", "dict"),
+                from_regex=getattr(h, "from_regex", False),
+                from_ner=getattr(h, "from_ner", False),
+                text=text[h.start:h.ende],
+                validation_source=getattr(h, "validation_source", None),
+                validation_status=getattr(h, "validation_status", None),
+                validation_score=getattr(h, "validation_score", None),
+                validation_threshold=getattr(h, "validation_threshold", None),
+                validation_reason=getattr(h, "validation_reason", None),
+                validation_raw_score=getattr(h, "validation_raw_score", None),
+                validation_adjustment=getattr(h, "validation_adjustment", None),
+            )
+            for h in dict_raw
+        ]
 
     if not regex_treffer and not ner_treffer and not dict_treffer:
         return []
 
-    if regex_treffer or ner_treffer:
-        merged = zusammenführen(regex_treffer, ner_treffer)
+    effective_regex_hits = filter_effective_hits_for_masking(regex_treffer)
+
+    if effective_regex_hits or ner_treffer:
+        merged = zusammenführen(effective_regex_hits, ner_treffer)
     else:
         merged = []
 
     if dict_treffer:
         merged = _apply_dict_priority(merged, dict_treffer)
 
-    return _flagge_quellen(merged, regex_treffer, ner_treffer)
+    merged = _flagge_quellen(merged, effective_regex_hits, ner_treffer)
+
+    merged_by_span = {(m.start, m.ende, m.label): m for m in merged}
+
+    for rx in regex_treffer:
+        key = (rx.start, rx.ende, rx.label)
+        if key in merged_by_span:
+            current = merged_by_span[key]
+            merged_by_span[key] = Treffer(
+                current.start,
+                current.ende,
+                current.label,
+                current.source,
+                from_regex=current.from_regex,
+                from_ner=current.from_ner,
+                text=current.text or rx.text,
+                validation_source=rx.validation_source,
+                validation_status=rx.validation_status,
+                validation_score=rx.validation_score,
+                validation_threshold=rx.validation_threshold,
+                validation_reason=rx.validation_reason,
+                validation_raw_score=rx.validation_raw_score,
+                validation_adjustment=rx.validation_adjustment,
+            )
+
+    out = list(merged_by_span.values())
+    out.sort(key=lambda t: t.start)
+    return out
 
 
 def anwenden(text: str, treffer: List[Treffer], *, reversible: bool) -> str:
@@ -186,7 +236,9 @@ def anwenden(text: str, treffer: List[Treffer], *, reversible: bool) -> str:
     teile: List[str] = []
     pos = 0
 
-    for t in treffer:
+    effective_hits = filter_effective_hits_for_masking(treffer)
+
+    for t in effective_hits:
         teile.append(text[pos:t.start])
 
         if reversible:

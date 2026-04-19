@@ -8,28 +8,36 @@
 #  - with_flags() erzeugt modifizierte Kopie statt Mutation
 
 
+from __future__ import annotations
+
 from dataclasses import dataclass, replace
+from typing import Optional
 
 
-# Beschreibt einen erkannten Datenbereich im Text (z. B. E-Mail, IBAN, PER)
 @dataclass(frozen=True)
 class Treffer:
-    start: int          # Startindex (inklusive)
-    ende: int           # Endindex (exklusive)
-    label: str          # Entitätstyp (z. B. "E_MAIL", "PER")
-    source: str         # Primäre Quelle ("regex", "ner", "dict")
-    from_regex: bool = False  # True, wenn Regex-Detektor beteiligt war
-    from_ner: bool = False    # True, wenn NER-Detektor beteiligt war
+    start: int
+    ende: int
+    label: str
+    source: str
+    from_regex: bool = False
+    from_ner: bool = False
+    text: str = ""
 
-    # Prüft, ob zwei Spans sich überlappen (Intervall-Logik)
+    validation_source: Optional[str] = None
+    validation_status: Optional[str] = None
+    validation_score: Optional[float] = None
+    validation_threshold: Optional[float] = None
+    validation_reason: Optional[str] = None
+    validation_raw_score: Optional[float] = None
+    validation_adjustment: Optional[float] = None
+
     def überschneidet(self, other: "Treffer") -> bool:
         return not (self.ende <= other.start or other.ende <= self.start)
 
-    # Liefert Länge des Spans (wird u. a. für Priorisierung verwendet)
     def länge(self) -> int:
         return self.ende - self.start
 
-    # Erzeugt neue Instanz mit geänderten Flags (keine Mutation des Originals)
     def with_flags(
         self,
         *,
@@ -40,4 +48,26 @@ class Treffer:
             self,
             from_regex=self.from_regex if regex is None else regex,
             from_ner=self.from_ner if ner is None else ner,
+        )
+
+    def with_validation(
+        self,
+        *,
+        source: Optional[str],
+        status: Optional[str],
+        score: Optional[float],
+        threshold: Optional[float],
+        reason: Optional[str],
+        raw_score: Optional[float] = None,
+        adjustment: Optional[float] = None,
+    ) -> "Treffer":
+        return replace(
+            self,
+            validation_source=source,
+            validation_status=status,
+            validation_score=score,
+            validation_threshold=threshold,
+            validation_reason=reason,
+            validation_raw_score=raw_score,
+            validation_adjustment=adjustment,
         )

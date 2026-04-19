@@ -1,15 +1,22 @@
 from __future__ import annotations
 
-from typing import Dict, Set
+from typing import Dict, List, Set
 import threading
-import traceback
 
 import flet as ft
 
 from core import config
-from ui.helpers.dashboard_context import DashboardContext, AUTO_MASK_DEBOUNCE_SECONDS
-from ui.helpers.dashboard_helpers import typ_of, gen_token
-from ui.helpers.dashboard_masking_engine import find_occurrences, mask_with_mapping
+from pipeline.validation import filter_effective_hits_for_masking
+from ui.helpers.dashboard_context import DashboardContext, AUTO_MASK_DEBOUNCE_SECONDS, OccurrenceRow
+from ui.helpers.dashboard_helpers import gen_token
+from ui.helpers.dashboard_masking_engine import (
+    MaskSpan,
+    apply_spans,
+    find_best_occurrence,
+    find_occurrences,
+    mapping_from_spans,
+    select_non_overlapping_spans,
+)
 from ui.helpers.dashboard_token_renderer import build_token_rows
 from ui.style.translations import t
 
@@ -56,10 +63,16 @@ def _filter_session_mapping_to_allowed_types(
     for token, value in session_mapping.items():
         if not token or not value:
             continue
-        tcode = typ_of(token).upper()
-        if tcode not in allowed_types:
+
+        label = ""
+        if token.startswith("[") and "_" in token:
+            label = token[1:].split("_", 1)[0].strip().upper()
+
+        if label not in allowed_types:
             continue
+
         out[token] = value
+
     return out
 
 
@@ -105,44 +118,10 @@ def _push_mapping_into_session(ctx: DashboardContext, mapping: Dict[str, str]) -
             pass
 
 
-def token_source_label(ctx: DashboardContext, key: str, value: str) -> str:
-    hits = getattr(ctx.store, "last_hits", []) or []
-    src = ctx.input_field.value or ""
-    typ = typ_of(key)
-
-    has_ner = False
-    has_regex = False
-
-    for hit in hits:
-        label = None
-        source = None
-        start = None
-        ende = None
-
-        if hasattr(hit, "__dict__"):
-            label = getattr(hit, "label", None)
-            source = getattr(hit, "source", None)
-            start = getattr(hit, "start", None)
-            ende = getattr(hit, "ende", None)
-        elif isinstance(hit, dict):
-            label = hit.get("label")
-            source = hit.get("source")
-            start = hit.get("start")
-            ende = hit.get("end")
-        else:
-            continue
-
-        if label != typ:
-            continue
-        if start is None or ende is None:
-            continue
-        if src[start:ende] != value:
-            continue
-
-        if source == "ner":
-            has_ner = True
-        elif source == "regex":
-            has_regex = True
+def _source_label_for_hit(hit) -> str:
+    has_ner = bool(getattr(hit, "from_ner", False))
+    has_regex = bool(getattr(hit, "from_regex", False))
+    source = getattr(hit, "source", "")
 
     if has_ner and has_regex:
         return "NER + Regex"
@@ -150,22 +129,106 @@ def token_source_label(ctx: DashboardContext, key: str, value: str) -> str:
         return "NER"
     if has_regex:
         return "Regex"
+    if source == "dict":
+        return "Manual"
     return "Manual"
 
 
-def _sync_ctx_token_state(ctx: DashboardContext, mapping: Dict[str, str]) -> None:
-    ctx.token_vals.clear()
-    ctx.token_keys_order.clear()
-
-    for key, value in sorted(
-        (mapping or {}).items(),
-        key=lambda kv: (typ_of(kv[0]), kv[0].lower()),
-    ):
-        ctx.token_vals[key] = value
-        ctx.token_keys_order.append(key)
+def _row_id_for_hit(hit) -> str:
+    label = str(getattr(hit, "label", "")).upper()
+    source = str(getattr(hit, "source", "")).lower()
+    start = int(getattr(hit, "start"))
+    ende = int(getattr(hit, "ende"))
+    return f"{label}:{source}:{start}:{ende}"
 
 
-def _rebuild_token_ui(ctx: DashboardContext, mapping: Dict[str, str]) -> None:
+def _row_should_mask(row: OccurrenceRow) -> bool:
+    if not row.enabled:
+        return False
+
+    if row.label == "PLZ" and row.validation_source == "postcode_ml":
+        return row.validation_status == "accepted"
+
+    return True
+
+
+def _build_occurrence_rows_from_hits(ctx: DashboardContext, hits: List) -> List[OccurrenceRow]:
+    src = ctx.input_field.value or ""
+    session_secret = _active_session_secret(ctx)
+
+    rows: List[OccurrenceRow] = []
+
+    for hit in sorted(hits or [], key=lambda h: (getattr(h, "start", 0), getattr(h, "ende", 0))):
+        start = int(getattr(hit, "start"))
+        ende = int(getattr(hit, "ende"))
+        label = str(getattr(hit, "label")).upper()
+        value = src[start:ende] if src else getattr(hit, "text", "") or ""
+        token = gen_token(label, value, session_secret=session_secret)
+
+        rows.append(
+            OccurrenceRow(
+                row_id=_row_id_for_hit(hit),
+                token=token,
+                label=label,
+                value=value,
+                original_value=value,
+                start=start,
+                ende=ende,
+                source=str(getattr(hit, "source", "")),
+                source_label=_source_label_for_hit(hit),
+                validation_source=getattr(hit, "validation_source", None),
+                validation_status=getattr(hit, "validation_status", None),
+                validation_score=getattr(hit, "validation_score", None),
+                validation_threshold=getattr(hit, "validation_threshold", None),
+                validation_reason=getattr(hit, "validation_reason", None),
+                enabled=True,
+            )
+        )
+
+    return rows
+
+
+def _manual_row_id(label: str, start: int, ende: int, idx: int) -> str:
+    return f"{label}:manual:{start}:{ende}:{idx}"
+
+
+def _find_row(ctx: DashboardContext, row_id: str) -> OccurrenceRow | None:
+    for row in ctx.occurrence_rows:
+        if row.row_id == row_id:
+            return row
+    return None
+
+
+def _rebuild_output_from_occurrences(ctx: DashboardContext) -> None:
+    src = ctx.input_field.value or ""
+    spans: List[MaskSpan] = []
+
+    for row in ctx.occurrence_rows:
+        if not _row_should_mask(row):
+            continue
+
+        spans.append(
+            MaskSpan(
+                row_id=row.row_id,
+                start=row.start,
+                end=row.ende,
+                token=row.token,
+                value=row.value,
+            )
+        )
+
+    chosen = select_non_overlapping_spans(spans, len(src))
+    masked_text = apply_spans(src, chosen)
+    used_mapping = mapping_from_spans(chosen)
+
+    ctx.output_field.value = masked_text
+    ctx.store.set_mapping(used_mapping, getattr(ctx.store, "last_hits", []) or [], src, masked_text)
+    _push_mapping_into_session(ctx, used_mapping)
+    update_banner(ctx, used_mapping)
+    ctx.sync_equal_height()
+
+
+def _rebuild_token_ui(ctx: DashboardContext) -> None:
     build_token_rows(
         page=ctx.page,
         theme=ctx.theme,
@@ -174,24 +237,24 @@ def _rebuild_token_ui(ctx: DashboardContext, mapping: Dict[str, str]) -> None:
         token_groups_col=ctx.token_groups_col,
         tokens_host=ctx.tokens_host,
         search_query=(ctx.search_box.value or ""),
-        editing_keys=ctx.editing_keys,
-        mapping=mapping,
-        token_source_label=lambda k, v: token_source_label(ctx, k, v),
-        on_start_edit=lambda k: _on_start_edit(ctx, k),
-        on_cancel_edit=lambda k: _on_cancel_edit(ctx, k),
-        on_save_edit=lambda k, v: _on_save_edit(ctx, k, v),
-        on_delete_token=lambda k: _on_delete_token(ctx, k),
+        editing_row_ids=ctx.editing_row_ids,
+        rows=ctx.occurrence_rows,
+        on_start_edit=lambda row_id: _on_start_edit(ctx, row_id),
+        on_cancel_edit=lambda row_id: _on_cancel_edit(ctx, row_id),
+        on_save_edit=lambda row_id, value: _on_save_edit(ctx, row_id, value),
+        on_delete_row=lambda row_id: _on_delete_row(ctx, row_id),
     )
 
 
 def refresh_tokens_from_store(ctx: DashboardContext) -> None:
-    mapping = getattr(ctx.store, "last_mapping", None) or {}
-    _sync_ctx_token_state(ctx, mapping)
+    if not ctx.occurrence_rows:
+        hits = getattr(ctx.store, "last_hits", []) or []
+        ctx.occurrence_rows = _build_occurrence_rows_from_hits(ctx, hits)
 
-    if mapping:
-        _rebuild_token_ui(ctx, mapping)
+    if ctx.occurrence_rows:
+        _rebuild_token_ui(ctx)
         ctx.tokens_section.visible = True
-        update_banner(ctx, mapping)
+        update_banner(ctx, getattr(ctx.store, "last_mapping", {}) or {})
     else:
         ctx.token_groups_col.controls.clear()
         ctx.tokens_host.visible = False
@@ -216,21 +279,22 @@ def update_add_button_state(ctx: DashboardContext) -> None:
     ctx.page.update()
 
 
-def _on_start_edit(ctx: DashboardContext, key: str) -> None:
-    ctx.editing_keys.add(key)
-    mapping = {k: ctx.token_vals[k] for k in ctx.token_keys_order if k in ctx.token_vals}
-    _rebuild_token_ui(ctx, mapping)
+def _on_start_edit(ctx: DashboardContext, row_id: str) -> None:
+    ctx.editing_row_ids.add(row_id)
+    _rebuild_token_ui(ctx)
 
 
-def _on_cancel_edit(ctx: DashboardContext, key: str) -> None:
-    ctx.editing_keys.discard(key)
-    mapping = {k: ctx.token_vals[k] for k in ctx.token_keys_order if k in ctx.token_vals}
-    _rebuild_token_ui(ctx, mapping)
+def _on_cancel_edit(ctx: DashboardContext, row_id: str) -> None:
+    ctx.editing_row_ids.discard(row_id)
+    _rebuild_token_ui(ctx)
 
 
-def _on_save_edit(ctx: DashboardContext, key: str, new_val: str) -> None:
+def _on_save_edit(ctx: DashboardContext, row_id: str, new_val: str) -> None:
     src_text = ctx.input_field.value or ""
-    old_val = ctx.token_vals.get(key, "")
+    row = _find_row(ctx, row_id)
+    if row is None:
+        return
+
     new_val = (new_val or "").strip()
 
     if not new_val:
@@ -238,85 +302,58 @@ def _on_save_edit(ctx: DashboardContext, key: str, new_val: str) -> None:
         show_snack(ctx, msg, "danger")
         return
 
-    if not find_occurrences(src_text, new_val):
+    best = find_best_occurrence(src_text, new_val, row.start, row.ende)
+    if best is None:
         msg = (
-            "Der angegebene Text wurde im Eingabetext nicht als eigenständiger Treffer gefunden."
+            "Der angegebene Text wurde im Eingabetext nicht gefunden."
             if ctx.lang == "de"
-            else "The given text was not found as a standalone match in the input."
+            else "The given text was not found in the input."
         )
         show_snack(ctx, msg, "danger")
         return
 
-    if len(new_val) < len(old_val) or old_val not in new_val:
-        msg = (
-            "Bearbeiten darf den Treffer nur erweitern, nicht verkürzen. "
-            "Beispiel: 'Briachstraße' → 'Briachstraße 2' ist erlaubt, "
-            "aber nicht 'Briachstraße' → 'Briach'."
-            if ctx.lang == "de"
-            else "Editing may only extend the match, not shorten it. "
-                 "Example: 'Briachstraße' → 'Briachstraße 2' is allowed, "
-                 "but not 'Briachstraße' → 'Briach'."
-        )
-        show_snack(ctx, msg, "warning")
-        return
+    new_start, new_ende = best
+    session_secret = _active_session_secret(ctx)
+    new_token = gen_token(row.label, new_val, session_secret=session_secret)
 
-    if new_val == old_val:
-        ctx.editing_keys.discard(key)
-        mapping = {k: ctx.token_vals[k] for k in ctx.token_keys_order if k in ctx.token_vals}
-        _rebuild_token_ui(ctx, mapping)
-        return
+    row.value = new_val
+    row.start = new_start
+    row.ende = new_ende
+    row.token = new_token
+    row.source = "manual"
+    row.source_label = "Manual"
+    row.validation_source = None
+    row.validation_status = None
+    row.validation_score = None
+    row.validation_threshold = None
+    row.validation_reason = "Manuell bearbeitet"
+    row.enabled = True
 
-    new_token = gen_token(
-        typ_of(key),
-        new_val,
-        session_secret=_active_session_secret(ctx),
-    )
+    ctx.editing_row_ids.discard(row_id)
 
-    if new_token not in ctx.token_vals:
-        ctx.token_vals[new_token] = new_val
-        ctx.token_keys_order.append(new_token)
-
-    ctx.token_vals[key] = old_val
-    ctx.editing_keys.discard(key)
-
-    apply_current_edits(ctx)
+    _rebuild_output_from_occurrences(ctx)
+    _rebuild_token_ui(ctx)
+    ctx.page.update()
 
 
-def _on_delete_token(ctx: DashboardContext, key: str) -> None:
-    current_map = dict(getattr(ctx.store, "last_mapping", {}) or {})
-    hits = list(getattr(ctx.store, "last_hits", []) or [])
+def _on_delete_row(ctx: DashboardContext, row_id: str) -> None:
+    new_rows: List[OccurrenceRow] = []
+    for row in ctx.occurrence_rows:
+        if row.row_id != row_id:
+            new_rows.append(row)
 
-    original_value = ctx.token_vals.get(key, "")
+    ctx.occurrence_rows = new_rows
+    ctx.editing_row_ids.discard(row_id)
 
-    if original_value:
-        ctx.output_field.value = (ctx.output_field.value or "").replace(key, original_value)
+    _rebuild_output_from_occurrences(ctx)
 
-    if key in ctx.token_vals:
-        ctx.token_vals.pop(key)
-    ctx.editing_keys.discard(key)
-    if key in ctx.token_keys_order:
-        ctx.token_keys_order.remove(key)
+    if ctx.occurrence_rows:
+        _rebuild_token_ui(ctx)
+        ctx.tokens_section.visible = True
+    else:
+        ctx.token_groups_col.controls.clear()
+        ctx.tokens_host.visible = False
 
-    if key in current_map:
-        current_map.pop(key)
-
-    mgr = getattr(ctx.store, "session_mgr", None)
-    if mgr is not None:
-        try:
-            mgr.remove_from_active_mapping(key)
-        except Exception:
-            pass
-
-    src_text = ctx.input_field.value or ""
-    masked_text = ctx.output_field.value or ""
-    ctx.store.set_mapping(current_map, hits, src_text, masked_text)
-    _push_mapping_into_session(ctx, current_map)
-
-    ctx.tokens_section.visible = True
-    _sync_ctx_token_state(ctx, current_map)
-    _rebuild_token_ui(ctx, current_map)
-    update_banner(ctx, current_map)
-    ctx.sync_equal_height()
     ctx.page.update()
 
 
@@ -337,7 +374,8 @@ def add_manual_token(ctx: DashboardContext) -> None:
         show_snack(ctx, msg, "danger")
         return
 
-    if not find_occurrences(src, val):
+    occurrences = find_occurrences(src, val)
+    if not occurrences:
         msg = (
             "Der angegebene Text wurde im Eingabetext nicht als eigenständiger Treffer gefunden."
             if ctx.lang == "de"
@@ -346,100 +384,55 @@ def add_manual_token(ctx: DashboardContext) -> None:
         show_snack(ctx, msg, "danger")
         return
 
-    typ = ctx.manual_token_type_value[0] or "MISC"
+    label = (ctx.manual_token_type_value[0] or "MISC").upper()
+    session_secret = _active_session_secret(ctx)
+    token = gen_token(label, val, session_secret=session_secret)
 
-    current_map = dict(getattr(ctx.store, "last_mapping", {}) or {})
-    hits = list(getattr(ctx.store, "last_hits", []) or [])
+    existing_ids = {row.row_id for row in ctx.occurrence_rows}
+    idx = 0
 
-    to_delete = [k for k, v in current_map.items() if v == val]
-    for k in to_delete:
-        current_map.pop(k, None)
+    for start, ende in occurrences:
+        row_id = _manual_row_id(label, start, ende, idx)
+        while row_id in existing_ids:
+            idx += 1
+            row_id = _manual_row_id(label, start, ende, idx)
+        existing_ids.add(row_id)
 
-    token = gen_token(
-        typ,
-        val,
-        session_secret=_active_session_secret(ctx),
-    )
-
-    candidate_map = dict(current_map)
-    candidate_map[token] = val
-
-    masked_text, used_mapping = mask_with_mapping(src, candidate_map)
-
-    if token not in used_mapping:
-        msg = (
-            "Der neue Token überschneidet sich vollständig mit längeren Treffern "
-            "oder wird durch die Maskierungslogik nicht verwendet."
-            if ctx.lang == "de"
-            else "The new token is fully overlapped by longer matches or is not used by the masking logic."
+        ctx.occurrence_rows.append(
+            OccurrenceRow(
+                row_id=row_id,
+                token=token,
+                label=label,
+                value=val,
+                original_value=val,
+                start=start,
+                ende=ende,
+                source="manual",
+                source_label="Manual",
+                validation_source=None,
+                validation_status=None,
+                validation_score=None,
+                validation_threshold=None,
+                validation_reason="Manuell hinzugefügt",
+                enabled=True,
+            )
         )
-        show_snack(ctx, msg, "warning")
-        return
+        idx += 1
 
-    ctx.output_field.value = masked_text
-    ctx.input_field.value = src
-    ctx.store.set_dash(input_text=src)
-    ctx.store.set_mapping(used_mapping, hits, src, masked_text)
-    _push_mapping_into_session(ctx, used_mapping)
-
-    ctx.search_box.value = ""
-    ctx.editing_keys.clear()
-    _sync_ctx_token_state(ctx, used_mapping)
-    _rebuild_token_ui(ctx, used_mapping)
-    update_banner(ctx, used_mapping)
-
+    ctx.occurrence_rows.sort(key=lambda row: (row.start, row.ende, row.row_id))
     ctx.manual_token_text.value = ""
+
+    _rebuild_output_from_occurrences(ctx)
+    _rebuild_token_ui(ctx)
     update_add_button_state(ctx)
+
+    ctx.tokens_section.visible = True
     ctx.page.update()
 
 
 def apply_current_edits(ctx: DashboardContext) -> None:
-    src = ctx.input_field.value or ""
-    if not src:
-        ctx.output_field.value = ""
-        ctx.store.set_dash(output_text="", status_text=ctx.results_text.value or "")
-        ctx.sync_equal_height()
-        ctx.page.update()
-        return
-
-    if not ctx.token_vals:
-        ctx.output_field.value = src
-        ctx.store.set_dash(output_text=src, status_text=ctx.results_text.value or "")
-        ctx.sync_equal_height()
-        ctx.page.update()
-        return
-
-    edits = {k: (ctx.token_vals.get(k, "") or "") for k in ctx.token_keys_order if k in ctx.token_vals}
-    for k, v in edits.items():
-        if not v:
-            continue
-        if not find_occurrences(src, v):
-            msg = (
-                f"'{k}' nicht (mehr) als eigenständiger Treffer im Text gefunden. Prüfe die Werte."
-                if ctx.lang == "de"
-                else f"'{k}' no longer found as a standalone match in text. Please check the values."
-            )
-            show_snack(ctx, msg, "warning")
-            return
-
-    masked_text, used_mapping = mask_with_mapping(src, edits)
-
-    ctx.output_field.value = masked_text
-
-    hits = list(getattr(ctx.store, "last_hits", []) or [])
-    ctx.store.set_mapping(used_mapping, hits, src, masked_text)
-    _push_mapping_into_session(ctx, used_mapping)
-    update_banner(ctx, used_mapping)
-
-    ctx.editing_keys.clear()
-    _sync_ctx_token_state(ctx, used_mapping)
-    if used_mapping:
-        _rebuild_token_ui(ctx, used_mapping)
-    else:
-        ctx.token_groups_col.controls.clear()
-        ctx.tokens_host.visible = False
-
-    ctx.sync_equal_height()
+    _rebuild_output_from_occurrences(ctx)
+    _rebuild_token_ui(ctx)
     ctx.page.update()
 
 
@@ -464,27 +457,25 @@ def run_masking_internal(ctx: DashboardContext, auto: bool = False) -> None:
                 ctx.output_field.value = ""
                 ctx.store.set_mapping({}, [], "", "")
                 ctx.store.set_dash(output_text="", status_text=ctx.results_text.value or "")
+                ctx.occurrence_rows = []
                 ctx.sync_equal_height()
                 ctx.page.update()
                 return
+
             msg = t(ctx.lang, "status.no_input")
             show_snack(ctx, msg, "warning")
             return
 
         try:
-            _, base_mapping, hits = anonymize(
+            _, used_mapping, hits = anonymize(
                 text,
                 reversible=getattr(ctx.store, "reversible", True),
                 session_mgr=getattr(ctx.store, "session_mgr", None),
                 on_phase=getattr(ctx, "on_masking_phase", None),
             )
         except Exception as e:
-            import traceback
-            traceback.print_exc()
             show_snack(ctx, f"Masking failed: {e}", "danger")
             return
-
-        merged_mapping: Dict[str, str] = dict(base_mapping or {})
 
         session_mapping: Dict[str, str] = {}
         mgr = getattr(ctx.store, "session_mgr", None)
@@ -497,43 +488,31 @@ def run_masking_internal(ctx: DashboardContext, auto: bool = False) -> None:
         allowed_types = _allowed_token_types_from_config()
         session_mapping = _filter_session_mapping_to_allowed_types(session_mapping, allowed_types)
 
-        if session_mapping:
+        ctx.occurrence_rows = _build_occurrence_rows_from_hits(ctx, hits)
+        ctx.occurrence_rows.sort(key=lambda row: (row.start, row.ende, row.row_id))
+
+        _rebuild_output_from_occurrences(ctx)
+
+        if session_mapping and not used_mapping:
+            current_mapping = getattr(ctx.store, "last_mapping", {}) or {}
+            merged = dict(current_mapping)
             for token, value in session_mapping.items():
-                if not value:
-                    continue
-                if not find_occurrences(text, value):
-                    continue
-                if token in merged_mapping and merged_mapping[token] == value:
-                    continue
-                merged_mapping[token] = value
+                if token not in merged:
+                    merged[token] = value
+            ctx.store.set_mapping(merged, hits, text, ctx.output_field.value or "")
 
-        if getattr(ctx, "on_masking_phase", None) is not None:
-            try:
-                ctx.on_masking_phase("Maskierung")
-            except Exception:
-                pass
-
-        masked_text, used_mapping = mask_with_mapping(text, merged_mapping)
-
-        ctx.output_field.value = masked_text
-        ctx.sync_equal_height()
-        ctx.store.set_mapping(used_mapping, hits, text, masked_text)
-
-        if getattr(ctx.store, "reversible", True) and used_mapping:
-            if hasattr(ctx.store, "add_session_mapping"):
-                ctx.store.add_session_mapping(used_mapping)
+        ctx.store.set_mapping(getattr(ctx.store, "last_mapping", {}) or {}, hits, text, ctx.output_field.value or "")
 
         ctx.tokens_section.visible = True
-        ctx.editing_keys.clear()
-        _sync_ctx_token_state(ctx, used_mapping)
+        ctx.editing_row_ids.clear()
 
-        if used_mapping:
-            _rebuild_token_ui(ctx, used_mapping)
+        if ctx.occurrence_rows:
+            _rebuild_token_ui(ctx)
         else:
             ctx.token_groups_col.controls.clear()
             ctx.tokens_host.visible = False
 
-        update_banner(ctx, used_mapping)
+        update_banner(ctx, getattr(ctx.store, "last_mapping", {}) or {})
         ctx.page.update()
     finally:
         if ctx.on_masking_phase is not None:
@@ -568,10 +547,9 @@ def clear_both(ctx: DashboardContext) -> None:
     ctx.output_field.value = ""
     ctx.results_text.value = ""
     ctx.results_banner.visible = False
-    ctx.token_vals.clear()
-    ctx.token_keys_order.clear()
+    ctx.occurrence_rows.clear()
+    ctx.editing_row_ids.clear()
     ctx.token_groups_col.controls.clear()
-    ctx.editing_keys.clear()
     ctx.search_box.value = ""
     ctx.manual_token_text.value = ""
     ctx.manual_token_type_value[0] = "MISC" if "MISC" in ctx.manual_token_type_values else ctx.manual_token_type_values[0]
@@ -601,10 +579,9 @@ def handle_input_change(ctx: DashboardContext) -> None:
         if hasattr(ctx.store, "close_active_session"):
             ctx.store.close_active_session()
 
-        ctx.token_vals.clear()
-        ctx.token_keys_order.clear()
+        ctx.occurrence_rows.clear()
+        ctx.editing_row_ids.clear()
         ctx.token_groups_col.controls.clear()
-        ctx.editing_keys.clear()
         ctx.results_text.value = ""
         ctx.results_banner.visible = False
         ctx.tokens_section.visible = False

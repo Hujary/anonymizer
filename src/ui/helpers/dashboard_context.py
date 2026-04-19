@@ -11,6 +11,25 @@ AUTO_MASK_DEBOUNCE_SECONDS = 0.3
 
 
 @dataclass
+class OccurrenceRow:
+    row_id: str
+    token: str
+    label: str
+    value: str
+    original_value: str
+    start: int
+    ende: int
+    source: str
+    source_label: str
+    validation_source: Optional[str] = None
+    validation_status: Optional[str] = None
+    validation_score: Optional[float] = None
+    validation_threshold: Optional[float] = None
+    validation_reason: Optional[str] = None
+    enabled: bool = True
+
+
+@dataclass
 class DashboardContext:
     page: ft.Page
     theme: Dict[str, Any]
@@ -41,9 +60,8 @@ class DashboardContext:
     sync_equal_height: Any
     update_placeholder: Any
 
-    token_vals: Dict[str, str] = field(default_factory=dict)
-    token_keys_order: List[str] = field(default_factory=list)
-    editing_keys: set[str] = field(default_factory=set)
+    occurrence_rows: List[OccurrenceRow] = field(default_factory=list)
+    editing_row_ids: set[str] = field(default_factory=set)
 
     debounce_timer: threading.Timer | None = None
 

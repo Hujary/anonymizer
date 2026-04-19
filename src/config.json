@@ -4,7 +4,7 @@
   "debug_mask": false,
   "ner_backend": "flair",
   "ner_model": "flair/ner-german-large",
-  "theme": "light",
+  "theme": "dark",
   "lang": "de",
   "ner_labels": [
     "LOC",
@@ -28,5 +28,11 @@
   "use_ner_postprocessing": true,
   "copy_ai_prompt_enabled": false,
   "debug_ner_result": true,
-  "show_masking_phase_text": true
+  "show_masking_phase_text": true,
+  "use_postcode_ml_validator": true,
+  "postcode_ml_model_path": "models/plz_validator.pkl",
+  "postcode_reference_path": "data_postal/postcodes_merged_unique.csv",
+  "postcode_unknown_malus": 0.1,
+  "postcode_manual_threshold_enabled": false,
+  "postcode_manual_threshold": 0.5
 }

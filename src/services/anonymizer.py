@@ -6,6 +6,7 @@ import hmac
 from typing import Callable, Dict, List, Optional, Tuple, Any
 
 from pipeline.anonymisieren import maskiere
+from pipeline.validation import filter_effective_hits_for_masking
 from services.session_manager import SessionManager
 
 
@@ -36,8 +37,9 @@ def anonymize(
         except Exception:
             on_phase("Maskierung")
 
+    masked, hits = maskiere(text, reversible=False, on_phase=on_phase)
+
     if not reversible:
-        masked, hits = maskiere(text, reversible=False, on_phase=on_phase)
         return masked, {}, hits
 
     if session_mgr is None:
@@ -45,14 +47,16 @@ def anonymize(
 
     session_secret = session_mgr.get_or_create_active_session_secret()
 
-    _, hits = maskiere(text, reversible=True, on_phase=on_phase)
-    hits_sorted = sorted(hits, key=lambda h: getattr(h, "start"))
+    effective_hits = sorted(
+        filter_effective_hits_for_masking(hits),
+        key=lambda h: getattr(h, "start"),
+    )
 
     parts: List[str] = []
     mapping: Dict[str, str] = {}
     pos = 0
 
-    for h in hits_sorted:
+    for h in effective_hits:
         s = getattr(h, "start")
         e = getattr(h, "ende")
         label = getattr(h, "label").upper()
@@ -69,7 +73,7 @@ def anonymize(
     parts.append(text[pos:])
     masked_with_ids = "".join(parts)
 
-    return masked_with_ids, mapping, hits_sorted
+    return masked_with_ids, mapping, hits
 
 
 def de_anonymize(text: str, mapping: Dict[str, str]) -> str:
